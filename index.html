@@ -71,6 +71,8 @@
   <div class="tabs">
     <button onclick="switchTab('dbms')" class="active">DBMS Notes</button>
     <button onclick="switchTab('os')">OS Notes</button>
+    <button onclick="switchTab('java')">Java Notes</button>
+
   </div>
 
   <div id="dbms" class="content-section active">
@@ -98,6 +100,10 @@
       <li><a href="OS_NOTE/Virtual_memory.html">Virtual Memory</a></li>
     </ul>
   </div>
+  <div id="java" class="content-section">
+    <ul>
+      <li><a href="Java_topics">Java Introduction</a></li>
+    </ul>
 
   <script>
     function switchTab(tabId) {
@@ -106,8 +112,10 @@
       // Add active class to clicked button
       if (tabId === 'dbms') {
         document.querySelector('.tabs button:nth-child(1)').classList.add('active');
-      } else {
+      } else if (tabId === 'os') {
         document.querySelector('.tabs button:nth-child(2)').classList.add('active');
+      } else {
+        document.querySelector('.tabs button:nth-child(3)').classList.add('active');
       }
 
       // Hide all sections
