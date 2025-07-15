@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Memory - Visual Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .concept-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .concept-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .concept-title {
+            font-size: 1.5em;
+            color: #4a5568;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .visual-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .diagram {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .explanation {
+            flex: 1;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+        
+        .memory-box {
+            display: inline-block;
+            width: 60px;
+            height: 40px;
+            margin: 5px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .physical-memory {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .virtual-memory {
+            background: #4ecdc4;
+            color: white;
+        }
+        
+        .disk-memory {
+            background: #ffe66d;
+            color: #333;
+        }
+        
+        .process-flow {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .flow-step {
+            text-align: center;
+            padding: 15px;
+            background: #f7fafc;
+            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            min-width: 120px;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 0 10px;
+        }
+        
+        .key-point {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .advantages {
+            background: #f0fff4;
+            border-left: 4px solid #48bb78;
+        }
+        
+        .disadvantages {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+        }
+        
+        .interactive-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .interactive-btn:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .demo-area {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .page-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .page {
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .page.in-memory {
+            background: #48bb78;
+            color: white;
+        }
+        
+        .page.on-disk {
+            background: #ed8936;
+            color: white;
+        }
+        
+        .page.invalid {
+            background: #e2e8f0;
+            color: #718096;
+        }
+        
+        .revision-summary {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .revision-summary h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+        }
+        
+        .quick-facts {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .fact-box {
+            background: rgba(255,255,255,0.9);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .visual-section {
+                flex-direction: column;
+            }
+            
+            .process-flow {
+                flex-direction: column;
+            }
+            
+            .arrow {
+                transform: rotate(90deg);
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Virtual Memory Explained</h1>
+            <p>Learn concepts visually for easy revision</p>
+        </div>
+
+        <!-- What is Virtual Memory -->
+        <div class="concept-card">
+            <h2 class="concept-title">🤔 What is Virtual Memory?</h2>
+            <div class="visual-section">
+                <div class="diagram">
+                    <h4>Memory Illusion</h4>
+                    <div style="margin: 20px 0;">
+                        <div class="memory-box physical-memory">4GB</div>
+                        <div style="margin: 10px 0;">Real Memory</div>
+                    </div>
+                    <div style="font-size: 2em; color: #667eea;">⬇️</div>
+                    <div style="margin: 20px 0;">
+                        <div class="memory-box virtual-memory">16GB</div>
+                        <div style="margin: 10px 0;">Virtual Memory</div>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Simple Definition:</strong> Virtual memory tricks your computer into thinking it has more RAM than it actually does!
+                    <br><br>
+                    <strong>How?</strong> By using hard disk space as "fake RAM" when needed.
+                    <br><br>
+                    <strong>Real Example:</strong> Your phone has 4GB RAM but can run apps that need 8GB total.
+                </div>
+            </div>
+        </div>
+
+        <!-- Demand Paging -->
+        <div class="concept-card">
+            <h2 class="concept-title">📄 Demand Paging - The Smart Way</h2>
+            <div class="visual-section">
+                <div class="diagram">
+                    <h4>Page Loading Process</h4>
+                    <div class="process-flow">
+                        <div class="flow-step">
+                            <div>📱 App Starts</div>
+                            <small>Only load what's needed</small>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="flow-step">
+                            <div>🔍 Page Needed</div>
+                            <small>User clicks something</small>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="flow-step">
+                            <div>💾 Load from Disk</div>
+                            <small>Bring page to RAM</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Think of it like a book:</strong>
+                    <br>• You don't read all pages at once
+                    <br>• You only open the page you need
+                    <br>• Other pages stay in the book (disk)
+                    <br>• Only current page is on your desk (RAM)
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Fault Demo -->
+        <div class="concept-card">
+            <h2 class="concept-title">⚠️ Page Fault - When Things Go Wrong</h2>
+            <div class="demo-area">
+                <h4>Interactive Page Table Demo</h4>
+                <p>Click on pages to see page faults in action!</p>
+                <div class="page-table">
+                    <div class="page in-memory" onclick="accessPage(this, 'Page 1')">Page 1<br>✅ In RAM</div>
+                    <div class="page on-disk" onclick="accessPage(this, 'Page 2')">Page 2<br>💾 On Disk</div>
+                    <div class="page in-memory" onclick="accessPage(this, 'Page 3')">Page 3<br>✅ In RAM</div>
+                    <div class="page invalid" onclick="accessPage(this, 'Page 4')">Page 4<br>❌ Invalid</div>
+                    <div class="page on-disk" onclick="accessPage(this, 'Page 5')">Page 5<br>💾 On Disk</div>
+                    <div class="page in-memory" onclick="accessPage(this, 'Page 6')">Page 6<br>✅ In RAM</div>
+                    <div class="page on-disk" onclick="accessPage(this, 'Page 7')">Page 7<br>💾 On Disk</div>
+                    <div class="page invalid" onclick="accessPage(this, 'Page 8')">Page 8<br>❌ Invalid</div>
+                </div>
+                <div id="fault-message" style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 10px; min-height: 50px;">
+                    Click on any page to see what happens!
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Fault Steps -->
+        <div class="concept-card">
+            <h2 class="concept-title">🔧 Page Fault Handling Steps</h2>
+            <div class="process-flow" style="flex-wrap: wrap;">
+                <div class="flow-step">
+                    <div style="font-size: 2em;">1️⃣</div>
+                    <div>Check if Valid</div>
+                    <small>Is this a real page?</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-step">
+                    <div style="font-size: 2em;">2️⃣</div>
+                    <div>Find Free Space</div>
+                    <small>Get empty RAM slot</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-step">
+                    <div style="font-size: 2em;">3️⃣</div>
+                    <div>Load from Disk</div>
+                    <small>Copy page to RAM</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-step">
+                    <div style="font-size: 2em;">4️⃣</div>
+                    <div>Update Table</div>
+                    <small>Mark as "in memory"</small>
+                </div>
+                <div class="arrow">→</div>
+                <div class="flow-step">
+                    <div style="font-size: 2em;">5️⃣</div>
+                    <div>Continue</div>
+                    <small>Resume execution</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advantages & Disadvantages -->
+        <div class="concept-card">
+            <h2 class="concept-title">⚖️ Pros & Cons</h2>
+            <div class="visual-section">
+                <div class="advantages">
+                    <h4>✅ Advantages</h4>
+                    <ul>
+                        <li><strong>Big Programs:</strong> Run apps larger than your RAM</li>
+                        <li><strong>More Apps:</strong> Run multiple programs together</li>
+                        <li><strong>Efficiency:</strong> Better CPU usage</li>
+                        <li><strong>Flexibility:</strong> Programs aren't limited by physical RAM</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h4>❌ Disadvantages</h4>
+                    <ul>
+                        <li><strong>Slower:</strong> Disk access takes time</li>
+                        <li><strong>Thrashing:</strong> Too much swapping slows system</li>
+                        <li><strong>Complexity:</strong> More complex memory management</li>
+                        <li><strong>Overhead:</strong> Extra work for OS</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Revision Summary -->
+        <div class="revision-summary">
+            <h3>🚀 Quick Revision Summary</h3>
+            <div class="quick-facts">
+                <div class="fact-box">
+                    <strong>Virtual Memory</strong><br>
+                    Illusion of more RAM using disk space
+                </div>
+                <div class="fact-box">
+                    <strong>Demand Paging</strong><br>
+                    Load pages only when needed
+                </div>
+                <div class="fact-box">
+                    <strong>Page Fault</strong><br>
+                    When needed page isn't in RAM
+                </div>
+                <div class="fact-box">
+                    <strong>Lazy Loading</strong><br>
+                    Don't load until absolutely necessary
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Replacement Algorithms -->
+        <div class="concept-card">
+            <h2 class="concept-title">🔄 Page Replacement Algorithms (Interview Favorite!)</h2>
+            <div class="visual-section">
+                <div class="diagram">
+                    <h4>Memory Full Scenario</h4>
+                    <div style="margin: 20px 0;">
+                        <div class="memory-box physical-memory">A</div>
+                        <div class="memory-box physical-memory">B</div>
+                        <div class="memory-box physical-memory">C</div>
+                        <div class="memory-box physical-memory">D</div>
+                        <div style="margin: 10px 0; font-size: 14px;">RAM Full (4 pages)</div>
+                    </div>
+                    <div style="font-size: 1.5em; color: #e74c3c;">⚠️ New Page E Needed!</div>
+                    <div style="margin: 20px 0;">
+                        <div class="memory-box virtual-memory">E</div>
+                        <div style="margin: 10px 0; font-size: 14px;">Which page to replace?</div>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>Common Algorithms:</strong>
+                    <br>• <strong>FIFO:</strong> Replace oldest page (First In, First Out)
+                    <br>• <strong>LRU:</strong> Replace least recently used page
+                    <br>• <strong>Optimal:</strong> Replace page that won't be used for longest time
+                    <br>• <strong>Random:</strong> Replace any random page
+                    <br><br>
+                    <strong>Interview Tip:</strong> LRU is most commonly asked!
+                </div>
+            </div>
+        </div>
+
+        <!-- Thrashing - Critical Interview Topic -->
+        <div class="concept-card">
+            <h2 class="concept-title">🌪️ Thrashing - The Death Spiral</h2>
+            <div class="visual-section">
+                <div class="diagram">
+                    <h4>Thrashing Cycle</h4>
+                    <div class="process-flow" style="flex-direction: column;">
+                        <div class="flow-step">
+                            <div style="font-size: 1.5em;">📈</div>
+                            <div>Too Many Processes</div>
+                        </div>
+                        <div class="arrow" style="transform: rotate(90deg);">→</div>
+                        <div class="flow-step">
+                            <div style="font-size: 1.5em;">💾</div>
+                            <div>Frequent Page Faults</div>
+                        </div>
+                        <div class="arrow" style="transform: rotate(90deg);">→</div>
+                        <div class="flow-step">
+                            <div style="font-size: 1.5em;">🐌</div>
+                            <div>More Disk I/O</div>
+                        </div>
+                        <div class="arrow" style="transform: rotate(90deg);">→</div>
+                        <div class="flow-step">
+                            <div style="font-size: 1.5em;">😵</div>
+                            <div>System Slowdown</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="explanation">
+                    <strong>What is Thrashing?</strong>
+                    <br>When system spends more time swapping pages than executing programs.
+                    <br><br>
+                    <strong>Real Example:</strong> Your laptop with 4GB RAM running 20 Chrome tabs + video editor + games = everything becomes super slow!
+                    <br><br>
+                    <strong>Solutions:</strong>
+                    <br>• Increase RAM
+                    <br>• Reduce number of processes
+                    <br>• Better page replacement algorithms
+                    <br>• Working set model
+                </div>
+            </div>
+        </div>
+
+        <!-- Working Set Model -->
+        <div class="concept-card">
+            <h2 class="concept-title">🎯 Working Set Model (Advanced Interview Topic)</h2>
+            <div class="key-point">
+                <strong>Definition:</strong> Set of pages that a process is actively using in recent time window
+            </div>
+            <div class="visual-section">
+                <div class="explanation">
+                    <strong>Key Points:</strong>
+                    <br>• <strong>Working Set Size:</strong> Number of pages process needs to run efficiently
+                    <br>• <strong>Locality of Reference:</strong> Programs tend to access nearby memory locations
+                    <br>• <strong>Temporal Locality:</strong> Recently accessed pages likely to be accessed again
+                    <br>• <strong>Spatial Locality:</strong> Nearby pages likely to be accessed together
+                    <br><br>
+                    <strong>Interview Answer:</strong> "Working set helps prevent thrashing by ensuring each process has enough pages in memory to run efficiently."
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Management Techniques -->
+        <div class="concept-card">
+            <h2 class="concept-title">🔧 Memory Management Techniques (Interview Deep Dive)</h2>
+            <div class="quick-facts">
+                <div class="fact-box">
+                    <strong>Translation Lookaside Buffer (TLB)</strong><br>
+                    Cache for page table entries<br>
+                    <small>Speeds up address translation</small>
+                </div>
+                <div class="fact-box">
+                    <strong>Copy-on-Write</strong><br>
+                    Share pages until modification<br>
+                    <small>Saves memory for fork() operations</small>
+                </div>
+                <div class="fact-box">
+                    <strong>Memory Mapped Files</strong><br>
+                    Map files directly to memory<br>
+                    <small>Efficient file I/O operations</small>
+                </div>
+                <div class="fact-box">
+                    <strong>Swap Space</strong><br>
+                    Dedicated disk area for pages<br>
+                    <small>Usually 2x RAM size</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interview Questions & Answers -->
+        <div class="concept-card">
+            <h2 class="concept-title">❓ Common Interview Questions</h2>
+            <div class="demo-area">
+                <div class="fact-box" style="margin: 10px 0; text-align: left;">
+                    <strong>Q1: What happens when RAM is full and new page is needed?</strong>
+                    <br><strong>A:</strong> Page replacement algorithm kicks in. System selects a victim page using algorithms like LRU, FIFO, or Optimal. Victim page is written to disk if modified (dirty), then new page is loaded into that frame.
+                </div>
+                
+                <div class="fact-box" style="margin: 10px 0; text-align: left;">
+                    <strong>Q2: Difference between Paging and Segmentation?</strong>
+                    <br><strong>A:</strong> Paging divides memory into fixed-size blocks (pages), while segmentation divides into variable-size logical units (segments). Paging eliminates external fragmentation but may cause internal fragmentation.
+                </div>
+                
+                <div class="fact-box" style="margin: 10px 0; text-align: left;">
+                    <strong>Q3: How to calculate effective memory access time?</strong>
+                    <br><strong>A:</strong> EMAT = (1-p) × ma + p × page_fault_time
+                    <br>Where p = page fault rate, ma = memory access time
+                </div>
+                
+                <div class="fact-box" style="margin: 10px 0; text-align: left;">
+                    <strong>Q4: What is the difference between logical and physical address?</strong>
+                    <br><strong>A:</strong> Logical address is generated by CPU (virtual), physical address is actual RAM location. MMU translates logical to physical using page tables.
+                </div>
+                
+                <div class="fact-box" style="margin: 10px 0; text-align: left;">
+                    <strong>Q5: Why is LRU better than FIFO?</strong>
+                    <br><strong>A:</strong> LRU considers usage pattern (temporal locality), while FIFO only considers arrival time. LRU typically has fewer page faults in real-world scenarios.
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="concept-card">
+            <h2 class="concept-title">📊 Performance Metrics (Numbers Interviewers Love)</h2>
+            <div class="visual-section">
+                <div class="advantages">
+                    <h4>Key Formulas</h4>
+                    <ul>
+                        <li><strong>Page Fault Rate:</strong> Page Faults / Total Memory References</li>
+                        <li><strong>Hit Ratio:</strong> (Total Accesses - Page Faults) / Total Accesses</li>
+                        <li><strong>Effective Access Time:</strong> (1-p) × ma + p × fault_time</li>
+                        <li><strong>Memory Utilization:</strong> (Used Pages / Total Pages) × 100%</li>
+                    </ul>
+                </div>
+                <div class="disadvantages">
+                    <h4>Typical Values</h4>
+                    <ul>
+                        <li><strong>RAM Access:</strong> 10-100 nanoseconds</li>
+                        <li><strong>Disk Access:</strong> 1-10 milliseconds</li>
+                        <li><strong>Page Fault Rate:</strong> 0.1-1% (good system)</li>
+                        <li><strong>TLB Hit Rate:</strong> 90-99%</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Details -->
+        <div class="concept-card">
+            <h2 class="concept-title">⚙️ Implementation Details (System Design Questions)</h2>
+            <div class="key-point">
+                <strong>Page Table Structure:</strong>
+                <br>• <strong>Single-level:</strong> Simple but large for 64-bit systems
+                <br>• <strong>Multi-level:</strong> Hierarchical, saves space
+                <br>• <strong>Inverted:</strong> One entry per physical frame
+                <br>• <strong>Hashed:</strong> Good for sparse address spaces
+            </div>
+            <div class="key-point">
+                <strong>Page Size Trade-offs:</strong>
+                <br>• <strong>Small Pages:</strong> Less internal fragmentation, larger page tables
+                <br>• <strong>Large Pages:</strong> Smaller page tables, more internal fragmentation
+                <br>• <strong>Typical Sizes:</strong> 4KB (x86), 4KB-64KB (ARM), up to 1GB (huge pages)
+            </div>
+            <div class="key-point">
+                <strong>Modern Optimizations:</strong>
+                <br>• <strong>Prefetching:</strong> Load pages before they're needed
+                <br>• <strong>Clustering:</strong> Group related pages together
+                <br>• <strong>Compression:</strong> Compress pages in memory
+                <br>• <strong>NUMA Awareness:</strong> Consider memory locality in multi-processor systems
+            </div>
+        </div>
+
+        <!-- Key Points for Revision -->
+        <div class="concept-card">
+            <h2 class="concept-title">📝 Key Points for Exams & Interviews</h2>
+            <div class="key-point">
+                <strong>Remember:</strong> Virtual memory = Physical RAM + Disk space acting as RAM
+            </div>
+            <div class="key-point">
+                <strong>Page Fault Steps:</strong> Check validity → Find free frame → Load from disk → Update page table → Continue
+            </div>
+            <div class="key-point">
+                <strong>Valid/Invalid Bit:</strong> 1 = page in memory, 0 = page on disk or invalid
+            </div>
+            <div class="key-point">
+                <strong>Pure Demand Paging:</strong> Start with NO pages in memory, load only when needed
+            </div>
+            <div class="key-point">
+                <strong>Interview Favorites:</strong> LRU algorithm, Thrashing causes & solutions, Working set model, TLB concept
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function accessPage(element, pageName) {
+            const messageDiv = document.getElementById('fault-message');
+            
+            if (element.classList.contains('in-memory')) {
+                messageDiv.innerHTML = `
+                    <div style="color: #48bb78; font-weight: bold;">✅ SUCCESS!</div>
+                    <div>${pageName} is already in RAM. No page fault occurred.</div>
+                    <div>Process continues normally.</div>
+                `;
+                element.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 300);
+            } else if (element.classList.contains('on-disk')) {
+                messageDiv.innerHTML = `
+                    <div style="color: #ed8936; font-weight: bold;">⚠️ PAGE FAULT!</div>
+                    <div>${pageName} is on disk, not in RAM.</div>
+                    <div>System will: Find free RAM → Load from disk → Update page table → Continue</div>
+                `;
+                element.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    element.classList.remove('on-disk');
+                    element.classList.add('in-memory');
+                    element.innerHTML = pageName + '<br>✅ In RAM';
+                    element.style.transform = 'scale(1)';
+                }, 1000);
+            } else {
+                messageDiv.innerHTML = `
+                    <div style="color: #f56565; font-weight: bold;">❌ INVALID ACCESS!</div>
+                    <div>${pageName} is not a valid page for this process.</div>
+                    <div>Result: Process will be terminated with segmentation fault.</div>
+                `;
+                element.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    element.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.concept-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Scheduling - Complete Interview Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .concept-section {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .concept-title {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .example {
+            background: #e8f5e8;
+            padding: 15px;
+            border-left: 4px solid #27ae60;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .warning {
+            background: #ffe6e6;
+            padding: 15px;
+            border-left: 4px solid #e74c3c;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .interview-tip {
+            background: #05a1c8;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .real-world {
+            background: #e1f5fe;
+            padding: 15px;
+            border-left: 4px solid #01579b;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .visual-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .process-box {
+            padding: 10px 15px;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        .cpu-box {
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .memory-box {
+            padding: 15px;
+            background: #f39c12;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .disk-box {
+            padding: 15px;
+            background: #9b59b6;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0 10px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+        }
+        
+        .timeline {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        
+        .time-slot {
+            min-width: 60px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .process-a { background: #3498db; }
+        .process-b { background: #e74c3c; }
+        .process-c { background: #27ae60; }
+        .process-d { background: #f39c12; }
+        .idle { background: #95a5a6; }
+        
+        .gantt-chart {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .queue-visual {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .queue-label {
+            font-weight: bold;
+            margin-right: 20px;
+            min-width: 100px;
+        }
+        
+        .formula {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ Process Scheduling & Process States</h1>
+            <p>Complete Interview Guide with Visual Examples</p>
+        </div>
+
+        <!-- Swapping -->
+        <div class="concept-section">
+            <h2 class="concept-title">1. Swapping</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Definition:</strong> Swapping is moving processes between main memory and secondary storage (disk) to manage memory efficiently.
+            </div>
+
+            <div class="diagram-container">
+                <h3>Swapping Process Visualization</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/swapping.jpg" alt="Swapping Diagram" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="visual-demo">
+                <div class="memory-box">Main Memory<br>(RAM)</div>
+                <div class="arrow">⇄</div>
+                <div class="disk-box">Secondary Storage<br>(Disk)</div>
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World Example:</strong> Your computer has 8GB RAM but you're running 20GB worth of programs. OS swaps inactive programs to disk to free up RAM for active ones.
+            </div>
+
+            <pre class="code-block">
+Swapping Process:
+1. Process P1 is running in memory
+2. P1 goes to waiting state (I/O operation)
+3. Medium Term Scheduler swaps P1 to disk
+4. Memory space freed for other processes
+5. When P1 ready, swap back to memory
+6. Continue execution from where it left off
+            </pre>
+
+            <div class="example">
+                <strong>Key Points:</strong>
+                <ul>
+                    <li><strong>Swap Out:</strong> Move process from memory to disk</li>
+                    <li><strong>Swap In:</strong> Move process from disk to memory</li>
+                    <li><strong>Purpose:</strong> Improve degree of multiprogramming</li>
+                    <li><strong>Who does it:</strong> Medium Term Scheduler (MTS)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Context Switching -->
+        <div class="concept-section">
+            <h2 class="concept-title">2. Context Switching</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Key Point:</strong> Context switching is the process of saving current process state and loading another process state. It's pure overhead - no useful work is done during switching.
+            </div>
+
+            <div class="diagram-container">
+                <h3>Context Switch Process</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/context_switch.jpg" alt="Context Switch Diagram" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="visual-demo">
+                <div class="process-box">Process A<br>Running</div>
+                <div class="arrow">→</div>
+                <div class="cpu-box">CPU<br>Save State</div>
+                <div class="arrow">→</div>
+                <div class="process-box">Process B<br>Load State</div>
+                <div class="arrow">→</div>
+                <div class="process-box">Process B<br>Running</div>
+            </div>
+
+            <pre     class="code-block">
+Context Switch Steps:
+1. Save current process state in PCB
+   - Program Counter (PC)
+   - Register values
+   - Memory management info
+   - Process state
+2. Select next process to run
+3. Load new process state from PCB
+4. Update memory management registers
+5. Resume execution of new process
+            </pre>
+
+            <div class="real-world">
+                <strong>🌍 Real World Example:</strong> Like a librarian helping customers - saves current customer's request details, helps next customer, then returns to first customer exactly where they left off.
+            </div>
+
+            <div class="warning">
+                <strong>Context Switch Overhead:</strong>
+                <ul>
+                    <li>Time wasted in switching (no useful work)</li>
+                    <li>Depends on hardware (registers, memory speed)</li>
+                    <li>Typical time: 1-100 microseconds</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Orphan and Zombie Processes -->
+        <div class="concept-section">
+            <h2 class="concept-title">3. Orphan and Zombie Processes</h2>
+            
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Aspect</th>
+                        <th>Orphan Process</th>
+                        <th>Zombie Process</th>
+                    </tr>
+                    <tr>
+                        <td>Definition</td>
+                        <td>Parent terminated, child still running</td>
+                        <td>Child terminated, parent hasn't read exit status</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>Running</td>
+                        <td>Terminated but entry in process table</td>
+                    </tr>
+                    <tr>
+                        <td>Adoption</td>
+                        <td>Adopted by init process</td>
+                        <td>No adoption needed</td>
+                    </tr>
+                    <tr>
+                        <td>Resource Usage</td>
+                        <td>Uses CPU, memory</td>
+                        <td>Only process table entry</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World Examples:</strong>
+                <br><strong>Orphan:</strong> Parent company shuts down, but subsidiary continues operating (gets new parent)
+                <br><strong>Zombie:</strong> Employee quits but HR hasn't processed their exit paperwork yet
+            </div>
+
+            <pre class="code-block">
+Orphan Process Example:
+// Parent Process
+int main() {
+    pid_t pid = fork();
+    if (pid == 0) {
+        // Child process
+        sleep(30);  // Child runs for 30 seconds
+        printf("Child finished\n");
+    } else {
+        // Parent process
+        printf("Parent exiting\n");
+        exit(0);    // Parent dies immediately
+    }
+    // Child becomes orphan, adopted by init
+}
+
+Zombie Process Example:
+// Parent Process
+int main() {
+    pid_t pid = fork();
+    if (pid == 0) {
+        // Child process
+        printf("Child exiting\n");
+        exit(0);    // Child dies immediately
+    } else {
+        // Parent process
+        sleep(30);  // Parent sleeps for 30 seconds
+        wait(NULL); // Finally reads child's exit status
+    }
+    // Child was zombie for 30 seconds
+}
+            </code>
+
+            <div class="interview-tip">
+                <strong>🎯 Interview Questions:</strong>
+                <br><strong>Q:</strong> What happens to orphan processes?
+                <br><strong>A:</strong> They are adopted by init process (PID 1)
+                <br><strong>Q:</strong> How to prevent zombie processes?
+                <br><strong>A:</strong> Parent should call wait() to read child's exit status
+            </div>
+        </div>
+
+        <!-- Process Scheduling Introduction -->
+        <div class="concept-section">
+            <h2 class="concept-title">4. Process Scheduling Introduction</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Why Process Scheduling?</strong> To maximize CPU utilization by switching between processes when current process waits for I/O or time expires.
+            </div>
+
+            <div class="diagram-container">
+                <h3>Process Scheduling Overview</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/process_scheduling.jpg" alt="Process Scheduling" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Scheduling Type</th>
+                        <th>Preemptive</th>
+                        <th>Non-Preemptive</th>
+                    </tr>
+                    <tr>
+                        <td>CPU Control</td>
+                        <td>OS can forcibly take CPU</td>
+                        <td>Process voluntarily gives up CPU</td>
+                    </tr>
+                    <tr>
+                        <td>Starvation</td>
+                        <td>Less starvation</td>
+                        <td>More starvation possible</td>
+                    </tr>
+                    <tr>
+                        <td>CPU Utilization</td>
+                        <td>High</td>
+                        <td>Low</td>
+                    </tr>
+                    <tr>
+                        <td>Examples</td>
+                        <td>Round Robin, Priority</td>
+                        <td>FCFS, SJF</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="formula">
+                <strong>Important Formulas:</strong><br>
+                Turnaround Time (TAT) = Completion Time - Arrival Time<br>
+                Waiting Time (WT) = Turnaround Time - Burst Time<br>
+                Response Time = First CPU allocation time - Arrival Time
+            </div>
+        </div>
+
+        <!-- FCFS Scheduling -->
+        <div class="concept-section">
+            <h2 class="concept-title">5. FCFS (First Come First Serve)</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Point:</strong> FCFS is simplest scheduling algorithm - processes are executed in order of arrival. Main problem is Convoy Effect.
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong> Processes P1(24), P2(3), P3(3) - numbers are burst times
+            </div>
+
+            <div class="gantt-chart">
+                <h3>FCFS Gantt Chart</h3>
+                <div class="timeline">
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-b">P2</div>
+                    <div class="time-slot process-c">P3</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
+                    <span>0</span><span>24</span><span>27</span><span>30</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Process</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th>Completion Time</th>
+                        <th>TAT</th>
+                        <th>WT</th>
+                    </tr>
+                    <tr>
+                        <td>P1</td>
+                        <td>0</td>
+                        <td>24</td>
+                        <td>24</td>
+                        <td>24</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>P2</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>27</td>
+                        <td>27</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>P3</td>
+                        <td>0</td>
+                        <td>3</td>
+                        <td>30</td>
+                        <td>30</td>
+                        <td>27</td>
+                    </tr>
+                </table>
+                <p><strong>Average WT = (0 + 24 + 27) / 3 = 17</strong></p>
+            </div>
+
+            <div class="warning">
+                <strong>Convoy Effect:</strong> Short processes wait behind long processes, like fast cars stuck behind slow truck on single-lane road.
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> Bank queue - first customer takes long time, others wait regardless of their quick transactions.
+            </div>
+        </div>
+
+        <!-- SJF Scheduling -->
+        <div class="concept-section">
+            <h2 class="concept-title">6. SJF (Shortest Job First)</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Key Point:</strong> SJF gives minimum average waiting time. Problem is predicting burst time and starvation of long processes.
+            </div>
+
+            <div class="example">
+                <strong>Same Example:</strong> P1(24), P2(3), P3(3) - but scheduled by burst time
+            </div>
+
+            <div class="gantt-chart">
+                <h3>SJF Gantt Chart</h3>
+                <div class="timeline">
+                    <div class="time-slot process-b">P2</div>
+                    <div class="time-slot process-c">P3</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
+                    <span>0</span><span>3</span><span>6</span><span>30</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Process</th>
+                        <th>Burst Time</th>
+                        <th>Completion Time</th>
+                        <th>TAT</th>
+                        <th>WT</th>
+                    </tr>
+                    <tr>
+                        <td>P2</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>P3</td>
+                        <td>3</td>
+                        <td>6</td>
+                        <td>6</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>P1</td>
+                        <td>24</td>
+                        <td>30</td>
+                        <td>30</td>
+                        <td>6</td>
+                    </tr>
+                </table>
+                <p><strong>Average WT = (0 + 3 + 6) / 3 = 3</strong></p>
+            </div>
+
+            <div class="warning">
+                <strong>SJF Problems:</strong>
+                <ul>
+                    <li><strong>Starvation:</strong> Long processes may never execute</li>
+                    <li><strong>Prediction:</strong> Impossible to know exact burst time</li>
+                    <li><strong>Convoy Effect:</strong> If first process is long (non-preemptive)</li>
+                </ul>
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> Hospital emergency room - quick checkups done before major surgeries.
+            </div>
+        </div>
+
+        <!-- Priority Scheduling -->
+        <div class="concept-section">
+            <h2 class="concept-title">7. Priority Scheduling</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Point:</strong> Each process has priority. Higher priority executes first. SJF is special case where priority = 1/burst_time.
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong> P1(10,3), P2(1,1), P3(2,4), P4(1,5) - (burst_time, priority)
+            </div>
+
+            <div class="gantt-chart">
+                <h3>Priority Scheduling Gantt Chart</h3>
+                <div class="timeline">
+                    <div class="time-slot process-b">P2</div>
+                    <div class="time-slot process-c">P3</div>
+                    <div class="time-slot process-c">P3</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-d">P4</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
+                    <span>0</span><span>1</span><span>3</span><span>13</span><span>14</span>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>Starvation Problem:</strong> Low priority processes may never execute.
+                <br><strong>Solution - Aging:</strong> Gradually increase priority of waiting processes.
+            </div>
+
+            <div class="code-block">
+Aging Implementation:
+Every 15 minutes:
+    for each process in ready queue:
+        if (waiting_time > 15 minutes):
+            priority = priority + 1
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> Airport boarding - first class boards first, but if economy passengers wait too long, they get priority (aging).
+            </div>
+        </div>
+
+        <!-- Round Robin -->
+        <div class="concept-section">
+            <h2 class="concept-title">8. Round Robin (RR)</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Favorite:</strong> Most popular scheduling algorithm. FCFS + preemption with time quantum. No starvation, fair to all processes.
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong> P1(24), P2(3), P3(3) with Time Quantum = 4
+            </div>
+
+            <div class="gantt-chart">
+                <h3>Round Robin Gantt Chart (TQ = 4)</h3>
+                <div class="timeline">
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-b">P2</div>
+                    <div class="time-slot process-c">P3</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                    <div class="time-slot process-a">P1</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 5px;">
+                    <span>0</span><span>4</span><span>7</span><span>10</span><span>14</span><span>18</span><span>22</span><span>26</span><span>30</span>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Process</th>
+                        <th>Burst Time</th>
+                        <th>Completion Time</th>
+                        <th>TAT</th>
+                        <th>WT</th>
+                    </tr>
+                    <tr>
+                        <td>P1</td>
+                        <td>24</td>
+                        <td>30</td>
+                        <td>30</td>
+                        <td>6</td>
+                    </tr>
+                    <tr>
+                        <td>P2</td>
+                        <td>3</td>
+                        <td>7</td>
+                        <td>7</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>P3</td>
+                        <td>3</td>
+                        <td>10</td>
+                        <td>10</td>
+                        <td>7</td>
+                    </tr>
+                </table>
+                <p><strong>Average WT = (6 + 4 + 7) / 3 = 5.67</strong></p>
+            </div>
+
+            <div class="warning">
+                <strong>Time Quantum Selection:</strong>
+                <ul>
+                    <li><strong>Too Small:</strong> High context switching overhead</li>
+                    <li><strong>Too Large:</strong> Becomes FCFS</li>
+                    <li><strong>Optimal:</strong> 80% processes complete within one time quantum</li>
+                </ul>
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> Time-sharing computer systems - each user gets CPU for fixed time, then switches to next user.
+            </div>
+        </div>
+
+        <!-- Multi-Level Queue -->
+        <div class="concept-section">
+            <h2 class="concept-title">9. Multi-Level Queue (MLQ)</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Point:</strong> Ready queue divided into multiple queues based on process type. Each queue has its own scheduling algorithm.
+            </div>
+
+            <div class="diagram-container">
+                <h3>Multi-Level Queue Structure</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/multilevel_queue.jpg" alt="Multi-Level Queue" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="queue-visual">
+                <div class="queue-label">System Processes:</div>
+                <div class="process-box">P1</div>
+                <div class="process-box">P2</div>
+                <div style="margin-left: 20px;">Highest Priority - FCFS</div>
+            </div>
+
+            <div class="queue-visual">
+                <div class="queue-label">Interactive:</div>
+                <div class="process-box">P3</div>
+                <div class="process-box">P4</div>
+                <div class="process-box">P5</div>
+                <div style="margin-left: 20px;">Medium Priority - RR</div>
+            </div>
+
+            <div class="queue-visual">
+                <div class="queue-label">Batch Processes:</div>
+                <div class="process-box">P6</div>
+                <div class="process-box">P7</div>
+                <div style="margin-left: 20px;">Lowest Priority - FCFS</div>
+            </div>
+
+            <div class="warning">
+                <strong>MLQ Problems:</strong>
+                <ul>
+                    <li><strong>Starvation:</strong> Lower priority queues may never execute</li>
+                    <li><strong>Inflexibility:</strong> Process can't move between queues</li>
+                    <li><strong>Convoy Effect:</strong> Present in lower priority queues</li>
+                </ul>
+            </div>
+
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> Office hierarchy - CEO tasks get immediate attention, manager tasks next, employee tasks last.
+            </div>
+        </div>
+
+        <!-- Multi-Level Feedback Queue -->
+        <div class="concept-section">
+            <h2 class="concept-title">10. Multi-Level Feedback Queue (MLFQ)</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 
+Interview Point:</strong> MLFQ allows processes to move between queues based on behavior. More flexible than MLQ.
+            </div>      
+            <div class="diagram-container">
+                <h3>Multi-Level Feedback Queue Structure</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/multilevel_feedback_queue.jpg" alt="Multi-Level Feedback Queue" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="queue-visual">
+                <div class="queue-label">High Priority Queue:</div>
+                <div class="process-box">P1</div>
+                <div class="process-box">P2</div>
+                <div style="margin-left: 20px;">Time Quantum = 4</div>
+            </div>  
+            <div class="queue-visual">
+                <div class="queue-label">Medium Priority Queue:</div>
+                <div class="process-box">P3</div>
+                <div class="process-box">P4</div>
+                <div style="margin-left: 20px;">Time Quantum = 8</div>
+            </div>
+            <div class="queue-visual">
+                <div class="queue-label">Low Priority Queue:</div>
+                <div class="process-box">P5</div>
+                <div class="process-box">P6</div>
+                <div style="margin-left: 20px;">Time Quantum = 16</div>
+            </div>
+            <div class="warning">
+                <strong>MLFQ Problems:</strong>
+                <ul>
+                    <li><strong>Complexity:</strong> Difficult to implement and tune</li>
+                    <li><strong>Starvation:</strong> Low priority processes may still starve</li>
+                    <li><strong>Convoy Effect:</strong> Can occur in lower priority queues</li>
+                </ul>
+            </div>
+            <div class="real-world">
+                <strong>🌍 Real World:</strong> University grading system - students can retake exams (move up) or fail and take remedial classes (move down).
+            </div>
+        </div>
+        <!-- Conclusion -->
+        <div class="concept-section">
+
+            <h2 class="concept-title">Conclusion</h2>
+            <p>Process scheduling is a critical aspect of operating systems, ensuring efficient CPU utilization and responsiveness. Understanding various scheduling algorithms helps in designing better systems.</p>
+        </div>
+    </div>
+    <script>
+    

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📚 Notes Hub – DBMS & OS</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 40px;
+    }
+    .tabs {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .tabs button {
+      background-color: #ddd;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+    .tabs button.active {
+      background-color: #007BFF;
+      color: white;
+    }
+    .content-section {
+      display: none;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .content-section.active {
+      display: block;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+    }
+    a {
+      text-decoration: none;
+      background-color: #fff;
+      display: block;
+      padding: 12px 16px;
+      border-radius: 6px;
+      color: #007BFF;
+      border: 1px solid #ddd;
+      transition: all 0.2s;
+    }
+    a:hover {
+      background-color: #e9f0ff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📚 Notes Hub – DBMS & OS</h1>
+
+  <div class="tabs">
+    <button onclick="switchTab('dbms')" class="active">DBMS Notes</button>
+    <button onclick="switchTab('os')">OS Notes</button>
+  </div>
+
+  <div id="dbms" class="content-section active">
+    <ul>
+      <li><a href="DBMS_NOTE/introduction_to_dbms.html">Introduction to DBMS</a></li>
+      <li><a href="DBMS_NOTE/Data_Model_ER_Diagram.html">Data Model & ER Diagram</a></li>
+      <li><a href="DBMS_NOTE/DBMS_Indexing.html">DBMS Indexing</a></li>
+      <li><a href="DBMS_NOTE/DBMS_Normalization.html">DBMS Normalization</a></li>
+      <li><a href="DBMS_NOTE/Relational_Model.html">Relational Model</a></li>
+      <li><a href="DBMS_NOTE/SQL_QUERY.html">SQL Queries</a></li>
+      <li><a href="DBMS_NOTE/recovery.html">Recovery</a></li>
+      <li><a href="DBMS_NOTE/transactions and concurrency.html">Transactions and Concurrency</a></li>
+      <li><a href="DBMS_NOTE/Serialization, Conflict Equivalence, Concurrency Protocols.html">Serialization & Concurrency Protocols</a></li>
+    </ul>
+  </div>
+
+  <div id="os" class="content-section">
+    <ul>
+      <li><a href="OS_NOTE/contigous_memory_management.html">Contiguous Memory Management</a></li>
+      <li><a href="OS_NOTE/deadlock.html">Deadlock</a></li>
+      <li><a href="OS_NOTE/page_replacement.html">Page Replacement</a></li>
+      <li><a href="OS_NOTE/Paging.html">Paging</a></li>
+      <li><a href="OS_NOTE/Process Scheduling.html">Process Scheduling</a></li>
+      <li><a href="OS_NOTE/Process_Synchronization.html">Process Synchronization</a></li>
+      <li><a href="OS_NOTE/Virtual_memory.html">Virtual Memory</a></li>
+    </ul>
+  </div>
+
+  <script>
+    function switchTab(tabId) {
+      // Remove active class from all buttons
+      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
+      // Add active class to clicked button
+      if (tabId === 'dbms') {
+        document.querySelector('.tabs button:nth-child(1)').classList.add('active');
+      } else {
+        document.querySelector('.tabs button:nth-child(2)').classList.add('active');
+      }
+
+      // Hide all sections
+      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+      // Show selected section
+      document.getElementById(tabId).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

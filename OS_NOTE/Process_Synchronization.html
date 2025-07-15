@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Synchronization - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .concept-section {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .concept-title {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .diagram-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        
+        .example {
+            background: #e8f5e8;
+            padding: 15px;
+            border-left: 4px solid #27ae60;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .warning {
+            background: #ffe6e6;
+            padding: 15px;
+            border-left: 4px solid #e74c3c;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .interview-tip {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .visual-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .process-box {
+            width: 100px;
+            height: 60px;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        
+        .resource-box {
+            width: 80px;
+            height: 80px;
+            background: #e74c3c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #2c3e50;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        
+        th {
+            background: #3498db;
+            color: white;
+        }
+        
+        .philosophers-demo {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .philosopher {
+            width: 60px;
+            height: 60px;
+            background: #9b59b6;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        
+        .fork {
+            width: 20px;
+            height: 40px;
+            background: #f39c12;
+            margin: 0 5px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Process Synchronization</h1>
+            <p>Complete Interview Guide with Visual Examples</p>
+        </div>
+
+        <!-- Critical Section Problem -->
+        <div class="concept-section">
+            <h2 class="concept-title">1. Critical Section Problem</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Interview Key Point:</strong> Critical Section is a code segment where processes access shared resources. Only ONE process should execute in critical section at a time.
+            </div>
+
+            <div class="diagram-container">
+                <h3>Critical Section Visualization</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/critical_section.jpg" alt="Critical Section Diagram" style="max-width: 100%; height: auto;">
+            </div>
+
+            <pre class="code-block">
+Process Structure:
+do {
+    // Entry Section
+    // CRITICAL SECTION
+    // Exit Section  
+    // Remainder Section
+} while (true);
+            </pre>
+
+            <div class="example">
+                <strong>Real Example:</strong> Bank ATM withdrawal - Only one person can access account balance at a time to prevent incorrect deductions.
+            </div>
+
+            <h3>Requirements for Critical Section Solution:</h3>
+            <ul>
+                <li><strong>Mutual Exclusion:</strong> Only one process in CS at a time</li>
+                <li><strong>Progress:</strong> If no process in CS, selection cannot be postponed</li>
+                <li><strong>Bounded Waiting:</strong> Limit on waiting time</li>
+            </ul>
+        </div>
+
+        <!-- Race Condition -->
+        <div class="concept-section">
+            <h2 class="concept-title">2. Race Condition</h2>
+            
+            <div class="warning">
+                <strong>⚠️ Problem:</strong> When multiple processes access shared data simultaneously, final result depends on execution order.
+            </div>
+
+            <div class="visual-demo">
+                <div class="process-box">Process 1</div>
+                <div class="arrow">→</div>
+                <div class="resource-box">Shared<br>Data</div>
+                <div class="arrow">←</div>
+                <div class="process-box">Process 2</div>
+            </div>
+
+            <pre class="code-block">
+Example Race Condition:
+Shared variable: counter = 0
+
+Process 1:               Process 2:
+counter = counter + 1    counter = counter + 1
+
+Expected: counter = 2
+Actual: counter = 1 (Race condition!)
+            </pre>
+
+            <div class="interview-tip">
+                <strong>🎯 Interview Tip:</strong> Always explain race condition with bank account example - two people withdrawing money simultaneously.
+            </div>
+        </div>
+
+        <!-- Solutions to Race Condition -->
+        <div class="concept-section">
+            <h2 class="concept-title">3. Solutions to Race Condition</h2>
+            
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Solution</th>
+                        <th>Description</th>
+                        <th>Pros</th>
+                        <th>Cons</th>
+                    </tr>
+                    <tr>
+                        <td>Atomic Operations</td>
+                        <td>Execute in single CPU cycle</td>
+                        <td>Fast, No waiting</td>
+                        <td>Limited operations</td>
+                    </tr>
+                    <tr>
+                        <td>Mutex/Locks</td>
+                        <td>Binary lock mechanism</td>
+                        <td>Simple to implement</td>
+                        <td>Deadlock possible</td>
+                    </tr>
+                    <tr>
+                        <td>Semaphores</td>
+                        <td>Counter-based synchronization</td>
+                        <td>Multiple resources</td>
+                        <td>Complex implementation</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Mutex/Locks -->
+        <div class="concept-section">
+            <h2 class="concept-title">4. Mutex/Locks</h2>
+            
+            <div class="diagram-container">
+                <h3>Mutex Working</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/mutex.jpg" alt="Mutex Diagram" style="max-width: 100%; height: auto;">
+            </div>
+
+            <pre class="code-block">
+Mutex Pseudocode:
+acquire(lock)
+    while (lock == 1)
+        wait; // Busy waiting
+    lock = 1;
+
+release(lock)
+    lock = 0;
+
+// Usage
+acquire(lock);
+// Critical Section
+release(lock);
+            </pre>
+
+            <div class="warning">
+                <strong>Mutex Problems:</strong>
+                <ul>
+                    <li><strong>Busy Waiting:</strong> Process wastes CPU cycles</li>
+                    <li><strong>Deadlock:</strong> Processes wait for each other</li>
+                    <li><strong>Starvation:</strong> High priority threads blocked</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conditional Variables -->
+        <div class="concept-section">
+            <h2 class="concept-title">5. Conditional Variables</h2>
+            
+            <div class="interview-tip">
+                <strong>🎯 Key Concept:</strong> Condition variables solve busy waiting problem. Thread sleeps until condition is met.
+            </div>
+
+            <pre class="code-block">
+Condition Variable Operations:
+wait(condition, lock)
+    // Release lock and sleep
+    // Wake up when signaled
+    // Reacquire lock
+
+signal(condition)
+    // Wake up one waiting thread
+
+broadcast(condition)
+    // Wake up all waiting threads
+            </pre>
+
+            <div class="example">
+                <strong>Producer-Consumer Example:</strong>
+                <br>Producer waits if buffer full
+                <br>Consumer waits if buffer empty
+                <br>No busy waiting - threads sleep when condition not met
+            </div>
+        </div>
+
+        <!-- Semaphores -->
+        <div class="concept-section">
+            <h2 class="concept-title">6. Semaphores</h2>
+            
+            <div class="diagram-container">
+                <h3>Semaphore Concept</h3>
+                <img src="https://www.tutorialspoint.com/operating_system/images/semaphore.jpg" alt="Semaphore Diagram" style="max-width: 100%; height: auto;">
+            </div>
+
+            <pre class="code-block">
+Semaphore Operations:
+wait(S) / P(S) / down(S)
+    while (S <= 0)
+        wait; // Block process
+    S--;
+
+signal(S) / V(S) / up(S)
+    S++;
+    wakeup(blocked_process);
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Type</th>
+                        <th>Range</th>
+                        <th>Use Case</th>
+                    </tr>
+                    <tr>
+                        <td>Binary Semaphore</td>
+                        <td>0 or 1</td>
+                        <td>Mutex (single resource)</td>
+                    </tr>
+                    <tr>
+                        <td>Counting Semaphore</td>
+                        <td>0 to N</td>
+                        <td>Multiple identical resources</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="example">
+                <strong>Example:</strong> Parking lot with 10 spaces
+                <br>Semaphore S = 10
+                <br>Car enters: wait(S) → S = 9
+                <br>Car exits: signal(S) → S = 10
+            </div>
+        </div>
+
+        <!-- Dining Philosophers -->
+        <div class="concept-section">
+            <h2 class="concept-title">7. Dining Philosophers Problem</h2>
+            
+            <div class="diagram-container">
+                <h3>5 Philosophers Around Table</h3>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/An_illustration_of_the_dining_philosophers_problem.png/463px-An_illustration_of_the_dining_philosophers_problem.png" alt="Dining Philosophers" style="max-width: 100%; height: auto;">
+            </div>
+
+            <div class="philosophers-demo">
+                <div class="philosopher">P1</div>
+                <div class="fork"></div>
+                <div class="philosopher">P2</div>
+                <div class="fork"></div>
+                <div class="philosopher">P3</div>
+                <div class="fork"></div>
+                <div class="philosopher">P4</div>
+                <div class="fork"></div>
+                <div class="philosopher">P5</div>
+                <div class="fork"></div>
+            </div>
+
+            <pre class="code-block">
+Semaphore Solution:
+semaphore fork[5] = {1,1,1,1,1};
+
+philosopher(i) {
+    while(true) {
+        think();
+        wait(fork[i]);        // Pick left fork
+        wait(fork[(i+1)%5]);  // Pick right fork
+        eat();
+        signal(fork[i]);      // Put left fork
+        signal(fork[(i+1)%5]); // Put right fork
+    }
+}
+            </pre>
+
+            <div class="warning">
+                <strong>Deadlock Problem:</strong> All philosophers pick left fork simultaneously → All wait for right fork → DEADLOCK!
+            </div>
+
+            <h3>Deadlock Prevention Solutions:</h3>
+            <div class="example">
+                <strong>Solution 1:</strong> Allow only 4 philosophers to sit
+                <br><strong>Solution 2:</strong> Pick both forks atomically
+                <br><strong>Solution 3:</strong> Odd philosophers pick left first, even pick right first
+            </div>
+
+            <pre class="code-block">
+Asymmetric Solution:
+philosopher(i) {
+    if (i % 2 == 0) {
+        wait(fork[(i+1)%5]);  // Even: right first
+        wait(fork[i]);        // then left
+    } else {
+        wait(fork[i]);        // Odd: left first
+        wait(fork[(i+1)%5]);  // then right
+    }
+    eat();
+    signal(fork[i]);
+    signal(fork[(i+1)%5]);
+}
+            </pre>
+        </div>
+
+        <!-- Interview Questions -->
+        <div class="concept-section">
+            <h2 class="concept-title">8. Common Interview Questions</h2>
+            
+            <div class="interview-tip">
+                <strong>Q1: What is race condition?</strong>
+                <br><strong>Answer:</strong> When multiple processes access shared resource simultaneously and final result depends on execution timing.
+            </div>
+
+            <div class="interview-tip">
+                <strong>Q2: Difference between Mutex and Semaphore?</strong>
+                <br><strong>Answer:</strong> Mutex is binary (0/1), Semaphore can be counting. Mutex for single resource, Semaphore for multiple resources.
+            </div>
+
+            <div class="interview-tip">
+                <strong>Q3: How to prevent deadlock in dining philosophers?</strong>
+                <br><strong>Answer:</strong> Use asymmetric solution - odd philosophers pick left first, even pick right first.
+            </div>
+
+            <div class="interview-tip">
+                <strong>Q4: What is busy waiting?</strong>
+                <br><strong>Answer:</strong> Process continuously checks condition in loop, wasting CPU cycles. Solved by condition variables.
+            </div>
+        </div>
+
+        <!-- Quick Revision -->
+        <div class="concept-section">
+            <h2 class="concept-title">9. Quick Revision Points</h2>
+            
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Key Points</th>
+                    </tr>
+                    <tr>
+                        <td>Critical Section</td>
+                        <td>Code accessing shared resources, needs mutual exclusion</td>
+                    </tr>
+                    <tr>
+                        <td>Race Condition</td>
+                        <td>Multiple processes accessing shared data simultaneously</td>
+                    </tr>
+                    <tr>
+                        <td>Mutex</td>
+                        <td>Binary lock, one process at a time, busy waiting problem</td>
+                    </tr>
+                    <tr>
+                        <td>Semaphore</td>
+                        <td>Counter-based, binary/counting, wait/signal operations</td>
+                    </tr>
+                    <tr>
+                        <td>Condition Variables</td>
+                        <td>Solves busy waiting, wait/signal/broadcast operations</td>
+                    </tr>
+                    <tr>
+                        <td>Dining Philosophers</td>
+                        <td>Classic deadlock problem, asymmetric solution works</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="concept-section">
+            <h2 class="concept-title">🎯 Final Tips for Interview Success</h2>
+            <div class="interview-tip">
+                <ul>
+                    <li><strong>Always explain with examples</strong> - Bank account, parking lot, restaurant</li>
+                    <li><strong>Draw diagrams</strong> - Visual representation helps interviewer understand</li>
+                    <li><strong>Mention trade-offs</strong> - Every solution has pros and cons</li>
+                    <li><strong>Know the pseudocode</strong> - Be ready to write basic semaphore operations</li>
+                    <li><strong>Understand real-world applications</strong> - Database transactions, web servers</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Normalization - Complete Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .bad-table {
+            border: 2px solid #e74c3c;
+        }
+
+        .good-table {
+            border: 2px solid #27ae60;
+        }
+
+        .example-box {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+
+        .interview-question {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .summary-table {
+            background-color: #e8f5e8;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .emoji {
+            font-size: 1.2em;
+        }
+
+        .highlight {
+            background-color: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .arrow {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .checkmark {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1><span class="emoji">🧠</span> DBMS Normalization - Complete Guide</h1>
+        <h2><span class="emoji">✅</span> What is Normalization?</h2>
+
+    
+        <p>Normalization is the process of organizing data in a database to reduce redundancy and improve data
+            integrity.
+            It involves dividing large tables into smaller ones and defining relationships between them.</p>
+        <p>It helps to:</p>
+        <ul>
+            <li>Eliminate duplicate data</li>
+            <li>Ensure data dependencies make sense</li>
+            <li>Make the database more efficient and easier to maintain</li>
+        </ul>
+
+
+        <div class="example-box">
+            <h4><span class="emoji">📚</span> Example:</h4>
+            <p><strong>Without Normalization:</strong></p>
+            <table class="bad-table">
+                <tr>
+                    <th>Student_ID</th>
+                    <th>Student_Name</th>
+                    <th>Subject1</th>
+                    <th>Subject2</th>
+                </tr>
+                <tr>
+                    <td>101</td>
+                    <td>Ram</td>
+                    <td>Math</td>
+                    <td>Science</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Riya</td>
+                    <td>Math</td>
+                    <td>English</td>
+                </tr>
+                <tr>
+                    <td>101</td>
+                    <td>Ram</td>
+                    <td>Math</td>
+                    <td>Science</td>
+                </tr>
+            </table>
+            <p><span class="emoji">🔁</span> Here, Ram is repeated. It wastes space and can cause errors.<b>row level
+                    redundancy removes by primary key make student as primary key</b></p>
+        </div>
+
+        <h2><span class="emoji">🧐</span> Why Normalization?</h2>
+
+        <p>To avoid:</p>
+        <ul>
+            <li>
+                <strong>Update Anomaly:</strong> If we update a value in one place and forget to update in other
+                places.<br>
+                <em>Example:</em> A customer's phone number is stored in 3 different places. If the number changes and
+                only 2 are updated, the data becomes inconsistent.
+            </li>
+            <li>
+                <strong>Insert Anomaly:</strong> We can't insert data unless some other data exists.<br>
+                <em>Example:</em> We can't add a new course unless we already have a student enrolled in it, because
+                both course and student are stored in the same table.
+            </li>
+            <li>
+                <strong>Delete Anomaly:</strong> Deleting data removes useful info unintentionally.<br>
+                <em>Example:</em> If we delete the last student enrolled in a course, the course data also gets deleted,
+                even though the course still exists.
+            </li>
+        </ul>
+
+
+        <div class="image-container">
+            <img src="https://image1.slideserve.com/2961496/database-anomalies-l.jpg" alt="Database Anomalies"
+                width="600">
+        </div>
+
+        <h2><span class="emoji">🔶</span> Types of Normal Forms</h2>
+
+        <h3><span class="emoji">🥇</span> 1NF – First Normal Form</h3>
+
+        <div class="image-container">
+            <img src="https://cf.ppt-online.org/files/slide/m/MeliqK6NTFEPowSZBOR2UDs1Wkm5X8nbY90dgt/slide-9.jpg"
+                alt="First Normal Form Example" width="500">
+        </div>
+        <p><strong>Rule:</strong></p>
+        <ul>
+            <li>Each cell should have a single value (no multiple values).</li>
+            <li>Each row must be unique.</li>
+        </ul>
+
+        <div class="example-box">
+            <p><span class="emoji">📌</span> <strong>Bad Table (Not in 1NF):</strong></p>
+            <table class="bad-table">
+                <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Subjects</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Amit</td>
+                    <td>Math, Science</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Riya</td>
+                    <td>English, History</td>
+                </tr>
+            </table>
+
+            <p><span class="emoji">📌</span> <strong>Good Table (1NF):</strong></p>
+            <table class="good-table">
+                <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Subject</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Amit</td>
+                    <td>Math</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Amit</td>
+                    <td>Science</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Riya</td>
+                    <td>English</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Riya</td>
+                    <td>History</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="interview-question">
+            <p><span class="emoji">🗣</span> <strong>Interview Question:</strong></p>
+            <p><strong>Q:</strong> What is 1NF? Why is repeating groups bad in a table?</p>
+
+            <p><strong>Answer:</strong></p>
+            <p>1NF (First Normal Form) ensures that each column in a table contains only **atomic (indivisible)** values
+                and each record is unique.</p>
+
+            <p><strong>Repeating groups are bad</strong> because:</p>
+            <ul>
+                <li>They make it hard to query data efficiently.</li>
+                <li>They lead to redundant and inconsistent data.</li>
+                <li>They violate the rule of storing only one value per cell.</li>
+            </ul>
+
+            <p><strong>Example:</strong></p>
+            <p><em>❌ Not in 1NF (Repeating groups):</em></p>
+            <pre>
++------------+-----------------------+
+| Student_ID | Subjects              |
++------------+-----------------------+
+| 101        | Math, English, Hindi  |
++------------+-----------------------+
+    </pre>
+
+            <p><em>✅ In 1NF (Atomic values):</em></p>
+            <pre>
++------------+----------+
+| Student_ID | Subject  |
++------------+----------+
+| 101        | Math     |
+| 101        | English  |
+| 101        | Hindi    |
++------------+----------+
+    </pre>
+        </div>
+
+
+
+        <h3><span class="emoji">🥈</span> 2NF – Second Normal Form</h3>
+
+        <h4>✅ Rule to be in 2NF:</h4>
+        <ul>
+            <li>The table must already be in <strong>1NF</strong></li>
+            <li>There should be <strong>no partial dependency</strong></li>
+        </ul>
+
+        <h4>🤔 What is Partial Dependency?</h4>
+        <p>
+            If a table has a <strong>composite primary key</strong> (made from two or more columns),
+            and a <strong>non-key column</strong> depends only on <em>part</em> of that key—not the whole—
+            then it's a <strong>partial dependency</strong>.
+        </p>
+
+        <h4>🎓 Example Table: <code>Student_Course</code></h4>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Roll_No</th>
+                    <th>Course_ID</th>
+                    <th>Course_Name</th>
+                    <th>Student_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>C01</td>
+                    <td>DBMS</td>
+                    <td>Deepak</td>
+                </tr>
+                <tr>
+                    <td>101</td>
+                    <td>C02</td>
+                    <td>OS</td>
+                    <td>Deepak</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>C01</td>
+                    <td>DBMS</td>
+                    <td>Shreeram</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            <strong>Primary Key:</strong> (Roll_No, Course_ID)<br>
+            <strong>Partial Dependencies:</strong> Student_Name depends only on Roll_No, and Course_Name depends only on
+            Course_ID.<br>
+            ❌ <strong>This violates 2NF.</strong>
+        </p>
+
+        <h4>🛠 Converting to 2NF:</h4>
+        <p>We split the table into three:</p>
+
+        <h5>📘 Table 1: <code>Student</code></h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Roll_No</th>
+                    <th>Student_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>Deepak</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>Shreeram</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>📗 Table 2: <code>Course</code></h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Course_ID</th>
+                    <th>Course_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>C01</td>
+                    <td>DBMS</td>
+                </tr>
+                <tr>
+                    <td>C02</td>
+                    <td>OS</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>📙 Table 3: <code>Student_Course</code></h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Roll_No</th>
+                    <th>Course_ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>101</td>
+                    <td>C01</td>
+                </tr>
+                <tr>
+                    <td>101</td>
+                    <td>C02</td>
+                </tr>
+                <tr>
+                    <td>102</td>
+                    <td>C01</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>✅ Now the design is in <strong>2NF</strong>. All non-key columns fully depend on the full primary key.</p>
+
+        <div style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+            <p><strong>🗣 Interview Tip:</strong></p>
+            <p><strong>Q:</strong> What is 2NF?<br>
+                <strong>A:</strong> 2NF ensures that all non-key attributes are fully dependent on the entire primary
+                key. It removes partial dependencies from a table with a composite primary key.
+            </p>
+        </div>
+
+        <div class="image-container">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250430121302080464/violation_of_2_nf_.webp"
+                alt="Second Normal Form Example" width="500">
+        </div>
+
+        <h3><span class="emoji">🥉</span> 3NF – Third Normal Form (Simple Explanation)</h3>
+
+        <h4>✅ Rules of 3NF:</h4>
+        <ul>
+            <li>The table must already be in <strong>2NF</strong></li>
+            <li>There should be <strong>no transitive dependency</strong></li>
+        </ul>
+
+        <h4>🤔 What is Transitive Dependency?</h4>
+        <p>
+            Every column in the table should depend <strong>directly on the primary key</strong>.<br>
+            If a column depends on another column (not on the primary key), that’s called a <strong>transitive
+                dependency</strong>.
+        </p>
+
+        <h4>🎓 Example (Bad Table – Not in 3NF)</h4>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Dept_ID</th>
+                    <th>Dept_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Amit</td>
+                    <td>10</td>
+                    <td>Computer</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Riya</td>
+                    <td>20</td>
+                    <td>Electrical</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Problem:</strong> <code>Dept_Name</code> depends on <code>Dept_ID</code>, and <code>Dept_ID</code>
+            depends on <code>Roll</code>.</p>
+        <p>So <code>Dept_Name</code> is <strong>not directly</strong> dependent on the primary key
+            <code>Roll</code>.<br>
+            This is called a <strong>transitive dependency</strong> ❌
+        </p>
+        <p><strong>If a table is not in 3NF:</strong></p>
+        <ul>
+            <li>It may store the same data many times (data repetition).</li>
+            <li>If department names change, we need to update many rows — this can lead to <strong>errors or
+                    inconsistent data</strong>.</li>
+            <li>It increases <strong>data redundancy</strong> and wastes storage.</li>
+        </ul>
+
+        <h4>✅ Good Design – After Applying 3NF</h4>
+
+        <h5>📘 Student Table</h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Roll</th>
+                    <th>Name</th>
+                    <th>Dept_ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Amit</td>
+                    <td>10</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Riya</td>
+                    <td>20</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>📗 Department Table</h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Dept_ID</th>
+                    <th>Dept_Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>10</td>
+                    <td>Computer</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td>Electrical</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>
+            ✅ Now every column in the Student table depends only on the primary key <code>Roll</code>.<br>
+            🎉 This design follows <strong>Third Normal Form (3NF)</strong>!
+        </p>
+
+        <div style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; margin-top: 20px;">
+            <p><strong>🗣 Interview Tip:</strong></p>
+            <p><strong>Q:</strong> What is Transitive Dependency?<br>
+                <strong>A:</strong> It happens when a column depends on another column instead of directly on the
+                primary key.<br>
+                <strong>Example:</strong> Dept_Name depends on Dept_ID, not on Roll.
+            </p>
+        </div>
+
+
+
+        <h3><span class="emoji">🏆</span> BCNF – Boyce-Codd Normal Form </h3>
+
+        <h4>✅ Rules of BCNF:</h4>
+        <ul>
+            <li>The table must be in <strong>3NF</strong></li>
+            <li>For every dependency A → B, A should be a <strong>super key</strong></li>
+        </ul>
+
+        <h4>🤔 What is a Super Key?</h4>
+        <p>A <strong>super key</strong> is a column (or set of columns) that can uniquely identify each row in a table.
+        </p>
+
+        <h4>📌 Bad Table (Not in BCNF)</h4>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Teacher</th>
+                    <th>Subject</th>
+                    <th>Dept</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ram</td>
+                    <td>Math</td>
+                    <td>Science</td>
+                </tr>
+                <tr>
+                    <td>Ram</td>
+                    <td>Physics</td>
+                    <td>Science</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Issue:</strong> <code>Teacher → Dept</code>, but <code>Teacher</code> is not a super key.<br>
+            This breaks the rule of BCNF.</p>
+
+        <h4>❌ What happens if not in BCNF?</h4>
+        <ul>
+            <li>Same department info is repeated for the same teacher (data redundancy)</li>
+            <li>If the department changes, you must update it in many places (update problem)</li>
+            <li>You may end up with mismatched or wrong data (inconsistency)</li>
+        </ul>
+
+        <h4>✅ Fix – Break into 2 Tables</h4>
+
+        <h5>📘 Teacher Table</h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Teacher</th>
+                    <th>Dept</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Ram</td>
+                    <td>Science</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5>📗 Subject Table</h5>
+        <table border="1" cellpadding="6" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Teacher</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Math</td>
+                    <td>Ram</td>
+                </tr>
+                <tr>
+                    <td>Physics</td>
+                    <td>Ram</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>✅ Now every dependency follows the rule: the left side is a super key. This design is in
+            <strong>BCNF</strong>.
+        </p>
+
+        <div style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9; margin-top: 20px;">
+            <p><strong>🗣 Interview Question:</strong></p>
+            <p><strong>Q:</strong> What is the difference between 3NF and BCNF?<br>
+                <strong>A:</strong> In 3NF, some non-super key dependencies are allowed. In BCNF, the left side of
+                <strong>every</strong> dependency must be a super key.
+            </p>
+        </div>
+
+
+
+        <h3><span class="emoji">⭐</span> 4NF – Fourth Normal Form (Optional)</h3>
+
+        <p><strong>Rule:</strong></p>
+        <ul>
+            <li>Must be in BCNF</li>
+            <li>No <strong>multi-valued dependencies</strong></li>
+        </ul>
+
+        <div class="example-box">
+            <p>A student can have multiple <strong>skills</strong> and multiple <strong>projects</strong>.</p>
+
+            <p><span class="emoji">📌</span> <strong>Bad Table (Not in 4NF):</strong></p>
+            <table class="bad-table">
+                <tr>
+                    <th>Student</th>
+                    <th>Skill</th>
+                    <th>Project</th>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>Java</td>
+                    <td>WebApp</td>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>C++</td>
+                    <td>WebApp</td>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>Java</td>
+                    <td>GameDesign</td>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>C++</td>
+                    <td>GameDesign</td>
+                </tr>
+            </table>
+
+            <p><span class="checkmark">✅</span> <strong>Split into:</strong></p>
+            <p><strong>Skill Table:</strong></p>
+            <table class="good-table">
+                <tr>
+                    <th>Student</th>
+                    <th>Skill</th>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>Java</td>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>C++</td>
+                </tr>
+            </table>
+
+            <p><strong>Project Table:</strong></p>
+            <table class="good-table">
+                <tr>
+                    <th>Student</th>
+                    <th>Project</th>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>WebApp</td>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>GameDesign</td>
+                </tr>
+            </table>
+        </div>
+
+        <h3><span class="emoji">💎</span> 5NF – Fifth Normal Form (Optional)</h3>
+        <ul>
+            <li>Deals with <strong>join dependency</strong></li>
+            <li>Rare in practical use</li>
+        </ul>
+
+
+        <h2><span class="emoji">📋</span> Normalization Forms – Quick Comparison</h2>
+
+        <table border="1" cellpadding="10" style="border-collapse: collapse; width: 100%; text-align: left;">
+            <thead style="background-color: #f2f2f2;">
+                <tr>
+                    <th>Form</th>
+                    <th>Rule</th>
+                    <th>Main Focus</th>
+                    <th>Problem It Solves</th>
+                    <th>Example Issue</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1NF</strong><br>(First Normal Form)</td>
+                    <td>
+                        - Only atomic (single) values in each cell<br>
+                        - No repeating groups or arrays
+                    </td>
+                    <td>Make each cell contain only one value</td>
+                    <td>Removes multi-valued or repeated fields</td>
+                    <td>A student has multiple phone numbers in one cell</td>
+                </tr>
+
+                <tr>
+                    <td><strong>2NF</strong><br>(Second Normal Form)</td>
+                    <td>
+                        - Must be in 1NF<br>
+                        - No partial dependency (non-key column depends only on part of composite key)
+                    </td>
+                    <td>Remove partial dependency</td>
+                    <td>Solves redundancy caused by composite keys</td>
+                    <td>Student_Name depends only on Roll_No, not full key (Roll_No, Course_ID)</td>
+                </tr>
+
+                <tr>
+                    <td><strong>3NF</strong><br>(Third Normal Form)</td>
+                    <td>
+                        - Must be in 2NF<br>
+                        - No transitive dependency (non-key depends on another non-key)
+                    </td>
+                    <td>Remove indirect dependency</td>
+                    <td>Prevents update and inconsistency problems</td>
+                    <td>Dept_Name depends on Dept_ID, not Roll directly</td>
+                </tr>
+
+                <tr>
+                    <td><strong>BCNF</strong><br>(Boyce-Codd Normal Form)</td>
+                    <td>
+                        - Must be in 3NF<br>
+                        - Left side of every dependency must be a <strong>super key</strong>
+                    </td>
+                    <td>Stronger version of 3NF</td>
+                    <td>Removes all anomalies where non-super key determines something</td>
+                    <td>Teacher → Dept but Teacher is not a super key</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px; background: #f9f9f9; border: 1px solid #ccc; padding: 15px;">
+            <h3>🧠 Quick Tip:</h3>
+            <ul>
+                <li><strong>1NF:</strong> Remove repeating values</li>
+                <li><strong>2NF:</strong> Remove partial dependency</li>
+                <li><strong>3NF:</strong> Remove transitive dependency</li>
+                <li><strong>BCNF:</strong> Make sure all dependencies come from super keys</li>
+            </ul>
+        </div>
+
+
+        <h2><span class="emoji">🔁</span> Denormalization</h2>
+
+        <p>Sometimes, we combine tables <strong>back together</strong> to:</p>
+        <ul>
+            <li>Improve performance (less joins)</li>
+            <li>Make querying faster</li>
+        </ul>
+
+        <div class="example-box">
+            <p><span class="emoji">📌</span> <strong>Example:</strong></p>
+
+            <p><strong>Normalized (2 tables):</strong></p>
+            <ul>
+                <li><code>Student</code></li>
+                <li><code>Course</code></li>
+            </ul>
+
+            <p><strong>Denormalized (1 table):</strong></p>
+            <table>
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Teacher</th>
+                </tr>
+                <tr>
+                    <td>Riya</td>
+                    <td>Math</td>
+                    <td>Ram</td>
+                </tr>
+            </table>
+            <p>Denormalization increases <strong>redundancy</strong> but improves <strong>speed</strong> in some cases.
+            </p>
+        </div>
+
+        <div class="interview-question">
+            <p><span class="emoji">🗣</span> <strong>Interview Question:</strong></p>
+            <p>What is denormalization? When do we use it?</p>
+        </div>
+
+
+    
+        <h2><span class="emoji">📌</span> Quick Interview Questions Recap</h2>
+
+        <ol>
+            <li>What is Normalization? Why is it needed?</li>
+            <li>Explain 1NF, 2NF, 3NF with example tables.</li>
+            <li>What is the difference between 3NF and BCNF?</li>
+            <li>What are the anomalies in DBMS?</li>
+            <li>When do you denormalize a database?</li>
+        </ol>
+
+        <div class="image-container">
+            <img src="https://cdn.educba.com/academy/wp-content/uploads/2019/11/Database-Normalization.png"
+                alt="Database Normalization Complete Guide" width="600">
+        </div>
+
+        <hr>
+        <p style="text-align: center; color: #7f8c8d; margin-top: 30px;">
+            <em>This HTML note is ready for easy revision and can be saved for offline use!</em>
+        </p>
+    </div>
+</body>
+
+</html>

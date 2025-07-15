@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Data Models & ER Model - Study Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 25px;
+        }
+        .interview-section {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #e74c3c;
+        }
+        .revision-box {
+            background-color: #d5f4e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 4px solid #3498db;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        ul li {
+            margin: 8px 0;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .important {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 DBMS Data Models & ER Model - Complete Study Guide</h1>
+        
+        <h2>1. Data Models Overview</h2>
+        <p><b>Data Model</b> is a conceptual representation of data structures, operations, and constraints that define how data is stored, organized, and manipulated in a database system.</p>
+        
+        <h3>🎯 Purpose of Data Models</h3>
+        <ul>
+            <li><b>Abstraction:</b> Hide complexity of physical storage</li>
+            <li><b>Communication:</b> Provide common language between stakeholders</li>
+            <li><b>Design:</b> Blueprint for database implementation</li>
+            <li><b>Standardization:</b> Ensure consistency across systems</li>
+        </ul>
+
+        <hr>
+
+        <h2>2. Types of Data Models</h2>
+
+        <h3>2.1 Hierarchical Data Model</h3>
+        <div class="image-container">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210628203735/gfg-660x293.PNG" alt="Hierarchical Data Model Structure" width="400">
+            <p><i>Hierarchical Data Model - Tree Structure</i></p>
+        </div>
+        
+        <ul>
+            <li><b>Structure:</b> Tree-like structure with parent-child relationships</li>
+            <li><b>Root:</b> Single root node at the top</li>
+            <li><b>Navigation:</b> Access through predefined paths</li>
+            <li><b>Example:</b> IMS (Information Management System) by IBM</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>Advantages</th>
+                <th>Disadvantages</th>
+            </tr>
+            <tr>
+                <td>Simple and fast access</td>
+                <td>Rigid structure</td>
+            </tr>
+            <tr>
+                <td>Data integrity through hierarchy</td>
+                <td>No many-to-many relationships</td>
+            </tr>
+            <tr>
+                <td>Efficient for 1:N relationships</td>
+                <td>Data redundancy issues</td>
+            </tr>
+        </table>
+
+        <h3>2.2 Network Data Model</h3>
+        <div class="image-container">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210630202021/dhnfb-660x313.PNG" alt="Network Data Model Structure" width="400">
+            <p><i>Network Data Model - Graph Structure</i></p>
+        </div>
+        
+        <ul>
+            <li><b>Structure:</b> Graph-like structure with multiple parent-child relationships</li>
+            <li><b>Sets:</b> Collection of records connected by links</li>
+            <li><b>CODASYL:</b> Conference on Data Systems Languages standard</li>
+            <li><b>Example:</b> IDMS (Integrated Database Management System)</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>Advantages</th>
+                <th>Disadvantages</th>
+            </tr>
+            <tr>
+                <td>Handles many-to-many relationships</td>
+                <td>Complex navigation</td>
+            </tr>
+            <tr>
+                <td>More flexible than hierarchical</td>
+                <td>Requires technical expertise</td>
+            </tr>
+            <tr>
+                <td>Better data access paths</td>
+                <td>Structural dependency</td>
+            </tr>
+        </table>
+
+        <h3>2.3 Relational Data Model</h3>
+        <div class="image-container">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250111112649494919/relational_model.webp" alt="Relational Data Model Structure" width="500">
+            <p><i>Relational Data Model - Table Structure</i></p>
+        </div>
+        
+        <ul>
+            <li><b>Structure:</b> Data organized in tables (relations)</li>
+            <li><b>Rows (Tuples):</b> Individual records</li>
+            <li><b>Columns (Attributes):</b> Data fields</li>
+            <li><b>Keys:</b> Primary keys, foreign keys for relationships</li>
+            <li><b>Example:</b> MySQL, PostgreSQL, Oracle</li>
+        </ul>
+
+        <h3>2.4 Object-Oriented Data Model</h3>
+        <div class="image-container">
+            <img src="https://thedatascientist.com/wp-content/uploads/2024/07/image-110.png" alt="Object-Oriented Data Model" width="400">
+            <p><i>Object-Oriented Data Model - Class Structure</i></p>
+        </div>
+        
+        <ul>
+            <li><b>Structure:</b> Objects with attributes and methods</li>
+            <li><b>Encapsulation:</b> Data and methods bundled together</li>
+            <li><b>Inheritance:</b> Classes inherit from parent classes</li>
+            <li><b>Polymorphism:</b> Same method, different implementations</li>
+            <li><b>Example:</b> ObjectDB, db4o</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>Data Model</th>
+                <th>Structure</th>
+                <th>Relationships</th>
+                <th>Best Use Case</th>
+            </tr>
+            <tr>
+                <td>Hierarchical</td>
+                <td>Tree</td>
+                <td>1:N only</td>
+                <td>Simple, predictable data</td>
+            </tr>
+            <tr>
+                <td>Network</td>
+                <td>Graph</td>
+                <td>M:N allowed</td>
+                <td>Complex relationships</td>
+            </tr>
+            <tr>
+                <td>Relational</td>
+                <td>Tables</td>
+                <td>Keys & Joins</td>
+                <td>Most business applications</td>
+            </tr>
+            <tr>
+                <td>Object-Oriented</td>
+                <td>Objects</td>
+                <td>Inheritance & Composition</td>
+                <td>Complex data types</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <h2>3. Entity-Relationship (ER) Model</h2>
+        <p>The <b>ER Model</b> is a <b>high-level conceptual data</b> model that describes the structure of a database using entities, attributes, and relationships.</p>
+
+        <div class="image-container">
+            <img src="https://www.tutorialspoint.com/dbms/images/er_model_intro.png" alt="ER Model Components" width="600">
+            <p><i>ER Model Basic Components</i></p>
+        </div>
+        <div class="image-container">
+            <img src="https://i.ytimg.com/vi/G6yqNdbygi4/maxresdefault.jpg" alt="ER Model Components" width="600">
+            <p><i>ER Model Basic Components</i></p>
+        </div>
+        <h3>3.1 Entities</h3>
+        <ul>
+            <li><b>Definition:</b> A thing or object in the real world that is distinguishable from other objects</li>
+            <li><b>Entity Set:</b> Collection of entities of the same type</li>
+            <li><b>Types:</b>
+                <ul>
+                    <li><b>Strong Entity:</b> Has a primary key (Student, Employee)</li>
+                    <li><b>Weak Entity:</b> Cannot exist without another entity (Dependent)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>🌟 Real-World Entity Examples</h4>
+        <table>
+            <tr>
+                <th>Entity Type</th>
+                <th>Entity Examples</th>
+                <th>Primary Key</th>
+                <th>Sample Attributes</th>
+            </tr>
+            <tr>
+                <td><b>Student</b></td>
+                <td>John Doe, Jane Smith, Alex Johnson</td>
+                <td>Student_ID</td>
+                <td>Name, Age, Email, Phone, Address</td>
+            </tr>
+            <tr>
+                <td><b>Employee</b></td>
+                <td>Mike Wilson, Sarah Brown, David Lee</td>
+                <td>Employee_ID</td>
+                <td>Name, Salary, Department, Hire_Date</td>
+            </tr>
+            <tr>
+                <td><b>Course</b></td>
+                <td>Database Systems, Java Programming, Data Structures</td>
+                <td>Course_ID</td>
+                <td>Course_Name, Credits, Duration, Prerequisites</td>
+            </tr>
+            <tr>
+                <td><b>Department</b></td>
+                <td>Computer Science, Electrical Engineering, Mathematics</td>
+                <td>Dept_ID</td>
+                <td>Dept_Name, Location, Budget, Head_Name</td>
+            </tr>
+            <tr>
+                <td><b>Book</b></td>
+                <td>Introduction to Algorithms, Operating Systems Concepts</td>
+                <td>ISBN</td>
+                <td>Title, Author, Publisher, Price, Pages</td>
+            </tr>
+        </table>
+
+        <h3>3.2 Attributes</h3>
+        <img src="https://www.storyofmathematics.com/wp-content/uploads/2023/01/graphical-representation-of-different-types-of-attributes-in-an-entity-relationship-diagram-1024x512.png" alt="Attributes in ER Model" width="600">
+        <img src="https://www.learncomputerscienceonline.com/wp-content/uploads/2020/11/Types-Of-Attributes-In-DBMS.jpg" alt="Attributes in ER Model" width="600">
+        <ul>
+            <li><b>Definition:</b> Properties or characteristics of entities</li>
+            <li><b>Types of Attributes:</b>
+                <ul>
+                    <li><b>Simple:</b> Cannot be divided further (Name, Age)</li>
+                    <li><b>Composite:</b> Can be divided into sub-parts (Address = Street + City + ZIP)</li>
+                    <li><b>Single-valued:</b> Has only one value (Student ID or addhar card ek hi hoga)</li>
+                    <li><b>Multi-valued:</b> Can have multiple values (Phone Numbers ek se jada mobile number ho sakte hain)</li>
+                    <li><b>Derived:</b> Calculated from other attributes (Age from Date of Birth)</li>
+                    <li><b>Key Attribute:</b> Uniquely identifies entity instances</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>🌟 Real-World Attribute Examples</h4>
+        <table>
+            <tr>
+                <th>Attribute Type</th>
+                <th>Entity: Student</th>
+                <th>Entity: Employee</th>
+                <th>Entity: Course</th>
+            </tr>
+            <tr>
+                <td><b>Simple</b></td>
+                <td>Student_ID, Name, Age</td>
+                <td>Employee_ID, Name, Salary</td>
+                <td>Course_ID, Course_Name, Credits</td>
+            </tr>
+            <tr>
+                <td><b>Composite</b></td>
+                <td>Address (Street, City, State, ZIP)</td>
+                <td>Address (Street, City, State, ZIP)</td>
+                <td>Schedule (Day, Time, Room)</td>
+            </tr>
+            <tr>
+                <td><b>Single-valued</b></td>
+                <td>Student_ID, Date_of_Birth</td>
+                <td>Employee_ID, Social_Security_Number</td>
+                <td>Course_ID, Max_Enrollment</td>
+            </tr>
+            <tr>
+                <td><b>Multi-valued</b></td>
+                <td>Phone_Numbers, Email_Addresses</td>
+                <td>Skills, Certifications</td>
+                <td>Prerequisites, Topics_Covered</td>
+            </tr>
+            <tr>
+                <td><b>Derived</b></td>
+                <td>Age (from Date_of_Birth), GPA</td>
+                <td>Years_of_Service, Age</td>
+                <td>Enrollment_Count, Average_Grade</td>
+            </tr>
+            <tr>
+                <td><b>Key</b></td>
+                <td>Student_ID</td>
+                <td>Employee_ID</td>
+                <td>Course_ID</td>
+            </tr>
+        </table>
+
+        <h3>3.3 Relationships</h3>
+        <img src="https://phoenixnap.com/kb/wp-content/uploads/2022/07/one-to-one-relationship.png" alt="Relationships in ER Model" width="600">
+        <img src="https://phoenixnap.com/kb/wp-content/uploads/2022/07/one-to-many-relationship.png" alt="Relationships in ER Model" width="600">
+        <img src="https://phoenixnap.com/kb/wp-content/uploads/2022/07/many-to-many-relationship.png" alt="Relationships in ER Model" width="600">
+        <ul>
+            <li><b>Definition:</b> Association between two or more entities</li>
+            <li><b>Relationship Set:</b> Collection of relationships of the same type</li>
+            <li><b>Degree:</b> Number of entities participating in relationship
+                <ul>
+                    <li><b>Unary:</b> One entity type (Employee manages Employee)</li>
+                    <li><b>Binary:</b> Two entity types (Student enrolls in Course)</li>
+                    <li><b>Ternary:</b> Three entity types (Student, Course, Instructor)</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>🌟 Real-World Relationship Examples</h4>
+        <table>
+            <tr>
+                <th>Relationship</th>
+                <th>Entity 1</th>
+                <th>Entity 2</th>
+                <th>Cardinality</th>
+                <th>Real Example</th>
+            </tr>
+            <tr>
+                <td><b>Works_In</b></td>
+                <td>Employee</td>
+                <td>Department</td>
+                <td>N:1</td>
+                <td>John works in Computer Science Dept
+                    <br>Jane works in Electrical Engineering Dept
+                </td>
+            </tr>
+            <tr>
+                <td><b>Enrolls_In</b></td>
+                <td>Student</td>
+                <td>Course</td>
+                <td>M:N</td>
+                <td>Alice enrolls in Database Systems
+                    <br>Alice enrolls in Computer Networks
+                    <br>Bob enrolls in Database Systems
+                    <br>Bob enrolls in Computer Networks
+                </td>
+            </tr>
+            <tr>
+                <td><b>Manages</b></td>
+                <td>Employee</td>
+                <td>Department</td>
+                <td>1:1</td>
+                <td>Dr. Smith manages CS Department</td>
+            </tr>
+            <tr>
+                <td><b>Teaches</b></td>
+                <td>Instructor</td>
+                <td>Course</td>
+                <td>1:N</td>
+                <td>Prof. Johnson teaches 3 courses
+                    <br>Dr. Williams teaches 2 courses
+                </td>
+            </tr>
+            <tr>
+                <td><b>Borrows</b></td>
+                <td>Student</td>
+                <td>Book</td>
+                <td>M:N</td>
+                <td>Students can borrow multiple books</td>
+            </tr>
+            <tr>
+                <td><b>Supervises</b></td>
+                <td>Employee</td>
+                <td>Employee</td>
+                <td>1:N (Unary)</td>
+                <td>Manager supervises multiple employees</td>
+            </tr>
+        </table>
+
+        <h4>📊 Sample Data Tables</h4>
+        <h5>Student Table</h5>
+        <table>
+            <tr>
+                <th>Student_ID</th>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+            <tr>
+                <td>S001</td>
+                <td>John Doe</td>
+                <td>20</td>
+                <td>john@email.com</td>
+                <td>+1-555-0123</td>
+            </tr>
+            <tr>
+                <td>S002</td>
+                <td>Jane Smith</td>
+                <td>19</td>
+                <td>jane@email.com</td>
+                <td>+1-555-0124</td>
+            </tr>
+            <tr>
+                <td>S003</td>
+                <td>Alex Johnson</td>
+                <td>21</td>
+                <td>alex@email.com</td>
+                <td>+1-555-0125</td>
+            </tr>
+        </table>
+
+        <h5>Employee Table</h5>
+        <table>
+            <tr>
+                <th>Employee_ID</th>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Department</th>
+                <th>Hire_Date</th>
+            </tr>
+            <tr>
+                <td>E001</td>
+                <td>Mike Wilson</td>
+                <td>75000</td>
+                <td>Computer Science</td>
+                <td>2020-01-15</td>
+            </tr>
+            <tr>
+                <td>E002</td>
+                <td>Sarah Brown</td>
+                <td>85000</td>
+                <td>Electrical Engineering</td>
+                <td>2019-08-20</td>
+            </tr>
+            <tr>
+                <td>E003</td>
+                <td>David Lee</td>
+                <td>90000</td>
+                <td>Computer Science</td>
+                <td>2018-03-10</td>
+            </tr>
+        </table>
+
+        <h5>Course Table</h5>
+        <table>
+            <tr>
+                <th>Course_ID</th>
+                <th>Course_Name</th>
+                <th>Credits</th>
+                <th>Instructor</th>
+                <th>Max_Enrollment</th>
+            </tr>
+            <tr>
+                <td>CS101</td>
+                <td>Database Systems</td>
+                <td>3</td>
+                <td>Dr. Smith</td>
+                <td>30</td>
+            </tr>
+            <tr>
+                <td>CS102</td>
+                <td>Java Programming</td>
+                <td>4</td>
+                <td>Prof. Johnson</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>CS103</td>
+                <td>Data Structures</td>
+                <td>3</td>
+                <td>Dr. Williams</td>
+                <td>35</td>
+            </tr>
+        </table>
+
+        <h5>Student_Course (M:N Relationship) Table</h5>
+        <table>
+            <tr>
+                <th>Student_ID</th>
+                <th>Course_ID</th>
+                <th>Enrollment_Date</th>
+                <th>Grade</th>
+            </tr>
+            <tr>
+                <td>S001</td>
+                <td>CS101</td>
+                <td>2024-01-15</td>
+                <td>A</td>
+            </tr>
+            <tr>
+                <td>S001</td>
+                <td>CS102</td>
+                <td>2024-01-15</td>
+                <td>B+</td>
+            </tr>
+            <tr>
+                <td>S002</td>
+                <td>CS101</td>
+                <td>2024-01-16</td>
+                <td>A-</td>
+            </tr>
+            <tr>
+                <td>S003</td>
+                <td>CS103</td>
+                <td>2024-01-17</td>
+                <td>B</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <h2>4. ER Diagrams</h2>
+        <p>Visual representation of the ER model using standardized symbols.</p>
+
+        <div class="image-container">
+            <img src="https://www.techantena.com/wp-content/uploads/2020/11/ER-Diagram-Examples-3.png" alt="ER Diagram Symbols" width="500">
+            <p><i>ER Diagram Symbols and Notation</i></p>
+        </div>
+
+        <h3>4.1 ER Diagram Symbols</h3>
+        <table>
+            <tr>
+                <th>Symbol</th>
+                <th>Representation</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Rectangle</td>
+                <td>Entity</td>
+                <td>Strong entity set</td>
+            </tr>
+            <tr>
+                <td>Double Rectangle</td>
+                <td>Weak Entity</td>
+                <td>Weak entity set</td>
+            </tr>
+            <tr>
+                <td>Diamond</td>
+                <td>Relationship</td>
+                <td>Relationship set</td>
+            </tr>
+            <tr>
+                <td>Ellipse</td>
+                <td>Attribute</td>
+                <td>Simple attribute</td>
+            </tr>
+            <tr>
+                <td>Double Ellipse</td>
+                <td>Multi-valued</td>
+                <td>Multi-valued attribute</td>
+            </tr>
+            <tr>
+                <td>Dashed Ellipse</td>
+                <td>Derived</td>
+                <td>Derived attribute</td>
+            </tr>
+            <tr>
+                <td>Underlined</td>
+                <td>Key</td>
+                <td>Key attribute</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <h2>5. Cardinality and Participation</h2>
+
+        <h3>5.1 Cardinality</h3>
+        <p><b>Cardinality</b> defines the number of entity instances that can be associated with another entity instance through a relationship.</p>
+
+        <div class="image-container">
+            <img src="http://image.slidesharecdn.com/datamodeling-140402122254-phpapp01/95/data-modeling-49-638.jpg?cb=1396441490" alt="Cardinality Types" width="600">
+            <p><i>Different Types of Cardinality</i></p>
+        </div>
+
+        <table>
+            <tr>
+                <th>Cardinality Type</th>
+                <th>Description</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><b>One-to-One (1:1)</b></td>
+                <td>Each entity in A relates to at most one entity in B</td>
+                <td>Person ↔ Passport</td>
+            </tr>
+            <tr>
+                <td><b>One-to-Many (1:N)</b></td>
+                <td>Each entity in A relates to many entities in B</td>
+                <td>Department → Employees</td>
+            </tr>
+            <tr>
+                <td><b>Many-to-One (N:1)</b></td>
+                <td>Many entities in A relate to one entity in B</td>
+                <td>Students → Course</td>
+            </tr>
+            <tr>
+                <td><b>Many-to-Many (M:N)</b></td>
+                <td>Many entities in A relate to many entities in B</td>
+                <td>Students ↔ Courses</td>
+            </tr>
+        </table>
+
+        <h4>🌟 Real-World Cardinality Examples with Data</h4>
+        
+        <h5>1:1 Relationship - Employee and Office</h5>
+        <div style="display: flex; gap: 20px; margin: 15px 0;">
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="3">Employee Table</th></tr>
+                    <tr><th>Emp_ID</th><th>Name</th><th>Office_ID</th></tr>
+                    <tr><td>E001</td><td>John</td><td>O101</td></tr>
+                    <tr><td>E002</td><td>Jane</td><td>O102</td></tr>
+                    <tr><td>E003</td><td>Mike</td><td>O103</td></tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="3">Office Table</th></tr>
+                    <tr><th>Office_ID</th><th>Room_No</th><th>Floor</th></tr>
+                    <tr><td>O101</td><td>101</td><td>1st</td></tr>
+                    <tr><td>O102</td><td>102</td><td>1st</td></tr>
+                    <tr><td>O103</td><td>201</td><td>2nd</td></tr>
+                </table>
+            </div>
+        </div>
+        <p><i>Each employee has exactly one office, and each office is assigned to exactly one employee.</i></p>
+
+        <h5>1:N Relationship - Department and Employee</h5>
+        <div style="display: flex; gap: 20px; margin: 15px 0;">
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="2">Department Table</th></tr>
+                    <tr><th>Dept_ID</th><th>Dept_Name</th></tr>
+                    <tr><td>D001</td><td>Computer Science</td></tr>
+                    <tr><td>D002</td><td>Mathematics</td></tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="3">Employee Table</th></tr>
+                    <tr><th>Emp_ID</th><th>Name</th><th>Dept_ID</th></tr>
+                    <tr><td>E001</td><td>John</td><td>D001</td></tr>
+                    <tr><td>E002</td><td>Jane</td><td>D001</td></tr>
+                    <tr><td>E003</td><td>Mike</td><td>D002</td></tr>
+                    <tr><td>E004</td><td>Sarah</td><td>D001</td></tr>
+                </table>
+            </div>
+        </div>
+        <p><i>One department can have many employees, but each employee belongs to exactly one department.</i></p>
+
+        <h5>M:N Relationship - Student and Course</h5>
+        <div style="display: flex; gap: 20px; margin: 15px 0;">
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="2">Student Table</th></tr>
+                    <tr><th>Stud_ID</th><th>Name</th></tr>
+                    <tr><td>S001</td><td>Alice</td></tr>
+                    <tr><td>S002</td><td>Bob</td></tr>
+                    <tr><td>S003</td><td>Charlie</td></tr>
+                </table>
+            </div>
+            <div style="flex: 1;">
+                <table>
+                    <tr><th colspan="2">Course Table</th></tr>
+                    <tr><th>Course_ID</th><th>Course_Name</th></tr>
+                    <tr><td>C001</td><td>Database</td></tr>
+                    <tr><td>C002</td><td>Java</td></tr>
+                    <tr><td>C003</td><td>Data Structures</td></tr>
+                </table>
+            </div>
+        </div>
+        <table>
+            <tr><th colspan="4">Enrollment Table (Bridge Table)</th></tr>
+            <tr><th>Stud_ID</th><th>Course_ID</th><th>Semester</th><th>Grade</th></tr>
+            <tr><td>S001</td><td>C001</td><td>Fall 2024</td><td>A</td></tr>
+            <tr><td>S001</td><td>C002</td><td>Fall 2024</td><td>B+</td></tr>
+            <tr><td>S002</td><td>C001</td><td>Fall 2024</td><td>A-</td></tr>
+            <tr><td>S002</td><td>C003</td><td>Fall 2024</td><td>B</td></tr>
+            <tr><td>S003</td><td>C002</td><td>Fall 2024</td><td>A</td></tr>
+            <tr><td>S003</td><td>C003</td><td>Fall 2024</td><td>B+</td></tr>
+        </table>
+        <p><i>Many students can enroll in many courses. A bridge table is needed to represent this M:N relationship.</i></p>
+
+        <h3>5.2 Participation</h3>
+        <p><b>Participation</b> defines whether all entities in an entity set must participate in a relationship.</p>
+
+        <ul>
+            <li><b>Total Participation (Mandatory):</b> Every entity must participate in the relationship
+                <ul>
+                    <li>Represented by double line</li>
+                    <li>Example: Every employee must work in a department</li>
+                </ul>
+            </li>
+            <li><b>Partial Participation (Optional):</b> Some entities may not participate in the relationship
+                <ul>
+                    <li>Represented by single line</li>
+                    <li>Example: Not every employee manages a department</li>
+                </ul>
+            </li>
+        </ul>
+
+        <hr>
+
+        <h2>6. Advanced ER Concepts</h2>
+
+        <h3>6.1 Generalization</h3>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230612113208/generalization.webp" alt="Generalization and Specialization" width="500">
+        <ul>
+            <li><b>Definition:</b> Process of extracting common attributes from multiple entities to form a generalized entity</li>
+            <li><b>Bottom-up approach:</b> Multiple specific entities → General entity</li>
+            <li><b>Example:</b> Car, Truck, Bus → Vehicle</li>
+        </ul>
+
+        <h3>6.2 Specialization</h3>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230612113305/specialization.webp" alt="Specialization" width="500">
+        <ul>
+            <li><b>Definition:</b> Process of defining sub-classes of an entity set</li>
+            <li><b>Top-down approach:</b> General entity → Specific entities</li>
+            <li><b>Example:</b> Employee → Manager, Developer, Tester</li>
+        </ul>
+
+        <div class="image-container">
+            <img src="https://www.tutorialspoint.com/dbms/images/generalization.png" alt="Generalization and Specialization" width="500">
+            <p><i>Generalization and Specialization Example</i></p>
+        </div>
+
+        <h3>6.3 Aggregation</h3>
+        <ul>
+            <li><b>Definition:</b> Abstraction where relationship sets are treated as higher-level entities</li>
+            <li><b>Purpose:</b> Eliminate redundancy in ER diagrams</li>
+            <li><b>Example:</b> (Student, Course, Instructor) relationship can be aggregated and related to Grade</li>
+        </ul>
+
+        <div class="image-container">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230612113346/aggregation.webp" alt="Aggregation Example" width="500">
+            <p><i>Aggregation in ER Model</i></p>
+        </div>
+
+        <h3>6.4 Specialization/Generalization Constraints</h3>
+        <table>
+            <tr>
+                <th>Constraint</th>
+                <th>Description</th>
+                <th>Notation</th>
+            </tr>
+            <tr>
+                <td><b>Disjoint</b></td>
+                <td>Entity can belong to at most one subclass</td>
+                <td>d in circle</td>
+            </tr>
+            <tr>
+                <td><b>Overlapping</b></td>
+                <td>Entity can belong to multiple subclasses</td>
+                <td>o in circle</td>
+            </tr>
+            <tr>
+                <td><b>Total</b></td>
+                <td>Every entity must belong to at least one subclass</td>
+                <td>Double line</td>
+            </tr>
+            <tr>
+                <td><b>Partial</b></td>
+                <td>Some entities may not belong to any subclass</td>
+                <td>Single line</td>
+            </tr>
+        </table>
+
+        <hr>
+
+        <div class="interview-section">
+            <h2>💼 Interview Preparation Section</h2>
+            
+            <h3>🔥 Common Interview Questions</h3>
+            
+            <h4>1. What is the difference between Entity and Attribute?</h4>
+            <p><b>Answer:</b> Entity is a thing or object (like Student, Course), while Attribute is a property of an entity (like Name, Age of Student).</p>
+            
+            <h4>2. Explain different types of cardinality with examples.</h4>
+            <p><b>Answer:</b></p>
+            <ul>
+                <li><b>1:1</b> - Person and Passport (one person has one passport)</li>
+                <li><b>1:N</b> - Department and Employee (one department has many employees)</li>
+                <li><b>M:N</b> - Student and Course (many students enroll in many courses)</li>
+            </ul>
+            
+            <h4>3. What is the difference between Generalization and Specialization?</h4>
+            <p><b>Answer:</b> Generalization is bottom-up (specific → general), Specialization is top-down (general → specific).</p>
+            
+            <h4>4. When do you use Aggregation in ER Model?</h4>
+            <p><b>Answer:</b> When you need to treat a relationship as an entity to form relationships with other entities.</p>
+            
+            <h4>5. What is the difference between Strong and Weak Entity?</h4>
+            <p><b>Answer:</b> Strong entity has its own primary key, weak entity depends on another entity for identification.</p>
+            
+            <h3>⚡ Quick Tips for Interviews</h3>
+            <ul>
+                <li>Always provide <b>real-world examples</b> when explaining concepts</li>
+                <li>Draw simple diagrams if asked about ER concepts</li>
+                <li>Remember the <b>symbols</b> used in ER diagrams</li>
+                <li>Understand the <b>practical applications</b> of each data model</li>
+                <li>Know when to use <b>aggregation vs. generalization</b></li>
+            </ul>
+            
+            <h3>🎯 Key Differences to Remember</h3>
+            <table>
+                <tr>
+                    <th>Concept A</th>
+                    <th>Concept B</th>
+                    <th>Key Difference</th>
+                </tr>
+                <tr>
+                    <td>Entity</td>
+                    <td>Attribute</td>
+                    <td>Entity is a thing, Attribute is a property</td>
+                </tr>
+                <tr>
+                    <td>Strong Entity</td>
+                    <td>Weak Entity</td>
+                    <td>Strong has own key, Weak depends on others</td>
+                </tr>
+                <tr>
+                    <td>Total Participation</td>
+                    <td>Partial Participation</td>
+                    <td>Total is mandatory, Partial is optional</td>
+                </tr>
+                <tr>
+                    <td>Generalization</td>
+                    <td>Specialization</td>
+                    <td>Bottom-up vs Top-down approach</td>
+                </tr>
+            </table>
+        </div>
+
+        <hr>
+
+        <div class="revision-box">
+            <h2>📚 Revision Box - Quick Summary</h2>
+            
+            <h3>🔑 Key Terms</h3>
+            <ul>
+                <li><b>Data Model:</b> Conceptual representation of data structure</li>
+                <li><b>Entity:</b> Real-world object that can be distinctly identified</li>
+                <li><b>Attribute:</b> Property or characteristic of an entity</li>
+                <li><b>Relationship:</b> Association between entities</li>
+                <li><b>Cardinality:</b> Number of entity instances in relationships</li>
+                <li><b>Participation:</b> Whether entities must participate in relationships</li>
+            </ul>
+            
+            <h3>📊 Data Models Comparison</h3>
+            <table>
+                <tr>
+                    <th>Model</th>
+                    <th>Key Feature</th>
+                    <th>Main Advantage</th>
+                    <th>Main Disadvantage</th>
+                </tr>
+                <tr>
+                    <td>Hierarchical</td>
+                    <td>Tree Structure</td>
+                    <td>Fast Access</td>
+                    <td>Rigid Structure</td>
+                </tr>
+                <tr>
+                    <td>Network</td>
+                    <td>Graph Structure</td>
+                    <td>Flexible Relationships</td>
+                    <td>Complex Navigation</td>
+                </tr>
+                <tr>
+                    <td>Relational</td>
+                    <td>Table Structure</td>
+                    <td>Simplicity & Flexibility</td>
+                    <td>Performance Issues</td>
+                </tr>
+                <tr>
+                    <td>Object-Oriented</td>
+                    <td>Objects & Methods</td>
+                    <td>Real-world Modeling</td>
+                    <td>Complexity</td>
+                </tr>
+            </table>
+            
+            <h3>🎯 Must Remember for Interviews</h3>
+            <ul>
+                <li>Four types of cardinality: <span class="highlight">1:1, 1:N, N:1, M:N</span></li>
+                <li>ER diagram symbols: <span class="highlight">Rectangle (Entity), Diamond (Relationship), Ellipse (Attribute)</span></li>
+                <li>Participation types: <span class="highlight">Total (mandatory), Partial (optional)</span></li>
+                <li>Advanced concepts: <span class="highlight">Generalization, Specialization, Aggregation</span></li>
+                <li>Attribute types: <span class="highlight">Simple, Composite, Single-valued, Multi-valued, Derived</span></li>
+            </ul>
+            
+            <h3>⚡ Last-Minute Checklist</h3>
+            <ul>
+                <li>✅ Can explain all four data models with examples</li>
+                <li>✅ Know ER diagram symbols and their meanings</li>
+                <li>✅ Understand cardinality and participation concepts</li>
+                <li>✅ Can differentiate between generalization and specialization</li>
+                <li>✅ Remember real-world examples for each concept</li>
+                <li>✅ Know when to use aggregation in ER modeling</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

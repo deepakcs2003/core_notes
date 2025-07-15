@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBMS Concurrency Control & Serialization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.4em;
+            margin: 20px 0 15px 0;
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .section h4 {
+            color: #e74c3c;
+            font-size: 1.2em;
+            margin: 15px 0 10px 0;
+        }
+
+        .example-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .example-box h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .error-box h4 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 15px 0;
+            border: 1px solid #4a5568;
+        }
+
+        .code-inline {
+            background: #f1f5f9;
+            color: #1e293b;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+
+        li {
+            margin: 8px 0;
+            padding-left: 5px;
+        }
+
+        .key-point {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .phases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .phase-card {
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .phase-card h4 {
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+
+            .header {
+                padding: 20px 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗄️ DBMS Concurrency Control & Serialization</h1>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: Serialization -->
+            <div class="section">
+                <h2><span class="emoji">🔄</span>1. Serialization in DBMS</h2>
+
+                <p><strong>Serialization</strong> ensures that the outcome of executing concurrent transactions is <span
+                        class="highlight">the same</span> as if the transactions were executed <span
+                        class="highlight">one after another</span> (serially).</p>
+
+                <div class="key-point">
+                    <strong>🎯 Goal:</strong> Avoid problems like data inconsistency, dirty reads, lost updates, phantom
+                    reads, and unrepeatable reads.
+                </div>
+
+                <div class="example-box">
+                    <h4>🧠 Example: Banking Transaction</h4>
+                    <p>Consider two transactions on Account A (initially ₹1000):</p>
+                    <ul>
+                        <li><strong>T1:</strong> Deposit ₹500 into Account A</li>
+                        <li><strong>T2:</strong> Multiply Account A by 2</li>
+                    </ul>
+
+                    <h4>Serial Execution (Correct):</h4>
+                    <img src="https://scaler.com/topics/images/serial-schedule.webp" alt="Serial Execution Example"
+                        style="max-width: 100%; border-radius: 8px;">
+                    <pre>
+T1 → T2 execution:
+Step 1: T1 reads A = ₹1000
+Step 2: T1 writes A = ₹1000 + ₹500 = ₹1500
+Step 3: T2 reads A = ₹1500
+Step 4: T2 writes A = ₹1500 × 2 = ₹3000
+Final Result: ₹3000 ✅</pre>
+
+                    <h4>Non-Serial Execution (Incorrect):</h4>
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210109111854/gfg.jpg"
+                        alt="Concurrent Execution Example" style="max-width: 100%; border-radius: 8px;">
+                    <pre>
+Concurrent execution problem:
+Step 1: T1 reads A = ₹1000
+Step 2: T2 reads A = ₹1000 (before T1 commits)
+Step 3: T1 writes A = ₹1500
+Step 4: T2 writes A = ₹2000 (overwrites T1's work)
+Final Result: ₹2000 ❌ (Lost T1's deposit!)</pre>
+                </div>
+
+                <div class="key-point">
+                    <strong>🔐 Key Insight:</strong> We want concurrent schedules to behave like serial schedules - this
+                    is <strong>Serialization</strong>.
+                </div>
+            </div>
+
+            <!-- Section 2: Conflict Equivalence -->
+            <div class="section">
+                <h2><span class="emoji">⚔️</span> 2. Conflict Equivalence & Conflict Serializability (Hinglish
+                    Explanation)</h2>
+
+                <h3>✅ Conflict Equivalent Schedules</h3>
+                <p>Do schedules tab conflict equivalent hote hain jab:</p>
+                <ul>
+                    <li>Unme same set of transactions hote hain</li>
+                    <li>Jo operations conflict karte hain unka order dono mein same hota hai</li>
+                </ul>
+
+                <h3>🧮 Conflicting Operations kya hoti hain?</h3>
+                <p>Do operations tab conflict karti hain jab:</p>
+                <ul>
+                    <li>Alag-alag transactions se ho</li>
+                    <li>Same data item ko access kar rahi ho</li>
+                    <li>Aur kam se kam ek write operation ho</li>
+                </ul>
+
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Operation 1</th>
+                            <th>Operation 2</th>
+                            <th>Conflict?</th>
+                            <th>Reason</th>
+                        </tr>
+                        <tr>
+                            <td>Read(A)</td>
+                            <td>Read(A)</td>
+                            <td class="success">No</td>
+                            <td>Sirf reading, koi conflict nahi</td>
+                        </tr>
+                        <tr>
+                            <td>Read(A)</td>
+                            <td>Write(A)</td>
+                            <td class="error">Yes</td>
+                            <td>Read-Write conflict</td>
+                        </tr>
+                        <tr>
+                            <td>Write(A)</td>
+                            <td>Read(A)</td>
+                            <td class="error">Yes</td>
+                            <td>Write-Read conflict</td>
+                        </tr>
+                        <tr>
+                            <td>Write(A)</td>
+                            <td>Write(A)</td>
+                            <td class="error">Yes</td>
+                            <td>Write-Write conflict</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <h3>🔄 Conflict Serializability</h3>
+                <p>Agar ek schedule ko sirf non-conflicting operations ko swap karke ek serial schedule mein badla ja
+                    sake,
+                    toh woh <strong>conflict serializable</strong> kehlata hai.</p>
+
+                <div class="example-box">
+                    <h4>🧪 Example: Schedule S</h4>
+                    <pre>
+Time:      1     2     3     4     5     6     7     8
+T1:       R(A)  W(A)         R(B)  W(B)
+T2:             R(A)  W(A)         R(B)  W(B)
+        </pre>
+
+                    <p><strong>Conflicting operations:</strong></p>
+                    <ul>
+                        <li>T1.W(A) → T2.R(A): Write-Read conflict</li>
+                        <li>T1.W(A) → T2.W(A): Write-Write conflict</li>
+                        <li>T1.R(B) → T2.W(B): Read-Write conflict</li>
+                        <li>T1.W(B) → T2.R(B): Write-Read conflict</li>
+                        <li>T1.W(B) → T2.W(B): Write-Write conflict</li>
+                    </ul>
+
+                    <h4>📊 Precedence Graph (T1 → T2)</h4>
+                    <pre>
+Nodes: T1, T2
+Edges: T1 → T2 (multiple conflicts)
+
+✅ No cycle → Conflict Serializable
+✅ Equivalent to serial order: T1 → T2
+        </pre>
+                </div>
+
+                <div class="tip-box">
+                    <h4>🧠 Yaad Rakho (Tips)</h4>
+                    <ul>
+                        <li>Conflict = alag transaction + same data + ek write</li>
+                        <li>Precedence graph banao: nodes = transactions</li>
+                        <li>Cycle nahi = Serializable ✅</li>
+                        <li>Cycle hai = Not Serializable ❌</li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <h2><span class="emoji">👁️</span> View Serializability (Hinglish)</h2>
+
+                <h3>📌 Definition:</h3>
+                <p>Agar ek schedule ka result same ho jaise kisi serial schedule ka hota — including what values
+                    transactions read/write — toh woh <strong>view serializable</strong> hota hai.</p>
+
+                <h3>🔍 3 Main Conditions Check Karte Hain:</h3>
+                <ul>
+                    <li><strong>Initial Read Same:</strong> Start mein sab same data padhein</li>
+                    <li><strong>Read From Same Transaction:</strong> Jo write kisi transaction ne kiya, wohi read ho
+                    </li>
+                    <li><strong>Final Write Same:</strong> End mein same transaction ne data write kiya ho</li>
+                </ul>
+
+                <h3>📚 Difference between Conflict & View Serializability:</h3>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Conflict Serializability</th>
+                            <th>View Serializability</th>
+                        </tr>
+                        <tr>
+                            <td>Check karna</td>
+                            <td>Easy (graph se)</td>
+                            <td>Difficult (manually)</td>
+                        </tr>
+                        <tr>
+                            <td>Strictness</td>
+                            <td>More strict</td>
+                            <td>Less strict</td>
+                        </tr>
+                        <tr>
+                            <td>Allowable Schedules</td>
+                            <td>Kam</td>
+                            <td>Zyada</td>
+                        </tr>
+                        <tr>
+                            <td>Example usage</td>
+                            <td>Mostly practical systems</td>
+                            <td>More theoretical</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="tip-box">
+                    <h4>👓 Simple Tip:</h4>
+                    <ul>
+                        <li>Conflict Serializable: Graph banao, cycle nahi to ✅</li>
+                        <li>View Serializable: Agar reads & writes ka result same ho</li>
+                        <li>Har Conflict Serializable bhi View Serializable hota hai — but reverse zaroori nahi</li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+            <div class="section">
+                <h2><span class="emoji">🔐</span>3. Locking Protocols</h2>
+
+                <p>Locking Protocols concurrency control ke liye use kiye jaate hain, jisse transactions safe aur
+                    isolated rehte hain.</p>
+
+                <h3>🔄 Shared (S) and Exclusive (X) Locks</h3>
+                <p>Database me data access karne ke liye do tarah ke locks hote hain:</p>
+
+                <ul>
+                    <li><strong>Shared Lock (S):</strong> Sirf <u>read</u> ke liye. Multiple transactions ek saath
+                        Shared Lock le sakte hain.</li>
+                    <li><strong>Exclusive Lock (X):</strong> <u>Read + Write</u> dono ke liye. Jab tak Exclusive Lock
+                        hai, koi aur transaction access nahi kar sakta.</li>
+                </ul>
+
+                <table border="1" cellpadding="8" cellspacing="0">
+                    <tr>
+                        <th>Lock Type</th>
+                        <th>Purpose</th>
+                        <th>Can Read?</th>
+                        <th>Can Write?</th>
+                        <th>Others Can Read?</th>
+                        <th>Others Can Write?</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Shared (S)</strong></td>
+                        <td>Reading</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exclusive (X)</strong></td>
+                        <td>Reading + Writing</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                </table>
+
+                <h4>📌 Lock Compatibility Matrix</h4>
+                <p>Yeh matrix batata hai ki agar ek lock laga hua hai, to doosra lock lag sakta hai ya nahi:</p>
+
+                <img src="https://cdn.educba.com/academy/wp-content/uploads/2020/03/Lock-Based-Protocols-in-DBMS-03.jpg"
+                    alt="Lock Compatibility Matrix" width="300" />
+
+                <ul>
+                    <li>Agar <strong>Shared</strong> lock laga ho, toh ek aur Shared lock lag sakta hai (✅).</li>
+                    <li>Agar <strong>Exclusive</strong> lock laga ho, toh koi bhi naya lock nahi lag sakta (❌).</li>
+                    <li>Exclusive access tabhi milega jab koi aur transaction Q par access na kar raha ho.</li>
+                </ul>
+
+                <h3>🔄 Locking Protocol Example</h3>
+
+                <p>Neeche diye gaye diagram me do transactions hain:</p>
+
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmfybo4ty2CAyGUqKlTqrrClML0ravZfwb2j-gUYAEcUEzmT18zWTEKDj5R_scYicdLCc&usqp=CAU"
+                    alt="Transaction Lock Example" width="250" />
+
+                <ul>
+                    <li><strong>T32</strong> do baar Shared Lock (S) le raha hai aur sirf <u>read</u> kar raha hai.</li>
+                    <li><strong>T33</strong> Exclusive Lock (X) le raha hai, jisse <u>read + write</u> dono allowed hai.
+                    </li>
+                    <li>Agar T32 ne pehle Shared Lock le liya ho, toh T33 ko Exclusive Lock tab tak nahi milega jab tak
+                        T32 unlock nahi karta.</li>
+                </ul>
+
+                <h3>⚠️ Problems with Basic Locking</h3>
+                <ul>
+                    <li><strong>Deadlock:</strong> Dono transactions ek dusre ka wait karte rahte hain.</li>
+                    <li><strong>Starvation:</strong> Ek transaction ko baar-baar ignore kiya jaata hai.</li>
+                    <li><strong>Cascading Rollback:</strong> Ek transaction fail ho gaya, jiska data kisi ne read kiya
+                        ho, toh sab rollback karne padte hain.</li>
+                    <li><strong>Inconsistent Analysis:</strong> Jab read ho raha ho aur data simultaneously update bhi
+                        ho raha ho.</li>
+                </ul>
+            </div>
+
+
+            <!-- Section 4: Two-Phase Locking -->
+            <div class="section">
+                <h2><span class="emoji">🔒</span>4. Two-Phase Locking (2PL)</h2>
+
+                <p>
+                    Two-Phase Locking ek aisa protocol hai jo <strong>conflict serializability</strong> ensure karta hai
+                    by splitting
+                    transaction locking activity into two phases:
+                </p>
+
+                <div class="key-point">
+                    <strong>🔑 2PL Rule:</strong> Ek baar agar transaction ne koi lock release kar diya, toh uske baad
+                    woh naya lock acquire nahi kar sakta.
+                </div>
+
+                <div class="phases">
+                    <div class="phase-card">
+                        <h4>📈 Growing Phase</h4>
+                        <p>Transaction naya lock le sakta hai (Shared ya Exclusive), lekin release nahi kar sakta.</p>
+                    </div>
+                    <div class="phase-card">
+                        <h4>📉 Shrinking Phase</h4>
+                        <p>Transaction lock release kar sakta hai, lekin naya lock acquire nahi kar sakta.</p>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>🧠 Example: 2PL in Action</h4>
+                    <pre>
+Transaction T1 following 2PL:
+📈 Growing Phase:
+  - Lock-S(A)
+  - Read(A)
+  - Lock-X(B)
+  - Write(B)
+
+📉 Shrinking Phase:
+  - Unlock(A)
+  - Unlock(B)
+  - ❌ Cannot acquire any new lock now!
+    </pre>
+                </div>
+
+                <h3>⚠️ Real Problems in Locking</h3>
+
+                <h4>🔁 Deadlock Example:</h4>
+                <pre>
+T1: Lock-X(A)
+T2: Lock-X(B)
+T1: Wait for B  🔒
+T2: Wait for A  🔒
+// Deadlock! T1 and T2 are waiting for each other forever
+  </pre>
+                <p><strong>Explanation:</strong> T1 ne A lock kiya, T2 ne B lock kiya. Ab dono ek dusre ka wait kar rahe
+                    hain, jo kabhi release nahi hoga.</p>
+
+                <h4>🚫 Starvation Example:</h4>
+                <pre>
+T1: Lock-X(Q)
+T1: Long transaction... (hold X lock for long time)
+Meanwhile:
+T2: Wants Lock-S(Q)
+T3: Wants Lock-S(Q)
+T4: Wants Lock-S(Q)
+// All waiting again and again due to T1
+  </pre>
+                <p><strong>Explanation:</strong> T1 bahut time tak Exclusive lock rakhta hai. Is wajah se baaki sab (T2,
+                    T3, T4) wait karte rehte hain — yeh hai starvation.</p>
+
+                <h4>💥 Irrecoverability Example:</h4>
+                <pre>
+T1: Write(A)
+T2: Read(A)      // ⚠ Uncommitted data from T1
+T1: Crash 💀
+// Now T2 has used invalid data
+  </pre>
+                <p><strong>Explanation:</strong> T2 ne T1 ke write kiya hua data use kiya, lekin T1 crash ho gaya. Ab T2
+                    ka data bhi galat ho gaya. Yeh irrecoverable situation hai.</p>
+
+                <h4>🌊 Cascading Rollback Example:</h4>
+                <pre>
+T1: Write(A)
+T2: Read(A)
+T3: Read(A)
+
+T1: ❌ Abort (Crash or Rollback)
+// T2 and T3 must also Rollback!
+  </pre>
+                <p><strong>Explanation:</strong> T2 aur T3 ne T1 ke data ko read kiya, jo ab rollback ho gaya. Ab T2 aur
+                    T3 bhi rollback karne padenge — isey bolte hain cascading rollback.</p>
+
+                <h3>✅ Advantages of 2PL:</h3>
+                <ul>
+                    <li>Guarantees conflict serializability</li>
+                    <li>Prevents lost updates and dirty reads</li>
+                    <li>Widely used in real-world DBMS like MySQL, Oracle</li>
+                </ul>
+
+                <div class="error-box">
+                    <h4>❌ Limitations of 2PL:</h4>
+                    <ul>
+                        <li><strong>Deadlocks:</strong> Still possible due to lock waits</li>
+                        <li><strong>Cascading Rollbacks:</strong> Happen if one transaction reads uncommitted data</li>
+                        <li><strong>Starvation:</strong> Long-running transactions can block others</li>
+                        <li><strong>Reduced Concurrency:</strong> Overall system slow ho sakta hai</li>
+                    </ul>
+                </div>
+            </div>
+
+
+            <!-- Section 5: Strict 2PL -->
+            <div class="section">
+                <h2><span class="emoji">🛡️</span>5. Strict Two-Phase Locking (Strict 2PL)</h2>
+
+                <p>Strict 2PL is an enhanced version of 2PL that solves the cascading rollback problem.</p>
+
+                <div class="key-point">
+                    <strong>🔒 Strict 2PL Rule:</strong> A transaction must not release any exclusive (write) locks
+                    until it commits or aborts.
+                </div>
+
+                <div class="example-box">
+                    <h4>🧠 Example: Strict 2PL vs Regular 2PL</h4>
+                    <p><strong>Regular 2PL:</strong></p>
+                    <pre>
+T1: Lock-X(A), Write(A), Unlock(A), ... , Commit
+T2:                      Lock-S(A), Read(A), ...
+    // T2 might read uncommitted data if T1 aborts later</pre>
+
+                    <p><strong>Strict 2PL:</strong></p>
+                    <pre>
+T1: Lock-X(A), Write(A), ..., Commit, Unlock(A)
+T2:                                   Lock-S(A), Read(A)
+    // T2 can only read after T1 commits</pre>
+                </div>
+
+                <h3>✅ Advantages of Strict 2PL:</h3>
+                <ul>
+                    <li>Prevents cascading rollbacks</li>
+                    <li>Ensures recoverability</li>
+                    <li>Simplifies recovery procedures</li>
+                    <li>Guarantees both conflict serializability and recoverability</li>
+                </ul>
+
+                <div class="warning-box">
+                    <h4>⚠️ Trade-offs:</h4>
+                    <ul>
+                        <li>Increased blocking time (locks held longer)</li>
+                        <li>Potential for more deadlocks</li>
+                        <li>Reduced concurrency compared to regular 2PL</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 6: Timestamp Ordering -->
+            <div class="section">
+                <h2><span class="emoji">⏰</span>6. Timestamp Ordering Protocol</h2>
+
+                <p>Timestamp Ordering ek aisa protocol hai jisme locking ka use nahi hota. Har transaction ko ek unique
+                    timestamp milta hai, aur execution isi order me hona chahiye.</p>
+
+                <div class="key-point">
+                    <strong>🧭 Basic Idea:</strong> Har transaction ko start hone par ek <u>unique timestamp</u> milta
+                    hai.
+                    Fir har operation (read/write) ke decision isi timestamp ke base par liye jaate hain.
+                </div>
+
+                <h3>📋 How It Works:</h3>
+                <p>Har data item X ke saath 2 timestamps maintain hote hain:</p>
+                <ul>
+                    <li><strong>R-timestamp(X):</strong> Sabse latest transaction jiske ne X ko read kiya.</li>
+                    <li><strong>W-timestamp(X):</strong> Sabse latest transaction jiske ne X ko write kiya.</li>
+                </ul>
+
+                <h3>🔄 Protocol Rules:</h3>
+                <div class="example-box">
+                    <h4>📖 For Read Operation by Ti:</h4>
+                    <pre>
+if (TS(Ti) < W-timestamp(X)) {
+    // Ti purana hai aur wo kisi naye transaction ke write ko read kar raha hai
+    ABORT Ti;
+} else {
+    // Read allow karo
+    R-timestamp(X) = max(R-timestamp(X), TS(Ti));
+}
+    </pre>
+
+                    <h4>✍️ For Write Operation by Ti:</h4>
+                    <pre>
+if (TS(Ti) < R-timestamp(X) || TS(Ti) < W-timestamp(X)) {
+    // Ti purana hai aur wo kisi naye transaction ke read/write data ko overwrite kar raha hai
+    ABORT Ti;
+} else {
+    // Write allow karo
+    W-timestamp(X) = TS(Ti);
+}
+    </pre>
+                </div>
+
+                <div class="example-box">
+                    <h4>🧠 Example: Timestamp Ordering</h4>
+                    <p>Assume karte hain 3 transactions hain with timestamps:</p>
+                    <pre>
+T1 (TS = 5)
+T2 (TS = 10)
+T3 (TS = 15)
+
+Initially:
+R-timestamp(A) = 0
+W-timestamp(A) = 0
+    </pre>
+
+                    <pre>
+🔹 Step 1: T2 wants to Read(A)
+    TS(T2) = 10 > W-timestamp(A) = 0 ✅
+    ➤ R-timestamp(A) = 10
+
+🔹 Step 2: T1 wants to Write(A)
+    TS(T1) = 5 < R-timestamp(A) = 10 ❌
+    ➤ ABORT T1 (older T1 trying to overwrite data read by newer T2)
+
+🔹 Step 3: T3 wants to Write(A)
+    TS(T3) = 15 > R-timestamp(A) = 10 ✅
+    ➤ W-timestamp(A) = 15
+    </pre>
+                    <p><strong>Conclusion:</strong> Timestamp protocol ensure karta hai ki execution order
+                        conflict-serializable ho, lekin purane transactions ko abort kar diya jaata hai agar woh naya
+                        data access karna chahein.</p>
+                </div>
+
+                <h3>✅ Advantages:</h3>
+                <ul>
+                    <li>💀 No deadlocks (koi wait nahi karta — directly abort hota hai)</li>
+                    <li>🔓 No lock management needed</li>
+                    <li>✅ Conflict serializability ensure hoti hai</li>
+                </ul>
+
+                <div class="error-box">
+                    <h4>❌ Disadvantages:</h4>
+                    <ul>
+                        <li><strong>High Abort Rate:</strong> Purane transactions baar-baar abort ho sakte hain</li>
+                        <li><strong>Starvation:</strong> Older transactions may never finish</li>
+                        <li><strong>Overhead:</strong> Har data item ke liye timestamps maintain karna padta hai</li>
+                        <li><strong>Cascading Rollbacks:</strong> Agar abort hua, toh doosre dependent transactions bhi
+                            rollback ho sakte hain</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 7: Summary -->
+            <div class="section">
+                <h2><span class="emoji">📋</span>7. Summary & Comparison</h2>
+
+                <!-- Comparison Table -->
+                <div class="table-container">
+                    <table border="1" cellpadding="10" cellspacing="0">
+                        <thead style="background-color: #f0f0f0;">
+                            <tr>
+                                <th>🛠️ Protocol</th>
+                                <th>🎯 Purpose</th>
+                                <th>✅ Advantages</th>
+                                <th>⚠️ Disadvantages</th>
+                                <th>📌 Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Basic Locking</strong></td>
+                                <td>Control access to data</td>
+                                <td>Simple and flexible</td>
+                                <td>Prone to deadlocks and cascading rollbacks</td>
+                                <td>Small/simple apps with limited concurrency</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Two-Phase Locking (2PL)</strong></td>
+                                <td>Ensure serializability</td>
+                                <td>Guarantees conflict serializability</td>
+                                <td>Can cause deadlocks and cascading rollbacks</td>
+                                <td>Used in most commercial DBMS (MySQL, Oracle)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Strict 2PL</strong></td>
+                                <td>Ensure recoverability</td>
+                                <td>Prevents cascading rollbacks</td>
+                                <td>Reduces concurrency</td>
+                                <td>Systems needing safe recovery (e.g., banking)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Timestamp Ordering</strong></td>
+                                <td>Order transactions without locks</td>
+                                <td>No deadlocks, no locking required</td>
+                                <td>High abort rate, starvation possible</td>
+                                <td>Read-heavy or low-write environments</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Key Points Summary -->
+                <div class="key-point" style="margin-top: 20px;">
+                    <strong>🎯 Key Takeaways:</strong>
+                    <ul>
+                        <li>✔️ <strong>Serialization</strong> ensures correctness during concurrent transactions.</li>
+                        <li>✔️ <strong>Conflict Serializability</strong> is practically used to check schedule safety.
+                        </li>
+                        <li>🔐 <strong>Locking Protocols</strong> reduce concurrency to maintain consistency.</li>
+                        <li>💡 <strong>Strict 2PL</strong> is the most common strategy in real-world systems.</li>
+                        <li>⏰ <strong>Timestamp Ordering</strong> offers a lock-free solution but at a cost.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
