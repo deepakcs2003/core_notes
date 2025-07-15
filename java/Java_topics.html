@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java SDE Interview Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        .section-header {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .priority-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: auto;
+        }
+
+        .high-priority {
+            background: #e74c3c;
+        }
+
+        .medium-priority {
+            background: #f39c12;
+        }
+
+        .low-priority {
+            background: #27ae60;
+        }
+
+        .topic-list {
+            margin: 15px 0;
+        }
+
+        .topic-item {
+            background: #f8f9fa;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .topic-item:hover {
+            background: #e8f4f8;
+            transform: translateX(5px);
+        }
+
+        .question-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .question-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .question-box ul {
+            color: #856404;
+            margin-left: 20px;
+        }
+
+        .code-example {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .interview-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .interview-table th,
+        .interview-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .interview-table th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .interview-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .interview-table tr:hover {
+            background: #e8f4f8;
+        }
+
+        .checklist {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .checklist h4 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .checklist-item input {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .tips-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .tips-box h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .progress-bar {
+            background: #ecf0f1;
+            border-radius: 10px;
+            height: 20px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            transition: width 0.3s ease;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .important-highlight {
+            background: #fff3cd;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .section-header {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Java SDE Interview Guide</h1>
+            <p>Complete preparation roadmap for Software Development Engineer roles</p>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🎯</span>
+                Interview Overview
+                <span class="priority-badge high-priority">Essential</span>
+            </div>
+            <div class="section-content">
+                <p>For <strong>SDE (Software Development Engineer)</strong> roles, interviewers assess both your <strong>problem-solving skills (DSA)</strong> and <strong>deep understanding of Java concepts</strong>, especially around <strong>OOP, memory, concurrency, and system design</strong>.</p>
+                
+                <div class="important-highlight">
+                    <strong>Key Success Factors:</strong>
+                    <ul>
+                        <li>Strong grasp of OOP principles with real-world examples</li>
+                        <li>Deep understanding of Java Collections Framework</li>
+                        <li>Multithreading and concurrency knowledge</li>
+                        <li>Modern Java features (Java 8+)</li>
+                        <li>Problem-solving with optimal solutions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🧠</span>
+                1. Object-Oriented Programming (OOP)
+                <span class="priority-badge high-priority">Very High Priority</span>
+            </div>
+            <div class="section-content">
+                <p><strong>Mastering OOP is non-negotiable for SDE roles.</strong></p>
+                
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Core Principles:</strong> Inheritance, Encapsulation, Abstraction, Polymorphism
+                    </div>
+                    <div class="topic-item">
+                        <strong>Advanced Concepts:</strong> Composition over inheritance, SOLID Principles
+                    </div>
+                    <div class="topic-item">
+                        <strong>Method Concepts:</strong> Overriding vs Overloading, Method Hiding
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// Polymorphism Example
+abstract class Animal {
+    abstract void makeSound();
+}
+
+class Dog extends Animal {
+    void makeSound() {
+        System.out.println("Woof!");
+    }
+}
+
+class Cat extends Animal {
+    void makeSound() {
+        System.out.println("Meow!");
+    }
+}
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Frequently Asked Questions:</h4>
+                    <ul>
+                        <li>Can you explain polymorphism with a code example?</li>
+                        <li>Difference between abstraction and encapsulation?</li>
+                        <li>Why composition over inheritance?</li>
+                        <li>Explain all SOLID principles with examples</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">⚙️</span>
+                2. Java Basics & Language Features
+                <span class="priority-badge high-priority">High Priority</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>JVM Architecture:</strong> JDK, JRE, JVM Internal Working, ClassLoader
+                    </div>
+                    <div class="topic-item">
+                        <strong>Data Types:</strong> Primitive types, Wrapper classes, Autoboxing & Unboxing
+                    </div>
+                    <div class="topic-item">
+                        <strong>Keywords:</strong> final, static, this, super, volatile, transient
+                    </div>
+                    <div class="topic-item">
+                        <strong>String Handling:</strong> String vs StringBuilder vs StringBuffer
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// String Immutability Example
+String str1 = "Hello";
+String str2 = str1.concat(" World");
+System.out.println(str1); // Output: Hello (unchanged)
+System.out.println(str2); // Output: Hello World
+
+// StringBuilder for mutable strings
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+System.out.println(sb); // Output: Hello World
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Common Questions:</h4>
+                    <ul>
+                        <li>Why String is immutable? Benefits and drawbacks?</li>
+                        <li>What happens if the main method is private?</li>
+                        <li>Difference between == and .equals()?</li>
+                        <li>hashCode() and equals() contract</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">📦</span>
+                3. Collections & Data Structures
+                <span class="priority-badge high-priority">Must-Know</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>List Interface:</strong> ArrayList vs LinkedList vs Vector
+                    </div>
+                    <div class="topic-item">
+                        <strong>Set Interface:</strong> HashSet vs TreeSet vs LinkedHashSet
+                    </div>
+                    <div class="topic-item">
+                        <strong>Map Interface:</strong> HashMap vs TreeMap vs LinkedHashMap
+                    </div>
+                    <div class="topic-item">
+                        <strong>Concurrent Collections:</strong> ConcurrentHashMap, CopyOnWriteArrayList
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// HashMap Internal Working
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("key1", 100);
+map.put("key2", 200);
+
+// Custom objects as keys
+class Person {
+    String name;
+    int age;
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return age == person.age && Objects.equals(name, person.name);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+}
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Important Questions:</h4>
+                    <ul>
+                        <li>Internal working of HashMap - collision handling</li>
+                        <li>Why HashSet doesn't allow duplicates?</li>
+                        <li>How to remove duplicates from a list?</li>
+                        <li>When to use ArrayList vs LinkedList?</li>
+                        <li>ConcurrentHashMap vs Hashtable vs synchronized HashMap</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🧵</span>
+                4. Multithreading and Concurrency
+                <span class="priority-badge high-priority">High Priority</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Thread Basics:</strong> Thread lifecycle, Runnable vs Thread class
+                    </div>
+                    <div class="topic-item">
+                        <strong>Synchronization:</strong> synchronized keyword, wait(), notify(), notifyAll()
+                    </div>
+                    <div class="topic-item">
+                        <strong>Advanced:</strong> volatile, AtomicInteger, ExecutorService, ThreadLocal
+                    </div>
+                    <div class="topic-item">
+                        <strong>Problems:</strong> Deadlock, Race Condition, Thread Safety
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// Producer-Consumer Example
+class ProducerConsumer {
+    private final Object lock = new Object();
+    private final Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+    private final int CAPACITY = 10;
+    
+    public void produce() throws InterruptedException {
+        synchronized (lock) {
+            while (queue.size() == CAPACITY) {
+                lock.wait();
+            }
+            queue.offer(1);
+            lock.notifyAll();
+        }
+    }
+    
+    public void consume() throws InterruptedException {
+        synchronized (lock) {
+            while (queue.isEmpty()) {
+                lock.wait();
+            }
+            queue.poll();
+            lock.notifyAll();
+        }
+    }
+}
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Frequently Asked:</h4>
+                    <ul>
+                        <li>Difference between wait() and sleep()?</li>
+                        <li>What is deadlock? How to prevent it?</li>
+                        <li>Explain Java Memory Model</li>
+                        <li>volatile vs synchronized</li>
+                        <li>Thread pool and ExecutorService</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🔥</span>
+                5. Exception Handling
+                <span class="priority-badge medium-priority">Medium Priority</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Basics:</strong> try-catch-finally, throw, throws
+                    </div>
+                    <div class="topic-item">
+                        <strong>Types:</strong> Checked vs Unchecked Exceptions
+                    </div>
+                    <div class="topic-item">
+                        <strong>Custom:</strong> Creating custom exceptions
+                    </div>
+                    <div class="topic-item">
+                        <strong>Best Practices:</strong> Exception hierarchy, proper resource handling
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// Try-with-resources (Java 7+)
+try (FileReader file = new FileReader("file.txt");
+     BufferedReader reader = new BufferedReader(file)) {
+    
+    String line = reader.readLine();
+    // Resources automatically closed
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// Custom Exception
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Common Questions:</h4>
+                    <ul>
+                        <li>Difference between final, finally, and finalize()?</li>
+                        <li>Can we have try without catch?</li>
+                        <li>Exception hierarchy in Java</li>
+                        <li>Best practices for exception handling</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🚀</span>
+                6. Java 8+ Features
+                <span class="priority-badge high-priority">VERY Important</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Lambda Expressions:</strong> Syntax, functional interfaces
+                    </div>
+                    <div class="topic-item">
+                        <strong>Stream API:</strong> filter, map, reduce, collect operations
+                    </div>
+                    <div class="topic-item">
+                        <strong>Optional:</strong> Null safety, best practices
+                    </div>
+                    <div class="topic-item">
+                        <strong>Method References:</strong> Static, instance, constructor references
+                    </div>
+                </div>
+
+                <pre class="code-example">
+// Stream API Examples
+List&lt;Integer&gt; numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+// Filter even numbers and square them
+List&lt;Integer&gt; evenSquares = numbers.stream()
+    .filter(n -&gt; n % 2 == 0)
+    .map(n -&gt; n * n)
+    .collect(Collectors.toList());
+
+// Group by even/odd
+Map&lt;Boolean, List&lt;Integer&gt;&gt; grouped = numbers.stream()
+    .collect(Collectors.partitioningBy(n -&gt; n % 2 == 0));
+
+// Optional usage
+Optional&lt;String&gt; optional = Optional.ofNullable(getString());
+optional.ifPresent(System.out::println);
+String result = optional.orElse("Default Value");
+                </pre>
+
+                <div class="question-box">
+                    <h4>💬 Frequently Asked:</h4>
+                    <ul>
+                        <li>How to filter a list using Stream API?</li>
+                        <li>Write a lambda to sort a list of objects</li>
+                        <li>Difference between map() and flatMap()</li>
+                        <li>When to use Optional?</li>
+                        <li>Parallel vs Sequential streams</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🧪</span>
+                7. Memory Management & JVM
+                <span class="priority-badge medium-priority">SDE+ Level</span>
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Memory Areas:</strong> Stack vs Heap, Method Area, PC Register
+                    </div>
+                    <div class="topic-item">
+                        <strong>Garbage Collection:</strong> Mark & Sweep, Generational GC
+                    </div>
+                    <div class="topic-item">
+                        <strong>References:</strong> Strong, Weak, Soft, Phantom references
+                    </div>
+                    <div class="topic-item">
+                        <strong>Performance:</strong> Memory leaks, OutOfMemoryError
+                    </div>
+                </div>
+
+                <div class="tips-box">
+                    <h4>🔍 JVM Tuning Tips:</h4>
+                    <ul>
+                        <li>Understand heap generations (Young, Old, Permanent)</li>
+                        <li>Know when objects are eligible for GC</li>
+                        <li>Recognize common memory leak patterns</li>
+                        <li>Monitor memory usage and GC logs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">📊</span>
+                8. Interview Round Structure
+            </div>
+            <div class="section-content">
+                <table class="interview-table">
+                    <thead>
+                        <tr>
+                            <th>Round</th>
+                            <th>Focus</th>
+                            <th>Java Areas Involved</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Online Coding</td>
+                            <td>DSA, Arrays, Strings, HashMap, DP</td>
+                            <td>Java syntax, Collections, Streams</td>
+                            <td>1-2 hours</td>
+                        </tr>
+                        <tr>
+                            <td>Technical Round 1</td>
+                            <td>Java Core + OOP + Problem Solving</td>
+                            <td>OOP, Collections, Threads, Exceptions</td>
+                            <td>45-60 min</td>
+                        </tr>
+                        <tr>
+                            <td>Technical Round 2</td>
+                            <td>System Design or Java Deep Dive</td>
+                            <td>Design patterns, JVM, Memory, Concurrency</td>
+                            <td>45-60 min</td>
+                        </tr>
+                        <tr>
+                            <td>Managerial</td>
+                            <td>Past Projects, Debugging, Scenarios</td>
+                            <td>Real-world Java application experience</td>
+                            <td>30-45 min</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">✅</span>
+                9. Pre-Interview Checklist
+            </div>
+            <div class="section-content">
+                <div class="checklist">
+                    <h4>📋 Complete Before Interview:</h4>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="oop">
+                        <label for="oop">Master all OOP concepts with examples</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="collections">
+                        <label for="collections">Understand Collections Framework internals</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="multithreading">
+                        <label for="multithreading">Practice multithreading scenarios</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="java8">
+                        <label for="java8">Master Java 8+ features (Streams, Lambda)</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="coding">
+                        <label for="coding">Solve 50+ coding problems in Java</label>
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="projects">
+                        <label for="projects">Prepare to discuss your Java projects</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">💡</span>
+                10. Interview Success Tips
+            </div>
+            <div class="section-content">
+                <div class="tips-box">
+                    <h4>🎯 Key Success Strategies:</h4>
+                    <ul>
+                        <li><strong>Think out loud:</strong> Explain your approach before coding</li>
+                        <li><strong>Ask clarifying questions:</strong> Understand requirements fully</li>
+                        <li><strong>Consider edge cases:</strong> Think about null, empty, boundary values</li>
+                        <li><strong>Optimize gradually:</strong> Start with working solution, then optimize</li>
+                        <li><strong>Code cleanly:</strong> Use meaningful variable names and proper formatting</li>
+                        <li><strong>Test your solution:</strong> Walk through with example inputs</li>
+                    </ul>
+                </div>
+
+                <div class="important-highlight">
+                    <strong>Common Mistakes to Avoid:</strong>
+                    <ul>
+                        <li>Not handling null pointer exceptions</li>
+                        <li>Forgetting to synchronize in multithreaded scenarios</li>
+                        <li>Not considering time/space complexity</li>
+                        <li>Overcomplicating simple solutions</li>
+                        <li>Not testing edge cases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <span class="emoji">🎯</span>
+                11. Practice Resources
+            </div>
+            <div class="section-content">
+                <div class="topic-list">
+                    <div class="topic-item">
+                        <strong>Coding Practice:</strong> LeetCode, HackerRank, CodeChef
+                    </div>
+                    <div class="topic-item">
+                        <strong>Java Concepts:</strong> Oracle Java Documentation, Baeldung
+                    </div>
+                    <div class="topic-item">
+                        <strong>System Design:</strong> High Scalability, System Design Primer
+                    </div>
+                    <div class="topic-item">
+                        <strong>Mock Interviews:</strong> Pramp, InterviewBit, GeeksforGeeks
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="window.print()">📄 Print Guide</button>
+                    <button class="btn" onclick="alert('Bookmark this page for quick reference!')">🔖 Bookmark</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple progress tracking
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const completed = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                const total = checkboxes.length;
+                const progress = (completed / total) * 100;
+                
+                // You can add a progress bar here if needed
+                console.log(`Progress: ${progress.toFixed(0)}%`);
+            });
+        });
+
+        // Smooth scrolling for better UX
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
