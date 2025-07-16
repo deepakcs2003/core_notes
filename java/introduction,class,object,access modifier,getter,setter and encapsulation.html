@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP Concepts - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .section p, .section li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .definition {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+            font-style: italic;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 20px 0;
+            border: 1px solid #4a5568;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-keyword {
+            color: #fbb6ce;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .analogy {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .practice-task {
+            background: #d4edda;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+       
+        <div class="content">
+            <section class="section">
+                <h2><span class="icon">🧠</span> 1. Why do we need OOP?</h2>
+                <p>Imagine you're writing a program for a school to manage:</p>
+                <ul>
+                    <li>Students</li>
+                    <li>Teachers</li>
+                    <li>Courses</li>
+                </ul>
+                <p>Without OOP, you'd write all data and logic in one place — which becomes <strong>messy, confusing, hard to update, and reuse</strong>.</p>
+                
+                <h3>✅ OOP helps us by:</h3>
+                <div class="benefits">
+                    <div class="benefit-card">
+                        <strong>Organization</strong><br>
+                        Code into real-world objects
+                    </div>
+                    <div class="benefit-card">
+                        <strong>Reusability</strong><br>
+                        Use code again and again
+                    </div>
+                    <div class="benefit-card">
+                        <strong>Security</strong><br>
+                        Hide and protect data
+                    </div>
+                    <div class="benefit-card">
+                        <strong>Maintainability</strong><br>
+                        Easy to understand and update
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">💡</span> 2. What is OOP?</h2>
+                <div class="definition">
+                    <strong>OOP = Object-Oriented Programming</strong><br>
+                    It's a style of programming that uses <strong>objects</strong> and <strong>classes</strong> to represent real-world things.
+                </div>
+                
+                <div class="analogy">
+                    <h3>🏠 Real-World Analogy</h3>
+                    <p>Imagine you're building a game where:</p>
+                    <ul>
+                        <li>A <strong>Dog</strong> has name, color, and can bark.</li>
+                        <li>A <strong>Car</strong> has brand, speed, and can move.</li>
+                    </ul>
+                    <p>Instead of mixing everything, we create:</p>
+                    <ul>
+                        <li>A <strong>Dog class</strong></li>
+                        <li>A <strong>Car class</strong></li>
+                    </ul>
+                    <p>And we create <strong>objects</strong> like:</p>
+                    <ul>
+                        <li>Dog d1 = new Dog();</li>
+                        <li>Car c1 = new Car();</li>
+                    </ul>
+                    <p>That's the power of OOP — <strong>structure, clarity, and real-world feel</strong>.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">📦</span> 3. What is a Class?</h2>
+                <img src="https://techworm.net/programming/wp-content/uploads/2018/09/classes_and_objects.jpg" alt="Class Example" style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+                <div class="definition">
+                    A <strong>class</strong> is like a <strong>blueprint</strong> or <strong>design</strong> for objects.
+                </div>
+                <div class="highlight">
+                    <strong>Example:</strong> "Car" class → tells what a car has (color, speed) and what it can do (drive)
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🧱</span> 4. What is an Object?</h2>
+                <div class="definition">
+                    An <strong>object</strong> is a <strong>real thing</strong> created from the class.
+                </div>
+                <div class="highlight">
+                    <strong>Example:</strong> My red car → has speed 80, color red
+                </div>
+
+                <h3>✅ Java Code Example:</h3>
+                <pre><code><span class="code-comment">// Create a Car blueprint</span>
+<span class="code-keyword">class</span> Car {
+    String color;
+    <span class="code-keyword">int</span> speed;
+
+    <span class="code-keyword">void</span> drive() {
+        System.out.println(<span class="code-string">"Driving at speed: "</span> + speed);
+    }
+}
+
+<span class="code-comment">// Main class</span>
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Car myCar = <span class="code-keyword">new</span> Car();  <span class="code-comment">// Create object</span>
+
+        myCar.color = <span class="code-string">"Red"</span>;
+        myCar.speed = 100;
+
+        System.out.println(<span class="code-string">"Car color: "</span> + myCar.color);
+        myCar.drive(); <span class="code-comment">// Method call</span>
+    }
+}</code></pre>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🔐</span> 5. What is Encapsulation?</h2>
+                <img src="https://www.crio.do/blog/content/images/2022/01/What-is-Encapsulation.png" alt="Encapsulation Example" style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+                <div class="definition">
+                    <strong>Encapsulation = wrapping data(variables) + methods in one unit (class)</strong>, and <strong>hiding data</strong> from outside.
+                </div>
+                
+                <div class="analogy">
+                    <h3>🔒 Real-World Example:</h3>
+                    <p>Bank ATM: You can <strong>use buttons</strong> (methods), but <strong>can't see the code</strong> (data is hidden)</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🧰</span> 6. What are Access Modifiers?</h2>
+                <p>These control <strong>who can access</strong> your variables/methods.</p>
+                <img src="http://www.startertutorials.com/corejava/wp-content/uploads/2014/11/Access-modifiers.jpg" alt="Access Modifiers" style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+            </section>
+
+       <section class="section">
+  <h2><span class="icon">🛠</span> 7. Getter and Setter (Easy Explanation)</h2>
+
+  <p>
+    In Java, <code>private</code> variables are <strong>not directly accessible</strong> from outside the class.  
+    To access or update them safely, we use:
+    <ul>
+      <li><strong>Getter</strong> – to read the value</li>
+      <li><strong>Setter</strong> – to set or update the value</li>
+    </ul>
+  </p>
+
+  <h3>✅ Simple Java Example:</h3>
+  <pre><code><span class="code-keyword">class</span> Student {
+    <span class="code-keyword">private</span> String name; <span class="code-comment">// private data (not directly visible)</span>
+
+    <span class="code-comment">// Setter - allows us to set the name</span>
+    <span class="code-keyword">public void</span> setName(String n) {
+        name = n;
+    }
+
+    <span class="code-comment">// Getter - allows us to get the name</span>
+    <span class="code-keyword">public</span> String getName() {
+        <span class="code-keyword">return</span> name;
+    }
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Student s = <span class="code-keyword">new</span> Student(); <span class="code-comment">// Create object</span>
+
+        s.setName(<span class="code-string">"Deepak"</span>); <span class="code-comment">// Set value using setter</span>
+        System.out.println(<span class="code-string">"Student name: "</span> + s.getName()); <span class="code-comment">// Get value using getter</span>
+    }
+}</code></pre>
+
+  <p><strong>💬 Output:</strong><br>
+     Student name: Deepak
+  </p>
+
+  <p><strong>🔒 Why use this?</strong><br>
+     To protect the <code>name</code> field from unwanted access and changes, and to give controlled access using methods.
+  </p>
+</section>
+
+
+            <section class="section">
+                <h2><span class="icon">📌</span> Summary of Terms</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Meaning (Simple)</th>
+                            <th>Real Life Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Class</strong></td>
+                            <td>Blueprint/design of something</td>
+                            <td>Car design</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Object</strong></td>
+                            <td>Real item created from class</td>
+                            <td>Your red car</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Encapsulation</strong></td>
+                            <td>Hide data, give access using methods</td>
+                            <td>ATM only shows screen</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Private</strong></td>
+                            <td>Used inside only</td>
+                            <td>Secret locker key</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Public</strong></td>
+                            <td>Can be used by anyone</td>
+                            <td>TV remote</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Getter/Setter</strong></td>
+                            <td>To read/write private variables</td>
+                            <td>ATM buttons to check balance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">💬</span> Common Interview Questions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>What to Say</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>What is OOP?</td>
+                            <td>A style of programming using classes and objects.</td>
+                        </tr>
+                        <tr>
+                            <td>What is a class?</td>
+                            <td>A blueprint or design for objects.</td>
+                        </tr>
+                        <tr>
+                            <td>What is an object?</td>
+                            <td>A real instance of a class.</td>
+                        </tr>
+                        <tr>
+                            <td>What is encapsulation?</td>
+                            <td>Wrapping variables and methods inside a class and hiding data.</td>
+                        </tr>
+                        <tr>
+                            <td>Why use private and public?</td>
+                            <td>To control who can access data.</td>
+                        </tr>
+                        <tr>
+                            <td>What are getter and setter?</td>
+                            <td>Methods to read/write private variables.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">✅</span> Practice Task</h2>
+                <div class="practice-task">
+                    <h3>Create a class <code>BankAccount</code> with:</h3>
+                    <ul>
+                        <li>Private balance</li>
+                        <li><code>deposit(amount)</code> method</li>
+                        <li><code>getBalance()</code> method</li>
+                        <li>Prevent direct access to balance</li>
+                    </ul>
+                    <p><strong>Challenge:</strong> Try to implement this using the concepts you learned!</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS: Process Management Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        h2 {
+            color: #34495e;
+            background-color: #ecf0f1;
+            padding: 12px 15px;
+            border-left: 5px solid #3498db;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin: 20px 0 10px 0;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        ul {
+            margin: 10px 0 15px 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .code-block {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .process-flow {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #2c3e50;
+        }
+
+        .example {
+            background-color: #e8f5e8;
+            border-left: 4px solid #27ae60;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .example strong {
+            color: #27ae60;
+        }
+
+        .analogy {
+            background-color: #fef9e7;
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .analogy strong {
+            color: #e67e22;
+        }
+
+        .summary-table {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quick-notes {
+            background-color: #e3f2fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .quick-notes ul {
+            columns: 2;
+            column-gap: 30px;
+        }
+
+        .quick-notes li {
+            break-inside: avoid;
+            margin-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .quick-notes ul {
+                columns: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📘 OS: Process Management (Lec 9, 10, 11)</h1>
+
+        <div class="section">
+            <h2>✅ What is a Process?</h2>
+            <ul>
+                <li>A <span class="highlight">process</span> is a <strong>program in execution</strong>. OS handles processes.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>✅ How does OS create a process?</h2>
+            <h3>Steps:</h3>
+            <ol>
+                <li><strong>Load program & static data</strong> into memory.</li>
+                <li><strong>Allocate runtime stack</strong> (for function calls/variables).</li>
+                <li><strong>Allocate heap</strong> (for dynamic memory).</li>
+                <li><strong>Setup I/O tasks</strong> (open files, etc.).</li>
+                <li><strong>Give control</strong> to the <code>main()</code> function.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>✅ Process Attributes & PCB (Process Control Block)</h2>
+            <h3>Processes Architecture</h3>
+            <img src="https://www.sitesbay.com/os/images/process-architecture.png" alt="Processes Architecture" style="width: 40%; border-radius: 10px; margin: 20px 0;">
+            <p>OS tracks all processes using a <span class="highlight">Process Table</span>.</p>
+            <p>Each process has an entry called <span class="highlight">PCB</span>, storing:</p>
+            <img src="https://cdn1.byjus.com/wp-content/uploads/2022/06/process-control-block.png" alt="Process Control Block" style="width: 60%; border-radius: 10px; margin: 20px 0;">
+            <div class="example">
+                <strong>👉 Use-case:</strong> During <strong>context switch</strong>, PCB is updated to <strong>save/restore</strong> process state.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Process States (Life Cycle)</h2>
+            <p>These are stages of a process:</p>
+
+            <div class="process-flow">
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220907002353/sixdrawio.png" alt="Process States" style="width: 100%; border-radius: 10px; margin: 10px 0;">
+            </div>
+            <table>
+                <tr>
+                    <th>State</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>NEW</td>
+                    <td>Process is being created</td>
+                </tr>
+                <tr>
+                    <td>READY</td>
+                    <td>Loaded into RAM, waiting for CPU</td>
+                </tr>
+                <tr>
+                    <td>RUNNING</td>
+                    <td>Actively executing on CPU</td>
+                </tr>
+                <tr>
+                    <td>WAITING</td>
+                    <td>Waiting for I/O</td>
+                </tr>
+                <tr>
+                    <td>TERMINATED</td>
+                    <td>Finished execution</td>
+                </tr>
+            </table>
+            <p>🔁 Some intermediate actions:</p>
+            <ul>
+                <li><strong>Preemption</strong> (from Running to Ready)</li>
+                <li><strong>I/O request</strong> (from Running to Waiting)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>✅ Process Queues</h2>
+            <ol>
+                <li><strong>Job Queue</strong>: NEW processes in <strong>disk</strong>; managed by <strong>LTS (Long Term Scheduler)</strong>.</li>
+                <li><strong>Ready Queue</strong>: READY processes in <strong>RAM</strong>; managed by <strong>STS (Short Term Scheduler)</strong>.</li>
+                <li><strong>Waiting Queue</strong>: WAITING processes; doing I/O.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>✅ Schedulers</h2>
+            <table>
+                <tr>
+                    <th>Scheduler</th>
+                    <th>Role</th>
+                    <th>Controls</th>
+                </tr>
+                <tr>
+                    <td>LTS</td>
+                    <td>Loads new processes to RAM</td>
+                    <td>Degree of multiprogramming</td>
+                </tr>
+                <tr>
+                    <td>STS</td>
+                    <td>Picks process from Ready Queue</td>
+                    <td>Assigns CPU</td>
+                </tr>
+                <tr>
+                    <td>MTS</td>
+                    <td>Swaps out processes from RAM</td>
+                    <td>Medium-term memory use</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>✅ Swapping (By MTS)</h2>
+            <ul>
+                <li>Temporarily <strong>swap out</strong> a process from RAM to disk to free memory.</li>
+                <li>Later, <strong>swap it back in</strong> when needed.</li>
+            </ul>
+            <div class="example">
+                <strong>📌 Example:</strong> If RAM is full, MTS might <strong>suspend</strong> a low-priority process and bring it back later.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Context Switching</h2>
+            <p>When CPU switches from one process to another:</p>
+            <ul>
+                <li>Save current process state (in PCB)</li>
+                <li>Load new process state (from PCB)</li>
+            </ul>
+            <p><strong>Overhead:</strong> No actual work is done during switch.</p>
+            <div class="analogy">
+                <strong>📌 Analogy:</strong> Like saving your game before someone else plays.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Process Types</h2>
+            <h3>1. Orphan Process</h3>
+            <ul>
+                <li>Parent died, child still running.</li>
+                <li>Adopted by <strong>init process (PID 1)</strong>.</li>
+            </ul>
+            <h3>2. Zombie Process</h3>
+            <ul>
+                <li>Child finished, parent hasn't read its status.</li>
+                <li>Stays in process table until parent calls <code>wait()</code>.</li>
+            </ul>
+            <div class="example">
+                <strong>📌 Example:</strong>
+                <div class="code-block">
+fork();
+exit(0); // child
+wait();  // parent reaps
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Preemptive vs Non-Preemptive Scheduling</h2>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Non-Preemptive</td>
+                    <td>CPU is not taken forcefully; process runs till done or waits</td>
+                </tr>
+                <tr>
+                    <td>Preemptive</td>
+                    <td>CPU can be taken anytime for a higher priority process</td>
+                </tr>
+            </table>
+            <div class="example">
+                <strong>📌 Example:</strong> You're using PC → Urgent system update interrupts → You're paused (Preemptive)
+            </div>
+        </div>
+
+       
+        <div class="section">
+            <h2>📌 Summary Table</h2>
+            <div class="summary-table">
+                <table>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Keyword/Idea</th>
+                    </tr>
+                    <tr>
+                        <td>Process</td>
+                        <td>Program in execution</td>
+                    </tr>
+                    <tr>
+                        <td>PCB</td>
+                        <td>Stores process info</td>
+                    </tr>
+                    <tr>
+                        <td>Scheduler Types</td>
+                        <td>LTS, STS, MTS</td>
+                    </tr>
+                    <tr>
+                        <td>Queues</td>
+                        <td>Job, Ready, Waiting</td>
+                    </tr>
+                    <tr>
+                        <td>Context Switch</td>
+                        <td>Save/Restore state</td>
+                    </tr>
+                    <tr>
+                        <td>Swapping</td>
+                        <td>Move in/out of RAM</td>
+                    </tr>
+                    <tr>
+                        <td>Orphan Process</td>
+                        <td>Parent dead, child alive</td>
+                    </tr>
+                    <tr>
+                        <td>Zombie Process</td>
+                        <td>Child dead, waiting to be reaped</td>
+                    </tr>
+                    <tr>
+                        <td>Preemptive</td>
+                        <td>Forcefully switch</td>
+                    </tr>
+                    <tr>
+                        <td>Non-preemptive</td>
+                        <td>Wait till end</td>
+                    </tr>
+                    <tr>
+                        <td>Multiprogramming</td>
+                        <td>Multiple in memory</td>
+                    </tr>
+                    <tr>
+                        <td>Multitasking</td>
+                        <td>Time-sharing</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🧠 Quick Interview Prep Notes (One-Liner)</h2>
+            <div class="quick-notes">
+                <ul>
+                    <li><strong>Process vs Program</strong> – Program is static, process is dynamic.</li>
+                    <li><strong>PCB</strong> – Structure storing process details.</li>
+                    <li><strong>Ready Queue</strong> – Holds all ready-to-run processes.</li>
+                    <li><strong>Zombie</strong> – Dead child process not yet reaped.</li>
+                    <li><strong>Orphan</strong> – Child whose parent exited.</li>
+                    <li><strong>Swapping</strong> – Temporarily moves process out of RAM.</li>
+                    <li><strong>Context Switch</strong> – Save and restore CPU state.</li>
+                    <li><strong>LTS vs STS vs MTS</strong> – Controls when to bring, assign, and swap.</li>
+                    <li><strong>Preemptive</strong> – Can interrupt running process.</li>
+                    <li><strong>Multiprogramming</strong> – Multiple loaded.</li>
+                    <li><strong>Multitasking</strong> – Time sharing of CPU.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

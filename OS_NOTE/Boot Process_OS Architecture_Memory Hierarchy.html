@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS Study Notes - Boot Process, OS Architecture & Memory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            font-size: 1.4em;
+            margin: 20px 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .step-table, .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .step-table th, .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .step-table td, .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .step-table tr:nth-child(even), .comparison-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .step-table tr:hover, .comparison-table tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .highlight-box {
+            background: #e8f5e8;
+            border: 1px solid #4caf50;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+
+        .highlight-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .info-box h4 {
+            color: #0c5460;
+            margin-bottom: 10px;
+        }
+
+        .memory-hierarchy {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 15px;
+        }
+
+        .memory-level {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .memory-level.register {
+            background: #e74c3c;
+        }
+
+        .memory-level.cache {
+            background: #f39c12;
+        }
+
+        .memory-level.ram {
+            background: #3498db;
+        }
+
+        .memory-level.secondary {
+            background: #27ae60;
+        }
+
+        .quiz-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quiz-section h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .quiz-questions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .quiz-question {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-left: 3px solid #667eea;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #667eea;
+        }
+
+        .summary-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .summary-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .summary-card li {
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .summary-card li:last-child {
+            border-bottom: none;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .memory-hierarchy {
+                flex-direction: column;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💻 Computer Science Study Notes</h1>
+            <p>Boot Process • OS Architecture • Memory Hierarchy</p>
+        </div>
+
+        <div class="content">
+            <!-- Section 1: Boot Process -->
+            <div class="section">
+                <h2><span class="emoji">🔄</span> LEC-6: What Happens When You Turn On Your Computer?</h2>
+                <img src="https://i.ytimg.com/vi/Q3rssfwxcyA/maxresdefault.jpg" alt="Boot Process Diagram" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <h3>Step-by-Step Boot Process</h3>
+                <table class="step-table">
+                    <thead>
+                        <tr>
+                            <th>Step</th>
+                            <th>Description</th>
+                            <th>Example / Analogy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="step-number">1</span>Power ON</td>
+                            <td>You press the power button. Electricity flows to the motherboard.</td>
+                            <td>Like switching on a car.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="step-number">2</span>POST (Power-On Self-Test)</td>
+                            <td>BIOS/UEFI checks hardware (keyboard, RAM, hard disk) for basic functionality.</td>
+                            <td>Like a pilot checking engine, wings, etc. before flying.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="step-number">3</span>BIOS/UEFI Loads</td>
+                            <td>Basic firmware stored in ROM. Finds bootable devices (HDD, SSD, USB).</td>
+                            <td>It's the "start-up brain" of the motherboard.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="step-number">4</span>Bootloader Loads</td>
+                            <td>BIOS finds and runs bootloader (like GRUB, Windows Boot Manager) from disk.</td>
+                            <td>Bootloader is like a traffic cop directing where the OS is.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="step-number">5</span>OS Loads into RAM</td>
+                            <td>Bootloader loads OS kernel (Windows/Linux/macOS) into RAM.</td>
+                            <td>Like reading instructions (OS) from a book (disk) into your brain (RAM).</td>
+                        </tr>
+                        <tr>
+                            <td><span class="step-number">6</span>System Starts</td>
+                            <td>OS initializes services, drivers, login screen appears.</td>
+                            <td>You're ready to work now!</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <h4>🧠 Interview Tip:</h4>
+                    <p><strong>Q: What is the role of BIOS?</strong><br>
+                    A: BIOS performs hardware checks and loads the bootloader which then loads the OS.</p>
+                </div>
+            </div>
+
+            <!-- Section 2: 32-bit vs 64-bit -->
+            <div class="section">
+                <h2><span class="emoji">💻</span> LEC-7: 32-Bit vs 64-Bit OS</h2>
+                
+                <h3>Key Differences</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>32-bit OS</th>
+                            <th>64-bit OS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Registers</strong></td>
+                            <td>32-bit</td>
+                            <td>64-bit</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Max RAM</strong></td>
+                            <td>~4 GB</td>
+                            <td>~18 Quintillion GB (theoretical)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Processes 4 bytes/cycle</td>
+                            <td>Processes 8 bytes/cycle</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Compatibility</strong></td>
+                            <td>Runs only 32-bit apps & OS</td>
+                            <td>Runs both 32-bit & 64-bit apps/OS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Slower for heavy apps</td>
+                            <td>Better for gaming, video editing, etc.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <h4>🔧 Real-World Example:</h4>
+                    <p>A PC with 8GB RAM and 64-bit processor:</p>
+                    <ul>
+                        <li>If you install a <strong>32-bit OS</strong>, only 4GB RAM will be used.</li>
+                        <li>With <strong>64-bit OS</strong>, full 8GB RAM is utilized.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>🧠 Interview Tip:</h4>
+                    <p><strong>Q: Why can't a 32-bit OS use more than 4GB RAM?</strong><br>
+                    A: Because it can only generate 2³² (4,294,967,296) memory addresses = 4GB.</p>
+                </div>
+            </div>
+
+            <!-- Section 3: Memory Hierarchy -->
+            <div class="section">
+                <h2><span class="emoji">💾</span> LEC-8: Storage Devices & Memory Hierarchy</h2>
+
+                <h3>Memory Types (From Fastest to Slowest)</h3>
+                <img src="https://www.cs.swarthmore.edu/~kwebb/cs31/f18/memhierarchy/figures/MemoryHierarchy.png" alt="Memory Hierarchy" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+              
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Memory Type</th>
+                            <th>Description</th>
+                            <th>Speed</th>
+                            <th>Size</th>
+                            <th>Volatile?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Register</strong></td>
+                            <td>Built into CPU. Holds small bits of data like instructions.</td>
+                            <td>Fastest</td>
+                            <td>Few Bytes</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cache</strong></td>
+                            <td>Fast memory near CPU. Stores frequently used data.</td>
+                            <td>Very Fast</td>
+                            <td>KB to MB</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>RAM (Main Memory)</strong></td>
+                            <td>Temporary workspace for CPU. Apps and OS load here.</td>
+                            <td>Fast</td>
+                            <td>GBs</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Secondary Storage</strong></td>
+                            <td>Hard drives, SSDs. Permanent storage.</td>
+                            <td>Slowest</td>
+                            <td>TBs</td>
+                            <td>No</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+              
+
+                <div class="highlight-box">
+                    <h4>🧠 Interview Tip:</h4>
+                    <p><strong>Q: Why is cache faster than RAM?</strong><br>
+                    A: Cache is physically closer to the CPU and built with faster memory (SRAM vs DRAM in RAM).</p>
+                </div>
+            </div>
+
+            <!-- Quick Summary -->
+            <div class="section">
+                <h2><span class="emoji">✅</span> Quick Summary (Super Revision)</h2>
+                
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h4>💡 What Happens When You Turn On Your Computer?</h4>
+                        <ul>
+                            <li>Power → POST → BIOS → Bootloader → OS Loads → Ready to Use</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h4>💡 32-bit vs 64-bit</h4>
+                        <ul>
+                            <li>32-bit: Max 4GB RAM, slower</li>
+                            <li>64-bit: Handles more RAM, faster, supports both 32 & 64-bit apps</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h4>💡 Memory Types</h4>
+                        <ul>
+                            <li>Registers > Cache > RAM > Secondary Storage</li>
+                            <li>Faster = Smaller & Costlier</li>
+                            <li>Primary memory = Volatile</li>
+                            <li>Secondary memory = Non-volatile</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Section -->
+            <div class="quiz-section">
+                <h3>🧪 Interview Quick Questions</h3>
+                <div class="quiz-questions">
+                    <div class="quiz-question">1. What is the role of BIOS in booting?</div>
+                    <div class="quiz-question">2. Explain POST.</div>
+                    <div class="quiz-question">3. Difference between 32-bit and 64-bit OS.</div>
+                    <div class="quiz-question">4. Why 32-bit OS can't use more than 4GB RAM?</div>
+                    <div class="quiz-question">5. What are registers? Why are they fast?</div>
+                    <div class="quiz-question">6. What is the difference between Cache and RAM?</div>
+                    <div class="quiz-question">7. What is volatile and non-volatile memory?</div>
+                    <div class="quiz-question">8. Arrange these in order of speed: HDD, Register, RAM, Cache.</div>
+                    <div class="quiz-question">9. How does the CPU use cache memory?</div>
+                    <div class="quiz-question">10. Can you install 64-bit OS on 32-bit CPU?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

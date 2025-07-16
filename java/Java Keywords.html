@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Keywords - Complete Guide</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #34495e;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .keyword-intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .keyword-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .keyword-tag {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        .keyword-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #fafbfc;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+
+        .keyword-section::before {
+            content: attr(data-keyword);
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .meaning-box {
+            background: #e8f5e8;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #27ae60;
+            margin: 15px 0;
+        }
+
+        .syntax-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .invalid-box {
+            background: #f8d7da;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+        }
+
+        .usecase-box {
+            background: #cce5ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin: 15px 0;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 15px 0;
+            border: 1px solid #34495e;
+        }
+
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .error-code {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .success-code {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: black;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .summary-section h2 {
+            color: black;
+            border-left: 4px solid white;
+        }
+
+        .summary-section table {
+            margin-top: 20px;
+        }
+
+        .summary-section th {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .summary-section tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .interview-tip {
+            background: #e8f5e8;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+            margin: 30px 0;
+        }
+
+        .question-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #6c757d;
+        }
+
+        .answer-box {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .forms-box {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4169e1;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔑 Java Keywords - Complete Interview Guide</h1>
+
+        <div class="keyword-intro">
+            <h2 style="color: white; border: none; padding: 0; margin: 0;">Keywords Covered in This Guide</h2>
+            <div class="keyword-list">
+                <span class="keyword-tag">final</span>
+                <span class="keyword-tag">static</span>
+                <span class="keyword-tag">this</span>
+                <span class="keyword-tag">super</span>
+                <span class="keyword-tag">volatile</span>
+                <span class="keyword-tag">transient</span>
+                <span class="keyword-tag">synchronized</span>
+                <span class="keyword-tag">instanceof</span>
+            </div>
+        </div>
+
+        <!-- Final Keyword -->
+        <div class="keyword-section" data-keyword="final">
+            <h2>🔹 1. final – Constant or Non-changeable</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 Meaning:</h3>
+                <p>Used to <strong>prevent modification</strong>:</p>
+                <ul>
+                    <li>final variable → value can't change</li>
+                    <li>final method → can't be overridden</li>
+                    <li>final class → can't be extended</li>
+                </ul>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Syntax & Example:</h3>
+                <pre>final int x = 10;  <span class="code-comment">// cannot change x again</span>
+
+final class Vehicle { }       <span class="code-comment">// cannot be extended</span>
+
+class A {
+    final void show() {
+        System.out.println("Final method");
+    }
+}</pre>
+            </div>
+
+            <div class="invalid-box">
+                <h3>🚫 Invalid:</h3>
+                <pre>x = 20; <span class="error-code">// ❌ Error: cannot assign a value to final variable</span></pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Constants (final double PI = 3.14;)</li>
+                    <li>Security (prevent overriding in sensitive classes)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Static Keyword -->
+        <div class="keyword-section" data-keyword="static">
+            <h2>🔹 2. static – Belongs to Class, Not Object</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 Meaning:</h3>
+                <ul>
+                    <li>Shared by all objects</li>
+                    <li>Can be accessed without object creation</li>
+                    <li>Used for memory efficiency and utility methods</li>
+                </ul>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Syntax & Example:</h3>
+                <pre>class MyClass {
+    static int count = 0; <span class="code-comment">// shared across all objects</span>
+
+    static void display() {
+        System.out.println("Static method");
+    }
+}
+
+MyClass.display(); <span class="code-comment">// No object needed</span></pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Utility methods (Math.sqrt())</li>
+                    <li>Shared counters</li>
+                    <li>main() method is static so JVM can call it without object</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- This Keyword -->
+        <div class="keyword-section" data-keyword="this">
+            <h2>🔹 3. this – Refers to Current Object (Instance)</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 What is an Instance?</h3>
+                <p>
+                    A class is like a blueprint, and an <strong>instance</strong> is a real object created from that
+                    class.<br>
+                    For example:
+                    Student s1 = new Student(); ← s1 is an <strong>instance</strong> of the Student class.
+                </p>
+            </div>
+
+            <div class="meaning-box">
+                <h3>🧠 Meaning of this:</h3>
+                <ul>
+                    <li><strong>`this`</strong> refers to the <strong>current object (instance)</strong> inside a method
+                        or constructor.</li>
+                    <li>Used when local variable names are the same as instance variables.</li>
+                    <li>Also used to call another constructor or pass current object as argument.</li>
+                </ul>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Example 1: Distinguishing Between Local and Instance Variables</h3>
+                <pre>class Student {
+    int roll;  // instance variable
+
+    Student(int roll) {
+        this.roll = roll;  // this.roll = instance variable, roll = local variable
+    }
+
+    void show() {
+        System.out.println("Roll number: " + this.roll);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s1 = new Student(101);
+        s1.show();  // Output: Roll number: 101
+    }
+}</pre>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔁 Example 2: Constructor Chaining using this()</h3>
+                <pre>class Book {
+    String title;
+    int price;
+
+    // No-argument constructor
+    Book() {
+        this("Java", 500);  // calls another constructor
+    }
+
+    Book(String title, int price) {
+        this.title = title;
+        this.price = price;
+    }
+
+    void show() {
+        System.out.println(title + " - Rs." + price);
+    }
+}</pre>
+            </div>
+
+            <div class="syntax-box">
+                <h3>📤 Example 3: Passing Current Object using this</h3>
+                <pre>class Person {
+    void print(Person p) {
+        System.out.println("This is: " + p);
+    }
+
+    void call() {
+        print(this);  // passes current object to print()
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases of this:</h3>
+                <ul>
+                    <li>To differentiate between local and instance variables.</li>
+                    <li>To call one constructor from another using this().</li>
+                    <li>To pass the current object as a parameter to a method.</li>
+                    <li>To return the current object from a method (used in method chaining).</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <!-- Super Keyword -->
+        <div class="keyword-section" data-keyword="super">
+            <h2>🔹 4. super – Parent Class Reference</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 Meaning:</h3>
+                <ul>
+                    <li>Used to refer to <strong>superclass variables, methods, or constructors</strong></li>
+                    <li>Used in <strong>inheritance</strong></li>
+                </ul>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Example:</h3>
+                <pre>class Animal {
+    String name = "Animal";
+    void speak() {
+        System.out.println("Animal speaks");
+    }
+}
+
+class Dog extends Animal {
+    String name = "Dog";
+    void printNames() {
+        System.out.println(super.name); <span class="code-comment">// Animal</span>
+        System.out.println(this.name);  <span class="code-comment">// Dog</span>
+    }
+
+    void speak() {
+        super.speak(); <span class="code-comment">// Call parent method</span>
+        System.out.println("Dog barks");
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Call parent constructor using super()</li>
+                    <li>Access parent fields/methods overridden by child</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Volatile Keyword -->
+        <div class="keyword-section" data-keyword="volatile">
+            <h2>🔹 5. volatile – Thread Visibility Guarantee</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 What is volatile?</h3>
+                <ul>
+                    <li>Used when a <strong>variable is shared between multiple threads</strong>.</li>
+                    <li>Forces all threads to <strong>always read/write from main memory</strong>.</li>
+                    <li>Prevents a thread from using a <strong>cached value</strong> of a variable.</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h3>💡 Real-Life Analogy:</h3>
+                <p>
+                    Imagine two workers (threads) checking a note (variable). If one keeps a copy in his pocket and the
+                    other updates the note on the wall, the first won’t see the change.
+                    <br>
+                    <strong>With volatile</strong>: The worker must always check the wall, not his pocket.
+                </p>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Simple Example:</h3>
+                <pre>class SharedResource {
+    volatile boolean running = true;
+
+    void stop() {
+        running = false;
+    }
+
+    void work() {
+        while (running) {
+            // do some work
+        }
+        System.out.println("Thread stopped.");
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Used for <strong>status flags</strong> like running, isActive.</li>
+                    <li>When you only need to ensure <strong>visibility</strong> between threads.</li>
+                    <li>Used in <strong>multi-threaded applications</strong> to share simple variables.</li>
+                </ul>
+            </div>
+
+            <div class="note-box">
+                <h3>⚠️ Important Notes:</h3>
+                <ul>
+                    <li>volatile does NOT make operations atomic (like x++ is still not
+                        thread-safe).</li>
+                    <li>If you need both <strong>visibility and atomicity</strong>, use synchronized or
+                        Atomic classes.
+                    </li>
+                </ul>
+            </div>
+
+            <div class="interview-box">
+                <h3>📝 Interview Tip:</h3>
+                <p>
+                    If asked “What does volatile do?” say: <br>
+                    <em>“It guarantees visibility of changes to variables across threads — all threads see the most
+                        recent value.”</em>
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Transient Keyword -->
+        <div class="keyword-section" data-keyword="transient">
+            <h2>🔹 6. transient – Exclude from Serialization</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 What is Serialization?</h3>
+                <p>
+                    <strong>Serialization</strong> is the process of converting an object into a byte stream so it can
+                    be saved to a file or sent over a network.
+                </p>
+                <p>
+                    <strong>Deserialization</strong> is converting that byte stream back into the original object.
+                </p>
+            </div>
+
+            <div class="meaning-box">
+                <h3>🔑 What is transient?</h3>
+                <ul>
+                    <li>It prevents a variable from being serialized.</li>
+                    <li>Useful when you don’t want to save or expose sensitive or temporary data.</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h3>💡 Real-Life Example:</h3>
+                <p>
+                    Imagine you’re saving a User object to a file. You want to save the name
+                    but not the password.
+                    So, you mark the password field as transient to hide it.
+                </p>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Code Example:</h3>
+                <pre>import java.io.*;
+
+class User implements Serializable {
+    String name;
+    transient String password;
+
+    User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        User user1 = new User("Deepak", "secret123");
+
+        // Serialize
+        FileOutputStream fos = new FileOutputStream("user.txt");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(user1);
+        oos.close();
+
+        // Deserialize
+        FileInputStream fis = new FileInputStream("user.txt");
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        User savedUser = (User) ois.readObject();
+        ois.close();
+
+        System.out.println("Name: " + savedUser.name);        // Output: Deepak
+        System.out.println("Password: " + savedUser.password); // Output: null
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Hiding sensitive data like password, OTP, pin</li>
+                    <li>Not saving temporary fields (like cache or lastUpdated)</li>
+                    <li>Skipping non-serializable fields (e.g., Thread, Socket)</li>
+                </ul>
+            </div>
+
+            <div class="interview-box">
+                <h3>📝 Interview Tip:</h3>
+                <p>
+                    <strong>Q:</strong> What does transient do in Java?<br>
+                    <strong>A:</strong> It tells the JVM to skip this variable when serializing an object.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Synchronized Keyword -->
+        <div class="keyword-section" data-keyword="synchronized">
+            <h2>🔹 7. synchronized – Thread Safety</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 What is synchronized?</h3>
+                <ul>
+                    <li>Used in <strong>multi-threaded programs</strong> to prevent problems when multiple threads
+                        access the same resource.</li>
+                    <li>Ensures that <strong>only one thread</strong can enter a critical section at a time.</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h3>💡 Real-Life Analogy:</h3>
+                <p>
+                    Think of a toilet in a public restroom. Only one person can go in at a time (it has a lock). The
+                    others must wait.
+                    <br>
+                    <strong>synchronized</strong> acts like that lock in your code.
+                </p>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Example: Safe Counter</h3>
+                <pre>class Counter {
+    private int count = 0;
+
+    // synchronized method ensures one thread at a time
+    synchronized void increment() {
+        count++;
+    }
+
+    int getCount() {
+        return count;
+    }
+}</pre>
+            </div>
+
+            <div class="forms-box">
+                <h3>🔐 Two Forms:</h3>
+                <pre>// 1. Synchronized Method
+synchronized void methodA() {
+    // critical code
+}
+
+// 2. Synchronized Block
+void methodB() {
+    synchronized(this) {
+        // critical code
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Banking systems (update balances safely)</li>
+                    <li>Counting visitors to a website</li>
+                    <li>Writing to shared files or logs</li>
+                </ul>
+            </div>
+
+            <div class="interview-box">
+                <h3>📝 Interview Tip:</h3>
+                <p>
+                    <strong>Q:</strong> Why is synchronized important?<br>
+                    <strong>A:</strong> It prevents race conditions by allowing only one thread to access critical code
+                    at a time.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Instanceof Keyword -->
+        <div class="keyword-section" data-keyword="instanceof">
+            <h2>🔹 8. instanceof – Type Check</h2>
+
+            <div class="meaning-box">
+                <h3>🧠 What is instanceof?</h3>
+                <ul>
+                    <li><strong>`instanceof`</strong> is a keyword in Java used to check if an object is an
+                        <strong>instance of a specific class or subclass</strong>.</li>
+                    <li>Returns true if the object is of that type, otherwise false.</li>
+                    <li>Helps in **safe downcasting** to avoid runtime errors.</li>
+                </ul>
+            </div>
+
+            <div class="concept-box">
+                <h3>💡 Real-Life Analogy:</h3>
+                <p>
+                    Imagine you have a list of animals. You want to perform dog tricks, but only if the animal is a dog.
+                    So you check: <strong>"Is this animal a Dog?"</strong> → That’s what instanceof does.
+                </p>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔧 Example: Basic Use</h3>
+                <pre>class Animal {}
+class Dog extends Animal {}
+class Cat extends Animal {}
+
+public class Test {
+    public static void main(String[] args) {
+        Animal a = new Dog(); // a is of type Animal, but actually refers to a Dog
+
+        if (a instanceof Dog) {
+            System.out.println("It's a Dog!");
+        }
+
+        if (a instanceof Cat) {
+            System.out.println("It's a Cat!");
+        } else {
+            System.out.println("It's NOT a Cat");
+        }
+    }
+}
+// Output:
+// It's a Dog!
+// It's NOT a Cat
+</pre>
+            </div>
+
+            <div class="syntax-box">
+                <h3>🔁 Example: Safe Downcasting</h3>
+                <pre>class Animal {}
+class Dog extends Animal {
+    void bark() {
+        System.out.println("Woof!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a = new Dog();
+
+        if (a instanceof Dog) {
+            Dog d = (Dog) a; // Safe casting
+            d.bark(); // Woof!
+        }
+    }
+}</pre>
+            </div>
+
+            <div class="usecase-box">
+                <h3>✅ Use Cases:</h3>
+                <ul>
+                    <li>Checking object type before casting</li>
+                    <li>Used in <strong>polymorphism</strong> to identify actual object type</li>
+                    <li>Prevents ClassCastException at runtime</li>
+                </ul>
+            </div>
+
+            <div class="interview-box">
+                <h3>📝 Interview Tip:</h3>
+                <p>
+                    <strong>Q:</strong> Why is instanceof used in Java?<br>
+                    <strong>A:</strong> It checks whether an object is of a specific class type to safely perform
+                    downcasting and avoid runtime errors.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- Summary Section -->
+        <div class="summary-section">
+            <h2>📝 Final Summary Table</h2>
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Purpose</th>
+                    <th>Common Use Case</th>
+                </tr>
+                <tr>
+                    <td>final</td>
+                    <td>Prevent change</td>
+                    <td>Constants, prevent method override</td>
+                </tr>
+                <tr>
+                    <td>static</td>
+                    <td>Shared by all objects</td>
+                    <td>Utility methods, shared counters</td>
+                </tr>
+                <tr>
+                    <td>this</td>
+                    <td>Refers to current object</td>
+                    <td>Resolve variable name conflict</td>
+                </tr>
+                <tr>
+                    <td>super</td>
+                    <td>Refers to parent class</td>
+                    <td>Inheritance, call parent constructor</td>
+                </tr>
+                <tr>
+                    <td>volatile</td>
+                    <td>Thread-safe visibility</td>
+                    <td>Flags in multi-threading</td>
+                </tr>
+                <tr>
+                    <td>transient</td>
+                    <td>Skip during serialization</td>
+                    <td>Hide sensitive data</td>
+                </tr>
+                <tr>
+                    <td>synchronized</td>
+                    <td>Thread-safe method/block</td>
+                    <td>Avoid race condition</td>
+                </tr>
+                <tr>
+                    <td>instanceof</td>
+                    <td>Check object type before casting</td>
+                    <td>Polymorphism, type safety</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Interview Tips -->
+        <div class="interview-tip">
+            <h2>🎯 Interview Tip: How to Answer</h2>
+
+            <div class="question-box">
+                <strong>✅ "Can you explain volatile?"</strong>
+            </div>
+            <div class="answer-box">
+                <strong>✔ Answer:</strong> "Yes, volatile is used in multi-threading to ensure that changes
+                to a variable are visible to all threads. Without it, a thread may see a cached value instead of the
+                latest value from memory."
+            </div>
+
+            <div class="question-box">
+                <strong>✅ "Why use transient?"</strong>
+            </div>
+            <div class="answer-box">
+                <strong>✔ Answer:</strong> "To prevent fields from being serialized — especially helpful when we don't
+                want to store sensitive or temporary data."
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

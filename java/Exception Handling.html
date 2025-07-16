@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Exception Handling - Complete Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+            padding: 15px;
+            border: 1px solid #ecf0f1;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 15px 0;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .hierarchy {
+            background: #34495e;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .example-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .note-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        .warning-box {
+            background: #f8d7da;
+            border: 1px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #dc3545;
+        }
+
+        .interview-qa {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        ul,
+        ol {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin: 5px 0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚨 Java Exception Handling - Complete Guide</h1>
+
+        <div class="section">
+            <h2>🧠 1. What is an Exception?</h2>
+            <p>An <span class="highlight">exception</span> is an event that <strong>disrupts normal flow</strong> of the
+                program at runtime.</p>
+
+            <div class="example-box">
+                <h3>🧃 Real-Life Example:</h3>
+                <p>Imagine you're using an <strong>ATM</strong>:</p>
+                <ul>
+                    <li>You try to <strong>withdraw ₹5000</strong>, but your balance is ₹1000</li>
+                    <li>💥 The system throws an <strong>InsufficientBalanceException</strong></li>
+                </ul>
+            </div>
+
+            <h3>🧱 Java Program Example:</h3>
+            <pre>int a = 10;
+int b = 0;
+int result = a / b;  // ❌ ArithmeticException: divide by zero</pre>
+        </div>
+
+        <div class="box">
+            <h2>🔺 Throwable Class</h2>
+            <p>The <code>Throwable</code> class is the <strong>root</strong> of Java’s exception hierarchy. Every
+                exception or error object in Java is a subclass of <code>Throwable</code>.</p>
+
+            <h2>📦 Two Main Subclasses of Throwable</h2>
+            <ul>
+                <li><strong>Exception</strong> – for conditions that a program should catch and handle.</li>
+                <li><strong>Error</strong> – for serious problems that are not expected to be caught by applications.
+                </li>
+            </ul>
+
+            <img src="ChatGPT Image Jul 16, 2025, 04_42_26 PM.png" alt="Exception Hierarchy"
+                style="width: 100%; border-radius: 8px; margin-top: 15px;">
+            <h2>🔍 Exception Class (Recoverable)</h2>
+            <p>The <code>Exception</code> class represents problems that can be handled programmatically.</p>
+
+            <h3>✅ Checked Exceptions</h3>
+            <ul>
+                <li>Checked at compile time.</li>
+                <li>Must be handled using <code>try-catch</code> or declared with <code>throws</code>.</li>
+                <li>Examples:
+                    <ul>
+                        <li><code>IOException</code></li>
+                        <li><code>SQLException</code></li>
+                        <li><code>ClassNotFoundException</code></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>⚠️ Unchecked Exceptions (Runtime)</h3>
+            <ul>
+                <li>Checked at runtime, not compile time.</li>
+                <li>Optional to handle explicitly.</li>
+                <li>Examples:
+                    <ul>
+                        <li><code>ArithmeticException</code></li>
+                        <li><code>NullPointerException</code></li>
+                        <li><code>IndexOutOfBoundsException</code>
+                            <ul>
+                                <li><code>ArrayIndexOutOfBoundsException</code></li>
+                                <li><code>StringIndexOutOfBoundsException</code></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2>🚫 Error Class (Unrecoverable)</h2>
+            <p>The <code>Error</code> class indicates serious problems that applications should not attempt to catch.
+            </p>
+            <ul>
+                <li><code>StackOverflowError</code></li>
+                <li><code>VirtualMachineError</code></li>
+                <li><code>OutOfMemoryError</code> (not shown but common)</li>
+            </ul>
+        </div>
+
+
+        <div class="section">
+            <h2>🧩 3. try-catch-finally</h2>
+            <img src="https://www.wikitechy.com/tutorials/java/img/java-images/try-catch-finally-block.png"
+                alt="try-catch-finally" style="width: 100%; border-radius: 8px; margin-top: 15px;">
+            <h3>🔧 Syntax:</h3>
+            <pre><code>try {
+    // Code that might throw an exception
+} catch (ExceptionType e) {
+    // Code to handle the specific exception
+} finally {
+    // Code that always executes (cleanup, closing files, etc.)
+}</code></pre>
+
+            <div class="example-box">
+                <h3>✅ Example:</h3>
+                <pre><code>try {
+    int result = 10 / 0;  // This will throw ArithmeticException
+} catch (ArithmeticException e) {
+    System.out.println("Cannot divide by zero!"); // This will run
+} finally {
+    System.out.println("Cleanup done!"); // This will always run
+}</code></pre>
+            </div>
+
+            <p><strong>📝 Output:</strong></p>
+            <ul>
+                <li><code>Cannot divide by zero!</code></li>
+                <li><code>Cleanup done!</code></li>
+            </ul>
+
+            <p><strong>📌 Note:</strong> The <code>finally</code> block will always execute whether an exception is
+                thrown or not. It's used to release resources like file handles, database connections, etc.</p>
+        </div>
+
+
+        <div class="section">
+            <h2>🧪 4. throw vs throws</h2>
+            <img src="https://tse1.mm.bing.net/th/id/OIP.fSns6-_S2RrusBx4Nn1POQHaEH?pid=Api&P=0&h=180"
+                alt="throw vs throws" style="width: 100%; border-radius: 8px; margin-top: 15px;">
+            <p><strong>🧠 Hinglish Explanation:</strong></p>
+            <ul>
+                <li><code>throw</code> ka use tab karte hain jab aap <strong>manually exception throw</strong> karna
+                    chahte ho.</li>
+                <li><code>throws</code> ka use method ke signature mein hota hai, jahan aap <strong>declare</strong>
+                    karte ho ki method exception throw kar sakta hai.</li>
+            </ul>
+
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Meaning</th>
+                    <th>Used In</th>
+                </tr>
+                <tr>
+                    <td><code>throw</code></td>
+                    <td>Used to <strong>manually throw</strong> an exception</td>
+                    <td>Inside method body</td>
+                </tr>
+                <tr>
+                    <td><code>throws</code></td>
+                    <td>Used to <strong>declare</strong> that a method may throw an exception</td>
+                    <td>In method signature</td>
+                </tr>
+            </table>
+
+            <div class="example-box">
+                <h3>✅ Example 1: Using <code>throw</code></h3>
+                <pre><code>void validateAge(int age) {
+    if (age < 18) {
+        throw new IllegalArgumentException("Invalid age: must be 18 or above");
+    }
+    System.out.println("Valid age!");
+}</code></pre>
+                <p><strong>Output:</strong> Agar age 15 hai to: <code>Invalid age: must be 18 or above</code></p>
+            </div>
+
+            <div class="example-box">
+                <h3>✅ Example 2: Using <code>throws</code></h3>
+                <pre><code>import java.io.*;
+
+void readFile() throws IOException {
+    FileReader fr = new FileReader("file.txt");
+    // This may throw IOException
+}</code></pre>
+                <p><strong>Note:</strong> Method ke signature mein <code>throws IOException</code> likhne se compiler ko
+                    pata chalta hai ki is method mein exception aa sakta hai.</p>
+            </div>
+
+            <p><strong>💡 Tip:</strong> Aksar interview mein yeh puchte hain: "throw vs throws difference?"</p>
+            <p><strong>Answer:</strong> <code>throw</code> ka use exception ko actually throw karne ke liye hota hai,
+                jabki <code>throws</code> batata hai ki method se exception aa sakta hai.</p>
+        </div>
+
+
+        <div class="section">
+            <h2>🏗 5. Custom Exception</h2>
+
+            <p>Create your own exception class:</p>
+            <pre>class AgeException extends Exception {
+    AgeException(String msg) {
+        super(msg);
+    }
+}</pre>
+
+            <p>Use it:</p>
+            <pre>if (age < 18) {
+    throw new AgeException("Not eligible");
+}</pre>
+        </div>
+
+        <div class="section">
+            <h2>🔄 6. final vs finally vs finalize()</h2>
+
+            <p><strong>🧠 Hinglish Explanation:</strong></p>
+            <ul>
+                <li><code>final</code>: Jo cheez fix karni ho (no change allowed)</li>
+                <li><code>finally</code>: try-catch ke baad hamesha chalega (cleanup)</li>
+                <li><code>finalize()</code>: Jab object destroy hone wala ho, GC ke time call hota hai (⚠️ deprecated
+                    after Java 9)</li>
+            </ul>
+
+            <table>
+                <tr>
+                    <th>Keyword</th>
+                    <th>Use</th>
+                </tr>
+                <tr>
+                    <td><code>final</code></td>
+                    <td>Prevent change (used with variables, methods, class)</td>
+                </tr>
+                <tr>
+                    <td><code>finally</code></td>
+                    <td>Always runs after try-catch (cleanup)</td>
+                </tr>
+                <tr>
+                    <td><code>finalize()</code></td>
+                    <td>Called by Garbage Collector before destroying object (deprecated)</td>
+                </tr>
+            </table>
+
+            <div class="example-box">
+                <h3>✅ finalize() Example:</h3>
+                <pre><code>class Demo {
+    protected void finalize() throws Throwable {
+        System.out.println("🗑️ Object is being destroyed by GC");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Demo obj = new Demo();
+        obj = null; // make eligible for GC
+
+        System.gc(); // request garbage collection
+        System.out.println("Main complete");
+    }
+}</code></pre>
+                <p><strong>📝 Output ho sakta hai:</strong> Main complete ke baad finalize() message aaye</p>
+            </div>
+
+            <div class="warning-box">
+                <p><strong>⚠️ Note:</strong> <code>finalize()</code> is <strong>deprecated in Java 9+</strong>. Use
+                    <code>AutoCloseable</code> or try-with-resources instead.</p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h2>🔍 7. try-with-resources (Best Practice)</h2>
+
+            <p>Automatically closes resources like files or DB connections.</p>
+
+            <pre>try (FileReader fr = new FileReader("data.txt")) {
+    // use file
+} catch (IOException e) {
+    e.printStackTrace();
+}</pre>
+        </div>
+
+        <div class="section">
+            <h2>📝 Interview Summary</h2>
+
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Notes</th>
+                </tr>
+                <tr>
+                    <td>Throwable</td>
+                    <td>Base class of Error & Exception</td>
+                </tr>
+                <tr>
+                    <td>Checked Exception</td>
+                    <td>Must handle using try-catch or throws</td>
+                </tr>
+                <tr>
+                    <td>Unchecked</td>
+                    <td>Occurs at runtime</td>
+                </tr>
+                <tr>
+                    <td>throw</td>
+                    <td>Manually throw exception</td>
+                </tr>
+                <tr>
+                    <td>throws</td>
+                    <td>Declare possible exception</td>
+                </tr>
+                <tr>
+                    <td>finally</td>
+                    <td>Always executes for cleanup</td>
+                </tr>
+                <tr>
+                    <td>finalize()</td>
+                    <td>Called by GC (now deprecated)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🔥 Interview Q&A</h2>
+
+            <div class="interview-qa">
+                <h3>Q1: What is the difference between checked and unchecked exceptions?</h3>
+                <p>✅ <strong>Checked:</strong> Must be handled (<code>IOException</code>)</p>
+                <p>❌ <strong>Unchecked:</strong> Runtime errors (<code>NullPointerException</code>)</p>
+            </div>
+
+            <div class="interview-qa">
+                <h3>Q2: What is the difference between <code>throw</code> and <code>throws</code>?</h3>
+                <ul>
+                    <li><code>throw</code>: throw exception manually</li>
+                    <li><code>throws</code>: declare in method signature</li>
+                </ul>
+            </div>
+
+            <div class="interview-qa">
+                <h3>Q3: What is finalize()?</h3>
+                <ul>
+                    <li>Method called by Garbage Collector before object is destroyed</li>
+                    <li>Deprecated, not reliable for cleanup</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

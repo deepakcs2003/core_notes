@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operating Systems Study Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin: 30px 0 20px 0;
+            font-size: 1.8em;
+            padding: 10px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        .intro-box {
+            background: #e8f4f8;
+            border: 1px solid #3498db;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .functions-list {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .functions-list ol {
+            padding-left: 20px;
+        }
+
+        .functions-list li {
+            margin: 8px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning-box ul {
+            padding-left: 20px;
+        }
+
+        .warning-box li {
+            margin: 5px 0;
+        }
+
+        .goals-box {
+            background: #e8f5e8;
+            border: 1px solid #27ae60;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .goals-box ul {
+            padding-left: 20px;
+        }
+
+        .goals-box li {
+            margin: 8px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .concept-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #dee2e6;
+        }
+
+        .concept-section h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .concept-section ul {
+            padding-left: 20px;
+        }
+
+        .concept-section li {
+            margin: 5px 0;
+        }
+
+        .summary-section {
+            background: #e8f4f8;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quick-notes {
+            background: #f1c40f;
+            color: #2c3e50;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .quick-notes h3 {
+            color: #2c3e50;
+            border-left: 4px solid #f39c12;
+            margin-bottom: 15px;
+        }
+
+        .note-item {
+            background: white;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #e67e22;
+        }
+
+        .note-item strong {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖥️ Operating Systems Study Notes</h1>
+
+        <section id="software">
+            <h2>🧠 What is Software?</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>System Software</strong></td>
+                        <td>Controls & operates hardware, and provides a platform to run apps.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Application Software</strong></td>
+                        <td>Performs specific user tasks like MS Word, browsers, games, etc.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="operating-system">
+            <h2>🧠 What is an Operating System (OS)?</h2>
+            <div class="intro-box">
+                <strong>An OS is system software that manages hardware & software resources, and provides an interface between the user and computer hardware.</strong>
+            </div>
+
+            <h3>Main Functions of OS:</h3>
+            <div class="functions-list">
+                <ol>
+                    <li><strong>Hardware Access</strong> (e.g., keyboard, disk, screen)</li>
+                    <li><strong>User Interface</strong> (CLI, GUI)</li>
+                    <li><strong>Resource Management</strong> (memory, CPU, devices)</li>
+                    <li><strong>Abstraction</strong> – hides complex hardware details</li>
+                    <li><strong>Program Execution</strong> – runs apps safely & efficiently</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="no-os">
+            <h2>🚫 What If There's No OS?</h2>
+            <div class="warning-box">
+                <ul>
+                    <li>Every application would need to manage hardware on its own — making it <strong>bulky and complex</strong>.</li>
+                    <li>No resource sharing → <strong>Only one app may dominate.</strong></li>
+                    <li>No <strong>memory protection</strong> → One app could corrupt others.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="os-composition">
+            <h2>🧱 What is an OS Made Up Of?</h2>
+            <div class="intro-box">
+                A <strong>collection of system software</strong> that works together to manage and operate the system.
+            </div>
+        </section>
+
+        <section id="os-goals">
+            <h2>🎯 Goals of an Operating System</h2>
+            <div class="goals-box">
+                <ul>
+                    <li><strong>Maximize CPU utilization</strong></li>
+                    <li><strong>Minimize starvation</strong> of processes</li>
+                    <li><strong>Prioritize</strong> important jobs</li>
+                    <li><strong>Ensure smooth execution</strong> of multiple apps</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="os-types">
+            <h2>📦 Types of Operating Systems</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Key Features</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Single Process OS</strong></td>
+                        <td>Runs only one process at a time</td>
+                        <td>Early PCs, MS-DOS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Batch Processing OS</strong></td>
+                        <td>Groups similar jobs in batches, no interaction during execution</td>
+                        <td>Punch-card systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multiprogramming OS</strong></td>
+                        <td>Multiple programs loaded, one executes, others wait</td>
+                        <td>THE (Dijkstra, 1960s)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multitasking OS</strong></td>
+                        <td>Rapidly switches tasks using time-sharing</td>
+                        <td>Windows, Linux, macOS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multiprocessing OS</strong></td>
+                        <td>Multiple CPUs, more reliable and fast</td>
+                        <td>Unix SMP systems</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Distributed OS</strong></td>
+                        <td>Manages a network of connected computers</td>
+                        <td>LOCUS, Google OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Real-Time OS (RTOS)</strong></td>
+                        <td>Executes tasks within tight timing constraints</td>
+                        <td>Air traffic control, Robots</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="key-concepts">
+            <h2>🔄 Key Concepts</h2>
+
+            <div class="concept-section">
+                <h4>1. Batch Processing OS</h4>
+                <p>User submits job using punch cards → Operator groups & submits them.</p>
+                <p><strong>Disadvantages:</strong></p>
+                <ul>
+                    <li>No priority support → high-priority jobs may starve.</li>
+                    <li>CPU <strong>waits during I/O</strong> → less efficient.</li>
+                </ul>
+            </div>
+
+            <div class="concept-section">
+                <h4>2. Multiprogramming OS</h4>
+                <ul>
+                    <li>Multiple jobs in memory; when one waits (I/O), another runs.</li>
+                    <li><strong>Single CPU</strong>, but <strong>efficient</strong> → less CPU idle time.</li>
+                    <li><strong>Context switching</strong> occurs.</li>
+                </ul>
+            </div>
+
+            <div class="concept-section">
+                <h4>3. Multitasking OS</h4>
+                <ul>
+                    <li>Extension of multiprogramming.</li>
+                    <li>Multiple apps/tasks handled <strong>seemingly at the same time</strong>.</li>
+                    <li>Based on <strong>time-sharing</strong>.</li>
+                    <li>Example: Editing a doc while listening to music.</li>
+                </ul>
+            </div>
+
+            <div class="concept-section">
+                <h4>4. Multiprocessing OS</h4>
+                <ul>
+                    <li><strong>Multiple CPUs</strong>.</li>
+                    <li>Improved <strong>throughput</strong>, <strong>fault-tolerance</strong>, and <strong>parallelism</strong>.</li>
+                    <li>Example: Servers, high-performance computing.</li>
+                </ul>
+            </div>
+
+            <div class="concept-section">
+                <h4>5. Distributed OS</h4>
+                <ul>
+                    <li>Resources like CPUs, memory, and storage are distributed over a <strong>network</strong>.</li>
+                    <li>Each node acts independently but works as a <strong>single system</strong>.</li>
+                    <li>Example: Google File System, cloud platforms.</li>
+                </ul>
+            </div>
+
+            <div class="concept-section">
+                <h4>6. Real-Time OS (RTOS)</h4>
+                <ul>
+                    <li>Used for systems that require <strong>immediate response</strong>.</li>
+                    <li><strong>Time-critical</strong> applications.</li>
+                    <li>Examples: Air traffic systems, robots, medical devices.</li>
+                </ul>
+            </div>
+        </section>
+
+   
+
+        <section id="quick-notes">
+            <div class="quick-notes">
+                <h2>🚀 Quick Notes (Perfect for Revision / Interview)</h2>
+
+                <div class="note-item">
+                    <h3>📘 What is OS?</h3>
+                    <p>System software that controls hardware and provides a platform for applications.</p>
+                </div>
+
+                <div class="note-item">
+                    <h3>📘 Why OS?</h3>
+                    <p><strong>Without it:</strong></p>
+                    <ul>
+                        <li>Complex apps</li>
+                        <li>Resource misuse</li>
+                        <li>No protection</li>
+                    </ul>
+                </div>
+
+                <div class="note-item">
+                    <h3>📘 OS Functions</h3>
+                    <ul>
+                        <li>Interface</li>
+                        <li>Resource Management</li>
+                        <li>Abstraction</li>
+                        <li>Program Execution</li>
+                    </ul>
+                </div>
+
+                <div class="note-item">
+                    <h3>📘 Types of OS</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>CPU(s)</th>
+                                <th>Key Feature</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Single Process</td>
+                                <td>1</td>
+                                <td>One job at a time</td>
+                                <td>MS-DOS</td>
+                            </tr>
+                            <tr>
+                                <td>Batch Processing</td>
+                                <td>1</td>
+                                <td>Jobs grouped by operator</td>
+                                <td>Mainframes</td>
+                            </tr>
+                            <tr>
+                                <td>Multiprogramming</td>
+                                <td>1</td>
+                                <td>One job runs, others wait</td>
+                                <td>UNIX (early)</td>
+                            </tr>
+                            <tr>
+                                <td>Multitasking</td>
+                                <td>1</td>
+                                <td>Time-sharing between apps</td>
+                                <td>Windows/Linux</td>
+                            </tr>
+                            <tr>
+                                <td>Multiprocessing</td>
+                                <td>>1</td>
+                                <td>Parallel processing</td>
+                                <td>Modern Servers</td>
+                            </tr>
+                            <tr>
+                                <td>Distributed</td>
+                                <td>>1 (Nodes)</td>
+                                <td>Networked systems</td>
+                                <td>Google systems</td>
+                            </tr>
+                            <tr>
+                                <td>Real-Time</td>
+                                <td>Depends</td>
+                                <td>Time-sensitive apps</td>
+                                <td>Robots, ATC</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

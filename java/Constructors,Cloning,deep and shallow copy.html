@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Constructors and Cloning - Complete Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .learning-objectives {
+            background: #e8f5e8;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+        }
+
+        .learning-objectives h3 {
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .learning-objectives ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .learning-objectives li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .learning-objectives li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+        }
+
+        .section p,
+        .section li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .definition {
+            background: #d1ecf1;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #17a2b8;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .rules-box {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .rules-box h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .real-life-example {
+            background: #f8d7da;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+        }
+
+        .real-life-example h4 {
+            color: #721c24;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 20px 0;
+            border: 1px solid #4a5568;
+        }
+
+        .code-comment {
+            color: #68d391;
+        }
+
+        .code-keyword {
+            color: #fbb6ce;
+        }
+
+        .code-string {
+            color: #faf089;
+        }
+
+        .output-box {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .output-box strong {
+            color: #155724;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #17a2b8;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-card h4 {
+            color: #17a2b8;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            font-weight: 500;
+        }
+
+        .interview-section {
+            background: #e8f5e8;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 5px solid #28a745;
+        }
+
+        .interview-section h2 {
+            color: #28a745;
+        }
+
+        .icon {
+            font-size: 1.2em;
+        }
+
+        .note-point {
+            background: #f8d7da;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .comparison-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧱 Constructors & Cloning</h1>
+        </div>
+
+        <div class="content">
+
+            <section class="section">
+                <h2><span class="icon">🧱</span> 1. What is a Constructor?</h2>
+
+                <div class="definition">
+                    A constructor is a <strong>special method</strong> that gets called <strong>automatically</strong>
+                    when we create an object. It is used to <strong>initialize values</strong>.
+                </div>
+
+                <div class="rules-box">
+                    <h4>✅ Rules:</h4>
+                    <ul>
+                        <li>Has the <strong>same name as the class</strong></li>
+                        <li><strong>No return type</strong> (not even void)</li>
+                        <li>Called <strong>automatically</strong> when object is created</li>
+                    </ul>
+                </div>
+
+                <div class="real-life-example">
+                    <h4>🔧 Real-Life Example:</h4>
+                    <p>🎓 Imagine you're making a <strong>Student ID card machine</strong>.</p>
+                    <ul>
+                        <li>Whenever a new card is created, you must give the <strong>name</strong> and <strong>roll
+                                number</strong>.</li>
+                        <li>The <strong>constructor</strong> is like the machine that <strong>automatically fills in
+                                these details</strong> when the card (object) is made.</li>
+                        <li>Without a constructor, you'd get a blank card and have to fill it manually later (more work,
+                            more error chances).</li>
+                    </ul>
+
+                </div>
+
+                <h3>✅ Java Code Example:</h3>
+                <pre><code><span class="code-keyword">class</span> Student {
+    String name;
+    <span class="code-keyword">int</span> roll;
+
+    <span class="code-comment">// Constructor</span>
+    Student(String n, <span class="code-keyword">int</span> r) {
+        name = n;
+        roll = r;
+    }
+
+    <span class="code-keyword">void</span> display() {
+        System.out.println(<span class="code-string">"Name: "</span> + name + <span class="code-string">", Roll: "</span> + roll);
+    }
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Student s1 = <span class="code-keyword">new</span> Student(<span class="code-string">"Deepak"</span>, 101); <span class="code-comment">// Constructor runs</span>
+        s1.display();
+    }
+}</code></pre>
+
+                <div class="output-box">
+                    <strong>🧾 Output:</strong><br>
+                    Name: Deepak, Roll: 101
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🔢</span> 2. Types of Constructors</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Non Parameterized Constructor</td>
+                            <td>No arguments, used to assign default values</td>
+                        </tr>
+                        <tr>
+                            <td>Parameterized Constructor</td>
+                            <td>Takes parameters to assign custom values</td>
+                        </tr>
+                        <tr>
+                            <td>Copy Constructor</td>
+                            <td>Makes a copy of another object</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>✅ All 3 Examples Together:</h3>
+                <pre><code><span class="code-keyword">class</span> Student {
+    String name;
+
+    <span class="code-comment">// 1. Default Constructor</span>
+    Student() {
+        name = <span class="code-string">"Default Name"</span>;
+    }
+
+    <span class="code-comment">// 2. Parameterized Constructor</span>
+    Student(String n) {
+        name = n;
+    }
+
+    <span class="code-comment">// 3. Copy Constructor</span>
+    Student(Student s) {
+        name = s.name;
+    }
+
+    <span class="code-keyword">void</span> show() {
+        System.out.println(<span class="code-string">"Name: "</span> + name);
+    }
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Student s1 = <span class="code-keyword">new</span> Student();              <span class="code-comment">// default</span>
+        Student s2 = <span class="code-keyword">new</span> Student(<span class="code-string">"Deepak"</span>);      <span class="code-comment">// parameterized</span>
+        Student s3 = <span class="code-keyword">new</span> Student(s2);            <span class="code-comment">// copy</span>
+
+        s1.show();  <span class="code-comment">// Default Name</span>
+        s2.show();  <span class="code-comment">// Deepak</span>
+        s3.show();  <span class="code-comment">// Deepak</span>
+    }
+}</code></pre>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🔄</span> 3. Shallow Copy vs Deep Copy</h2>
+                <img src="https://i.ibb.co/fk2p7ch/copy.png" alt="Shallow vs Deep Copy"
+                    style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+                <div class="real-life-example">
+                    <h4>🔧 Real-Life Example:</h4>
+                    <p>🍱 Imagine you're giving lunch (tiffin boxes) to two friends:</p>
+                    <ul>
+                        <li>🧊 <strong>Shallow Copy</strong> = Both lunch boxes <strong>share the same food
+                                container</strong>.<br>
+                            If one adds salt, the other also tastes it — because the food is shared.</li>
+                        <li>🍱 <strong>Deep Copy</strong> = Each lunch box has <strong>its own separate food
+                                container</strong>.<br>
+                            If one adds salt, the other remains unchanged — because they have different food inside.
+                        </li>
+                    </ul>
+                    <p><strong>💡 In Java:</strong><br>
+                        - Shallow Copy = Both objects point to the <strong>same memory</strong> for internal data.<br>
+                        - Deep Copy = New object is created with <strong>separate memory</strong>, fully independent.
+                    </p>
+
+                </div>
+
+            
+
+                <h3>🔹 Shallow Copy Example (Java):</h3>
+                <pre><code><span class="code-keyword">class</span> Address {
+    String city;
+}
+
+<span class="code-keyword">class</span> Student {
+    String name;
+    Address address;
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Address addr = <span class="code-keyword">new</span> Address();
+        addr.city = <span class="code-string">"Pune"</span>;
+
+        Student s1 = <span class="code-keyword">new</span> Student();
+        s1.name = <span class="code-string">"Deepak"</span>;
+        s1.address = addr;
+
+        Student s2 = s1; <span class="code-comment">// shallow copy (same reference)</span>
+
+        s2.address.city = <span class="code-string">"Mumbai"</span>;
+
+        System.out.println(s1.address.city); <span class="code-comment">// Output: Mumbai (changed for both)</span>
+    }
+}</code></pre>
+
+                <div class="note-point">
+                    📌 Both <code>s1</code> and <code>s2</code> point to the same <code>Address</code> object.
+                </div>
+
+                <h3>🔹 Deep Copy Example:</h3>
+                <pre><code><span class="code-keyword">class</span> Address {
+    String city;
+
+    Address(String c) {
+        city = c;
+    }
+
+    <span class="code-comment">// Copy Constructor</span>
+    Address(Address a) {
+        city = a.city;
+    }
+}
+
+<span class="code-keyword">class</span> Student {
+    String name;
+    Address address;
+
+    Student(String n, Address a) {
+        name = n;
+        address = <span class="code-keyword">new</span> Address(a); <span class="code-comment">// Deep copy</span>
+    }
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) {
+        Address addr1 = <span class="code-keyword">new</span> Address(<span class="code-string">"Pune"</span>);
+        Student s1 = <span class="code-keyword">new</span> Student(<span class="code-string">"Deepak"</span>, addr1);
+
+        Student s2 = <span class="code-keyword">new</span> Student(s1.name, s1.address); <span class="code-comment">// deep copy</span>
+        s2.address.city = <span class="code-string">"Delhi"</span>;
+
+        System.out.println(s1.address.city); <span class="code-comment">// Pune</span>
+        System.out.println(s2.address.city); <span class="code-comment">// Delhi</span>
+    }
+}</code></pre>
+
+                <div class="note-point">
+                    📌 Now <code>s1</code> and <code>s2</code> have <strong>separate</strong> address objects.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">🧬</span> 4. Cloning</h2>
+
+                <div class="definition">
+                    Cloning means making an <strong>exact copy</strong> of an object using <code>.clone()</code> method.
+                </div>
+
+                <h3>✅ Example:</h3>
+                <pre><code><span class="code-keyword">class</span> Student <span class="code-keyword">implements</span> Cloneable {
+    String name;
+
+    Student(String name) {
+        <span class="code-keyword">this</span>.name = name;
+    }
+
+    <span class="code-comment">// Clone method</span>
+    <span class="code-keyword">public</span> Object clone() <span class="code-keyword">throws</span> CloneNotSupportedException {
+        <span class="code-keyword">return super</span>.clone();
+    }
+}
+
+<span class="code-keyword">public class</span> Main {
+    <span class="code-keyword">public static void</span> main(String[] args) <span class="code-keyword">throws</span> CloneNotSupportedException {
+        Student s1 = <span class="code-keyword">new</span> Student(<span class="code-string">"Deepak"</span>);
+        Student s2 = (Student) s1.clone(); <span class="code-comment">// cloning s1 to s2</span>
+
+        System.out.println(s1.name); <span class="code-comment">// Deepak</span>
+        System.out.println(s2.name); <span class="code-comment">// Deepak</span>
+    }
+}</code></pre>
+            </section>
+
+            <section class="section">
+                <h2><span class="icon">📌</span> INTERVIEW-READY Summary</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Definition / Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Constructor</td>
+                            <td>Auto-called method to initialize object</td>
+                        </tr>
+                        <tr>
+                            <td>Default Constructor</td>
+                            <td>No parameters, assigns default values</td>
+                        </tr>
+                        <tr>
+                            <td>Parameterized Constructor</td>
+                            <td>Accepts arguments to set values</td>
+                        </tr>
+                        <tr>
+                            <td>Copy Constructor</td>
+                            <td>Creates object by copying another</td>
+                        </tr>
+                        <tr>
+                            <td>Shallow Copy</td>
+                            <td>Copies object but shares same inner object reference</td>
+                        </tr>
+                        <tr>
+                            <td>Deep Copy</td>
+                            <td>Creates full independent copy of object and inner object</td>
+                        </tr>
+                        <tr>
+                            <td>Cloning</td>
+                            <td>Uses clone() to make exact copy (needs Cloneable interface)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="section interview-section">
+                <h2><span class="icon">🧠</span> Interview Questions</h2>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>What is a constructor in Java?</td>
+                            <td>A special method called during object creation to initialize values.</td>
+                        </tr>
+                        <tr>
+                            <td>Can a constructor return a value?</td>
+                            <td>No, constructors have no return type.</td>
+                        </tr>
+                        <tr>
+                            <td>What is the difference between constructor and method?</td>
+                            <td>Constructor initializes object; method performs actions.</td>
+                        </tr>
+                        <tr>
+                            <td>What is a copy constructor?</td>
+                            <td>A constructor that takes an object and copies its data.</td>
+                        </tr>
+                        <tr>
+                            <td>What is shallow copy?</td>
+                            <td>Object copy where inner objects are shared.</td>
+                        </tr>
+                        <tr>
+                            <td>What is deep copy?</td>
+                            <td>Object copy with all inner objects independently copied.</td>
+                        </tr>
+                        <tr>
+                            <td>What is cloning?</td>
+                            <td>Making a copy using clone() method.</td>
+                        </tr>
+                        <tr>
+                            <td>What is the need for Cloneable interface?</td>
+                            <td>Java requires it for safe cloning; else throws error.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

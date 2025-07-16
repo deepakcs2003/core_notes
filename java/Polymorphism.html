@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Polymorphism - Complete Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .toc {
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #bdc3c7;
+        }
+
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            border-left: 3px solid #3498db;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .highlight-box {
+            background: #e8f4f8;
+            border: 1px solid #3498db;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .analogy-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 15px 0;
+        }
+
+        .keyword {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #2ecc71;
+        }
+
+        .comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .benefits-list {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .benefits-list ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .benefits-list li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .benefits-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .warning:before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+        }
+
+        .back-to-top:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            pre {
+                font-size: 12px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 Java Polymorphism - Complete Guide</h1>
+
+        <div class="toc">
+            <h3>📘 Table of Contents</h3>
+            <ul>
+                <li><a href="#what-is">1. What is Polymorphism?</a></li>
+                <li><a href="#why-use">2. Why use Polymorphism?</a></li>
+                <li><a href="#types">3. Types: Compile-Time vs Run-Time</a></li>
+                <li><a href="#binding">4. Early Binding vs Late Binding</a></li>
+                <li><a href="#overloading-overriding">5. Method Overloading vs Method Overriding</a></li>
+                <li><a href="#casting">6. Upcasting & Downcasting</a></li>
+                <li><a href="#dispatch">7. Method Dispatch</a></li>
+                <li><a href="#interview">8. Interview Questions & Concepts</a></li>
+            </ul>
+        </div>
+
+        <div class="section" id="what-is">
+            <h2>🧠 1. What is Polymorphism?</h2>
+            <div class="highlight-box">
+                <p><strong>Polymorphism</strong> means "<strong>many forms</strong>."</p>
+                <p>In Java, it allows one object to <strong>take many forms</strong> — specifically, the <strong>same
+                        method name</strong> can behave <strong>differently</strong> depending on context.</p>
+            </div>
+
+            <h3>🎯 Real-Life Analogy:</h3>
+            <div class="analogy-box">
+                <p>🛠 A <strong>remote control</strong> can operate a <strong>TV</strong>, a <strong>fan</strong>, or an
+                    <strong>AC</strong> — same remote (method), but different actions depending on device (object).
+                </p>
+            </div>
+        </div>
+
+        <div class="section" id="why-use">
+            <h2>❓ 2. Why Use Polymorphism?</h2>
+            <div class="benefits-list">
+                <ul>
+                    <li>Code Reusability</li>
+                    <li>Flexibility to use <strong>parent reference for child objects</strong></li>
+                    <li>Helps in <strong>method overriding</strong> and <strong>interface implementation</strong></li>
+                    <li>Reduces coupling (object can be treated generally or specifically)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="types">
+            <h2>🔀 3. Types of Polymorphism in Java</h2>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Also Called</th>
+                    <th>Done By</th>
+                    <th>Binding</th>
+                </tr>
+                <tr>
+                    <td>Compile-time Polymorphism</td>
+                    <td>Static Polymorphism</td>
+                    <td>Method Overloading</td>
+                    <td>Early Binding</td>
+                </tr>
+                <tr>
+                    <td>Run-time Polymorphism</td>
+                    <td>Dynamic Polymorphism</td>
+                    <td>Method Overriding</td>
+                    <td>Late Binding</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section" id="binding">
+            <h2>⏰ 4. Early Binding vs Late Binding</h2>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>When It Happens</th>
+                    <th>Example</th>
+                    <th>Related To</th>
+                </tr>
+                <tr>
+                    <td>Early Binding</td>
+                    <td>Compile Time</td>
+                    <td>Method Overloading</td>
+                    <td>Static</td>
+                </tr>
+                <tr>
+                    <td>Late Binding</td>
+                    <td>Runtime</td>
+                    <td>Method Overriding</td>
+                    <td>Dynamic</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section" id="overloading-overriding">
+            <h2>🔧 5. Method Overloading vs Method Overriding</h2>
+
+            <h3>✅ Example of Method Overloading (Compile-Time):</h3>
+            <pre><code><span class="keyword">class</span> Calculator {
+    <span class="keyword">int</span> add(<span class="keyword">int</span> a, <span class="keyword">int</span> b) {
+        <span class="keyword">return</span> a + b;
+    }
+
+    <span class="keyword">double</span> add(<span class="keyword">double</span> a, <span class="keyword">double</span> b) {
+        <span class="keyword">return</span> a + b;
+    }
+}
+
+<span class="keyword">public class</span> Main {
+    <span class="keyword">public static void</span> main(String[] args) {
+        Calculator c = <span class="keyword">new</span> Calculator();
+        System.out.println(c.add(2, 3));        <span class="comment">// calls int version</span>
+        System.out.println(c.add(2.5, 3.5));    <span class="comment">// calls double version</span>
+    }
+}</code></pre>
+            <p>✔️ Same method name (<code>add</code>), different parameters = <strong>overloading</strong></p>
+
+            <h3>✅ Example of Method Overriding (Runtime):</h3>
+            <pre><code><span class="keyword">class</span> Animal {
+    <span class="keyword">void</span> sound() {
+        System.out.println(<span class="string">"Animal makes sound"</span>);
+    }
+}
+
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+    <span class="keyword">void</span> sound() {
+        System.out.println(<span class="string">"Dog barks"</span>);
+    }
+}
+
+<span class="keyword">public class</span> Main {
+    <span class="keyword">public static void</span> main(String[] args) {
+        Animal a = <span class="keyword">new</span> Dog(); <span class="comment">// upcasting</span>
+        a.sound(); <span class="comment">// Dog barks (overridden version) → runtime polymorphism</span>
+    }
+}</code></pre>
+            <p>✔️ <code>sound()</code> method is called based on <strong>object type</strong>, not reference type.</p>
+        </div>
+
+        <div class="section" id="dispatch">
+            <h2>🧭 6. Method Dispatch in Java</h2>
+
+            <h3>🔹 Dynamic Method Dispatch:</h3>
+            <div class="highlight-box">
+                <p>When a <strong>parent class reference</strong> is used to refer to a <strong>child class
+                        object</strong>, and overridden method is resolved at <strong>runtime</strong>, it's called
+                    <strong>dynamic method dispatch</strong>.
+                </p>
+            </div>
+
+            <h3>✅ Example:</h3>
+            <pre><code><span class="keyword">class</span> Shape {
+    <span class="keyword">void</span> draw() {
+        System.out.println(<span class="string">"Drawing Shape"</span>);
+    }
+}
+
+<span class="keyword">class</span> Circle <span class="keyword">extends</span> Shape {
+    <span class="keyword">void</span> draw() {
+        System.out.println(<span class="string">"Drawing Circle"</span>);
+    }
+}
+
+<span class="keyword">public class</span> Main {
+    <span class="keyword">public static void</span> main(String[] args) {
+        Shape s = <span class="keyword">new</span> Circle(); <span class="comment">// upcasting</span>
+        s.draw(); <span class="comment">// Output: Drawing Circle</span>
+    }
+}</code></pre>
+            <p>📌 The method call is <strong>resolved at runtime</strong>, depending on the actual object.</p>
+        </div>
+
+        <div class="section" id="casting">
+            <h2>🔼 7. Upcasting & 🔽 Downcasting</h2>
+
+            <h3>🔼 Upcasting (Safe, Common):</h3>
+            <div class="highlight-box">
+                <p>Assigning a <strong>child object</strong> to a <strong>parent reference</strong>.</p>
+            </div>
+            <pre><code>Animal a = <span class="keyword">new</span> Dog(); <span class="comment">// Upcasting</span>
+a.sound(); <span class="comment">// Allowed (calls overridden method)</span></code></pre>
+            <p>✔️ Safe because the object is created as a Dog, but treated generally as an Animal.</p>
+
+            <h3>🔽 Downcasting (Risky):</h3>
+            <div class="highlight-box">
+                <p>Casting a <strong>parent reference</strong> back to a <strong>child object</strong>.</p>
+            </div>
+            <pre><code>Animal a = <span class="keyword">new</span> Dog(); <span class="comment">// Upcasting</span>
+Dog d = (Dog) a;       <span class="comment">// Downcasting</span>
+d.sound();             <span class="comment">// Works if 'a' is actually a Dog</span></code></pre>
+
+            <div class="warning">
+                ⚠️ Downcasting is risky because the compiler <strong>trusts you</strong> — but if the object is not of
+                the expected type, it throws a <code>ClassCastException</code> at runtime.
+            </div>
+
+            <h4>💥 ❌ Example that causes error:</h4>
+            <pre><code>Animal a = <span class="keyword">new</span> Cat(); <span class="comment">// Object is actually a Cat</span>
+Dog d = (Dog) a;       <span class="comment">// ⚠️ Wrong downcasting</span>
+d.sound();             <span class="comment">// ❌ Runtime Error: ClassCastException</span></code></pre>
+            <div class="warning">
+                🔥 Output:<br>
+                <code>Exception in thread "main" java.lang.ClassCastException: Cat cannot be cast to Dog</code>
+            </div>
+
+            <h4>✅ Safer Way Using <code>instanceof</code>:</h4>
+            <pre><code>if (a instanceof Dog) {
+    Dog d = (Dog) a;
+    d.bark();
+} else {
+    System.out.println("Not a Dog. Cannot downcast safely.");
+}</code></pre>
+        </div>
+
+
+        <div class="section" id="interview">
+            <h2>📚 8. Summary & Interview Questions</h2>
+
+            <h3>📋 Summary Table of Polymorphism Concepts</h3>
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Meaning</th>
+                </tr>
+                <tr>
+                    <td>Polymorphism</td>
+                    <td>One interface, many implementations</td>
+                </tr>
+                <tr>
+                    <td>Overloading</td>
+                    <td>Same method name, different params (compile-time)</td>
+                </tr>
+                <tr>
+                    <td>Overriding</td>
+                    <td>Child class redefines parent method (runtime)</td>
+                </tr>
+                <tr>
+                    <td>Early Binding</td>
+                    <td>Method resolved at compile time</td>
+                </tr>
+                <tr>
+                    <td>Late Binding</td>
+                    <td>Method resolved at runtime</td>
+                </tr>
+                <tr>
+                    <td>Upcasting</td>
+                    <td>Parent reference = new Child()</td>
+                </tr>
+                <tr>
+                    <td>Downcasting</td>
+                    <td>(Child) Parent reference</td>
+                </tr>
+                <tr>
+                    <td>Dynamic Dispatch</td>
+                    <td>Overridden method chosen at runtime</td>
+                </tr>
+            </table>
+
+            <h3>✅ Important Interview Questions</h3>
+            <table>
+                <tr>
+                    <th>Question</th>
+                    <th>Answer</th>
+                </tr>
+                <tr>
+                    <td>What is polymorphism?</td>
+                    <td>OOP concept where the same method has different behaviors.</td>
+                </tr>
+                <tr>
+                    <td>Types of polymorphism in Java?</td>
+                    <td>Compile-time (overloading), Runtime (overriding).</td>
+                </tr>
+                <tr>
+                    <td>What is method overloading?</td>
+                    <td>Same method name, different parameters (early binding).</td>
+                </tr>
+                <tr>
+                    <td>What is method overriding?</td>
+                    <td>Child class redefines parent method (late binding).</td>
+                </tr>
+                <tr>
+                    <td>What is dynamic method dispatch?</td>
+                    <td>Calling overridden method using parent reference at runtime.</td>
+                </tr>
+                <tr>
+                    <td>What is upcasting?</td>
+                    <td>Parent reference pointing to child object.</td>
+                </tr>
+                <tr>
+                    <td>What is downcasting?</td>
+                    <td>Converting parent reference back to child.</td>
+                </tr>
+                <tr>
+                    <td>Why is Java polymorphism powerful?</td>
+                    <td>Enables flexible code, loose coupling, code reuse.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Show/hide back to top button
+        window.onscroll = function () {
+            const backToTopButton = document.querySelector('.back-to-top');
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        };
+
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+        // Smooth scrolling for table of contents links
+        document.querySelectorAll('.toc a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>

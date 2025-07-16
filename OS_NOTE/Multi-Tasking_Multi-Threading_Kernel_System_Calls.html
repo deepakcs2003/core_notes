@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Advanced Concepts Study Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        h2 {
+            color: #4a5568;
+            margin: 30px 0 20px 0;
+            font-size: 1.8em;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        h3 {
+            color: #2d3748;
+            margin: 25px 0 15px 0;
+            font-size: 1.4em;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+            background: #f7fafc;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .intro-section {
+            background: linear-gradient(135deg, #e6fffa, #f0fff4);
+            border: 2px solid #38b2ac;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .intro-section h3 {
+            color: #2c7a7b;
+            border: none;
+            background: none;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #edf2f7;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        .concept-box {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 6px solid #667eea;
+        }
+
+        .concept-box h4 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .concept-box ul {
+            padding-left: 20px;
+        }
+
+        .concept-box li {
+            margin: 8px 0;
+            padding: 5px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #4299e1;
+        }
+
+        .kernel-functions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .function-card {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            border: 2px solid #feb2b2;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .function-card h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .comparison-section {
+            background: #fffaf0;
+            border: 2px solid #fbd38d;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .code-example {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+
+        .code-example pre {
+            margin: 0;
+        }
+
+        .syscall-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .syscall-card {
+            background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+            border: 2px solid #4fd1c7;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .syscall-card h4 {
+            color: #2c7a7b;
+            margin-bottom: 10px;
+        }
+
+        .syscall-card code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #fef5e7, #fed7aa);
+            border: 2px solid #f6ad55;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .summary-section h2 {
+            background: linear-gradient(135deg, #dd6b20, #c05621);
+            margin-bottom: 25px;
+        }
+
+        .interview-questions {
+            background: linear-gradient(135deg, #e6fffa, #b2f5ea);
+            border: 2px solid #4fd1c7;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .interview-questions h2 {
+            background: linear-gradient(135deg, #319795, #2c7a7b);
+            margin-bottom: 25px;
+        }
+
+        .interview-questions ol {
+            padding-left: 20px;
+        }
+
+        .interview-questions li {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 4px solid #4fd1c7;
+            font-weight: 500;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            border: 2px solid #feb2b2;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #c53030;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+            
+            .kernel-functions {
+                grid-template-columns: 1fr;
+            }
+            
+            .syscall-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <p>Multi-Tasking, Multi-Threading, Kernel, System Calls</p>
+        </div>
+
+        <div class="content">
+        
+
+            <section id="basic-concepts">
+                <h2>🧠 Program vs Process vs Thread</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Term</th>
+                            <th>Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Program</strong></td>
+                            <td>A file with code (instructions), stored on disk, ready to be run.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Process</strong></td>
+                            <td>A running instance of a program (stored in RAM). Has its own memory, resources.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Thread</strong></td>
+                            <td>A smaller unit of a process. A path of execution within a process. Shares memory with other threads in the same process.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="multitasking-vs-multithreading">
+                <h2>⚙️ Multitasking vs Multithreading</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Multitasking</th>
+                            <th>Multithreading</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Definition</strong></td>
+                            <td>Running multiple <strong>processes</strong> at once</td>
+                            <td>Running multiple <strong>threads</strong> (tasks) inside a single process</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>Opening a browser, music player, and Word at the same time</td>
+                            <td>While typing in Word: auto-save, spell-check, and UI update run simultaneously</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Switching</strong></td>
+                            <td>Between processes (heavyweight)</td>
+                            <td>Between threads (lightweight)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory</strong></td>
+                            <td>Each process has separate memory</td>
+                            <td>Threads share memory of the same process</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Slower (context switch needs more resources)</td>
+                            <td>Faster (context switch is lightweight)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU Requirement</strong></td>
+                            <td>Can work with 1 CPU</td>
+                            <td>Better performance with multi-core CPU</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="context-switching">
+                <h2>🔁 Context Switching: Process vs Thread</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Thread Switching</th>
+                            <th>Process Switching</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Switches</strong></td>
+                            <td>Between threads of same process</td>
+                            <td>Between different processes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory Switch</strong></td>
+                            <td>No memory address space switch</td>
+                            <td>Memory address space <strong>must</strong> switch</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Speed</strong></td>
+                            <td>Fast</td>
+                            <td>Slower</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CPU Cache</strong></td>
+                            <td>Preserved</td>
+                            <td>Flushed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="os-components">
+                <h2>🧩 Components of Operating System</h2>
+                <img src="https://www.ssla.co.uk/wp-content/uploads/2020/08/operating-system-kernel-layers.jpg" alt="OS Components Diagram" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <div class="concept-box">
+                    <h4>1. Kernel (Core of the OS)</h4>
+                    <ul>
+                        <li>Directly talks to hardware.</li>
+                        <li>Loaded first when OS starts.</li>
+                        <li>Responsible for <strong>process mgmt, memory mgmt, file mgmt, I/O mgmt</strong>.</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>2. User Space</h4>
+                    <ul>
+                        <li>Where <strong>apps and software</strong> run.</li>
+                        <li>Can't directly access hardware.</li>
+                        <li>Talks to <strong>kernel via system calls</strong>.</li>
+                        <li>Examples: GUI, Command Line (Shell).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="kernel-functions">
+                <h2>🧵 Kernel Functions in Detail</h2>
+                <div class="kernel-functions">
+                    <div class="function-card">
+                        <h4>Process Management</h4>
+                        <p>Create/suspend/terminate processes, manage threads</p>
+                    </div>
+                    <div class="function-card">
+                        <h4>Memory Management</h4>
+                        <p>Allocate/deallocate memory, track usage</p>
+                    </div>
+                    <div class="function-card">
+                        <h4>File Management</h4>
+                        <p>Create/delete files and directories, backup</p>
+                    </div>
+                    <div class="function-card">
+                        <h4>I/O Management</h4>
+                        <p>Handle input/output devices, use buffering, caching, spooling</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="buffering-caching-spooling">
+                <h2>🧠 Buffering vs Caching vs Spooling</h2>
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230118172634/Spooling-in-OS.png" alt="Buffering vs Caching vs Spooling" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>What it is</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Buffering</strong></td>
+                            <td>Temporary storage during a task</td>
+                            <td>YouTube buffering during playback</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Caching</strong></td>
+                            <td>Storing frequently used data</td>
+                            <td>Webpage loading faster on second visit</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Spooling</strong></td>
+                            <td>Queueing slower jobs</td>
+                            <td>Printing documents one by one</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+           <section id="kernel-types">
+  <h2>🧬 Types of Kernels</h2>
+  <table border="1" cellpadding="10" cellspacing="0">
+    <thead style="background-color: #f0f0f0;">
+      <tr>
+        <th>Type</th>
+        <th>Features</th>
+        <th>Pros</th>
+        <th>Cons</th>
+        <th>Examples</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Monolithic Kernel</strong></td>
+        <td>All OS services (memory, process, file, I/O) are in kernel space.</td>
+        <td>
+          <ul>
+            <li>High performance</li>
+            <li>Fast communication (no user-kernel mode switch)</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>Bulky in size</li>
+            <li>Less reliable (one crash may bring whole system down)</li>
+            <li>High memory usage</li>
+          </ul>
+        </td>
+        <td>Linux, Unix, MS-DOS</td>
+      </tr>
+
+      <tr>
+        <td><strong>Microkernel</strong></td>
+        <td>Only core functionalities (like memory & process management) in kernel. Other services run in user space.</td>
+        <td>
+          <ul>
+            <li>Smaller in size</li>
+            <li>More stable and secure</li>
+            <li>Modular and reliable</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>Slower performance</li>
+            <li>Overhead due to user-kernel switching</li>
+          </ul>
+        </td>
+        <td>MINIX, Symbian OS, L4 Linux</td>
+      </tr>
+
+      <tr>
+        <td><strong>Hybrid Kernel</strong></td>
+        <td>Combines features of Monolithic and Microkernels. Some services in kernel, others in user space.</td>
+        <td>
+          <ul>
+            <li>Balanced speed and stability</li>
+            <li>Modular and extensible</li>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <li>Still has some overhead</li>
+            <li>More complex than pure designs</li>
+          </ul>
+        </td>
+        <td>Windows NT/7/10, macOS</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+            <section id="communication">
+                <h2>🔗 Communication: User Mode ↔ Kernel Mode</h2>
+                <img src="https://scaler.com/topics/images/working_system.webp" alt="User Mode and Kernel Mode Communication" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <div class="comparison-section">
+                    <ul>
+                        <li>Apps (in user space) <strong>cannot</strong> directly access hardware.</li>
+                        <li>They request kernel services via <strong>System Calls</strong> (with help of Shell or CLI).</li>
+                        <li><strong>System Call = Gateway between User Mode & Kernel Mode</strong></li>
+                    </ul>
+                </div>
+
+                <h3>📌 Example:</h3>
+                <div class="code-example">
+                    <pre>mkdir folder</pre>
+                </div>
+                <div class="highlight">
+                    <code>mkdir</code> is not the real function that creates a folder.<br>
+                    It calls a <strong>system call</strong> (like <code>mkdir()</code> syscall in C) to tell kernel to create directory.
+                </div>
+            </section>
+
+            <section id="system-calls">
+                <h2>📞 What is a System Call?</h2>
+                <div class="comparison-section">
+                    <ul>
+                        <li>A <strong>programmatic way</strong> for user applications to <strong>ask OS for resources or services</strong>.</li>
+                        <li>Needed because user programs don't have permissions for direct hardware access.</li>
+                        <li><strong>Implemented in C</strong> and triggered by <strong>software interrupts</strong>.</li>
+                    </ul>
+                </div>
+
+                <h3>🎯 Common System Calls:</h3>
+                <div class="syscall-grid">
+                    <div class="syscall-card">
+                        <h4>Process Control</h4>
+                        <p><code>fork()</code>, <code>exec()</code>, <code>exit()</code></p>
+                    </div>
+                    <div class="syscall-card">
+                        <h4>File Operations</h4>
+                        <p><code>open()</code>, <code>read()</code>, <code>write()</code></p>
+                    </div>
+                    <div class="syscall-card">
+                        <h4>Device Management</h4>
+                        <p><code>ioctl()</code>, <code>read()</code>, <code>write()</code></p>
+                    </div>
+                    <div class="syscall-card">
+                        <h4>Info Management</h4>
+                        <p><code>getpid()</code>, <code>alarm()</code></p>
+                    </div>
+                    <div class="syscall-card">
+                        <h4>Communication</h4>
+                        <p><code>pipe()</code>, <code>shmget()</code>, <code>msgsnd()</code></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="summary">
+                <div class="summary-section">
+                    <h2>📝 Summary (Quick Revision)</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Concept</th>
+                                <th>Key Point</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Program</strong></td>
+                                <td>Stored code on disk</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Process</strong></td>
+                                <td>Running instance of a program</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Thread</strong></td>
+                                <td>Light-weight unit of process, shares memory</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multitasking</strong></td>
+                                <td>Multiple processes running</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multithreading</strong></td>
+                                <td>Multiple threads in same process</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Kernel</strong></td>
+                                <td>Heart of OS, handles core tasks</td>
+                            </tr>
+                            <tr>
+                                <td><strong>System Call</strong></td>
+                                <td>Bridge between user programs and kernel</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Buffering</strong></td>
+                                <td>Within job, temporary storage (e.g., video streaming)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Spooling</strong></td>
+                                <td>Job queueing for devices (e.g., printer)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Caching</strong></td>
+                                <td>Speed up frequent access (e.g., web cache)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="interview-questions">
+                <div class="interview-questions">
+                    <h2>🧪 Interview-Oriented Questions</h2>
+                    <ol>
+                        <li>What is the difference between a process and a thread?</li>
+                        <li>How does multithreading improve performance?</li>
+                        <li>Explain context switching in multithreading vs multitasking.</li>
+                        <li>What are the responsibilities of a kernel?</li>
+                        <li>Explain different types of kernels.</li>
+                        <li>What is the purpose of system calls?</li>
+                        <li>How does user space communicate with kernel space?</li>
+                        <li>What is the difference between buffering, spooling, and caching?</li>
+                        <li>Why is process switching slower than thread switching?</li>
+                        <li>What happens behind the scenes when we run <code>mkdir</code> in the terminal?</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

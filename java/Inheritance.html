@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Inheritance - Complete Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            padding: 10px 0;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin-top: 20px;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .error {
+            background: #f8d7da;
+            padding: 15px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .keyword {
+            color: #4299e1;
+            font-weight: bold;
+        }
+
+        .comment {
+            color: #68d391;
+            font-style: italic;
+        }
+
+        .string {
+            color: #fbb6ce;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: white;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .supported {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .not-supported {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .diagram {
+            text-align: center;
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .section {
+            margin: 30px 0;
+            padding: 20px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🧬 Java Inheritance - Complete Notes</h1>
+
+        <div class="section">
+            <h2>1. What is Inheritance in Java?</h2>
+
+            <div class="definition">
+                <strong>Definition:</strong> Inheritance is the process where <strong>one class acquires properties and
+                    behaviors (fields and methods) of another class.</strong>
+            </div>
+
+            <h3>Key Points:</h3>
+            <ul>
+                <li>Use <span class="highlight">extends</span> keyword in Java</li>
+                <li>The <strong>child class</strong> (subclass) inherits from the <strong>parent class</strong>
+                    (superclass)</li>
+                <li>Enables code reusability and method overriding</li>
+            </ul>
+
+            <h3>Real-life Example:</h3>
+            <div class="important">
+                👨 Father has a car and house<br>
+                👦 Son also gets the car and house from father → this is <strong>inheritance</strong>
+            </div>
+
+            <h3>Java Example:</h3>
+            <pre><code><span class="comment">// Parent class</span>
+<span class="keyword">class</span> Animal {
+    <span class="keyword">void</span> eat() {
+        System.out.println(<span class="string">"This animal eats food."</span>);
+    }
+}
+
+<span class="comment">// Child class</span>
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+    <span class="keyword">void</span> bark() {
+        System.out.println(<span class="string">"Dog barks."</span>);
+    }
+}
+
+<span class="keyword">public class</span> Main {
+    <span class="keyword">public static void</span> main(String[] args) {
+        Dog d = <span class="keyword">new</span> Dog();
+        d.eat();  <span class="comment">// inherited from Animal</span>
+        d.bark(); <span class="comment">// from Dog</span>
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. Types of Inheritance</h2>
+            <img src="https://cdn-images-1.medium.com/max/1080/1*gvHEf4lT2m_dHyH6c0UC1Q.png" alt="Types of Inheritance"
+                style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <th>Java Support</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>Single Inheritance</td>
+                    <td><span class="supported">✅ Yes</span></td>
+                    <td>One class inherits from another class</td>
+                </tr>
+                <tr>
+                    <td>Multilevel</td>
+                    <td><span class="supported">✅ Yes</span></td>
+                    <td>Class inherits from a class which itself inherits another</td>
+                </tr>
+                <tr>
+                    <td>Hierarchical</td>
+                    <td><span class="supported">✅ Yes</span></td>
+                    <td>Multiple classes inherit from one parent</td>
+                </tr>
+                <tr>
+                    <td>Multiple</td>
+                    <td><span class="not-supported">❌ No</span></td>
+                    <td>One class inherits from more than one class</td>
+                </tr>
+                <tr>
+                    <td>Hybrid</td>
+                    <td><span class="not-supported">❌ No</span> (but possible with interfaces)</td>
+                    <td>Mix of above types</td>
+                </tr>
+            </table>
+
+            <h3>Multilevel Inheritance Example:</h3>
+            <pre><code><span class="keyword">class</span> Animal {
+    <span class="keyword">void</span> sound() {
+        System.out.println(<span class="string">"Animal makes sound"</span>);
+    }
+}
+
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+    <span class="keyword">void</span> bark() {
+        System.out.println(<span class="string">"Dog barks"</span>);
+    }
+}
+
+<span class="keyword">class</span> Puppy <span class="keyword">extends</span> Dog {
+    <span class="keyword">void</span> weep() {
+        System.out.println(<span class="string">"Puppy weeps"</span>);
+    }
+}</code></pre>
+
+            <h3>Hierarchical Inheritance Example:</h3>
+            <pre><code><span class="keyword">class</span> Animal {
+    <span class="keyword">void</span> eat() {
+        System.out.println(<span class="string">"Eating..."</span>);
+    }
+}
+
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+    <span class="keyword">void</span> bark() {
+        System.out.println(<span class="string">"Barking..."</span>);
+    }
+}
+
+<span class="keyword">class</span> Cat <span class="keyword">extends</span> Animal {
+    <span class="keyword">void</span> meow() {
+        System.out.println(<span class="string">"Meowing..."</span>);
+    }
+}</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. Why Multiple Inheritance is Not Allowed in Java?</h2>
+            <div class="error">
+                <strong>Reason: Diamond Problem</strong><br>
+                <img src="http://4.bp.blogspot.com/-aO8Fm4BnEfo/T_-MinDQTYI/AAAAAAAAAL8/ZtEfhGKBB30/s1600/diamond2+.jpg" alt="Diamond Problem"
+                    style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;">
+                When two parent classes have a method with the same name, and the child class inherits both, Java
+                doesn't know which method to call. This creates ambiguity.
+            </div>
+
+            <h3>Problem Example:</h3>
+            <pre><code><span class="keyword">class</span> A {
+    <span class="keyword">void</span> show() { System.out.println(<span class="string">"A"</span>); }
+}
+
+<span class="keyword">class</span> B {
+    <span class="keyword">void</span> show() { System.out.println(<span class="string">"B"</span>); }
+}
+
+<span class="comment">// class C extends A, B ❌ ERROR: Java doesn't allow this</span></code></pre>
+
+        
+        </div>
+
+        <div class="section">
+            <h2>4. How to Achieve Multiple Inheritance in Java?</h2>
+
+            <div class="important">
+                <strong>Solution: By using Interfaces!</strong><br>
+                Java allows implementing multiple interfaces because interfaces don't contain implementation (just
+                method signatures), so no conflict occurs.
+            </div>
+
+            <h3>Example:</h3>
+            <pre><code><span class="keyword">interface</span> Printable {
+    <span class="keyword">void</span> print();
+}
+
+<span class="keyword">interface</span> Showable {
+    <span class="keyword">void</span> show();
+}
+
+<span class="keyword">class</span> Demo <span class="keyword">implements</span> Printable, Showable {
+    <span class="keyword">public void</span> print() {
+        System.out.println(<span class="string">"Printing..."</span>);
+    }
+    <span class="keyword">public void</span> show() {
+        System.out.println(<span class="string">"Showing..."</span>);
+    }
+}</code></pre>
+        </div>
+
+      
+   
+        <div class="section">
+            <h2>7. Interview Questions & Answers</h2>
+
+            <table>
+                <tr>
+                    <th>Question</th>
+                    <th>Sample Answer</th>
+                </tr>
+                <tr>
+                    <td>What is inheritance?</td>
+                    <td>Acquiring properties and methods of one class into another using <code>extends</code>.</td>
+                </tr>
+                <tr>
+                    <td>What types of inheritance are supported in Java?</td>
+                    <td>Single, Multilevel, Hierarchical. Not Multiple (with classes).</td>
+                </tr>
+                <tr>
+                    <td>Why doesn't Java support multiple inheritance with classes?</td>
+                    <td>To avoid ambiguity caused by the Diamond Problem.</td>
+                </tr>
+                <tr>
+                    <td>How does Java support multiple inheritance?</td>
+                    <td>By using interfaces.</td>
+                </tr>
+                <tr>
+                    <td>What is method overriding?</td>
+                    <td>Redefining a parent class method in child class.</td>
+                </tr>
+                <tr>
+                    <td>Difference between overloading and overriding?</td>
+                    <td>Overloading = same method name, different parameters (compile-time).<br>Overriding = same method
+                        name/signature, different classes (runtime).</td>
+                </tr>
+                <tr>
+                    <td>What is early and late binding?</td>
+                    <td>Early = compile-time (overloading), Late = runtime (overriding).</td>
+                </tr>
+                <tr>
+                    <td>What is the use of <code>super</code> keyword?</td>
+                    <td>To call parent class method or constructor.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

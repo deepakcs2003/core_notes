@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Memory Management - Clean Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            color: #2980b9;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .example {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #27ae60;
+        }
+        
+        .real-world {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 15px 0;
+        }
+        
+        .code-comment {
+            color: #95a5a6;
+            font-style: italic;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .memory-area {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #2196f3;
+        }
+        
+        .gc-info {
+            background-color: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #9c27b0;
+        }
+        
+        .key-point {
+            background-color: #e8f5e8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        li {
+            margin: 5px 0;
+        }
+        
+        .summary-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .summary-box h2 {
+            color: black;
+            border-left: 4px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Java Memory Management </h1>
+        
+        <div class="section">
+            <h2>📋 What is Memory Management in Java?</h2>
+            <p>When you run a Java program, Java needs memory to:</p>
+            <ul>
+                <li>Store <span class="highlight">objects</span></li>
+                <li>Run <span class="highlight">methods</span></li>
+                <li>Store <span class="highlight">variables</span></li>
+                <li>Handle <span class="highlight">class information</span></li>
+            </ul>
+            <div class="key-point">
+                <strong>👉 Key Point:</strong> Java automatically manages memory using the <strong>JVM (Java Virtual Machine)</strong> and <strong>Garbage Collector</strong> (like a cleaner).
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🏠 Real-Life Example</h2>
+            <div class="real-world">
+                <p><strong>Imagine your computer is a house:</strong></p>
+                <img src="https://www.softwaretestingo.com/wp-content/uploads/2023/09/JVM-Memory-Management-In-Java.png" alt="JVM Memory Management" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+                <ul>
+                    <li><strong>Heap</strong> = Big cupboard shared by everyone — stores all <strong>objects</strong></li>
+                    <li><strong>Stack</strong> = Small desk each person (thread) uses — stores <strong>local variables</strong> and <strong>method info</strong></li>
+                    <li><strong>Method Area</strong> = Library — stores <strong>blueprints</strong> (class info, static data)</li>
+                    <li><strong>PC Register</strong> = Pointer showing what you're currently doing</li>
+                    <li><strong>Native Stack</strong> = A side tool area if you call <strong>C/C++ functions</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📦 Java Memory Areas (Explained Simply)</h2>
+            <img src="https://miro.medium.com/max/1200/1*mt3-woLnTOy73WsiS54xQA.png" alt="Java Memory Areas" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+            <div class="memory-area">
+                <h3>1. Heap Memory (Main Storage)</h3>
+                <ul>
+                    <li><strong>Stores:</strong> All objects (new keyword), instance variables</li>
+                    <li><strong>Shared by:</strong> All threads</li>
+                    <li><strong>Cleaned by:</strong> Garbage Collector</li>
+                </ul>
+                <div class="example">
+                    <strong>🔧 Example:</strong>
+                    <pre>String name = new String("Deepak");</pre>
+                    <p><strong>👉 Result:</strong> "Deepak" is stored in <strong>Heap</strong></p>
+                </div>
+            </div>
+
+            <div class="memory-area">
+                <h3>2. Stack Memory (Per Thread)</h3>
+                <ul>
+                    <li><strong>Stores:</strong> Local variables, method calls</li>
+                    <li><strong>Each thread gets:</strong> Its own stack</li>
+                    <li><strong>Cleared when:</strong> Method ends</li>
+                </ul>
+                <div class="example">
+                    <strong>🔧 Example:</strong>
+                    <pre>int a = 10;</pre>
+                    <p><strong>👉 Result:</strong> 'a' is a local variable, stored in <strong>Stack</strong></p>
+                </div>
+            </div>
+
+            <div class="memory-area">
+                <h3>3. Method Area / MetaSpace (Blueprints)</h3>
+                <ul>
+                    <li><strong>Stores:</strong> Class definitions, static variables, method names</li>
+                    <li><strong>Loaded:</strong> Once per class</li>
+                </ul>
+                <div class="example">
+                    <strong>🔧 Example:</strong>
+                    <pre>static int collegeCode = 123;</pre>
+                    <p><strong>👉 Result:</strong> 'collegeCode' is stored in the <strong>Method Area</strong></p>
+                </div>
+            </div>
+
+            <div class="memory-area">
+                <h3>4. PC Register</h3>
+                <ul>
+                    <li>Keeps track of <strong>which line</strong> in the method is being executed</li>
+                    <li>Each thread has one</li>
+                </ul>
+            </div>
+
+            <div class="memory-area">
+                <h3>5. Native Method Stack</h3>
+                <ul>
+                    <li>Only used when you call <strong>native (C/C++) code</strong> from Java using JNI</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👨‍💻 Full Example Code + Memory Map</h2>
+            <pre>public class Student {
+    int age = 20;                 <span class="code-comment">// Stored in Heap</span>
+    static String school = "ABC"; <span class="code-comment">// Stored in Method Area</span>
+
+    public static void main(String[] args) {
+        int roll = 101;            <span class="code-comment">// Stored in Stack</span>
+        Student s1 = new Student(); <span class="code-comment">// Object in Heap, ref in Stack</span>
+    }
+}</pre>
+
+            <h3>🧠 Memory Map:</h3>
+            <table>
+                <tr>
+                    <th>Memory Area</th>
+                    <th>What It Stores</th>
+                </tr>
+                <tr>
+                    <td>Heap</td>
+                    <td>Object s1, instance variable age</td>
+                </tr>
+                <tr>
+                    <td>Stack</td>
+                    <td>roll, reference to s1</td>
+                </tr>
+                <tr>
+                    <td>Method Area</td>
+                    <td>Class info, school</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🧹 What is Garbage Collection?</h2>
+            <div class="gc-info">
+                <ul>
+                    <li>It <strong>automatically removes unused objects</strong> from the Heap to free memory</li>
+                    <li>No need to use <code>free()</code> like in C/C++</li>
+                </ul>
+                
+                <div class="example">
+                    <strong>🔧 Example:</strong>
+                    <pre>Student s1 = new Student();
+s1 = null; <span class="code-comment">// Now the object is not used → eligible for GC</span></pre>
+                </div>
+
+                <p><strong>You can suggest GC like this:</strong></p>
+                <pre>System.gc(); <span class="code-comment">// Suggests garbage collection (not guaranteed)</span></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>✅ Simple Interview Questions and Answers</h2>
+            <table>
+                <tr>
+                    <th>❓ Question</th>
+                    <th>✅ Simple Answer</th>
+                </tr>
+                <tr>
+                    <td>What is memory management?</td>
+                    <td>Java automatically allocates and frees memory using JVM.</td>
+                </tr>
+                <tr>
+                    <td>What is the Heap?</td>
+                    <td>Stores objects. Shared by all. Cleaned by garbage collector.</td>
+                </tr>
+                <tr>
+                    <td>What is Stack memory?</td>
+                    <td>Stores method calls and local variables. One per thread.</td>
+                </tr>
+                <tr>
+                    <td>What is garbage collection?</td>
+                    <td>JVM removes unused objects from memory automatically.</td>
+                </tr>
+                <tr>
+                    <td>Where are static variables stored?</td>
+                    <td>In the Method Area.</td>
+                </tr>
+                <tr>
+                    <td>What is stored in Stack vs Heap?</td>
+                    <td>Stack = local vars, refs. Heap = objects.</td>
+                </tr>
+                <tr>
+                    <td>Can you force GC in Java?</td>
+                    <td>You can suggest it using System.gc(), but it's not guaranteed.</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="summary-box">
+            <h2>📝 Final Summary</h2>
+            <table>
+                <tr>
+                    <th>Part</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>Heap</td>
+                    <td>Stores objects</td>
+                    <td>new Student()</td>
+                </tr>
+                <tr>
+                    <td>Stack</td>
+                    <td>Stores method calls and variables</td>
+                    <td>int a = 5;</td>
+                </tr>
+                <tr>
+                    <td>Method Area</td>
+                    <td>Stores class data, static vars</td>
+                    <td>static int x;</td>
+                </tr>
+                <tr>
+                    <td>Garbage Collection</td>
+                    <td>Removes unused objects</td>
+                    <td>obj = null;</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Key Points for Interview</h2>
+            <div class="key-point">
+                <ul>
+                    <li>Java uses <strong>automatic memory management</strong> (no manual free())</li>
+                    <li>JVM memory has <strong>Heap</strong>, <strong>Stack</strong>, and <strong>Method Area</strong></li>
+                    <li>Objects → Heap, Variables → Stack, Class Info → Method Area</li>
+                    <li><strong>Garbage Collector</strong> frees memory automatically</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
