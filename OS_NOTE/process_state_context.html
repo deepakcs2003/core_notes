@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,7 +92,8 @@
             background-color: white;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #ddd;
             padding: 12px;
             text-align: left;
@@ -174,21 +176,22 @@
             body {
                 padding: 10px;
             }
-            
+
             .container {
                 padding: 20px;
             }
-            
+
             h1 {
                 font-size: 1.8em;
             }
-            
+
             .quick-notes ul {
                 columns: 1;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>📘 OS: Process Management (Lec 9, 10, 11)</h1>
@@ -196,7 +199,8 @@
         <div class="section">
             <h2>✅ What is a Process?</h2>
             <ul>
-                <li>A <span class="highlight">process</span> is a <strong>program in execution</strong>. OS handles processes.</li>
+                <li>A <span class="highlight">process</span> is a <strong>program in execution</strong>. OS handles
+                    processes.</li>
             </ul>
         </div>
 
@@ -215,12 +219,15 @@
         <div class="section">
             <h2>✅ Process Attributes & PCB (Process Control Block)</h2>
             <h3>Processes Architecture</h3>
-            <img src="https://tse3.mm.bing.net/th/id/OIP.OGfetnhLuWrC0ojuZ2A5CwAAAA?pid=Api&P=0&h=180" alt="Processes Architecture" style="width: 40%; border-radius: 10px; margin: 20px 0;">
+            <img src="https://tse3.mm.bing.net/th/id/OIP.OGfetnhLuWrC0ojuZ2A5CwAAAA?pid=Api&P=0&h=180"
+                alt="Processes Architecture" style="width: 40%; border-radius: 10px; margin: 20px 0;">
             <p>OS tracks all processes using a <span class="highlight">Process Table</span>.</p>
             <p>Each process has an entry called <span class="highlight">PCB</span>, storing:</p>
-            <img src="https://cdn1.byjus.com/wp-content/uploads/2022/06/process-control-block.png" alt="Process Control Block" style="width: 60%; border-radius: 10px; margin: 20px 0;">
+            <img src="https://cdn1.byjus.com/wp-content/uploads/2022/06/process-control-block.png"
+                alt="Process Control Block" style="width: 60%; border-radius: 10px; margin: 20px 0;">
             <div class="example">
-                <strong>👉 Use-case:</strong> During <strong>context switch</strong>, PCB is updated to <strong>save/restore</strong> process state.
+                <strong>👉 Use-case:</strong> During <strong>context switch</strong>, PCB is updated to
+                <strong>save/restore</strong> process state.
             </div>
         </div>
 
@@ -229,7 +236,8 @@
             <p>These are stages of a process:</p>
 
             <div class="process-flow">
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20220907002353/sixdrawio.png" alt="Process States" style="width: 100%; border-radius: 10px; margin: 10px 0;">
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20231201161329/Process-Scheduler.png"
+                    alt="Process States" style="width: 100%; border-radius: 10px; margin: 10px 0;">
             </div>
             <table>
                 <tr>
@@ -267,14 +275,17 @@
         <div class="section">
             <h2>✅ Process Queues</h2>
             <ol>
-                <li><strong>Job Queue</strong>: NEW processes in <strong>disk</strong>; managed by <strong>LTS (Long Term Scheduler)</strong>.</li>
-                <li><strong>Ready Queue</strong>: READY processes in <strong>RAM</strong>; managed by <strong>STS (Short Term Scheduler)</strong>.</li>
+                <li><strong>Job Queue</strong>: NEW processes in <strong>disk</strong>; managed by <strong>LTS (Long
+                        Term Scheduler)</strong>.</li>
+                <li><strong>Ready Queue</strong>: READY processes in <strong>RAM</strong>; managed by <strong>STS (Short
+                        Term Scheduler)</strong>.</li>
                 <li><strong>Waiting Queue</strong>: WAITING processes; doing I/O.</li>
             </ol>
         </div>
 
         <div class="section">
-            <h2>✅ Schedulers</h2>
+            <h2>✅ Schedulers in Operating System</h2>
+
             <table>
                 <tr>
                     <th>Scheduler</th>
@@ -282,36 +293,61 @@
                     <th>Controls</th>
                 </tr>
                 <tr>
-                    <td>LTS</td>
-                    <td>Loads new processes to RAM</td>
-                    <td>Degree of multiprogramming</td>
+                    <td><strong>LTS</strong> (Long-Term Scheduler)</td>
+                    <td>Loads new processes from disk to RAM</td>
+                    <td>Controls <strong>Degree of Multiprogramming</strong></td>
                 </tr>
                 <tr>
-                    <td>STS</td>
-                    <td>Picks process from Ready Queue</td>
-                    <td>Assigns CPU</td>
+                    <td><strong>STS</strong> (Short-Term Scheduler)</td>
+                    <td>Selects processes from Ready Queue to run on CPU</td>
+                    <td>Controls <strong>CPU Assignment</strong></td>
                 </tr>
                 <tr>
-                    <td>MTS</td>
-                    <td>Swaps out processes from RAM</td>
-                    <td>Medium-term memory use</td>
+                    <td><strong>MTS</strong> (Medium-Term Scheduler)</td>
+                    <td>Temporarily removes (swaps out) processes from RAM</td>
+                    <td>Controls <strong>Memory Usage</strong></td>
                 </tr>
             </table>
+
+            <div class="explanation">
+                <p><strong>Why Schedulers are Needed:</strong></p>
+                <ul>
+                    <li>To manage which processes get CPU, memory, and other resources.</li>
+                    <li>To ensure smooth multitasking by the OS.</li>
+                    <li>To improve performance, responsiveness, and efficiency.</li>
+                </ul>
+
+                <p><strong>Why Different Schedulers:</strong></p>
+                <ul>
+                    <li><strong>LTS</strong> manages how many processes are in RAM at once (prevents overload).</li>
+                    <li><strong>STS</strong> decides which process runs next on the CPU (like a traffic cop).</li>
+                    <li><strong>MTS</strong> pauses processes when RAM is full, resuming them later (saves memory).</li>
+                </ul>
+
+
+                </p>
+            </div>
         </div>
+
 
         <div class="section">
             <h2>✅ Swapping (By MTS)</h2>
+            <img src="https://images.shiksha.com/mediadata/ugcDocuments/images/wordpressImages/2023_01_Swapping.jpg"
+                alt="Swapping" style="width: 100%; border-radius: 10px; margin: 20px 0;">
             <ul>
                 <li>Temporarily <strong>swap out</strong> a process from RAM to disk to free memory.</li>
                 <li>Later, <strong>swap it back in</strong> when needed.</li>
             </ul>
             <div class="example">
-                <strong>📌 Example:</strong> If RAM is full, MTS might <strong>suspend</strong> a low-priority process and bring it back later.
+                <strong>📌 Example:</strong> If RAM is full, MTS might <strong>suspend</strong> a low-priority process
+                and bring it back later.
             </div>
         </div>
 
         <div class="section">
             <h2>✅ Context Switching</h2>
+            <img src="https://scaler.com/topics/images/cpu-context-switching" alt="Context Switching"
+                style="width: 100%; border-radius: 10px; margin: 20px 0;">
             <p>When CPU switches from one process to another:</p>
             <ul>
                 <li>Save current process state (in PCB)</li>
@@ -330,18 +366,38 @@
                 <li>Parent died, child still running.</li>
                 <li>Adopted by <strong>init process (PID 1)</strong>.</li>
             </ul>
-            <h3>2. Zombie Process</h3>
+            <h3>2. 🧟 Zombie Process</h3>
             <ul>
-                <li>Child finished, parent hasn't read its status.</li>
-                <li>Stays in process table until parent calls <code>wait()</code>.</li>
+                <li>A Zombie process is a child process that has finished executing (<code>exit()</code>), but still has
+                    an entry in the process table.</li>
+                <li>This happens because the **parent process has not yet read the child’s exit status** using
+                    <code>wait()</code>.</li>
+                <li>It doesn’t use memory or CPU, but it keeps a slot in the process table (wastes resources).</li>
             </ul>
+
+            <div class="note">
+                <strong>🎯 Real-life Analogy:</strong><br>
+                A child finishes their exam (child process finishes), but the teacher (parent) hasn’t checked their
+                paper yet. Until the teacher checks it, the child’s name stays on the pending list.
+            </div>
+
             <div class="example">
-                <strong>📌 Example:</strong>
+                <strong>📌 Code Example:</strong>
                 <div class="code-block">
-fork();
-exit(0); // child
-wait();  // parent reaps
+                    int pid = fork();<br>
+                    if (pid == 0) {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;// Child process<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;exit(0);<br>
+                    } else {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;sleep(10); // Parent delays<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;wait(); // Parent finally reads child status<br>
+                    }
                 </div>
+            </div>
+
+            <div class="note">
+                ✅ Until the parent calls <code>wait()</code>, the child becomes a zombie.<br>
+                ✅ If the parent never calls <code>wait()</code>, the zombie stays until the parent exits or is killed.
             </div>
         </div>
 
@@ -362,11 +418,12 @@ wait();  // parent reaps
                 </tr>
             </table>
             <div class="example">
-                <strong>📌 Example:</strong> You're using PC → Urgent system update interrupts → You're paused (Preemptive)
+                <strong>📌 Example:</strong> You're using PC → Urgent system update interrupts → You're paused
+                (Preemptive)
             </div>
         </div>
 
-       
+
         <div class="section">
             <h2>📌 Summary Table</h2>
             <div class="summary-table">
@@ -447,4 +504,5 @@ wait();  // parent reaps
         </div>
     </div>
 </body>
+
 </html>
