@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Devices Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .device-section {
+            background: white;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .device-header {
+            background: #f8f9ff;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .device-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .device-body {
+            padding: 20px;
+        }
+
+        .feature-list {
+            margin: 15px 0;
+        }
+
+        .feature-item {
+            background: #f8f9ff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .feature-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .types-section {
+            background: #fff8dc;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #ffa500;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .comparison-table tr:hover {
+            background: #f1f1f1;
+        }
+
+        .summary-section {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: black;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .summary-section h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .algorithm-list {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 3px solid #28a745;
+        }
+
+        .disadvantage {
+            background: #ffe6e6;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #dc3545;
+            margin: 15px 0;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Network Devices </h1>
+        </header>
+
+        <div class="content">
+            <!-- Modem Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🔌 1. Modem (Modulator-Demodulator)</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Converts <strong>digital signals</strong> from a computer into <strong>analog signals</strong> for transmission over telephone lines and <strong>vice versa</strong>.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Used to connect to the <strong>Internet over telephone lines (DSL)</strong>.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Example:</div>
+                        <p>When you use a telephone wire to connect to the Internet, your ISP provides a <strong>modem</strong> to connect your home network.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Router Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">📶 2. Router</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <ul>
+                            <li>Forwards data packets <strong>between different networks</strong> (like your home network and the Internet)</li>
+                            <li>Assigns <strong>local IP addresses</strong> and provides <strong>Network Address Translation (NAT)</strong></li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Functions:</div>
+                        <ul>
+                            <li>Connects multiple networks</li>
+                            <li>Directs traffic based on <strong>IP addresses</strong></li>
+                            <li>Often includes <strong>firewall</strong>, <strong>DHCP</strong>, and <strong>wireless access point</strong> features</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Used in homes and businesses to <strong>connect to the internet</strong> and route data to the correct devices.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Switch Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🔁 3. Switch</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <ul>
+                            <li>Connects <strong>multiple devices within the same network</strong> (LAN)</li>
+                            <li>Uses <strong>MAC addresses</strong> to forward data only to the <strong>intended device</strong></li>
+                        </ul>
+                    </div>
+                    <div class="types-section">
+                        <div class="feature-title">Types:</div>
+                        <ul>
+                            <li><strong>Managed Switch</strong>: Can be configured (e.g., VLANs)</li>
+                            <li><strong>Unmanaged Switch</strong>: Plug-and-play without configuration</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Used in <strong>LANs</strong> to efficiently direct traffic to correct devices.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hub Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🔌 4. Hub</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Connects multiple devices in a network and sends incoming data to <strong>all connected ports</strong>.</p>
+                    </div>
+                    <div class="disadvantage">
+                        <div class="feature-title">Disadvantages:</div>
+                        <ul>
+                            <li><strong>No intelligence</strong> – causes unnecessary traffic</li>
+                            <li><strong>Slower and less secure</strong> than switches</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Outdated, but was used in small networks to connect devices.</p>
+                    </div>
+                </div>
+            </div>
+            <img src="https://i.ytimg.com/vi/QRWMviYyWV8/maxresdefault.jpg" alt="Hub Diagram" style="width: 600px; border-radius: 10px; margin-bottom: 20px;">
+            <!-- Bridge Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🌉 5. Bridge</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Connects <strong>two separate LANs</strong> and filters traffic between them using <strong>MAC addresses</strong>.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Breaks up collision domains to <strong>reduce traffic</strong> and <strong>improve performance</strong>.</p>
+                    </div>
+                </div>
+                <img src="https://tse2.mm.bing.net/th/id/OIP.Iuv8XvZApQAp2puBLSkw-gAAAA?pid=Api&P=0&h=180" alt=alternative="Bridge Diagram" style="width: 600px; border-radius: 10px; margin-bottom: 20px;">
+            </div>
+
+            <!-- Repeater Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">📡 6. Repeater</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Regenerates and amplifies signals to <strong>extend the range</strong> of the network.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Used in <strong>wired or wireless</strong> networks when signal is too weak due to distance.</p>
+                    </div>
+                </div>
+                <img src="https://www.shiksha.com/online-courses/articles/wp-content/uploads/sites/11/2022/10/MicrosoftTeams-image-115-1.jpg" alt="Repeater Diagram" style="width: 600px; border-radius: 10px; margin-bottom: 20px;">
+            </div>
+
+            <!-- Gateway Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🌐 7. Gateway</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <ul>
+                            <li><strong>Connects two different networks</strong> using different protocols (e.g., TCP/IP ↔ Bluetooth)</li>
+                            <li>Translates data formats between <strong>two incompatible systems</strong></li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Acts as a <strong>protocol converter</strong> between LAN and Internet, or between different systems.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Firewall Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">🔥 8. Firewall</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Monitors and controls <strong>incoming and outgoing traffic</strong> based on predefined security rules.</p>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px 0; color: #667eea;">Firewall Types Comparison:</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Stateless Firewall</th>
+                                <th>Stateful Firewall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Memory</strong></td>
+                                <td>Doesn't remember past packets</td>
+                                <td>Keeps track of connection state</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Speed</strong></td>
+                                <td>Faster (less processing)</td>
+                                <td>Slower (more processing)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Security</strong></td>
+                                <td>Basic security</td>
+                                <td>More secure – knows connection context</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Filtering</strong></td>
+                                <td>Based on IP, port, and protocol</td>
+                                <td>Based on context and state</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Use Case</strong></td>
+                                <td>Low-risk or high-speed environments</td>
+                                <td>Enterprise networks, modern firewalls</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Load Balancer Section -->
+            <div class="device-section">
+                <div class="device-header">
+                    <h2 class="device-title">⚖️ 9. Load Balancer</h2>
+                </div>
+                <div class="device-body">
+                    <div class="feature-item">
+                        <div class="feature-title">What it does:</div>
+                        <p>Distributes network or application traffic across <strong>multiple servers</strong> to ensure no server is overwhelmed.</p>
+                    </div>
+                    <div class="types-section">
+                        <div class="feature-title">Types:</div>
+                        <ul>
+                            <li><strong>Hardware Load Balancer</strong>: Physical device</li>
+                            <li><strong>Software Load Balancer</strong>: Installed on a server or cloud (e.g., NGINX, HAProxy)</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-title">Use:</div>
+                        <p>Improves <strong>availability</strong>, <strong>performance</strong>, and <strong>redundancy</strong>.</p>
+                    </div>
+                    <div class="algorithm-list">
+                        <div class="feature-title">Load Balancing Algorithms:</div>
+                        <ul>
+                            <li><strong>Round Robin</strong>: Each server gets a turn</li>
+                            <li><strong>Least Connections</strong>: New traffic sent to server with fewest connections</li>
+                            <li><strong>IP Hash</strong>: Client IP determines the server</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="summary-section">
+                <h2>📊 Summary Table</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Device</th>
+                            <th>OSI Layer</th>
+                            <th>Purpose</th>
+                            <th>Intelligence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Modem</strong></td>
+                            <td>Physical/Data Link</td>
+                            <td>Converts analog/digital signals</td>
+                            <td>Low</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Router</strong></td>
+                            <td>Network</td>
+                            <td>Routes packets between networks</td>
+                            <td>High (IP-based)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Switch</strong></td>
+                            <td>Data Link</td>
+                            <td>Connects devices in LAN</td>
+                            <td>Medium (MAC-based)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Hub</strong></td>
+                            <td>Physical</td>
+                            <td>Broadcasts data to all ports</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bridge</strong></td>
+                            <td>Data Link</td>
+                            <td>Connects two LANs</td>
+                            <td>MAC-based filtering</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Repeater</strong></td>
+                            <td>Physical</td>
+                            <td>Boosts signal</td>
+                            <td>None</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gateway</strong></td>
+                            <td>All Layers</td>
+                            <td>Protocol conversion</td>
+                            <td>High</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Firewall</strong></td>
+                            <td>Network</td>
+                            <td>Packet filtering</td>
+                            <td>Varies (Stateless/Stateful)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Load Balancer</strong></td>
+                            <td>Application/Transport</td>
+                            <td>Traffic distribution</td>
+                            <td>High (Algorithmic)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

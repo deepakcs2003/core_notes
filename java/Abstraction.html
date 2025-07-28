@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -201,7 +202,8 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #e9ecef;
@@ -353,34 +355,36 @@
             .container {
                 padding: 15px;
             }
-            
+
             h1 {
                 font-size: 2.2em;
             }
-            
+
             h2 {
                 font-size: 1.6em;
             }
-            
+
             pre {
                 font-size: 12px;
                 padding: 15px;
             }
-            
+
             table {
                 font-size: 14px;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>🚀 Java Abstraction - Complete Guide</h1>
-        
+
         <div class="toc">
             <h3>Table of Contents</h3>
             <ul>
@@ -399,14 +403,20 @@
         <div class="section" id="what-is">
             <h2>🧠 What is Abstraction in Java?</h2>
             <div class="definition-box">
-                <p><strong>Abstraction</strong> is the process of <strong>hiding internal details</strong> and showing <strong>only essential features</strong> to the user.</p>
-                <p>It focuses on "<strong>what</strong> an object does" instead of "<strong>how</strong> it does it."</p>
+                <p><strong>Abstraction</strong> is the process of <strong>hiding internal details</strong> and showing
+                    <strong>only essential features</strong> to the user.
+                </p>
+                <p>It focuses on "<strong>what</strong> an object does" instead of "<strong>how</strong> it does it."
+                </p>
             </div>
-            
+
             <h3>🎯 Real-life Example:</h3>
             <div class="analogy-box">
-                <p><strong>🔌 TV Remote:</strong> When you press a <strong>TV remote button</strong>, you don't know how it works inside (circuit, IR signal) — you just press it and it performs the action.</p>
-                <p><strong>🧠 That's abstraction:</strong> Hide the <strong>complex working</strong>, expose only <strong>simple interface</strong>.</p>
+                <p><strong>🔌 TV Remote:</strong> When you press a <strong>TV remote button</strong>, you don't know how
+                    it works inside (circuit, IR signal) — you just press it and it performs the action.</p>
+                <p><strong>🧠 That's abstraction:</strong> Hide the <strong>complex working</strong>, expose only
+                    <strong>simple interface</strong>.
+                </p>
             </div>
         </div>
 
@@ -452,11 +462,13 @@
 
         <div class="section" id="abstract-class">
             <h2>1️⃣ Abstract Class in Java</h2>
-            
+
             <h3>🔹 Definition:</h3>
             <div class="definition-box">
                 <p>A class declared with the <code>abstract</code> keyword.</p>
-                <p>It <strong>cannot be instantiated</strong>, but can have both <strong>abstract</strong> and <strong>concrete</strong> (normal) methods.</p>
+                <p>It <strong>cannot be instantiated</strong>, but can have both <strong>abstract</strong> and
+                    <strong>concrete</strong> (normal) methods.
+                </p>
             </div>
 
             <h3>✅ Code Example:</h3>
@@ -487,33 +499,81 @@
             <div class="key-points">
                 <h4>💡 Key Points:</h4>
                 <ul>
-                    <li>You <strong>can't create object</strong> of abstract class: <code>Animal a = new Animal(); ❌</code></li>
-                    <li>You <strong>must override</strong> all abstract methods in child class</li>
-                    <li>Can have <strong>constructors, variables</strong>, and <strong>normal methods</strong></li>
+                    <li>
+                        You <strong>can't create object</strong> of abstract class:
+                        <code>Animal a = new Animal(); ❌</code><br>
+                        <span style="color: gray;">
+                            👉 Reason: Abstract classes are incomplete — they may have abstract methods without a body.
+                            So, they are meant to be inherited and implemented, not instantiated directly.
+                        </span>
+                    </li>
+                    <li>
+                        You <strong>must override</strong> all abstract methods in child class
+                        (if 2 abstract methods exist then override both 2 in child class)
+                    </li>
+                    <li>
+                        Can have <strong>constructors, variables</strong>, and <strong>normal methods</strong>
+                    </li>
                 </ul>
-            </div>
-        </div>
 
-        <div class="section" id="interface">
-            <h2>2️⃣ Interface in Java</h2>
-            
-            <h3>🔹 Definition:</h3>
-            <div class="definition-box">
-                <p>An interface is a <strong>fully abstract blueprint</strong> of a class that contains <strong>only method declarations</strong> (until Java 7).</p>
             </div>
 
-            <h3>✅ Java 8+: Interface can also have:</h3>
-            <div class="success">
-                <ul>
-                    <li><code>default</code> methods (with body)</li>
-                    <li><code>static</code> methods</li>
-                    <li><code>private</code> methods (Java 9+)</li>
-                </ul>
-            </div>
+            <div class="section" id="interface">
+                <h2>2️⃣ Interface in Java</h2>
 
-            <h3>✅ Code Example:</h3>
-            <pre><code><span class="keyword">interface</span> <span class="class-name">Vehicle</span> {
+                <h3>🔹 Definition:</h3>
+                <div class="definition-box">
+                    <p>An interface is a <strong>fully abstract blueprint</strong> of a class that contains <strong>only
+                            method declarations</strong> (until Java 7).</p>
+                    <p>From Java 8 onward, interfaces can have some implemented methods too (default, static, private).
+                    </p>
+                </div>
+
+                <h3>💡 Why use Interface when Abstract Class exists?</h3>
+                <div class="info">
+                    <ul>
+                        <li>Java doesn't support multiple class inheritance – but a class can implement multiple
+                            interfaces.</li>
+                        <li>Interface defines a <strong>contract</strong>: any class implementing it must provide
+                            behavior.</li>
+                        <li>Use interfaces when you only want to define method names (not implementation).</li>
+                    </ul>
+                </div>
+
+                <h3>✅ Java 8+ Enhancements: Interface can also have</h3>
+                <div class="success">
+                    <ul>
+                        <li><code>default</code> methods – allow method body (for backward compatibility)</li>
+                        <li><code>static</code> methods – useful for utility/helper methods</li>
+                        <li><code>private</code> methods (Java 9+) – for internal reuse inside interface</li>
+                    </ul>
+                </div>
+
+                <h3>🧠 Why variables in interface are always public static final?</h3>
+                <div class="note">
+                    <ul>
+                        <li>Interfaces can't have object state – so variables must be <strong>constants</strong>.</li>
+                        <li>Every variable is implicitly <code>public static final</code> – like a global constant.</li>
+                    </ul>
+                </div>
+
+                <h3>✅ Code Example:</h3>
+                <pre><code><span class="keyword">interface</span> <span class="class-name">Vehicle</span> {
     <span class="keyword">void</span> <span class="method">start</span>();  <span class="comment">// public abstract by default</span>
+
+    <span class="keyword">default void</span> <span class="method">honk</span>() {
+        System.out.println(<span class="string">"Beep Beep!"</span>);
+    }
+
+    <span class="keyword">static int</span> <span class="method">getWheels</span>() {
+        return 4;
+    }
+
+    <span class="keyword">private void</span> <span class="method">helper</span>() {
+        System.out.println(<span class="string">"Internal helper method"</span>);
+    }
+
+    <span class="keyword">int</span> MAX_SPEED = 120; <span class="comment">// public static final by default</span>
 }
 
 <span class="keyword">class</span> <span class="class-name">Car</span> <span class="keyword">implements</span> <span class="class-name">Vehicle</span> {
@@ -526,58 +586,69 @@
     <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
         <span class="class-name">Vehicle</span> v = <span class="keyword">new</span> <span class="class-name">Car</span>();
         v.<span class="method">start</span>();  <span class="comment">// Output: Car starts with key</span>
+        v.<span class="method">honk</span>();   <span class="comment">// Output: Beep Beep!</span>
+
+        System.out.println(<span class="string">"Max Speed: "</span> + <span class="class-name">Vehicle</span>.MAX_SPEED); <span class="comment">// Output: 120</span>
+        System.out.println(<span class="string">"Wheels: "</span> + <span class="class-name">Vehicle</span>.getWheels());  <span class="comment">// Output: 4</span>
     }
 }</code></pre>
 
-            <div class="code-output">Car starts with key</div>
+                <div class="code-output">
+                    Car starts with key<br>
+                    Beep Beep!<br>
+                    Max Speed: 120<br>
+                    Wheels: 4
+                </div>
 
-            <div class="key-points">
-                <h4>💡 Interface Summary:</h4>
-                <ul>
-                    <li>All methods are <strong><code>public abstract</code></strong> by default (unless marked default/static)</li>
-                    <li>No constructors</li>
-                    <li>Can't hold non-final variables (only <code>public static final</code>)</li>
-                    <li>Can be used for <strong>multiple inheritance</strong> (Java allows multiple interfaces)</li>
-                </ul>
+                <div class="key-points">
+                    <h4>💡 Interface Summary:</h4>
+                    <ul>
+                        <li>All methods are <code>public abstract</code> by default (unless marked default/static)</li>
+                        <li>Supports multiple inheritance (a class can implement multiple interfaces)</li>
+                        <li>No constructors or instance variables</li>
+                        <li>Variables are always <code>public static final</code></li>
+                        <li>Java 8+ adds power with <code>default</code>, <code>static</code>, and <code>private</code>
+                            methods</li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <div class="section" id="when-use">
-            <h2>🎯 When to Use Abstract Class vs Interface</h2>
-            <div class="comparison-section">
-                <table>
-                    <tr>
-                        <th>Use Case</th>
-                        <th>Go For...</th>
-                    </tr>
-                    <tr>
-                        <td>You want <strong>partial abstraction</strong></td>
-                        <td>Abstract Class</td>
-                    </tr>
-                    <tr>
-                        <td>You need to <strong>define common base</strong> with some logic</td>
-                        <td>Abstract Class</td>
-                    </tr>
-                    <tr>
-                        <td>You want <strong>100% abstraction</strong> (only method declarations)</td>
-                        <td>Interface</td>
-                    </tr>
-                    <tr>
-                        <td>You need <strong>multiple inheritance</strong></td>
-                        <td>Interface</td>
-                    </tr>
-                    <tr>
-                        <td>You're building a <strong>plug-and-play system</strong></td>
-                        <td>Interface</td>
-                    </tr>
-                </table>
+            <div class="section" id="when-use">
+                <h2>🎯 When to Use Abstract Class vs Interface</h2>
+                <div class="comparison-section">
+                    <table>
+                        <tr>
+                            <th>Use Case</th>
+                            <th>Go For...</th>
+                        </tr>
+                        <tr>
+                            <td>You want <strong>partial abstraction</strong></td>
+                            <td>Abstract Class</td>
+                        </tr>
+                        <tr>
+                            <td>You need to <strong>define common base</strong> with some logic</td>
+                            <td>Abstract Class</td>
+                        </tr>
+                        <tr>
+                            <td>You want <strong>100% abstraction</strong> (only method declarations)</td>
+                            <td>Interface</td>
+                        </tr>
+                        <tr>
+                            <td>You need <strong>multiple inheritance</strong></td>
+                            <td>Interface</td>
+                        </tr>
+                        <tr>
+                            <td>You're building a <strong>plug-and-play system</strong></td>
+                            <td>Interface</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <div class="section" id="together">
-            <h2>🔁 Interface + Abstract Class Together</h2>
-            <p>You can use both together:</p>
-            <pre><code><span class="keyword">interface</span> <span class="class-name">Printable</span> {
+            <div class="section" id="together">
+                <h2>🔁 Interface + Abstract Class Together</h2>
+                <p>You can use both together:</p>
+                <pre><code><span class="keyword">interface</span> <span class="class-name">Printable</span> {
     <span class="keyword">void</span> <span class="method">print</span>();
 }
 
@@ -594,133 +665,135 @@
         System.out.println(<span class="string">"Machine started."</span>);
     }
 }</code></pre>
+            </div>
+
+            <div class="section" id="interview">
+                <h2>🧪 Interview Questions with One-Liner Answers</h2>
+                <table>
+                    <tr>
+                        <th>Question</th>
+                        <th>Answer</th>
+                    </tr>
+                    <tr>
+                        <td>What is abstraction?</td>
+                        <td>Hiding internal details and showing only the required features.</td>
+                    </tr>
+                    <tr>
+                        <td>How to achieve abstraction in Java?</td>
+                        <td>Using abstract classes and interfaces.</td>
+                    </tr>
+                    <tr>
+                        <td>Can we instantiate an abstract class?</td>
+                        <td>❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Can abstract class have a constructor?</td>
+                        <td>✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Can interface have method body?</td>
+                        <td>✅ Yes, from Java 8 (default/static methods)</td>
+                    </tr>
+                    <tr>
+                        <td>Difference between abstract class and interface?</td>
+                        <td>Abstract class can have body, constructor, variables. Interface = full abstraction, no
+                            constructor.</td>
+                    </tr>
+                    <tr>
+                        <td>Can we implement multiple interfaces?</td>
+                        <td>✅ Yes</td>
+                    </tr>
+                    <tr>
+                        <td>Can abstract class implement interface?</td>
+                        <td>✅ Yes, but must override methods or remain abstract</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section" id="summary">
+                <h2>✅ Summary Table</h2>
+                <table>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Abstract Class</th>
+                        <th>Interface</th>
+                    </tr>
+                    <tr>
+                        <td>Keyword</td>
+                        <td><code>abstract class</code></td>
+                        <td><code>interface</code></td>
+                    </tr>
+                    <tr>
+                        <td>Instantiation</td>
+                        <td>❌ No</td>
+                        <td>❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Constructors</td>
+                        <td>✅ Yes</td>
+                        <td>❌ No</td>
+                    </tr>
+                    <tr>
+                        <td>Method Body</td>
+                        <td>✅ Yes (concrete methods)</td>
+                        <td>✅ From Java 8 (default/static)</td>
+                    </tr>
+                    <tr>
+                        <td>Variables</td>
+                        <td>✅ Any type</td>
+                        <td>✅ Only <code>public static final</code></td>
+                    </tr>
+                    <tr>
+                        <td>Inheritance Type</td>
+                        <td>Single</td>
+                        <td>Multiple</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
-        <div class="section" id="interview">
-            <h2>🧪 Interview Questions with One-Liner Answers</h2>
-            <table>
-                <tr>
-                    <th>Question</th>
-                    <th>Answer</th>
-                </tr>
-                <tr>
-                    <td>What is abstraction?</td>
-                    <td>Hiding internal details and showing only the required features.</td>
-                </tr>
-                <tr>
-                    <td>How to achieve abstraction in Java?</td>
-                    <td>Using abstract classes and interfaces.</td>
-                </tr>
-                <tr>
-                    <td>Can we instantiate an abstract class?</td>
-                    <td>❌ No</td>
-                </tr>
-                <tr>
-                    <td>Can abstract class have a constructor?</td>
-                    <td>✅ Yes</td>
-                </tr>
-                <tr>
-                    <td>Can interface have method body?</td>
-                    <td>✅ Yes, from Java 8 (default/static methods)</td>
-                </tr>
-                <tr>
-                    <td>Difference between abstract class and interface?</td>
-                    <td>Abstract class can have body, constructor, variables. Interface = full abstraction, no constructor.</td>
-                </tr>
-                <tr>
-                    <td>Can we implement multiple interfaces?</td>
-                    <td>✅ Yes</td>
-                </tr>
-                <tr>
-                    <td>Can abstract class implement interface?</td>
-                    <td>✅ Yes, but must override methods or remain abstract</td>
-                </tr>
-            </table>
-        </div>
+        <button class="back-to-top" onclick="scrollToTop()">↑</button>
 
-        <div class="section" id="summary">
-            <h2>✅ Summary Table</h2>
-            <table>
-                <tr>
-                    <th>Feature</th>
-                    <th>Abstract Class</th>
-                    <th>Interface</th>
-                </tr>
-                <tr>
-                    <td>Keyword</td>
-                    <td><code>abstract class</code></td>
-                    <td><code>interface</code></td>
-                </tr>
-                <tr>
-                    <td>Instantiation</td>
-                    <td>❌ No</td>
-                    <td>❌ No</td>
-                </tr>
-                <tr>
-                    <td>Constructors</td>
-                    <td>✅ Yes</td>
-                    <td>❌ No</td>
-                </tr>
-                <tr>
-                    <td>Method Body</td>
-                    <td>✅ Yes (concrete methods)</td>
-                    <td>✅ From Java 8 (default/static)</td>
-                </tr>
-                <tr>
-                    <td>Variables</td>
-                    <td>✅ Any type</td>
-                    <td>✅ Only <code>public static final</code></td>
-                </tr>
-                <tr>
-                    <td>Inheritance Type</td>
-                    <td>Single</td>
-                    <td>Multiple</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <button class="back-to-top" onclick="scrollToTop()">↑</button>
-
-    <script>
-        // Show/hide back to top button
-        window.onscroll = function() {
-            const backToTopButton = document.querySelector('.back-to-top');
-            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                backToTopButton.style.display = 'block';
-            } else {
-                backToTopButton.style.display = 'none';
-            }
-        };
-
-        function scrollToTop() {
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop = 0;
-        }
-
-        // Smooth scrolling for table of contents links
-        document.querySelectorAll('.toc a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
+        <script>
+            // Show/hide back to top button
+            window.onscroll = function () {
+                const backToTopButton = document.querySelector('.back-to-top');
+                if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.style.display = 'none';
                 }
-            });
-        });
+            };
 
-        // Add hover effect to code blocks
-        document.querySelectorAll('pre').forEach(pre => {
-            pre.addEventListener('mouseenter', function() {
-                this.style.transform = 'scale(1.02)';
-                this.style.transition = 'transform 0.3s ease';
+            function scrollToTop() {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
+            }
+
+            // Smooth scrolling for table of contents links
+            document.querySelectorAll('.toc a').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
             });
-            
-            pre.addEventListener('mouseleave', function() {
-                this.style.transform = 'scale(1)';
+
+            // Add hover effect to code blocks
+            document.querySelectorAll('pre').forEach(pre => {
+                pre.addEventListener('mouseenter', function () {
+                    this.style.transform = 'scale(1.02)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+
+                pre.addEventListener('mouseleave', function () {
+                    this.style.transform = 'scale(1)';
+                });
             });
-        });
-    </script>
+        </script>
 </body>
+
 </html>

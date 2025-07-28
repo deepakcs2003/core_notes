@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java I/O Streams and File Handling</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #718096;
+            font-size: 1.1em;
+        }
+
+        .section {
+            background: white;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-2px);
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+            color: white;
+            padding: 20px;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .intro-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .intro-card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background: #f7fafc;
+        }
+
+        .code-block {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #4299e1;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .code-title {
+            background: #2d3748;
+            color: #4299e1;
+            padding: 8px 15px;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #f6ad55;
+            margin: 15px 0;
+        }
+
+        .highlight strong {
+            color: #c05621;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            counter-increment: step-counter;
+            background: #f7fafc;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #38b2ac;
+            position: relative;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            background: #38b2ac;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: absolute;
+            left: -12px;
+            top: 20px;
+        }
+
+        .step h4 {
+            margin-left: 20px;
+            color: #2d3748;
+        }
+
+        .interview-questions {
+            background: #fdf2f8;
+            border: 2px solid #f687b3;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .interview-questions h4 {
+            color: #97266d;
+            margin-bottom: 15px;
+        }
+
+        .question {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 3px solid #f687b3;
+        }
+
+        .question strong {
+            color: #97266d;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .summary-card {
+            background: #edf2f7;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #4299e1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .section-header {
+                font-size: 1.2em;
+                padding: 15px;
+            }
+
+            .section-content {
+                padding: 15px;
+            }
+
+            .code-block {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ Java I/O Streams and File Handling</h1>
+            <p>Complete Guide with Examples and Best Practices</p>
+        </div>
+
+        <!-- Section 1: Introduction -->
+        <div class="section">
+            <div class="section-header">✅ 1. What is Java I/O?</div>
+            <div class="section-content">
+                <p><strong>"I/O" means Input and Output</strong></p>
+                <div class="intro-grid">
+                    <div class="intro-card">
+                        <h4>📥 Input</h4>
+                        <p>Reading data from keyboard, file, network, etc.</p>
+                        <p><em>Example: Reading from a file</em></p>
+                    </div>
+                    <div class="intro-card">
+                        <h4>📤 Output</h4>
+                        <p>Writing data to file, screen, network, etc.</p>
+                        <p><em>Example: Writing to a file</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Stream Concept -->
+        <div class="section">
+            <div class="section-header">✅ 2. Java Streams Concept</div>
+            <div class="section-content">
+                <div class="highlight">
+                    <p>A <strong>stream</strong> is like a <strong>pipe</strong> or <strong>channel</strong> that flows data.</p>
+                </div>
+                <div class="intro-grid">
+                    <div class="intro-card">
+                        <h4>InputStream</h4>
+                        <p>Used to <strong>read</strong> data</p>
+                    </div>
+                    <div class="intro-card">
+                        <h4>OutputStream</h4>
+                        <p>Used to <strong>write</strong> data</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Types of Streams -->
+        <div class="section">
+            <div class="section-header">✅ 3. Types of Streams</div>
+            <div class="section-content">
+                <p>Java has 2 types of streams:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Stream Type</th>
+                            <th>What it handles</th>
+                            <th>Use for</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Byte Stream</strong></td>
+                            <td>Handles <strong>binary data</strong></td>
+                            <td>Images, PDFs, audio</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Character Stream</strong></td>
+                            <td>Handles <strong>text data</strong></td>
+                            <td>Text files, strings</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 4: Byte Streams -->
+        <div class="section">
+            <div class="section-header">✅ 4. Byte Streams (For Binary Data)</div>
+            <div class="section-content">
+                <p>Byte streams read/write <strong>1 byte at a time</strong>.</p>
+                
+                <h4>🔹 Read a file using Byte Stream</h4>
+                <div class="code-title">ReadByteExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class ReadByteExample {
+    public static void main(String[] args) throws Exception {
+        FileInputStream fis = new FileInputStream("data.txt");
+        int i;
+        while ((i = fis.read()) != -1) {
+            System.out.print((char) i); // convert byte to char
+        }
+        fis.close();
+    }
+}</pre>
+                </div>
+
+                <h4>🔹 Write to a file using Byte Stream</h4>
+                <div class="code-title">WriteByteExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class WriteByteExample {
+    public static void main(String[] args) throws Exception {
+        FileOutputStream fos = new FileOutputStream("data.txt");
+        String data = "Hello from Java!";
+        fos.write(data.getBytes()); // convert String to byte[]
+        fos.close();
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Character Streams -->
+        <div class="section">
+            <div class="section-header">✅ 5. Character Streams (For Text Data)</div>
+            <div class="section-content">
+                <p>Character streams read/write <strong>characters (2 bytes)</strong>.</p>
+                
+                <h4>🔹 Read a file using Character Stream</h4>
+                <div class="code-title">ReadCharExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class ReadCharExample {
+    public static void main(String[] args) throws Exception {
+        FileReader fr = new FileReader("data.txt");
+        int i;
+        while ((i = fr.read()) != -1) {
+            System.out.print((char)i);
+        }
+        fr.close();
+    }
+}</pre>
+                </div>
+
+                <h4>🔹 Write to a file using Character Stream</h4>
+                <div class="code-title">WriteCharExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class WriteCharExample {
+    public static void main(String[] args) throws Exception {
+        FileWriter fw = new FileWriter("data.txt");
+        fw.write("Welcome to Java I/O!");
+        fw.close();
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Buffered Streams -->
+        <div class="section">
+            <div class="section-header">✅ 6. Buffered Streams (Fast Reading/Writing)</div>
+            <div class="section-content">
+                <div class="highlight">
+                    <p><strong>Buffered streams make input/output faster</strong> by reducing the number of system calls.</p>
+                </div>
+                
+                <h4>🔹 BufferedReader for fast reading</h4>
+                <div class="code-title">BufferedReadExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class BufferedReadExample {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader("data.txt"));
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        br.close();
+    }
+}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: File Handling -->
+        <div class="section">
+            <div class="section-header">✅ 7. File Handling (Creating, Reading, Writing, Deleting Files)</div>
+            <div class="section-content">
+                <p>Java has a <code>File</code> class to handle files.</p>
+                
+                <div class="steps">
+                    <div class="step">
+                        <h4>Create a file</h4>
+                        <div class="code-title">CreateFileExample.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+public class CreateFileExample {
+    public static void main(String[] args) throws IOException {
+        File file = new File("demo.txt");
+        if (file.createNewFile()) {
+            System.out.println("File created");
+        } else {
+            System.out.println("File already exists");
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>Write to a file</h4>
+                        <div class="code-title">FileWriteExample.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+public class FileWriteExample {
+    public static void main(String[] args) throws IOException {
+        FileWriter fw = new FileWriter("demo.txt");
+        fw.write("This is a file handling example.");
+        fw.close();
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>Read from a file using Scanner</h4>
+                        <div class="code-title">FileReadScanner.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+import java.util.*;
+
+public class FileReadScanner {
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("demo.txt");
+        Scanner sc = new Scanner(file);
+        while (sc.hasNextLine()) {
+            System.out.println(sc.nextLine());
+        }
+        sc.close();
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>Delete a file</h4>
+                        <div class="code-title">DeleteFileExample.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+public class DeleteFileExample {
+    public static void main(String[] args) {
+        File file = new File("demo.txt");
+        if (file.delete()) {
+            System.out.println("File deleted");
+        } else {
+            System.out.println("File not deleted");
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 8: Serialization -->
+        <div class="section">
+            <div class="section-header">✅ 8. Serialization (Save Object to File)</div>
+            <div class="section-content">
+                <div class="highlight">
+                    <p><strong>Serialization = Saving object to file</strong></p>
+                </div>
+                
+                <div class="steps">
+                    <div class="step">
+                        <h4>Make your class implement Serializable</h4>
+                        <div class="code-title">Student.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+class Student implements Serializable {
+    int id;
+    String name;
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>Serialize (save object)</h4>
+                        <div class="code-block">
+                            <pre>ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student.ser"));
+Student s = new Student(1, "Deepak");
+oos.writeObject(s);
+oos.close();</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>Deserialize (read object)</h4>
+                        <div class="code-block">
+                            <pre>ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.ser"));
+Student s = (Student) ois.readObject();
+System.out.println(s.id + " " + s.name);
+ois.close();</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 9: Summary -->
+        <div class="section">
+            <div class="section-header">✅ 9. Summary Table</div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Task</th>
+                            <th>Class Used</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Read file (bytes)</td>
+                            <td><code>FileInputStream</code></td>
+                        </tr>
+                        <tr>
+                            <td>Write file (bytes)</td>
+                            <td><code>FileOutputStream</code></td>
+                        </tr>
+                        <tr>
+                            <td>Read file (chars)</td>
+                            <td><code>FileReader</code></td>
+                        </tr>
+                        <tr>
+                            <td>Write file (chars)</td>
+                            <td><code>FileWriter</code></td>
+                        </tr>
+                        <tr>
+                            <td>Fast reading</td>
+                            <td><code>BufferedReader</code></td>
+                        </tr>
+                        <tr>
+                            <td>Create/Delete File</td>
+                            <td><code>File</code></td>
+                        </tr>
+                        <tr>
+                            <td>Read file line-wise</td>
+                            <td><code>Scanner</code></td>
+                        </tr>
+                        <tr>
+                            <td>Save object</td>
+                            <td><code>ObjectOutputStream</code></td>
+                        </tr>
+                        <tr>
+                            <td>Load object</td>
+                            <td><code>ObjectInputStream</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Section 10: Interview Questions -->
+        <div class="section">
+            <div class="section-header">✅ 10. Most Important Interview Questions</div>
+            <div class="section-content">
+                <div class="interview-questions">
+                    <h4>🎯 Key Interview Questions & Answers</h4>
+                    
+                    <div class="question">
+                        <strong>1. Difference between FileReader and BufferedReader?</strong>
+                        <p>• FileReader reads char by char.</p>
+                        <p>• BufferedReader reads full line, faster.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>2. What is Serialization?</strong>
+                        <p>• Saving an object's state into a file.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>3. What's the difference between byte and character stream?</strong>
+                        <p>• Byte stream → binary data</p>
+                        <p>• Character stream → text data</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>4. How do you read large files efficiently?</strong>
+                        <p>• Use <code>BufferedReader</code></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

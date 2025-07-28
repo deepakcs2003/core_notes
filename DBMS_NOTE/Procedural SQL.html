@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL Procedural SQL Interview Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #3498db;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            color: #34495e;
+            margin: 30px 0 15px 0;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 5px;
+            font-size: 1.5em;
+        }
+
+        h3 {
+            color: #2980b9;
+            margin: 20px 0 10px 0;
+            font-size: 1.3em;
+            border-left: 4px solid #3498db;
+            padding-left: 10px;
+        }
+
+        h4 {
+            color: #e74c3c;
+            margin: 15px 0 8px 0;
+            font-size: 1.1em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .intro {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .intro h2 {
+            background: none;
+            color: white;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #4299e1;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .theory {
+            background-color: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .key-points {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .use-case {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .tips h2 {
+            background: none;
+            margin-top: 0;
+            padding: 0;
+        }
+
+        .tips ol {
+            margin-left: 20px;
+        }
+
+        .tips li {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            margin: 40px 0;
+            border-radius: 1px;
+        }
+
+        .highlight {
+            background-color: #ffffcc;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        .code-inline {
+            background-color: #f1f2f6;
+            color: #e74c3c;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MySQL Procedural SQL Interview Guide</h1>
+        
+        <div class="intro">
+            <h2>Introduction to Procedural SQL in MySQL</h2>
+            <p><strong>MySQL's Procedural SQL</strong> (also known as MySQL stored programs) allows you to write logic-driven, reusable code <strong>inside the database itself</strong>. Unlike basic SQL (which is declarative), procedural SQL introduces:</p>
+            <ul>
+                <li>Variables</li>
+                <li>Loops</li>
+                <li>Conditions</li>
+                <li>Exception handling</li>
+                <li>Reusable blocks (procedures/functions)</li>
+            </ul>
+            <p>This makes database-side programming more powerful and modular.</p>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <h2>1. Variables in MySQL</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>Variables are used to store values temporarily in memory. You must declare them using <span class="code-inline">DECLARE</span> and assign using <span class="code-inline">SET</span>.</p>
+        </div>
+
+        <div class="key-points">
+            <h4>📌 Key Points:</h4>
+            <ul>
+                <li>Scope is <strong>within the block</strong> they are declared.</li>
+                <li>You can define data types like <span class="code-inline">INT</span>, <span class="code-inline">VARCHAR</span>, <span class="code-inline">DECIMAL</span>, etc.</li>
+            </ul>
+        </div>
+
+        <h4>✅ Example:</h4>
+        <pre>DECLARE v_salary INT;
+SET v_salary = 45000;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>2. Control Structures</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>Control structures allow <strong>conditional</strong> and <strong>repetitive</strong> execution of code. MySQL supports:</p>
+            <ul>
+                <li>IF...THEN...ELSE</li>
+                <li>CASE</li>
+                <li>LOOP</li>
+                <li>WHILE</li>
+                <li>REPEAT</li>
+            </ul>
+        </div>
+
+        <h3>🔸 IF...THEN...ELSE</h3>
+        <pre>IF condition THEN
+  -- action
+ELSE
+  -- alternative action
+END IF;</pre>
+        <p>Used for branching based on a condition.</p>
+
+        <h3>🔸 CASE Statement</h3>
+        <pre>CASE grade
+  WHEN 'A' THEN SET remark = 'Excellent';
+  WHEN 'B' THEN SET remark = 'Good';
+  ELSE SET remark = 'Poor';
+END CASE;</pre>
+        <p>Used for <strong>multi-condition</strong> branching (like switch-case).</p>
+
+        <h3>🔸 LOOP</h3>
+        <pre>label: LOOP
+  -- statements
+  LEAVE label; -- to exit the loop
+END LOOP;</pre>
+        <p>A basic loop that must be manually exited using <span class="code-inline">LEAVE</span>.</p>
+
+        <h3>🔸 WHILE</h3>
+        <pre>WHILE condition DO
+  -- repeat
+END WHILE;</pre>
+        <p>Runs as long as condition is <span class="code-inline">TRUE</span>.</p>
+
+        <h3>🔸 REPEAT</h3>
+        <pre>REPEAT
+  -- code
+UNTIL condition
+END REPEAT;</pre>
+        <p>Runs the block <strong>at least once</strong>, then checks condition.</p>
+
+        <div class="section-divider"></div>
+
+        <h2>3. Stored Procedures</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>A <strong>stored procedure</strong> is a named set of SQL statements saved in the database. It performs <strong>an action</strong> but does <strong>not return a value directly</strong> (though OUT parameters can be used).</p>
+        </div>
+
+        <div class="key-points">
+            <h4>📌 Key Benefits:</h4>
+            <ul>
+                <li>Reusability</li>
+                <li>Modularity</li>
+                <li>Improved performance (stored once, parsed once)</li>
+            </ul>
+        </div>
+
+        <h4>✅ Syntax:</h4>
+        <pre>CREATE PROCEDURE proc_name (IN param1 INT)
+BEGIN
+  -- statements
+END;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>4. Stored Functions</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>A <strong>stored function</strong> is like a procedure but it <strong>returns a single value</strong> directly using <span class="code-inline">RETURN</span>.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>📌 Use Cases:</h4>
+            <ul>
+                <li>Compute totals, averages, or results used in SELECT queries.</li>
+            </ul>
+        </div>
+
+        <h4>✅ Syntax:</h4>
+        <pre>CREATE FUNCTION func_name(param INT) RETURNS INT
+BEGIN
+  RETURN param * 2;
+END;</pre>
+
+        <p>You can now use:</p>
+        <pre>SELECT func_name(10);  -- returns 20</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>5. Triggers</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>A <strong>trigger</strong> is a block of code that <strong>automatically runs</strong> in response to events like <span class="code-inline">INSERT</span>, <span class="code-inline">UPDATE</span>, or <span class="code-inline">DELETE</span>.</p>
+        </div>
+
+        <div class="key-points">
+            <h4>📌 Trigger Timing:</h4>
+            <ul>
+                <li>BEFORE INSERT / AFTER INSERT</li>
+                <li>BEFORE UPDATE / AFTER UPDATE</li>
+                <li>BEFORE DELETE / AFTER DELETE</li>
+            </ul>
+        </div>
+
+        <div class="use-case">
+            <h4>📌 Use Cases:</h4>
+            <ul>
+                <li>Auto-fill columns (e.g. timestamps)</li>
+                <li>Enforce business rules</li>
+                <li>Audit logs</li>
+            </ul>
+        </div>
+
+        <h4>✅ Syntax:</h4>
+        <pre>CREATE TRIGGER before_insert
+BEFORE INSERT ON users
+FOR EACH ROW
+BEGIN
+  SET NEW.created_at = NOW();
+END;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>6. Cursors</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>A <strong>cursor</strong> is a pointer that allows <strong>row-by-row processing</strong> of query results.</p>
+        </div>
+
+        <div class="key-points">
+            <h4>📌 When to Use:</h4>
+            <ul>
+                <li>When you need to process each row individually</li>
+                <li>Alternatives like JOINs or batch updates are better for performance</li>
+            </ul>
+        </div>
+
+        <div class="use-case">
+            <h4>✅ Key Steps:</h4>
+            <ol>
+                <li>DECLARE cursor</li>
+                <li>OPEN cursor</li>
+                <li>FETCH from cursor</li>
+                <li>CLOSE cursor</li>
+            </ol>
+        </div>
+
+        <h4>✅ Example:</h4>
+        <pre>DECLARE done INT DEFAULT 0;
+DECLARE emp_name VARCHAR(50);
+DECLARE cur CURSOR FOR SELECT name FROM employees;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+OPEN cur;
+read_loop: LOOP
+  FETCH cur INTO emp_name;
+  IF done THEN LEAVE read_loop; END IF;
+  -- Process each employee
+END LOOP;
+CLOSE cur;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>7. Exception Handling (HANDLERS)</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>MySQL lets you handle exceptions using <strong>DECLARE HANDLER</strong> statements.</p>
+        </div>
+
+        <div class="key-points">
+            <h4>📌 Types:</h4>
+            <ul>
+                <li><span class="code-inline">CONTINUE</span> – continue execution after error</li>
+                <li><span class="code-inline">EXIT</span> – exit the block immediately</li>
+            </ul>
+        </div>
+
+        <div class="use-case">
+            <h4>📌 Common Conditions:</h4>
+            <ul>
+                <li><span class="code-inline">SQLEXCEPTION</span> – general SQL error</li>
+                <li><span class="code-inline">NOT FOUND</span> – no more rows in cursor</li>
+                <li><span class="code-inline">SQLWARNING</span> – warnings</li>
+            </ul>
+        </div>
+
+        <h4>✅ Example:</h4>
+        <pre>DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+  SET @error_message = 'Something went wrong';</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>8. Parameters (IN, OUT, INOUT)</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>Procedures can accept and return parameters:</p>
+            <ul>
+                <li><span class="code-inline">IN</span>: Input to procedure</li>
+                <li><span class="code-inline">OUT</span>: Output from procedure</li>
+                <li><span class="code-inline">INOUT</span>: Both input and output</li>
+            </ul>
+        </div>
+
+        <h4>✅ Example:</h4>
+        <pre>CREATE PROCEDURE add_numbers(IN a INT, IN b INT, OUT sum INT)
+BEGIN
+  SET sum = a + b;
+END;</pre>
+
+        <p>To call:</p>
+        <pre>CALL add_numbers(5, 3, @result);
+SELECT @result;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>9. Events (Scheduled Jobs)</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>An <strong>event</strong> is a scheduled task run at a specific time or interval.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>📌 Use Cases:</h4>
+            <ul>
+                <li>Clean up old logs</li>
+                <li>Run batch jobs</li>
+                <li>Send reminders</li>
+            </ul>
+        </div>
+
+        <h4>✅ Example:</h4>
+        <pre>CREATE EVENT delete_old_logs
+ON SCHEDULE EVERY 1 DAY
+DO
+  DELETE FROM logs WHERE created_at < NOW() - INTERVAL 30 DAY;</pre>
+
+        <p><strong>Don't forget:</strong> <span class="code-inline">SET GLOBAL event_scheduler = ON;</span></p>
+
+        <div class="section-divider"></div>
+
+        <h2>10. DELIMITER</h2>
+        
+        <div class="theory">
+            <h4>📘 Theory:</h4>
+            <p>The <span class="code-inline">DELIMITER</span> command is <strong>not SQL</strong>, but a <strong>MySQL client instruction</strong> used to change the end-of-statement marker so you can define complex blocks (which may include <span class="code-inline">;</span> inside them).</p>
+        </div>
+
+        <h4>✅ Usage:</h4>
+        <pre>DELIMITER //
+CREATE PROCEDURE my_proc() BEGIN
+  SELECT 'Hello';
+END;
+//
+DELIMITER ;</pre>
+
+        <div class="section-divider"></div>
+
+        <h2>11. Difference Between Procedure vs Function</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Procedure</th>
+                    <th>Function</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Return Value</td>
+                    <td>No (uses OUT)</td>
+                    <td>Yes (<span class="code-inline">RETURN</span> keyword)</td>
+                </tr>
+                <tr>
+                    <td>Use in SELECT</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Purpose</td>
+                    <td>Perform task</td>
+                    <td>Compute and return a value</td>
+                </tr>
+                <tr>
+                    <td>Call syntax</td>
+                    <td><span class="code-inline">CALL proc()</span></td>
+                    <td><span class="code-inline">SELECT func()</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="section-divider"></div>
+
+        <div class="tips">
+            <h2>🧠 Final Tips for Interview</h2>
+            <ol>
+                <li>Learn how to <strong>use parameters and cursors inside procedures</strong>.</li>
+                <li>Understand <strong>trigger types and timing</strong>.</li>
+                <li>Practice how <strong>exception handling</strong> works with <span class="code-inline">HANDLER</span>.</li>
+                <li>Know the <strong>differences</strong> between <strong>stored procedure, function, trigger</strong>.</li>
+                <li>Be ready to <strong>write basic procedure/function</strong> on the spot.</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

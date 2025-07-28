@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Networks – Full Interview Preparation Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .topic-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .topic-title {
+            color: #2c3e50;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-emoji {
+            font-size: 1.6rem;
+        }
+
+        .topic-content {
+            color: #34495e;
+            line-height: 1.8;
+        }
+
+        .topic-content ul {
+            padding-left: 20px;
+        }
+
+        .topic-content li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .topic-content li::before {
+            content: "▶";
+            color: #3498db;
+            position: absolute;
+            left: -15px;
+            font-size: 0.8rem;
+        }
+
+        .highlight-section {
+            background: linear-gradient(135deg, #ff6b6b, #ffa500);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .highlight-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .highlight-section ul {
+            list-style: none;
+        }
+
+        .highlight-section li {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 8px 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .focus-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .focus-box h4 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .focus-box ul {
+            list-style: none;
+        }
+
+        .focus-box li {
+            margin: 5px 0;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .focus-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #ffeb3b;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12, #e74c3c);
+            margin: 30px 0;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 Computer Networks</h1>
+            <p>Complete Interview Preparation Guide</p>
+        </div>
+
+        <div class="topic-grid">
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">1️⃣</span>
+                    Introduction to Networking
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>What is a computer network?</li>
+                        <li>Types of Networks: LAN, MAN, WAN, PAN</li>
+                        <li>Network Topologies: Bus, Star, Ring, Mesh, Hybrid</li>
+                        <li>Transmission Modes: Simplex, Half Duplex, Full Duplex</li>
+                        <li>Bandwidth vs Throughput vs Latency</li>
+                        <li>OSI Model vs TCP/IP Model (basic overview)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">2️⃣</span>
+                    OSI Model (7 Layers)
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>Physical Layer</strong> – Cables, Signals, Data Rates</li>
+                        <li><strong>Data Link Layer</strong> – MAC Address, Ethernet, ARP</li>
+                        <li><strong>Network Layer</strong> – IP Address, Routing, Packets</li>
+                        <li><strong>Transport Layer</strong> – TCP/UDP, Ports, Handshake</li>
+                        <li><strong>Session Layer</strong> – Session management</li>
+                        <li><strong>Presentation Layer</strong> – Data formats, Encryption</li>
+                        <li><strong>Application Layer</strong> – HTTP, FTP, DNS</li>
+                    </ul>
+                    <div class="focus-box">
+                        <h4>Focus for Interviews:</h4>
+                        <ul>
+                            <li>Diagram of OSI model</li>
+                            <li>OSI vs TCP/IP comparison</li>
+                            <li>Functions of each layer with examples</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">3️⃣</span>
+                    IP Addressing & Subnetting
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>IPv4 and IPv6 basics</li>
+                        <li>IP Classes (A to E)</li>
+                        <li>Subnetting with practice (CIDR Notation)</li>
+                        <li>Subnet mask and Network ID calculation</li>
+                        <li>Public vs Private IPs</li>
+                        <li>Binary IP to decimal conversion</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">4️⃣</span>
+                    TCP vs UDP + Transport Layer
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>TCP:</strong> Reliable, Ordered, Connection-oriented</li>
+                        <li><strong>UDP:</strong> Fast, Unreliable, Connectionless</li>
+                        <li>TCP Header + Flags (SYN, ACK, FIN)</li>
+                        <li>3-Way Handshake and 4-Way Termination</li>
+                        <li>Flow Control and Congestion Control</li>
+                        <li>Port Numbers</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">5️⃣</span>
+                    Routing & Switching
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>Router vs Switch vs Hub vs Bridge</li>
+                        <li>Routing Protocols: RIP, OSPF, BGP</li>
+                        <li>Routing Algorithms: Dijkstra, Bellman-Ford</li>
+                        <li>MAC Address Table, ARP protocol</li>
+                        <li>Default Gateway, NAT</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">6️⃣</span>
+                    Application Layer Protocols
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>HTTP vs HTTPS</li>
+                        <li>HTTP Methods: GET, POST, PUT, DELETE</li>
+                        <li>HTTP Status Codes: 200, 404, 500, etc.</li>
+                        <li>FTP – File Transfer</li>
+                        <li>DNS – Name Resolution process</li>
+                        <li>DHCP – Assigning IP dynamically</li>
+                        <li>SMTP/POP3/IMAP – Mail protocols</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">7️⃣</span>
+                    Network Devices
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>Modem, Router, Switch, Hub</li>
+                        <li>Bridge, Repeater, Gateway</li>
+                        <li>Firewall: Stateless vs Stateful</li>
+                        <li>Load Balancer</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">8️⃣</span>
+                    Network Security Basics
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>HTTPS (with TLS/SSL)</li>
+                        <li>Public Key vs Private Key (RSA, AES)</li>
+                        <li>Types of Attacks: DoS, DDoS, MITM, Phishing</li>
+                        <li>VPN (Virtual Private Network)</li>
+                        <li>Firewalls: Rules, Packet Filtering</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">9️⃣</span>
+                    Debugging Tools
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>ping</strong> – Check connectivity</li>
+                        <li><strong>traceroute</strong> – See path to server</li>
+                        <li><strong>nslookup, dig</strong> – DNS details</li>
+                        <li><strong>netstat</strong> – List open ports</li>
+                        <li><strong>ipconfig / ifconfig</strong></li>
+                        <li><strong>Wireshark</strong> – Packet analysis</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">🔟</span>
+                    Modern Concepts
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li>NAT – Network Address Translation</li>
+                        <li>Proxy vs Reverse Proxy</li>
+                        <li>CDN – Content Delivery Network</li>
+                        <li>Load Balancer – Round Robin, Least Connections</li>
+                        <li>SDN – Software Defined Networking</li>
+                        <li>Cloud Networking: AWS VPC, Subnets</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">🔐</span>
+                    Network Security & Attacks
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>Authentication:</strong> Kerberos, LDAP, OAuth</li>
+                        <li><strong>Encryption:</strong> Symmetric vs Asymmetric</li>
+                        <li><strong>SSL/TLS Handshake</strong> process</li>
+                        <li><strong>Common Attacks:</strong> SQL Injection, XSS, CSRF</li>
+                        <li><strong>Network Attacks:</strong> ARP Spoofing, MAC Flooding</li>
+                        <li><strong>IDS/IPS</strong> – Intrusion Detection/Prevention</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">⚡</span>
+                    Performance & Quality of Service
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>QoS (Quality of Service)</strong> concepts</li>
+                        <li><strong>Traffic Shaping</strong> vs Traffic Policing</li>
+                        <li><strong>Congestion Control:</strong> AIMD, Slow Start</li>
+                        <li><strong>Buffer Management:</strong> Drop Tail, RED</li>
+                        <li><strong>Network Metrics:</strong> RTT, Jitter, Packet Loss</li>
+                        <li><strong>SLA</strong> – Service Level Agreement</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">🌊</span>
+                    Error Detection & Correction
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>Checksum</strong> – Internet Checksum</li>
+                        <li><strong>CRC (Cyclic Redundancy Check)</strong></li>
+                        <li><strong>Hamming Code</strong> for error correction</li>
+                        <li><strong>Parity Check</strong> – Even/Odd parity</li>
+                        <li><strong>ARQ Protocols:</strong> Stop-and-Wait, Go-Back-N</li>
+                        <li><strong>Flow Control:</strong> Sliding Window Protocol</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">📡</span>
+                    Wireless Networks & IoT
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>WiFi Standards:</strong> 802.11 a/b/g/n/ac/ax</li>
+                        <li><strong>Wireless Security:</strong> WEP, WPA, WPA2, WPA3</li>
+                        <li><strong>Mobile Networks:</strong> 3G, 4G LTE, 5G</li>
+                        <li><strong>Bluetooth</strong> and protocol stack</li>
+                        <li><strong>IoT Protocols:</strong> MQTT, CoAP, LoRaWAN</li>
+                        <li><strong>Mesh Networks</strong> and topology</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">🔄</span>
+                    Advanced Routing Concepts
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>VLAN</strong> – Virtual Local Area Network</li>
+                        <li><strong>MPLS</strong> – Multi-Protocol Label Switching</li>
+                        <li><strong>BGP</strong> – Border Gateway Protocol details</li>
+                        <li><strong>OSPF Areas</strong> and LSA types</li>
+                        <li><strong>Route Redistribution</strong></li>
+                        <li><strong>Policy-Based Routing</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">☁️</span>
+                    Cloud & Virtualization
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>Virtual Networks:</strong> VXLAN, GRE Tunnels</li>
+                        <li><strong>Container Networking:</strong> Docker, Kubernetes</li>
+                        <li><strong>Network Functions Virtualization (NFV)</strong></li>
+                        <li><strong>Service Mesh:</strong> Istio, Linkerd</li>
+                        <li><strong>API Gateway</strong> and microservices</li>
+                        <li><strong>Edge Computing</strong> concepts</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="topic-card">
+                <h2 class="topic-title">
+                    <span class="topic-emoji">🔍</span>
+                    Network Monitoring & Troubleshooting
+                </h2>
+                <div class="topic-content">
+                    <ul>
+                        <li><strong>SNMP</strong> – Simple Network Management Protocol</li>
+                        <li><strong>Syslog</strong> and log analysis</li>
+                        <li><strong>NetFlow/sFlow</strong> for traffic analysis</li>
+                        <li><strong>Network Topology Discovery</strong></li>
+                        <li><strong>Performance Monitoring Tools</strong></li>
+                        <li><strong>Fault Management</strong> strategies</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <div class="highlight-section">
+            <h2>📌 High-Frequency Interview Questions</h2>
+            <ul>
+                <li>What happens when you type google.com?</li>
+                <li>Explain 3-way TCP handshake.</li>
+                <li>Difference between TCP and UDP.</li>
+                <li>How does DNS work?</li>
+                <li>What is Subnetting?</li>
+                <li>What is NAT and how does it help?</li>
+                <li>What is a Firewall?</li>
+                <li>Explain OSI Model with examples.</li>
+                <li>How does HTTPS work? Explain SSL/TLS handshake.</li>
+                <li>What is the difference between Hub, Switch, and Router?</li>
+                <li>Explain ARP protocol and ARP table.</li>
+                <li>What is DHCP? How does it work?</li>
+                <li>Difference between IPv4 and IPv6.</li>
+                <li>What is VLAN and why is it used?</li>
+                <li>Explain different types of network attacks.</li>
+                <li>What is load balancing? Types of load balancing.</li>
+                <li>How does VPN work?</li>
+                <li>What is CDN and how does it improve performance?</li>
+                <li>Explain congestion control in TCP.</li>
+                <li>What is the difference between symmetric and asymmetric encryption?</li>
+            </ul>
+        </div>
+
+        <div class="highlight-section">
+            <h2>🎯 Technical Deep-Dive Questions</h2>
+            <ul>
+                <li>Design a chat application architecture.</li>
+                <li>How would you troubleshoot slow network performance?</li>
+                <li>Explain BGP path selection algorithm.</li>
+                <li>Design a secure network for a company with 1000 employees.</li>
+                <li>How does HTTP/2 improve over HTTP/1.1?</li>
+                <li>Explain the working of OSPF routing protocol.</li>
+                <li>How do you prevent DDoS attacks?</li>
+                <li>Design a scalable web architecture.</li>
+                <li>Explain network address translation in detail.</li>
+                <li>How does Quality of Service (QoS) work?</li>
+            </ul>
+        </div>
+
+        <div class="highlight-section">
+            <h2>💡 Scenario-Based Questions</h2>
+            <ul>
+                <li>Network is slow, how do you diagnose the problem?</li>
+                <li>Users can't access a specific website, troubleshoot steps?</li>
+                <li>How to implement network security for remote work?</li>
+                <li>Design network topology for a multi-branch company.</li>
+                <li>How to handle network outage during peak hours?</li>
+                <li>Implement redundancy in network design.</li>
+                <li>Choose appropriate routing protocol for different scenarios.</li>
+                <li>Handle IP address exhaustion in your network.</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>📚 Study systematically and practice with real examples!</p>
+            <p><strong>Good luck with your Computer Networks interview! 🚀</strong></p>
+        </div>
+    </div>
+</body>
+</html>
