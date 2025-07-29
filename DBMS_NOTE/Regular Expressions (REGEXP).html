@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL REGEXP Guide - Complete Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: "🔸";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .section h3 {
+            color: #e74c3c;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h3::before {
+            content: "✅";
+            margin-right: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            line-height: 1.7;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #4299e1;
+        }
+
+        .inline-code {
+            background: #e2e8f0;
+            color: #2d3748;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .tip {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            margin: 20px 0;
+        }
+
+        .tip::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+
+        .warning {
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+            margin: 20px 0;
+        }
+
+        .warning::before {
+            content: "❗ ";
+            font-weight: bold;
+        }
+
+        .matches {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Regular Expressions (REGEXP) in MySQL</h1>
+        </div>
+
+        <div class="content">
+            <section class="section">
+                <h2>Basic Syntax of REGEXP in MySQL</h2>
+                <p>Regular expressions in MySQL are powerful tools used to match text patterns using rules. They are especially useful in WHERE clauses to filter data based on specific character combinations.</p>
+                
+                <div class="code-block">SELECT column_name
+FROM table_name
+WHERE column_name REGEXP 'pattern';</div>
+            </section>
+
+            <section class="section">
+                <h2>What is a Regular Expression?</h2>
+                <p>A <strong>Regular Expression (REGEXP)</strong> is a sequence of characters that defines a search pattern. In MySQL, it works similar to patterns in other programming languages, but not all features are the same.</p>
+            </section>
+
+            <section class="section">
+                <h2>Common REGEXP Operators in MySQL</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pattern</th>
+                                <th>Meaning</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="inline-code">^</span></td>
+                                <td>Start of string</td>
+                                <td><span class="inline-code">^abc</span> matches any string starting with "abc"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">$</span></td>
+                                <td>End of string</td>
+                                <td><span class="inline-code">abc$</span> matches any string ending with "abc"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">.</span></td>
+                                <td>Any single character</td>
+                                <td><span class="inline-code">a.c</span> matches "abc", "acc", etc.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">[...]</span></td>
+                                <td>Any character in the set</td>
+                                <td><span class="inline-code">[aeiou]</span> matches any vowel</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">[^...]</span></td>
+                                <td>Any character <strong>not</strong> in the set</td>
+                                <td><span class="inline-code">[^0-9]</span> matches any non-digit</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">|</span></td>
+                                <td>OR operator</td>
+                                <td><span class="inline-code">abc|xyz</span> matches "abc" or "xyz"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">*</span></td>
+                                <td>0 or more repetitions of the previous character</td>
+                                <td><span class="inline-code">a*</span> matches "", "a", "aa", etc.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">+</span></td>
+                                <td>1 or more repetitions</td>
+                                <td><span class="inline-code">a+</span> matches "a", "aa", "aaa"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">{n}</span></td>
+                                <td>Exactly n repetitions</td>
+                                <td><span class="inline-code">a{3}</span> matches "aaa"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">{n,}</span></td>
+                                <td>n or more repetitions</td>
+                                <td><span class="inline-code">a{2,}</span> matches "aa", "aaa", etc.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">{n,m}</span></td>
+                                <td>Between n and m repetitions</td>
+                                <td><span class="inline-code">a{2,4}</span> matches "aa", "aaa", "aaaa"</td>
+                            </tr>
+                            <tr>
+                                <td><span class="inline-code">[a-z]</span></td>
+                                <td>Any lowercase letter</td>
+                                <td><span class="inline-code">b[a-z]g</span> matches "bag", "bog"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Case Sensitivity</h2>
+                <ul>
+                    <li><strong>By default, REGEXP is case-insensitive in MySQL 8.0+</strong></li>
+                    <li>You can use <span class="inline-code">BINARY</span> to make it case-sensitive.</li>
+                </ul>
+                
+                <div class="code-block">SELECT * FROM users WHERE BINARY name REGEXP '^A';</div>
+            </section>
+
+            <section class="section">
+                <h2>Examples with Table</h2>
+                <p>Suppose you have a table:</p>
+                
+                <div class="code-block">CREATE TABLE Users (
+  id INT,
+  name VARCHAR(50),
+  email VARCHAR(100)
+);
+
+INSERT INTO Users VALUES
+(1, 'Alice', 'alice@gmail.com'),
+(2, 'Bob', 'bob@yahoo.com'),
+(3, 'Charlie', 'charlie@leetcode.com'),
+(4, 'Ankit', 'ankit@leetcode.COM'),
+(5, 'Angela', 'angela@outlook.com');</div>
+
+                <h3>Example 1: Starts with A</h3>
+                <div class="code-block">SELECT * FROM Users WHERE name REGEXP '^A';</div>
+                <p><span class="matches">Matches:</span> Alice, Ankit, Angela</p>
+
+                <h3>Example 2: Email ends with @leetcode.com (case-insensitive)</h3>
+                <div class="code-block">SELECT * FROM Users WHERE email REGEXP '@leetcode\\.com$';</div>
+                <p><span class="matches">Matches:</span> Only charlie@leetcode.com</p>
+                <p>(Use <span class="inline-code">BINARY</span> if you want exact case match.)</p>
+
+                <h3>Example 3: Emails from Gmail or Yahoo</h3>
+                <div class="code-block">SELECT * FROM Users WHERE email REGEXP 'gmail|yahoo';</div>
+                <p><span class="matches">Matches:</span> alice@gmail.com, bob@yahoo.com</p>
+
+                <h3>Example 4: Names with only letters (no digits or special characters)</h3>
+                <div class="code-block">SELECT * FROM Users WHERE name REGEXP '^[A-Za-z]+$';</div>
+
+                <h3>Example 5: Name contains at least one digit</h3>
+                <div class="code-block">SELECT * FROM Users WHERE name REGEXP '[0-9]';</div>
+            </section>
+
+            <section class="section">
+                <h2>Special Character Escaping</h2>
+                <p>Some characters like <span class="inline-code">.</span>, <span class="inline-code">*</span>, <span class="inline-code">?</span>, <span class="inline-code">+</span>, <span class="inline-code">^</span>, <span class="inline-code">$</span>, <span class="inline-code">|</span>, <span class="inline-code">(</span>, <span class="inline-code">)</span>, <span class="inline-code">{</span>, <span class="inline-code">}</span>, <span class="inline-code">[</span>, <span class="inline-code">]</span>, and <span class="inline-code">\</span> have special meanings and <strong>must be escaped</strong> with double backslashes (<span class="inline-code">\\</span>) in SQL strings.</p>
+                
+                <p>Example:</p>
+                <div class="code-block">SELECT * FROM Users WHERE email REGEXP '\\.com$';</div>
+            </section>
+
+            <section class="section">
+                <h2>Using NOT REGEXP</h2>
+                <p>You can also <strong>exclude</strong> results using <span class="inline-code">NOT REGEXP</span></p>
+                
+                <div class="code-block">SELECT * FROM Users WHERE name NOT REGEXP '^A';</div>
+            </section>
+
+            <section class="section">
+                <h2>REGEXP vs LIKE</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>REGEXP</th>
+                                <th>LIKE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Pattern Matching</td>
+                                <td>Complex (supports ranges, OR, etc)</td>
+                                <td>Simple</td>
+                            </tr>
+                            <tr>
+                                <td>Wildcards</td>
+                                <td><span class="inline-code">[a-z]</span>, <span class="inline-code">*</span>, <span class="inline-code">+</span>, <span class="inline-code">|</span>, etc.</td>
+                                <td><span class="inline-code">%</span> and <span class="inline-code">_</span> only</td>
+                            </tr>
+                            <tr>
+                                <td>Power</td>
+                                <td>High</td>
+                                <td>Low</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Full Example Query</h2>
+                <div class="code-block">SELECT name, email 
+FROM Users 
+WHERE email REGEXP '^[a-zA-Z0-9._%+-]+@leetcode\\.com$';</div>
+                <p>✅ This matches only properly formatted emails ending in <span class="inline-code">@leetcode.com</span>.</p>
+            </section>
+
+            <section class="section">
+                <h2>MySQL 8.0+: REGEXP_LIKE() (Alternative Function)</h2>
+                <p>In <strong>MySQL 8.0 and above</strong>, you can also use:</p>
+                
+                <div class="code-block">SELECT * FROM Users WHERE REGEXP_LIKE(email, '@gmail\\.com$');</div>
+                <p>This function behaves the same but is more <strong>ANSI-compliant</strong> and <strong>easier to read</strong>.</p>
+            </section>
+
+            <section class="section">
+                <h2>Tips</h2>
+                <div class="tip">
+                    Always <strong>escape dots (.)</strong> when you want to match a literal dot in email/domain.
+                </div>
+                
+                <div class="tip">
+                    Use <span class="inline-code">BINARY</span> if case-sensitivity is required.
+                </div>
+                
+                <div class="tip">
+                    Prefer <span class="inline-code">REGEXP_LIKE()</span> over <span class="inline-code">REGEXP</span> in MySQL 8+ for clarity.
+                </div>
+            </section>
+
+            <div class="highlight">
+                <p><strong>Would you like a practice sheet with questions and solutions based on REGEXP?</strong></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
