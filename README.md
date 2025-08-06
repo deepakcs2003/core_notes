@@ -7,7 +7,8 @@ Welcome to the Notes Hub! This repository contains categorized HTML notes for im
 👉 [Open index.html](https://deepakcs2003.github.io/core_notes/index.html)
 
 ---
-
+React
+https://deepakcs2003.github.io/core_notes/react/interview_qeastion.html
 ## 📘 DBMS Notes
 
 - [Introduction to DBMS](https://deepakcs2003.github.io/core_notes/DBMS_NOTE/introduction_to_dbms.html)
@@ -46,3 +47,4 @@ Welcome to the Notes Hub! This repository contains categorized HTML notes for im
 2. Or open the home page: [Notes Hub](https://deepakcs2003.github.io/core_notes/index.html) for a UI-based tab layout.
 
 ---
+
