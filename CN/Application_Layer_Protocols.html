@@ -363,59 +363,69 @@
             </ul>
         </div>
 
-        <h2>8. SMTP, POP3, IMAP – Email Protocols</h2>
-        <h3>SMTP (Simple Mail Transfer Protocol)</h3>
-        <ul>
-            <li><strong>Purpose:</strong> Sends emails.</li>
-            <li><strong>Port:</strong> 25 (plain), 587 (TLS/STARTTLS), 465 (SSL).</li>
-            <li><strong>Key Points:</strong> Uses MX records; encrypted with TLS/SSL.</li>
-            <li><strong>Example:</strong> Sending via Gmail.</li>
-        </ul>
-        <h3>POP3 (Post Office Protocol, Version 3)</h3>
-        <ul>
-            <li><strong>Purpose:</strong> Downloads emails, usually deletes from server.</li>
-            <li><strong>Port:</strong> 110 (plain), 995 (SSL/TLS).</li>
-            <li><strong>Key Points:</strong> Best for single-device access.</li>
-            <li><strong>Example:</strong> Downloading emails to a desktop client.</li>
-        </ul>
-        <h3>IMAP (Internet Message Access Protocol)</h3>
-        <ul>
-            <li><strong>Purpose:</strong> Syncs emails across devices, keeps on server.</li>
-            <li><strong>Port:</strong> 143 (plain), 993 (SSL/TLS).</li>
-            <li><strong>Key Points:</strong> Ideal for multi-device access.</li>
-            <li><strong>Example:</strong> Accessing Gmail on multiple devices.</li>
-        </ul>
-        <h3>Comparison</h3>
-        <table>
-            <tr>
-                <th>Protocol</th>
-                <th>Function</th>
-                <th>Port (Secure)</th>
-                <th>Storage</th>
-                <th>Multi-Device</th>
-            </tr>
-            <tr>
-                <td>SMTP</td>
-                <td>Send email</td>
-                <td>587, 465</td>
-                <td>N/A</td>
-                <td>N/A</td>
-            </tr>
-            <tr>
-                <td>POP3</td>
-                <td>Retrieve (download)</td>
-                <td>995</td>
-                <td>Local</td>
-                <td>No</td>
-            </tr>
-            <tr>
-                <td>IMAP</td>
-                <td>Retrieve (sync)</td>
-                <td>993</td>
-                <td>Server</td>
-                <td>Yes</td>
-            </tr>
-        </table>
+       <h2>8. Email Protocols – SMTP, POP3, IMAP (Easy Guide)</h2>
+
+<h3>SMTP – Simple Mail Transfer Protocol</h3>
+<ul>
+    <li><strong>Main job:</strong> Push (send) emails from you to someone else.</li>
+    <li><strong>Ports:</strong> 25 (basic), 587 (secure), 465 (secure).</li>
+    <li><strong>Example:</strong> You click "Send" in Gmail → Email goes to your friend.</li>
+</ul>
+
+<h3>POP3 – Post Office Protocol, Version 3</h3>
+<ul>
+    <li><strong>Main job:</strong> Download emails from the server to your device.</li>
+    <li><strong>What happens:</strong> After download, emails are usually removed from the server (stay only on your device).</li>
+    <li><strong>Ports:</strong> 110 (basic), 995 (secure).</li>
+    <li><strong>Example:</strong> You open Outlook → Emails come to your computer → Not available on phone.</li>
+</ul>
+
+<h3>IMAP – Internet Message Access Protocol</h3>
+<ul>
+    <li><strong>Main job:</strong> Sync emails between the server and all your devices.</li>
+    <li><strong>What happens:</strong> Emails stay on the server, so you can read them on phone, laptop, or tablet and see the same messages everywhere.</li>
+    <li><strong>Ports:</strong> 143 (basic), 993 (secure).</li>
+    <li><strong>Example:</strong> You read an email on your phone → It shows as read on your computer too.</li>
+</ul>
+
+<h3>POP3 vs IMAP (Simple Difference)</h3>
+<ul>
+    <li><strong>POP3:</strong> Download and keep on one device (like taking letters from the post office and keeping them at home).</li>
+    <li><strong>IMAP:</strong> Sync and keep on the server (like leaving letters in the post office, but you can read them from anywhere).</li>
+</ul>
+
+<h3>Easy Comparison Table</h3>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Protocol</th>
+        <th>Main Job</th>
+        <th>Secure Port</th>
+        <th>Where Emails are Stored</th>
+        <th>Works on Many Devices?</th>
+    </tr>
+    <tr>
+        <td>SMTP</td>
+        <td>Push (send) emails</td>
+        <td>587, 465</td>
+        <td>Not for storage</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>POP3</td>
+        <td>Download emails</td>
+        <td>995</td>
+        <td>Only on your device</td>
+        <td>No</td>
+    </tr>
+    <tr>
+        <td>IMAP</td>
+        <td>Sync emails</td>
+        <td>993</td>
+        <td>On the server</td>
+        <td>Yes</td>
+    </tr>
+</table>
+
         <div class="tip">
             <strong>Interview Tips:</strong>
             <ul>
