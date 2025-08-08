@@ -107,37 +107,84 @@
             </div>
         </div>
 
-        <div class="section">
-            <h2>2. Firewall</h2>
-            <p><strong>Definition:</strong> Filters network traffic based on predefined rules.</p>
-            <div class="highlight">
-                <p><strong>Purpose:</strong> Protects networks from unauthorized access, malware, and attacks.</p>
-                <p><strong>How it Works:</strong></p>
+       <div class="section">
+    <h2>2. Firewall</h2>
+    <p><strong>Definition:</strong> A firewall is a security system (hardware, software, or both) that monitors and controls incoming and outgoing network traffic based on predefined security rules. 
+    Think of it as a <em>security guard</em> for your network.</p>
+
+    <div class="highlight">
+        <p><strong>Purpose:</strong></p>
+        <ul>
+            <li>Protects networks from unauthorized access, malware, and cyberattacks.</li>
+            <li>Monitors network traffic to ensure only safe communication happens.</li>
+            <li>Enforces security policies in organizations.</li>
+        </ul>
+
+        <p><strong>Why Firewalls are Needed:</strong></p>
+        <ul>
+            <li>Prevent hackers from accessing private systems.</li>
+            <li>Control which services or websites can be used.</li>
+            <li>Stop malicious programs from sending data outside.</li>
+        </ul>
+
+        <p><strong>How a Firewall Works:</strong></p>
+        <ul>
+            <li>Inspects each data packet that tries to enter or leave the network.</li>
+            <li>Allows or blocks data based on rules (IP address, port number, protocol, application).</li>
+            <li>Works at different <strong>OSI layers</strong>:
                 <ul>
-                    <li>Filters traffic by IP, port, or protocol.</li>
-                    <li>Operates at OSI layers (Layer 3: packet filtering, Layer 7: application).</li>
+                    <li><strong>Layer 3 (Network):</strong> Packet filtering based on IP addresses.</li>
+                    <li><strong>Layer 4 (Transport):</strong> Filters based on TCP/UDP ports and connection state.</li>
+                    <li><strong>Layer 7 (Application):</strong> Examines and filters actual application data like HTTP, FTP, etc.</li>
                 </ul>
-                <p><strong>Types:</strong></p>
+            </li>
+        </ul>
+
+        <p><strong>Types of Firewalls:</strong></p>
+        <ul>
+            <li><strong>Packet-Filtering Firewall:</strong> Examines packet headers (source/destination IP, port, protocol). Simple but less secure.</li>
+            <li><strong>Stateful Inspection Firewall:</strong> Tracks the state of active connections, allowing only valid packets related to known connections.</li>
+            <li><strong>Application-Layer (Proxy) Firewall:</strong> Works as a middleman between user and the internet, filtering based on application data.</li>
+            <li><strong>Next-Generation Firewall (NGFW):</strong> Advanced features like Intrusion Detection System (IDS), Intrusion Prevention System (IPS), Deep Packet Inspection (DPI), and malware detection.</li>
+        </ul>
+
+        <p><strong>Firewall Modes:</strong></p>
+        <ul>
+            <li><strong>Whitelist Mode:</strong> Only traffic that matches allowed rules can pass; everything else is blocked.</li>
+            <li><strong>Blacklist Mode:</strong> Blocks only defined malicious or unwanted traffic; everything else is allowed.</li>
+        </ul>
+
+        <p><strong>Common Use Cases:</strong></p>
+        <ul>
+            <li>Blocking access from suspicious IP addresses.</li>
+            <li>Allowing only secure web traffic (HTTPS on port 443).</li>
+            <li>Preventing unauthorized remote logins to servers.</li>
+        </ul>
+
+        <p><strong>Limitations:</strong></p>
+        <ul>
+            <li>Cannot stop attacks from inside the network (insider threats).</li>
+            <li>Cannot detect viruses hidden in allowed traffic unless integrated with antivirus.</li>
+            <li>Cannot inspect encrypted traffic without SSL decryption enabled.</li>
+            <li>Needs proper configuration; wrong rules can create security holes.</li>
+        </ul>
+
+        <p><strong>Important Interview Points:</strong></p>
+        <ul>
+            <li>Difference between <strong>Stateful</strong> and <strong>Stateless</strong> firewalls.</li>
+            <li>Example firewall rule: <em>Allow TCP traffic from 192.168.1.10 on port 80; deny all others.</em></li>
+            <li>Difference between <strong>Firewall</strong>, <strong>IDS</strong> (detects threats), and <strong>IPS</strong> (blocks threats).</li>
+            <li>Hardware vs Software firewall:
                 <ul>
-                    <li><strong>Packet-Filtering:</strong> Inspects packet headers.</li>
-                    <li><strong>Stateful Inspection:</strong> Tracks connection states.</li>
-                    <li><strong>Application-Layer:</strong> Analyzes application data.</li>
-                    <li><strong>NGFW:</strong> Includes IDS/IPS, deep packet inspection.</li>
+                    <li><strong>Hardware:</strong> Separate physical device, protects entire network.</li>
+                    <li><strong>Software:</strong> Installed on a specific device, protects that device only.</li>
                 </ul>
-                <p><strong>Use Cases:</strong></p>
-                <ul>
-                    <li>Blocking malicious IPs/ports.</li>
-                    <li>Preventing unauthorized access.</li>
-                    <li>Enforcing enterprise security policies.</li>
-                </ul>
-                <p><strong>Interview Points:</strong></p>
-                <ul>
-                    <li>Stateful vs. stateless firewalls.</li>
-                    <li>Common rules: Allow/Deny by IP, port, protocol.</li>
-                    <li>Limitations: Cannot decrypt SSL without configuration.</li>
-                </ul>
-            </div>
-        </div>
+            </li>
+            <li>DMZ (Demilitarized Zone) usage in network security — adds an extra security layer for public-facing servers.</li>
+        </ul>
+    </div>
+</div>
+
 
         <div class="section">
             <h2>3. NAT (Network Address Translation)</h2>
