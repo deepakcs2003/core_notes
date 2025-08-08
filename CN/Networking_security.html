@@ -286,82 +286,99 @@
             </div>
         </div>
 
-        <div class="section">
-            <h2>6. Proxy vs. Reverse Proxy</h2>
-            <h3>Proxy (Forward Proxy)</h3>
-            <p><strong>Definition:</strong> Server between client and internet, forwarding requests.</p>
-            <div class="highlight">
-                <p><strong>Purpose:</strong> Anonymity, content filtering, caching.</p>
-                <p><strong>How it Works:</strong></p>
-                <ul>
-                    <li>Forwards client requests, hides client IP.</li>
-                </ul>
-                <p><strong>Use Cases:</strong></p>
-                <ul>
-                    <li>Corporate internet monitoring.</li>
-                    <li>Bypassing geo-restrictions.</li>
-                    <li>Caching to reduce bandwidth.</li>
-                </ul>
-                <p><strong>Interview Points:</strong></p>
-                <ul>
-                    <li>Acts on behalf of client.</li>
-                    <li>Example: Squid Proxy.</li>
-                </ul>
-            </div>
-            <h3>Reverse Proxy</h3>
-            <p><strong>Definition:</strong> Server between internet and backend servers.</p>
-            <div class="highlight">
-                <p><strong>Purpose:</strong> Load balancing, security, SSL termination.</p>
-                <p><strong>How it Works:</strong></p>
-                <ul>
-                    <li>Routes client requests, hides server IPs.</li>
-                </ul>
-                <p><strong>Use Cases:</strong></p>
-                <ul>
-                    <li>Load balancing web servers.</li>
-                    <li>SSL termination.</li>
-                    <li>Protecting backend servers.</li>
-                </ul>
-                <p><strong>Interview Points:</strong></p>
-                <ul>
-                    <li>Acts on behalf of server.</li>
-                    <li>Example: NGINX, AWS ALB.</li>
-                </ul>
-            </div>
-            <h3>Comparison</h3>
-            <table>
-                <tr>
-                    <th>Aspect</th>
-                    <th>Proxy (Forward)</th>
-                    <th>Reverse Proxy</th>
-                </tr>
-                <tr>
-                    <td><strong>Acts on Behalf of</strong></td>
-                    <td>Client</td>
-                    <td>Server</td>
-                </tr>
-                <tr>
-                    <td><strong>Purpose</strong></td>
-                    <td>Anonymity, filtering, caching</td>
-                    <td>Load balancing, security, caching</td>
-                </tr>
-                <tr>
-                    <td><strong>Location</strong></td>
-                    <td>Between client and internet</td>
-                    <td>Between internet and servers</td>
-                </tr>
-                <tr>
-                    <td><strong>Hides</strong></td>
-                    <td>Client IP</td>
-                    <td>Server IP</td>
-                </tr>
-                <tr>
-                    <td><strong>Examples</strong></td>
-                    <td>Squid, corporate proxies</td>
-                    <td>NGINX, HAProxy, AWS ALB</td>
-                </tr>
-            </table>
-        </div>
+       <div class="section">
+    <h2>6. Proxy vs. Reverse Proxy</h2>
+
+    <h3>Beginner + Deep Understanding</h3>
+    <p><strong>What is a Proxy?</strong> A proxy is like a middleman between you and the internet. Instead of talking directly to a website, you talk to the proxy, and it talks to the website for you.</p>
+
+    <p><strong>Forward Proxy (Proxy):</strong> Sits between the client (your device) and the internet. It hides your identity from websites, can block certain sites, and can store (cache) content for faster loading. Example: Like a class monitor passing your note to the teacher without revealing who wrote it.</p>
+
+    <p><strong>Reverse Proxy:</strong> Sits between the internet and backend servers. It hides the servers from the public, distributes traffic between them, and can handle security tasks like SSL. Example: Like a receptionist in a building directing visitors to the right department without revealing the office locations.</p>
+
+    <p><em>Key Difference:</em> Forward Proxy protects the client’s identity. Reverse Proxy protects the server’s identity.</p>
+
+    <h3>Proxy (Forward Proxy)</h3>
+    <p><strong>Definition:</strong> Server between client and internet, forwarding requests.</p>
+    <div class="highlight">
+        <p><strong>Purpose:</strong> Anonymity, content filtering, caching.</p>
+        <p><strong>How it Works:</strong></p>
+        <ul>
+            <li>Client sends request to proxy.</li>
+            <li>Proxy forwards the request to the internet.</li>
+            <li>Website sees proxy's IP, not the client’s IP.</li>
+        </ul>
+        <p><strong>Use Cases:</strong></p>
+        <ul>
+            <li>Corporate internet monitoring.</li>
+            <li>Bypassing geo-restrictions.</li>
+            <li>Caching to reduce bandwidth.</li>
+        </ul>
+        <p><strong>Interview Points:</strong></p>
+        <ul>
+            <li>Acts on behalf of client.</li>
+            <li>Example: Squid Proxy.</li>
+        </ul>
+    </div>
+
+    <h3>Reverse Proxy</h3>
+    <p><strong>Definition:</strong> Server between internet and backend servers.</p>
+    <div class="highlight">
+        <p><strong>Purpose:</strong> Load balancing, security, SSL termination.</p>
+        <p><strong>How it Works:</strong></p>
+        <ul>
+            <li>Client sends request to reverse proxy.</li>
+            <li>Reverse proxy decides which backend server should handle it.</li>
+            <li>Client only sees reverse proxy’s IP, not the real server’s IP.</li>
+        </ul>
+        <p><strong>Use Cases:</strong></p>
+        <ul>
+            <li>Load balancing web servers.</li>
+            <li>SSL termination.</li>
+            <li>Protecting backend servers.</li>
+        </ul>
+        <p><strong>Interview Points:</strong></p>
+        <ul>
+            <li>Acts on behalf of server.</li>
+            <li>Example: NGINX, AWS ALB.</li>
+        </ul>
+    </div>
+
+    <h3>Comparison</h3>
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>Proxy (Forward)</th>
+            <th>Reverse Proxy</th>
+        </tr>
+        <tr>
+            <td><strong>Acts on Behalf of</strong></td>
+            <td>Client</td>
+            <td>Server</td>
+        </tr>
+        <tr>
+            <td><strong>Purpose</strong></td>
+            <td>Anonymity, filtering, caching</td>
+            <td>Load balancing, security, caching</td>
+        </tr>
+        <tr>
+            <td><strong>Location</strong></td>
+            <td>Between client and internet</td>
+            <td>Between internet and servers</td>
+        </tr>
+        <tr>
+            <td><strong>Hides</strong></td>
+            <td>Client IP</td>
+            <td>Server IP</td>
+        </tr>
+        <tr>
+            <td><strong>Examples</strong></td>
+            <td>Squid, corporate proxies</td>
+            <td>NGINX, HAProxy, AWS ALB</td>
+        </tr>
+    </table>
+</div>
+
 
         <div class="section">
             <h2>7. Debugging Tools</h2>
