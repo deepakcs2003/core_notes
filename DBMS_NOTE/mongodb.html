@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MongoDB Complete Interview Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+            position: relative;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #e74c3c;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.3rem;
+            margin: 20px 0 10px;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        h4 {
+            color: #2c3e50;
+            margin: 15px 0 8px;
+            font-size: 1.1rem;
+        }
+
+        p, li {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #e74c3c;
+            border-radius: 50%;
+            box-shadow: -20px 0 0 #f39c12, -40px 0 0 #27ae60;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+            transition: all 0.3s ease;
+        }
+
+        .comparison-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .feature-item h4 {
+            color: #fff;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .query-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid #e9ecef;
+        }
+
+        .tips-section {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .interview-questions {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .interview-questions h3, .interview-questions h4 {
+            color: white;
+        }
+
+        strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .scenario-box {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .scenario-box h3, .scenario-box h4 {
+            color: white;
+        }
+
+        .toc {
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc li {
+            margin: 5px 0;
+        }
+
+        .toc a {
+            color: #2c3e50;
+            text-decoration: none;
+            padding: 5px 0;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #3498db;
+            padding-left: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MongoDB Complete Guide</h1>
+            <p class="subtitle">Everything You Need for Your Interview</p>
+        </header>
+
+        <main class="content">
+            <nav class="toc">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#introduction">What is MongoDB?</a></li>
+                    <li><a href="#key-concepts">Key Concepts</a></li>
+                    <li><a href="#comparison">MongoDB vs SQL</a></li>
+                    <li><a href="#queries">MongoDB Queries</a></li>
+                    <li><a href="#interview-questions">Interview Questions</a></li>
+                    <li><a href="#tips">Interview Tips</a></li>
+                    <li><a href="#scenario">Sample Scenario</a></li>
+                </ul>
+            </nav>
+
+            <section id="introduction">
+                <h2>What is MongoDB?</h2>
+                <p>MongoDB is a <strong>NoSQL</strong> database, meaning it doesn't use tables like traditional SQL databases. Instead, it stores data in a flexible, JSON-like format called <strong>BSON</strong> (Binary JSON). It's designed to handle large amounts of data, scale easily, and work with unstructured or semi-structured data.</p>
+
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>Document-based</h4>
+                        <p>Stores data in documents (like JSON objects) instead of rows and columns.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Schema-less</h4>
+                        <p>You can store different types of data in the same collection without a fixed structure.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Scalable</h4>
+                        <p>Supports horizontal scaling (adding more servers) through sharding.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>High Performance</h4>
+                        <p>Fast for read/write operations, especially with large datasets.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>Flexible</h4>
+                        <p>Great for applications with changing data structures, like e-commerce or social media.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="key-concepts">
+                <h2>Key Concepts in MongoDB</h2>
+                <p>Here's what you need to know about MongoDB for an interview:</p>
+
+                <ol>
+                    <li><strong>Database</strong>: A container for collections. One MongoDB instance can have multiple databases.</li>
+                    <li><strong>Collection</strong>: Similar to a table in SQL, but it holds documents. No fixed schema is required.</li>
+                    <li><strong>Document</strong>: A single record in a collection, stored as a BSON object (like a JSON key-value pair).</li>
+                    <li><strong>Field</strong>: A key-value pair in a document (e.g., "name": "John").</li>
+                    <li><strong>_id</strong>: A unique identifier automatically added to every document (like a primary key in SQL).</li>
+                    <li><strong>Sharding</strong>: Splitting large datasets across multiple servers to improve performance.</li>
+                    <li><strong>Replication</strong>: Copying data to multiple servers for redundancy and high availability.</li>
+                    <li><strong>Indexes</strong>: Used to make queries faster by allowing efficient searching on specific fields.</li>
+                    <li><strong>Aggregation</strong>: A way to process data (like grouping, filtering, or calculating) using a pipeline.</li>
+                </ol>
+
+                <div class="highlight">
+                    <strong>Example Document:</strong>
+                    <div class="code-block">
+{ "name": "John", "age": 25, "city": "New York" }
+                    </div>
+                </div>
+            </section>
+
+            <section id="comparison">
+                <h2>MongoDB vs SQL</h2>
+                <p>Here's a clear comparison between MongoDB (NoSQL) and SQL (Relational Databases like MySQL, PostgreSQL):</p>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>MongoDB (NoSQL)</th>
+                            <th>SQL (Relational)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Data Structure</strong></td>
+                            <td>Stores data in flexible, JSON-like documents</td>
+                            <td>Stores data in structured tables with rows/columns</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Schema</strong></td>
+                            <td>Schema-less (dynamic, no predefined structure)</td>
+                            <td>Fixed schema (must define tables/columns upfront)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scalability</strong></td>
+                            <td>Horizontal scaling (add servers, sharding)</td>
+                            <td>Vertical scaling (add more power to a single server)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Query Language</strong></td>
+                            <td>Uses JavaScript-like queries (e.g., find())</td>
+                            <td>Uses SQL (e.g., SELECT, JOIN)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Joins</strong></td>
+                            <td>No native joins; data is often denormalized</td>
+                            <td>Supports complex joins between tables</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Use Case</strong></td>
+                            <td>Big data, real-time apps, unstructured data</td>
+                            <td>Structured data, transactional apps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Fast for large-scale, unstructured data</td>
+                            <td>Fast for structured data with complex queries</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Consistency</strong></td>
+                            <td>Eventual consistency in distributed setups</td>
+                            <td>Strong consistency (ACID transactions)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight">
+                    <h4>When to Use MongoDB:</h4>
+                    <ul>
+                        <li>When data is unstructured or semi-structured (e.g., logs, user profiles)</li>
+                        <li>For applications needing high scalability (e.g., e-commerce platforms)</li>
+                        <li>When schema changes frequently (e.g., startups building MVPs)</li>
+                    </ul>
+
+                    <h4>When to Use SQL:</h4>
+                    <ul>
+                        <li>When data is highly structured and relational (e.g., financial records)</li>
+                        <li>For applications needing complex joins and transactions (e.g., banking systems)</li>
+                        <li>When strong consistency is critical</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section id="queries">
+                <h2>MongoDB Queries Explained</h2>
+                <p>MongoDB uses a query language that's easy to understand, especially if you know JavaScript. Queries are run on <strong>collections</strong> to find, insert, update, or delete documents.</p>
+
+                <div class="query-section">
+                    <h3>1. Inserting Data</h3>
+                    <h4>Insert One Document:</h4>
+                    <div class="code-block">
+db.users.insertOne({ "name": "John", "age": 25, "city": "New York" })
+                    </div>
+                    <p>Adds a single document to the <code>users</code> collection.</p>
+
+                    <h4>Insert Multiple Documents:</h4>
+                    <div class="code-block">
+db.users.insertMany([
+    { "name": "Alice", "age": 30, "city": "London" },
+    { "name": "Bob", "age": 22, "city": "Paris" }
+])
+                    </div>
+                    <p>Adds multiple documents at once.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>2. Finding Data</h3>
+                    <h4>Find All Documents:</h4>
+                    <div class="code-block">
+db.users.find()
+// Use .pretty() to format output
+db.users.find().pretty()
+                    </div>
+
+                    <h4>Find with Conditions:</h4>
+                    <div class="code-block">
+db.users.find({ "age": 25 })
+                    </div>
+                    <p>Finds documents where age is 25.</p>
+
+                    <h4>Find One Document:</h4>
+                    <div class="code-block">
+db.users.findOne({ "name": "John" })
+                    </div>
+
+                    <h4>Query Operators:</h4>
+                    <div class="code-block">
+// Greater than
+db.users.find({ "age": { $gt: 20 } })
+
+// Less than  
+db.users.find({ "age": { $lt: 30 } })
+
+// In operator
+db.users.find({ "city": { $in: ["New York", "London"] } })
+
+// And operator
+db.users.find({ $and: [{ "age": { $gt: 20 } }, { "city": "London" }] })
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <h3>3. Updating Data</h3>
+                    <h4>Update One Document:</h4>
+                    <div class="code-block">
+db.users.updateOne(
+    { "name": "John" },
+    { $set: { "age": 26 } }
+)
+                    </div>
+
+                    <h4>Update Multiple Documents:</h4>
+                    <div class="code-block">
+db.users.updateMany(
+    { "city": "New York" },
+    { $set: { "country": "USA" } }
+)
+                    </div>
+
+                    <h4>Replace a Document:</h4>
+                    <div class="code-block">
+db.users.replaceOne(
+    { "name": "John" },
+    { "name": "John Doe", "age": 27, "city": "Boston" }
+)
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <h3>4. Deleting Data</h3>
+                    <h4>Delete One Document:</h4>
+                    <div class="code-block">
+db.users.deleteOne({ "name": "John" })
+                    </div>
+
+                    <h4>Delete Multiple Documents:</h4>
+                    <div class="code-block">
+db.users.deleteMany({ "city": "London" })
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <h3>5. Aggregation</h3>
+                    <p>Aggregation processes data through a pipeline (like filtering, grouping, or sorting).</p>
+                    <h4>Group users by city and count them:</h4>
+                    <div class="code-block">
+db.users.aggregate([
+    { $group: { _id: "$city", count: { $sum: 1 } } }
+])
+
+// Output: 
+// { "_id": "New York", "count": 2 }
+// { "_id": "London", "count": 1 }
+                    </div>
+
+                    <h4>Common Aggregation Stages:</h4>
+                    <ul>
+                        <li><strong>$match</strong>: Filters documents (like find)</li>
+                        <li><strong>$group</strong>: Groups documents by a field</li>
+                        <li><strong>$sort</strong>: Sorts results (e.g., { $sort: { "age": 1 } } for ascending)</li>
+                        <li><strong>$project</strong>: Selects specific fields to include/exclude</li>
+                    </ul>
+                </div>
+
+                <div class="query-section">
+                    <h3>6. Indexing</h3>
+                    <p>Indexes improve query performance.</p>
+                    <h4>Create an Index:</h4>
+                    <div class="code-block">
+db.users.createIndex({ "name": 1 })
+// 1 for ascending, -1 for descending
+                    </div>
+
+                    <h4>View Indexes:</h4>
+                    <div class="code-block">
+db.users.getIndexes()
+                    </div>
+                </div>
+            </section>
+
+            <section id="interview-questions" class="interview-questions">
+                <h2>Common MongoDB Interview Questions</h2>
+                
+                <h4>1. What is MongoDB?</h4>
+                <p>MongoDB is a NoSQL database that stores data in flexible, JSON-like documents called BSON. It's schema-less and great for handling large, unstructured data.</p>
+
+                <h4>2. What are the advantages of MongoDB?</h4>
+                <p>Flexible schema, easy to scale, fast for large datasets, supports geospatial queries, and works well with modern apps like web or mobile.</p>
+
+                <h4>3. What is a document in MongoDB?</h4>
+                <p>A document is a single record in a collection, stored as a JSON-like object with key-value pairs.</p>
+
+                <h4>4. How does MongoDB ensure high availability?</h4>
+                <p>Through <strong>replication</strong>, where data is copied to multiple servers (replica sets). If one server fails, another takes over.</p>
+
+                <h4>5. What is sharding?</h4>
+                <p>Sharding splits large datasets across multiple servers to improve performance and handle big data.</p>
+
+                <h4>6. How do you handle relationships in MongoDB?</h4>
+                <ul>
+                    <li><strong>Embedding</strong>: Storing related data in a single document</li>
+                    <li><strong>Referencing</strong>: Storing related data in separate collections and linking them with IDs</li>
+                </ul>
+
+                <h4>7. What is an aggregation pipeline?</h4>
+                <p>It's a series of stages (like $match, $group, $sort) to process and transform data, similar to SQL's GROUP BY or JOIN.</p>
+
+                <h4>8. When would you not use MongoDB?</h4>
+                <p>For highly relational data, complex joins, or applications needing strict ACID transactions (e.g., banking systems).</p>
+            </section>
+
+            <section id="tips" class="tips-section">
+                <h2>Tips for Interview Preparation</h2>
+                <ul>
+                    <li><strong>Understand CRUD</strong>: Be comfortable with Create (insert), Read (find), Update (update), and Delete (delete) operations.</li>
+                    <li><strong>Practice Queries</strong>: Run MongoDB queries on a local database (use MongoDB Compass or the MongoDB shell).</li>
+                    <li><strong>Know Indexing</strong>: Explain how indexes improve performance and their trade-offs (e.g., slower writes).</li>
+                    <li><strong>Explain Scalability</strong>: Talk about sharding and replication confidently.</li>
+                    <li><strong>Compare with SQL</strong>: Be ready to discuss when to use MongoDB vs SQL based on use cases.</li>
+                </ul>
+            </section>
+
+            <section id="scenario" class="scenario-box">
+                <h2>Sample MongoDB Query Scenario</h2>
+                <h3>Question:</h3>
+                <p>You have a <code>products</code> collection with documents like:</p>
+                <div class="code-block">
+{ "_id": 1, "name": "Laptop", "price": 1000, "category": "Electronics" }
+{ "_id": 2, "name": "Phone", "price": 500, "category": "Electronics" }
+{ "_id": 3, "name": "Shirt", "price": 50, "category": "Clothing" }
+                </div>
+
+                <p>Write queries to:</p>
+                <ol>
+                    <li>Find all products in the "Electronics" category.</li>
+                    <li>Update the price of the "Laptop" to 1200.</li>
+                    <li>Count products with a price greater than 100.</li>
+                </ol>
+
+                <h3>Answers:</h3>
+                <h4>1. Find Electronics:</h4>
+                <div class="code-block">
+db.products.find({ "category": "Electronics" })
+                </div>
+
+                <h4>2. Update Laptop price:</h4>
+                <div class="code-block">
+db.products.updateOne({ "name": "Laptop" }, { $set: { "price": 1200 } })
+                </div>
+
+                <h4>3. Count products with price > 100:</h4>
+                <div class="code-block">
+db.products.countDocuments({ "price": { $gt: 100 } })
+                </div>
+            </section>
+
+            <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #7f8c8d;">
+                <p>This covers the essentials of MongoDB for an interview, including concepts, queries, and comparisons with SQL.</p>
+            </footer>
+        </main>
+    </div>
+
+    <button class="scroll-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Show/hide scroll to top button
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Add hover effect to feature items
+        document.querySelectorAll('.feature-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px) scale(1.02)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
