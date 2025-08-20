@@ -494,140 +494,243 @@
                 </div>
             </section>
 
-            <section id="queries">
-                <h2>MongoDB Queries Explained</h2>
-                <p>MongoDB uses a query language that's easy to understand, especially if you know JavaScript. Queries are run on <strong>collections</strong> to find, insert, update, or delete documents.</p>
+           <section id="queries">
+                <h2>📘 MongoDB Queries with Explanations</h2>
+                <p>MongoDB uses a query language that's easy to understand, especially if you know JavaScript. Here's a complete cheat sheet with explanations for interviews and practice.</p>
 
                 <div class="query-section">
-                    <h3>1. Inserting Data</h3>
-                    <h4>Insert One Document:</h4>
+                    <h3>🟢 1. Database Queries</h3>
+                    <h4>Show all databases:</h4>
                     <div class="code-block">
-db.users.insertOne({ "name": "John", "age": 25, "city": "New York" })
+show dbs
                     </div>
-                    <p>Adds a single document to the <code>users</code> collection.</p>
+                    <p>👉 Lists all databases available in MongoDB.</p>
 
-                    <h4>Insert Multiple Documents:</h4>
+                    <h4>Create or switch to database:</h4>
                     <div class="code-block">
-db.users.insertMany([
-    { "name": "Alice", "age": 30, "city": "London" },
-    { "name": "Bob", "age": 22, "city": "Paris" }
+use mydb
+                    </div>
+                    <p>👉 Creates (if not exists) or switches to the database <code>mydb</code>.</p>
+
+                    <h4>Show current database:</h4>
+                    <div class="code-block">
+db
+                    </div>
+                    <p>👉 Displays the name of the database currently in use.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>🟢 2. Collection Queries</h3>
+                    <h4>Show collections in current database:</h4>
+                    <div class="code-block">
+show collections
+                    </div>
+                    <p>👉 Lists all collections (like tables in SQL) inside the database.</p>
+
+                    <h4>Create collection:</h4>
+                    <div class="code-block">
+db.createCollection("students")
+                    </div>
+                    <p>👉 Creates a new collection named <code>students</code>.</p>
+
+                    <h4>Drop (delete) collection:</h4>
+                    <div class="code-block">
+db.students.drop()
+                    </div>
+                    <p>👉 Removes the <code>students</code> collection completely.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>🟢 3. Insert Documents</h3>
+                    <h4>Insert one document:</h4>
+                    <div class="code-block">
+db.students.insertOne({ name: "Deepak", age: 21, grade: "A" })
+                    </div>
+                    <p>👉 Adds a single document (record) into <code>students</code>.</p>
+
+                    <h4>Insert multiple documents:</h4>
+                    <div class="code-block">
+db.students.insertMany([
+    { name: "Tushar", age: 20, grade: "B" },
+    { name: "Shreeram", age: 22, grade: "A" }
 ])
                     </div>
-                    <p>Adds multiple documents at once.</p>
+                    <p>👉 Inserts multiple records in one go.</p>
                 </div>
 
                 <div class="query-section">
-                    <h3>2. Finding Data</h3>
-                    <h4>Find All Documents:</h4>
+                    <h3>🟢 4. Find (Read) Documents</h3>
+                    <h4>Find all documents:</h4>
                     <div class="code-block">
-db.users.find()
-// Use .pretty() to format output
-db.users.find().pretty()
+db.students.find()
                     </div>
+                    <p>👉 Retrieves all documents from the collection.</p>
 
-                    <h4>Find with Conditions:</h4>
+                    <h4>Pretty print output:</h4>
                     <div class="code-block">
-db.users.find({ "age": 25 })
+db.students.find().pretty()
                     </div>
-                    <p>Finds documents where age is 25.</p>
+                    <p>👉 Displays documents in a formatted (easy-to-read) way.</p>
 
-                    <h4>Find One Document:</h4>
+                    <h4>Find one document:</h4>
                     <div class="code-block">
-db.users.findOne({ "name": "John" })
+db.students.findOne()
                     </div>
+                    <p>👉 Returns the first matching document.</p>
 
-                    <h4>Query Operators:</h4>
+                    <h4>Find with condition:</h4>
                     <div class="code-block">
-// Greater than
-db.users.find({ "age": { $gt: 20 } })
-
-// Less than  
-db.users.find({ "age": { $lt: 30 } })
-
-// In operator
-db.users.find({ "city": { $in: ["New York", "London"] } })
-
-// And operator
-db.users.find({ $and: [{ "age": { $gt: 20 } }, { "city": "London" }] })
+db.students.find({ grade: "A" })
                     </div>
+                    <p>👉 Filters and returns only students with grade <code>A</code>.</p>
+
+                    <h4>Projection (only select fields):</h4>
+                    <div class="code-block">
+db.students.find({}, { name: 1, grade: 1, _id: 0 })
+                    </div>
+                    <p>👉 Returns only <code>name</code> and <code>grade</code> fields, hides <code>_id</code>.</p>
                 </div>
 
                 <div class="query-section">
-                    <h3>3. Updating Data</h3>
-                    <h4>Update One Document:</h4>
+                    <h3>🟢 5. Query Operators</h3>
+                    <h4>Comparison operators:</h4>
                     <div class="code-block">
-db.users.updateOne(
-    { "name": "John" },
-    { $set: { "age": 26 } }
+db.students.find({ age: { $gt: 20 } })    // age > 20
+db.students.find({ age: { $gte: 21 } })   // age >= 21  
+db.students.find({ age: { $lt: 22 } })    // age < 22
+db.students.find({ grade: { $in: ["A", "B"] } }) // grade in A or B
+                    </div>
+                    <p>👉 Used for comparisons like greater than, less than, in.</p>
+
+                    <h4>Logical operators:</h4>
+                    <div class="code-block">
+db.students.find({ $and: [ { grade: "A" }, { age: { $gt: 20 } } ] })
+db.students.find({ $or: [ { grade: "A" }, { age: { $lt: 21 } } ] })
+                    </div>
+                    <p>👉 Combine multiple conditions with <strong>AND</strong> / <strong>OR</strong>.</p>
+
+                    <h4>Not equal:</h4>
+                    <div class="code-block">
+db.students.find({ grade: { $ne: "C" } })
+                    </div>
+                    <p>👉 Returns students whose grade is not <code>C</code>.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>🟢 6. Update Documents</h3>
+                    <h4>Update one:</h4>
+                    <div class="code-block">
+db.students.updateOne(
+    { name: "Deepak" },
+    { $set: { grade: "A+" } }
 )
                     </div>
+                    <p>👉 Finds student with name <code>Deepak</code> and updates grade to <code>A+</code>.</p>
 
-                    <h4>Update Multiple Documents:</h4>
+                    <h4>Update many:</h4>
                     <div class="code-block">
-db.users.updateMany(
-    { "city": "New York" },
-    { $set: { "country": "USA" } }
+db.students.updateMany(
+    { grade: "B" },
+    { $set: { grade: "B+" } }
 )
                     </div>
-
-                    <h4>Replace a Document:</h4>
-                    <div class="code-block">
-db.users.replaceOne(
-    { "name": "John" },
-    { "name": "John Doe", "age": 27, "city": "Boston" }
-)
-                    </div>
+                    <p>👉 Updates grade for all students with <code>B</code> → <code>B+</code>.</p>
                 </div>
 
                 <div class="query-section">
-                    <h3>4. Deleting Data</h3>
-                    <h4>Delete One Document:</h4>
+                    <h3>🟢 7. Delete Documents</h3>
+                    <h4>Delete one:</h4>
                     <div class="code-block">
-db.users.deleteOne({ "name": "John" })
+db.students.deleteOne({ name: "Tushar" })
                     </div>
+                    <p>👉 Deletes the first document that matches <code>name = Tushar</code>.</p>
 
-                    <h4>Delete Multiple Documents:</h4>
+                    <h4>Delete many:</h4>
                     <div class="code-block">
-db.users.deleteMany({ "city": "London" })
+db.students.deleteMany({ grade: "C" })
                     </div>
+                    <p>👉 Deletes all students whose grade is <code>C</code>.</p>
                 </div>
 
                 <div class="query-section">
-                    <h3>5. Aggregation</h3>
-                    <p>Aggregation processes data through a pipeline (like filtering, grouping, or sorting).</p>
-                    <h4>Group users by city and count them:</h4>
+                    <h3>🟢 8. Sorting & Limiting</h3>
+                    <h4>Sorting:</h4>
                     <div class="code-block">
-db.users.aggregate([
-    { $group: { _id: "$city", count: { $sum: 1 } } }
+db.students.find().sort({ age: 1 })   // ascending
+db.students.find().sort({ age: -1 })  // descending
+                    </div>
+                    <p>👉 Sorts results by age in ascending/descending order.</p>
+
+                    <h4>Limiting results:</h4>
+                    <div class="code-block">
+db.students.find().limit(2)
+                    </div>
+                    <p>👉 Returns only 2 documents.</p>
+
+                    <h4>Skipping documents:</h4>
+                    <div class="code-block">
+db.students.find().skip(2)
+                    </div>
+                    <p>👉 Skips first 2 documents.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>🟢 9. Indexes</h3>
+                    <h4>Create index:</h4>
+                    <div class="code-block">
+db.students.createIndex({ name: 1 })
+                    </div>
+                    <p>👉 Creates index on <code>name</code> field (improves search performance).</p>
+
+                    <h4>View indexes:</h4>
+                    <div class="code-block">
+db.students.getIndexes()
+                    </div>
+                    <p>👉 Shows all indexes created.</p>
+                </div>
+
+                <div class="query-section">
+                    <h3>🟢 10. Aggregation (Powerful Analytics)</h3>
+                    <div class="code-block">
+db.students.aggregate([
+    { $match: { grade: "A" } },    // filter grade = A
+    { $group: { _id: "$grade", count: { $sum: 1 } } }, // group & count
+    { $sort: { count: -1 } }       // sort by count
 ])
-
-// Output: 
-// { "_id": "New York", "count": 2 }
-// { "_id": "London", "count": 1 }
                     </div>
-
-                    <h4>Common Aggregation Stages:</h4>
-                    <ul>
-                        <li><strong>$match</strong>: Filters documents (like find)</li>
-                        <li><strong>$group</strong>: Groups documents by a field</li>
-                        <li><strong>$sort</strong>: Sorts results (e.g., { $sort: { "age": 1 } } for ascending)</li>
-                        <li><strong>$project</strong>: Selects specific fields to include/exclude</li>
-                    </ul>
+                    <p>👉 Aggregation pipeline:</p>
+                    <ol>
+                        <li><strong>$match</strong> → filter</li>
+                        <li><strong>$group</strong> → group by grade & count</li>
+                        <li><strong>$sort</strong> → order results</li>
+                    </ol>
                 </div>
 
                 <div class="query-section">
-                    <h3>6. Indexing</h3>
-                    <p>Indexes improve query performance.</p>
-                    <h4>Create an Index:</h4>
+                    <h3>🟢 11. Other Useful Queries</h3>
+                    <h4>Count documents:</h4>
                     <div class="code-block">
-db.users.createIndex({ "name": 1 })
-// 1 for ascending, -1 for descending
+db.students.countDocuments({ grade: "A" })
                     </div>
+                    <p>👉 Counts students with grade <code>A</code>.</p>
 
-                    <h4>View Indexes:</h4>
+                    <h4>Distinct values:</h4>
                     <div class="code-block">
-db.users.getIndexes()
+db.students.distinct("grade")
                     </div>
+                    <p>👉 Finds unique grade values.</p>
+
+                    <h4>Rename field:</h4>
+                    <div class="code-block">
+db.students.updateMany({}, { $rename: { "grade": "classGrade" } })
+                    </div>
+                    <p>👉 Renames field <code>grade</code> → <code>classGrade</code>.</p>
+
+                    <h4>Add new field to all documents:</h4>
+                    <div class="code-block">
+db.students.updateMany({}, { $set: { status: "Active" } })
+                    </div>
+                    <p>👉 Adds new field <code>status</code> to all documents.</p>
                 </div>
             </section>
 
