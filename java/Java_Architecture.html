@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Architecture - Complete Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #3498db;
+            border-left: 5px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+        
+        h3 {
+            color: #e74c3c;
+            margin-top: 25px;
+            font-size: 1.3em;
+        }
+        
+        h4 {
+            color: #8e44ad;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #3498db;
+        }
+        
+        .example {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .interview-point {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .interview-tip {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 8px;
+        }
+        
+        ul, ol {
+            padding-left: 25px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            color: #2c3e50;
+        }
+        
+        .flow-diagram {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        
+        .section-divider {
+            border: none;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #9b59b6, #e74c3c);
+            margin: 40px 0;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Java Architecture (Step-by-Step)</h1>
+        <img src="https://1.bp.blogspot.com/-yqkVWGVwiMI/XfO3fi5FMLI/AAAAAAAAJv8/gJ0jGsABAvINH0ZmVeW7pZJWomp-5yriwCLcBGAsYHQ/s1600/Screenshot%2B%25281%2529.png" alt="jvm Architecture" style="width:1000px; height: auto; ">
+        <hr class="section-divider">
+        
+        <h2>1. What is Java?</h2>
+        <ul>
+            <li>Java is a <strong>high-level, object-oriented, platform-independent</strong> programming language.</li>
+            <li>Its biggest feature = <strong>Write Once, Run Anywhere (WORA)</strong>.</li>
+        </ul>
+        
+        <div class="example">
+            <strong><span class="emoji">👉</span>Example:</strong><br>
+            If you write a Java program on Windows, the same program can run on Linux or Mac <strong>without changes</strong>.
+        </div>
+        
+        <hr class="section-divider">
+        
+        <h2>2. Java Program Execution Flow</h2>
+        <p>Java works in these main steps:</p>
+        
+        <ol>
+            <li><strong>Write code</strong> in <code>.java</code> file (human-readable).<br>
+                Example:
+                <pre>class Hello {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}</pre>
+            </li>
+            
+            <li><strong>Compile code</strong> with <code>javac</code> (Java Compiler).
+                <ul>
+                    <li>Converts <code>.java</code> → <code>.class</code> (bytecode).</li>
+                    <li>Bytecode is <strong>platform-independent</strong>.</li>
+                </ul>
+            </li>
+            
+            <li><strong>Run code</strong> with <code>java</code> command.
+                <ul>
+                    <li>JVM loads <code>.class</code> file.</li>
+                    <li>JVM executes bytecode using <strong>Execution Engine + JIT</strong>.</li>
+                </ul>
+            </li>
+        </ol>
+        
+        <hr class="section-divider">
+        
+        <h2>3. Main Components of Java Architecture</h2>
+        <p>Java Architecture has <strong>3 core parts</strong>:</p>
+        
+        <h3>(A) JVM (Java Virtual Machine)</h3>
+        <ul>
+            <li>Acts as a <strong>virtual computer</strong> inside your machine.</li>
+            <li>Executes bytecode and converts it into <strong>machine code</strong>.</li>
+            <li>Provides <strong>Memory Management + Security + Garbage Collection</strong>.</li>
+        </ul>
+        
+        <div class="interview-point">
+            <strong><span class="emoji">👉</span>Interview Point:</strong><br>
+            <ul>
+                <li>JVM is <strong>platform dependent</strong> (Windows JVM ≠ Linux JVM).</li>
+                <li>But bytecode is the same → Java is <strong>platform independent</strong>.</li>
+            </ul>
+        </div>
+        
+        <h3>(B) JRE (Java Runtime Environment)</h3>
+        <ul>
+            <li>Provides the environment to <strong>run Java applications</strong>.</li>
+            <li>Includes:
+                <ul>
+                    <li>JVM</li>
+                    <li>Libraries (API)</li>
+                    <li>Supporting files</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="interview-tip">
+            <strong><span class="emoji">👉</span>Interview Tip:</strong><br>
+            If you only need to <strong>run</strong> Java programs (not write/compile), you just need <strong>JRE</strong>.
+        </div>
+        
+        <h3>(C) JDK (Java Development Kit)</h3>
+        <ul>
+            <li>Complete package for <strong>developers</strong>.</li>
+            <li>Includes:
+                <ul>
+                    <li>JRE (to run programs)</li>
+                    <li>Compiler (<code>javac</code>) to compile code</li>
+                    <li>Debugger + Development tools</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="interview-tip">
+            <strong><span class="emoji">👉</span>Interview Tip:</strong><br>
+            <ul>
+                <li><strong>JDK = JRE + Development Tools</strong></li>
+                <li>Developers install JDK, normal users can use JRE.</li>
+            </ul>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <h2>4. Detailed JVM Architecture</h2>
+        <p>JVM itself has sub-components:</p>
+        <img src="https://miro.medium.com/v2/resize:fit:1358/0*xITgHDd1hw3MQ_pJ.jpg" alt="jvm Architecture" style="width: 1000px; height: auto;">
+        <h3>1. ClassLoader</h3>
+        <ul>
+            <li>Loads <code>.class</code> files into memory.</li>
+            <li>3 types:
+                <ul>
+                    <li><strong>Bootstrap ClassLoader</strong> → loads core classes (<code>java.lang.*</code>).</li>
+                    <li><strong>Extension ClassLoader</strong> → loads classes from <code>ext</code> libraries.</li>
+                    <li><strong>Application ClassLoader</strong> → loads user-defined classes.</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="example">
+            <strong><span class="emoji">👉</span>Example:</strong><br>
+            When you write <code>System.out.println</code>,
+            <code>java.lang.System</code> is loaded by <strong>Bootstrap ClassLoader</strong>.
+        </div>
+        
+        <h3>2. Memory Areas in JVM</h3>
+        <p>JVM divides memory into parts when running a program:</p>
+        <ul>
+            <li><strong>Method Area:</strong> Stores class-level info (fields, methods, constants).</li>
+            <li><strong>Heap:</strong> Stores objects (created with <code>new</code>).</li>
+            <li><strong>Stack:</strong> Stores method calls, local variables.</li>
+            <li><strong>PC Register:</strong> Keeps track of current instruction.</li>
+            <li><strong>Native Method Stack:</strong> Stores non-Java methods (like C/C++).</li>
+        </ul>
+        
+        <div class="example">
+            <strong><span class="emoji">👉</span>Example Flow:</strong>
+            <pre>Student s = new Student();</pre>
+            <ul>
+                <li><code>s</code> (reference) stored in <strong>Stack</strong>.</li>
+                <li><code>new Student()</code> object stored in <strong>Heap</strong>.</li>
+            </ul>
+        </div>
+        
+        <h3>3. Execution Engine</h3>
+        <ul>
+            <li>Runs bytecode with two parts:
+                <ul>
+                    <li><strong>Interpreter</strong> → executes bytecode line by line (slower).</li>
+                    <li><strong>JIT Compiler (Just-In-Time)</strong> → compiles frequently used code into machine code (faster).</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="example">
+            <strong><span class="emoji">👉</span>Example:</strong><br>
+            If a method is called 1000 times, JIT compiles it into <strong>native code</strong> so JVM doesn't re-interpret every time.
+        </div>
+        
+        <h3>4. Garbage Collector (GC)</h3>
+        <ul>
+            <li>Frees memory by removing <strong>unused objects</strong> from Heap.</li>
+            <li>Runs automatically.</li>
+            <li>Uses algorithms like <strong>Mark and Sweep</strong>.</li>
+        </ul>
+        
+        <div class="example">
+            <strong><span class="emoji">👉</span>Example:</strong>
+            <pre>Student s1 = new Student();
+s1 = null; // old object becomes unreachable → Garbage Collector cleans it</pre>
+        </div>
+        
+        <hr class="section-divider">
+        
+        <h2>5. Step-by-Step Flow of Program Execution</h2>
+        <ol>
+            <li><strong>Source Code (<code>.java</code>)</strong> → written by developer.</li>
+            <li><strong>Compiler (<code>javac</code>)</strong> → converts to Bytecode (<code>.class</code>).</li>
+            <li><strong>ClassLoader</strong> → loads <code>.class</code> file into JVM.</li>
+            <li><strong>Bytecode Verifier</strong> → checks security (no illegal code).</li>
+            <li><strong>Execution Engine</strong> (Interpreter + JIT) → executes code.</li>
+            <li><strong>Garbage Collector</strong> → cleans unused objects.</li>
+        </ol>
+        
+        <hr class="section-divider">
+        
+     
+        
+        <hr class="section-divider">
+        
+        <h2>7. Key Interview Questions</h2>
+        
+        <h4>1. Why is Java platform independent?</h4>
+        <ul>
+            <li>Because of bytecode + JVM for each OS.</li>
+        </ul>
+        
+        <h4>2. Why is JVM platform dependent?</h4>
+        <ul>
+            <li>Each OS has its own implementation of JVM.</li>
+        </ul>
+        
+        <h4>3. What is the role of JIT?</h4>
+        <ul>
+            <li>Improves performance by compiling frequently used bytecode into native machine code.</li>
+        </ul>
+        
+        <h4>4. Difference between JVM, JRE, JDK?</h4>
+        <ul>
+            <li>JVM → Executes bytecode.</li>
+            <li>JRE → JVM + Libraries (runtime environment).</li>
+            <li>JDK → JRE + Development tools (for developers).</li>
+        </ul>
+        
+        <h4>5. What happens when you run a Java program?</h4>
+        <ul>
+            <li>Code → Compiled into Bytecode → Loaded by ClassLoader → Verified → Executed by Execution Engine.</li>
+        </ul>
+        
+        <hr class="section-divider">
+      
+    </div>
+</body>
+</html>

@@ -189,69 +189,81 @@ int b = 0;
 int result = a / b;  // ❌ ArithmeticException: divide by zero</pre>
         </div>
 
-        <div class="box">
-            <h2>🔺 Throwable Class</h2>
-            <p>The <code>Throwable</code> class is the <strong>root</strong> of Java’s exception hierarchy. Every
-                exception or error object in Java is a subclass of <code>Throwable</code>.</p>
+  <div class="box">
+    <h2>🔺 Throwable Class</h2>
+    <p>The <code>Throwable</code> class is the <strong>root</strong> of Java’s exception hierarchy. Every
+        exception or error object in Java is a subclass of <code>Throwable</code>.</p>
 
-            <h2>📦 Two Main Subclasses of Throwable</h2>
+    <h2>📦 Two Main Subclasses of Throwable</h2>
+    <ul>
+        <li><strong>Exception</strong> – for conditions that a program should catch and handle.</li>
+        <li><strong>Error</strong> – for serious problems that are not expected to be caught by applications.</li>
+    </ul>
+
+    <img src="ChatGPT Image Jul 16, 2025, 04_42_26 PM.png" alt="Exception Hierarchy"
+        style="width: 100%; border-radius: 8px; margin-top: 15px;">
+
+    <!-- Exception Section -->
+    <h2>🔍 Exception Class (Recoverable)</h2>
+    <p>The <code>Exception</code> class represents problems that can be handled programmatically.</p>
+
+    <h3>✅ Checked Exceptions</h3>
+    <ul>
+        <li>Checked at <strong>compile time</strong>.</li>
+        <li>Must be handled using <code>try-catch</code> or declared with <code>throws</code>.</li>
+        <li>Examples:
             <ul>
-                <li><strong>Exception</strong> – for conditions that a program should catch and handle.</li>
-                <li><strong>Error</strong> – for serious problems that are not expected to be caught by applications.
-                </li>
+                <li><code>IOException</code></li>
+                <li><code>SQLException</code></li>
+                <li><code>ClassNotFoundException</code></li>
+                <li><code>FileNotFoundException</code></li>
+                <li><code>InterruptedException</code></li>
             </ul>
+        </li>
+    </ul>
 
-            <img src="ChatGPT Image Jul 16, 2025, 04_42_26 PM.png" alt="Exception Hierarchy"
-                style="width: 100%; border-radius: 8px; margin-top: 15px;">
-            <h2>🔍 Exception Class (Recoverable)</h2>
-            <p>The <code>Exception</code> class represents problems that can be handled programmatically.</p>
-
-            <h3>✅ Checked Exceptions</h3>
+    <h3>⚠️ Unchecked Exceptions (Runtime)</h3>
+    <ul>
+        <li>Checked at <strong>runtime</strong>, not compile time.</li>
+        <li>Optional to handle explicitly.</li>
+        <li>Examples:
             <ul>
-                <li>Checked at compile time.</li>
-                <li>Must be handled using <code>try-catch</code> or declared with <code>throws</code>.</li>
-                <li>Examples:
+                <li><code>ArithmeticException</code></li>
+                <li><code>NullPointerException</code></li>
+                <li><code>IllegalArgumentException</code></li>
+                <li><code>NumberFormatException</code></li>
+                <li><code>IllegalStateException</code></li>
+                <li><code>UnsupportedOperationException</code></li>
+                <li><code>IndexOutOfBoundsException</code>
                     <ul>
-                        <li><code>IOException</code></li>
-                        <li><code>SQLException</code></li>
-                        <li><code>ClassNotFoundException</code></li>
+                        <li><code>ArrayIndexOutOfBoundsException</code></li>
+                        <li><code>StringIndexOutOfBoundsException</code></li>
                     </ul>
                 </li>
+                <li><code>ClassCastException</code></li>
             </ul>
+        </li>
+    </ul>
 
-            <h3>⚠️ Unchecked Exceptions (Runtime)</h3>
-            <ul>
-                <li>Checked at runtime, not compile time.</li>
-                <li>Optional to handle explicitly.</li>
-                <li>Examples:
-                    <ul>
-                        <li><code>ArithmeticException</code></li>
-                        <li><code>NullPointerException</code></li>
-                        <li><code>IndexOutOfBoundsException</code>
-                            <ul>
-                                <li><code>ArrayIndexOutOfBoundsException</code></li>
-                                <li><code>StringIndexOutOfBoundsException</code></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+    <!-- Error Section -->
+    <h2>🚫 Error Class (Unrecoverable)</h2>
+    <p>The <code>Error</code> class indicates serious problems that applications should not attempt to catch.</p>
+    <ul>
+        <li><code>StackOverflowError</code> – occurs due to deep or infinite recursion.</li>
+        <li><code>OutOfMemoryError</code> – insufficient heap memory.</li>
+        <li><code>VirtualMachineError</code> – critical JVM failures.</li>
+        <li><code>AssertionError</code> – thrown when an assertion fails.</li>
+        <li><code>NoClassDefFoundError</code> – class not found at runtime.</li>
+    </ul>
 
-            <h2>🚫 Error Class (Unrecoverable)</h2>
-            <p>The <code>Error</code> class indicates serious problems that applications should not attempt to catch.
-            </p>
-            <ul>
-                <li><code>StackOverflowError</code></li>
-                <li><code>VirtualMachineError</code></li>
-                <li><code>OutOfMemoryError</code> (not shown but common)</li>
-            </ul>
-        </div>
-
+   
+</div>
 
         <div class="section">
             <h2>🧩 3. try-catch-finally</h2>
             <img src="https://www.wikitechy.com/tutorials/java/img/java-images/try-catch-finally-block.png"
                 alt="try-catch-finally" style="width: 100%; border-radius: 8px; margin-top: 15px;">
+                  
             <h3>🔧 Syntax:</h3>
             <pre><code>try {
     // Code that might throw an exception
@@ -283,63 +295,89 @@ int result = a / b;  // ❌ ArithmeticException: divide by zero</pre>
         </div>
 
 
-        <div class="section">
-            <h2>🧪 4. throw vs throws</h2>
-            <img src="https://tse1.mm.bing.net/th/id/OIP.fSns6-_S2RrusBx4Nn1POQHaEH?pid=Api&P=0&h=180"
-                alt="throw vs throws" style="width: 100%; border-radius: 8px; margin-top: 15px;">
-            <p><strong>🧠 Hinglish Explanation:</strong></p>
-            <ul>
-                <li><code>throw</code> ka use tab karte hain jab aap <strong>manually exception throw</strong> karna
-                    chahte ho.</li>
-                <li><code>throws</code> ka use method ke signature mein hota hai, jahan aap <strong>declare</strong>
-                    karte ho ki method exception throw kar sakta hai.</li>
-            </ul>
+   <div class="section">
+    <h2>🧪 4. throw vs throws</h2>
+    <img src="https://tse1.mm.bing.net/th/id/OIP.fSns6-_S2RrusBx4Nn1POQHaEH?pid=Api&P=0&h=180"
+        alt="throw vs throws" style="width: 100%; border-radius: 8px; margin-top: 15px;">
+     <img src="https://files.codingninjas.in/article_images/throw-vs-throws-in-java-0-1650307496.jpg"
+                alt="try-catch-finally" style="width: 100%; border-radius: 8px; margin-top: 15px;">
+    <p><strong>🧠 Easy Explanation (Hinglish + English):</strong></p>
+    <ul>
+        <li><code>throw</code> 👉 Is used when you want to <strong>actually throw</strong> an exception object.</li>
+        <li><code>throws</code> 👉 Is used in <strong>method declaration</strong> to say "this method <em>may</em> throw an exception".</li>
+        <li><strong>throw = action</strong> (exception ko fenkna)</li>
+        <li><strong>throws = declaration</strong> (compiler ko batana ki exception aa sakta hai)</li>
+    </ul>
 
-            <table>
-                <tr>
-                    <th>Keyword</th>
-                    <th>Meaning</th>
-                    <th>Used In</th>
-                </tr>
-                <tr>
-                    <td><code>throw</code></td>
-                    <td>Used to <strong>manually throw</strong> an exception</td>
-                    <td>Inside method body</td>
-                </tr>
-                <tr>
-                    <td><code>throws</code></td>
-                    <td>Used to <strong>declare</strong> that a method may throw an exception</td>
-                    <td>In method signature</td>
-                </tr>
-            </table>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; text-align: center;">
+        <tr style="background-color: #f2f2f2;">
+            <th>Keyword</th>
+            <th>Meaning</th>
+            <th>Used In</th>
+            <th>Number of Exceptions</th>
+        </tr>
+        <tr>
+            <td><code>throw</code></td>
+            <td>Used to <strong>manually throw</strong> a single exception object</td>
+            <td>Inside method body / block</td>
+            <td>Only <strong>one</strong> exception at a time</td>
+        </tr>
+        <tr>
+            <td><code>throws</code></td>
+            <td>Used to <strong>declare</strong> exceptions that method may throw</td>
+            <td>In method signature</td>
+            <td><strong>Multiple</strong> exceptions can be declared</td>
+        </tr>
+    </table>
 
-            <div class="example-box">
-                <h3>✅ Example 1: Using <code>throw</code></h3>
-                <pre><code>void validateAge(int age) {
+    <div class="example-box">
+        <h3>✅ Example 1: Using <code>throw</code></h3>
+        <pre><code>void validateAge(int age) {
     if (age < 18) {
+        // Throwing exception manually
         throw new IllegalArgumentException("Invalid age: must be 18 or above");
     }
     System.out.println("Valid age!");
-}</code></pre>
-                <p><strong>Output:</strong> Agar age 15 hai to: <code>Invalid age: must be 18 or above</code></p>
-            </div>
+}
 
-            <div class="example-box">
-                <h3>✅ Example 2: Using <code>throws</code></h3>
-                <pre><code>import java.io.*;
+public static void main(String[] args) {
+    validateAge(15); 
+}</code></pre>
+        <p><strong>Output:</strong> <code>Invalid age: must be 18 or above</code></p>
+        <p><strong>Note:</strong> Here we <code>throw</code> exception directly inside method body.</p>
+    </div>
+
+    <div class="example-box">
+        <h3>✅ Example 2: Using <code>throws</code></h3>
+        <pre><code>import java.io.*;
 
 void readFile() throws IOException {
+    // Declaring that this method may throw IOException
     FileReader fr = new FileReader("file.txt");
-    // This may throw IOException
-}</code></pre>
-                <p><strong>Note:</strong> Method ke signature mein <code>throws IOException</code> likhne se compiler ko
-                    pata chalta hai ki is method mein exception aa sakta hai.</p>
-            </div>
+    System.out.println("File opened successfully!");
+}
 
-            <p><strong>💡 Tip:</strong> Aksar interview mein yeh puchte hain: "throw vs throws difference?"</p>
-            <p><strong>Answer:</strong> <code>throw</code> ka use exception ko actually throw karne ke liye hota hai,
-                jabki <code>throws</code> batata hai ki method se exception aa sakta hai.</p>
-        </div>
+public static void main(String[] args) throws IOException {
+    readFile(); 
+}</code></pre>
+        <p><strong>Note:</strong> In method signature we wrote <code>throws IOException</code> → 
+        this tells compiler that exception <em>may</em> come, so caller method (main) also needs to handle or declare it.</p>
+    </div>
+
+    <h3>⚡ Key Points to Remember</h3>
+    <ul>
+        <li><code>throw</code> can throw only one exception at a time.</li>
+        <li><code>throws</code> can declare multiple exceptions separated by commas.</li>
+        <li><code>throw</code> is followed by an <strong>object</strong> (e.g., <code>new Exception()</code>).</li>
+        <li><code>throws</code> is followed by a <strong>class name</strong> (e.g., <code>IOException</code>).</li>
+        <li>If you use <code>throw</code>, you must handle it (try-catch) or declare it (throws).</li>
+    </ul>
+
+    <p><strong>💡 Interview Tip:</strong></p>
+    <p><strong>Q:</strong> Difference between <code>throw</code> and <code>throws</code>?<br>
+    <strong>A:</strong> <code>throw</code> is used to <em>actually throw</em> an exception object, 
+    while <code>throws</code> is used to <em>declare</em> that a method can throw exceptions.</p>
+</div>
 
 
         <div class="section">
@@ -357,40 +395,78 @@ void readFile() throws IOException {
     throw new AgeException("Not eligible");
 }</pre>
         </div>
+<div class="section">
+    <h2>🔄 6. final vs finally vs finalize()</h2>
 
-        <div class="section">
-            <h2>🔄 6. final vs finally vs finalize()</h2>
+    <p><strong>🧠 Easy Explanation (Hinglish + English):</strong></p>
+    <ul>
+        <li><code>final</code> 👉 Use when you want to make something <strong>unchangeable</strong> (fix karna hai).</li>
+        <li><code>finally</code> 👉 Block of code jo <strong>always execute</strong> hoga after try-catch (cleanup ke liye).</li>
+        <li><code>finalize()</code> 👉 Method called by <strong>Garbage Collector</strong> before object destroy (⚠️ Deprecated in Java 9+).</li>
+    </ul>
 
-            <p><strong>🧠 Hinglish Explanation:</strong></p>
-            <ul>
-                <li><code>final</code>: Jo cheez fix karni ho (no change allowed)</li>
-                <li><code>finally</code>: try-catch ke baad hamesha chalega (cleanup)</li>
-                <li><code>finalize()</code>: Jab object destroy hone wala ho, GC ke time call hota hai (⚠️ deprecated
-                    after Java 9)</li>
-            </ul>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width: 100%; text-align: center;">
+        <tr style="background-color: #f2f2f2;">
+            <th>Keyword</th>
+            <th>Usage</th>
+            <th>Where Used</th>
+            <th>Important Note</th>
+        </tr>
+        <tr>
+            <td><code>final</code></td>
+            <td>To prevent changes</td>
+            <td>Variables, Methods, Classes</td>
+            <td>Variable = constant, Method = cannot override, Class = cannot extend</td>
+        </tr>
+        <tr>
+            <td><code>finally</code></td>
+            <td>Always executes for cleanup</td>
+            <td>After try-catch</td>
+            <td>Runs even if exception occurs or not</td>
+        </tr>
+        <tr>
+            <td><code>finalize()</code></td>
+            <td>Cleanup before object destruction</td>
+            <td>Method (called by Garbage Collector)</td>
+            <td>Deprecated after Java 9 → use try-with-resources</td>
+        </tr>
+    </table>
 
-            <table>
-                <tr>
-                    <th>Keyword</th>
-                    <th>Use</th>
-                </tr>
-                <tr>
-                    <td><code>final</code></td>
-                    <td>Prevent change (used with variables, methods, class)</td>
-                </tr>
-                <tr>
-                    <td><code>finally</code></td>
-                    <td>Always runs after try-catch (cleanup)</td>
-                </tr>
-                <tr>
-                    <td><code>finalize()</code></td>
-                    <td>Called by Garbage Collector before destroying object (deprecated)</td>
-                </tr>
-            </table>
+    <div class="example-box">
+        <h3>✅ Example 1: Using <code>final</code></h3>
+        <pre><code>final int x = 10;
+// x = 20; ❌ Error: cannot change final variable
 
-            <div class="example-box">
-                <h3>✅ finalize() Example:</h3>
-                <pre><code>class Demo {
+final class Animal {}
+// class Dog extends Animal {} ❌ Error: cannot inherit final class
+
+class Parent {
+    final void show() {
+        System.out.println("Hello");
+    }
+}
+class Child extends Parent {
+    // void show() {} ❌ Error: cannot override final method
+}</code></pre>
+    </div>
+
+    <div class="example-box">
+        <h3>✅ Example 2: Using <code>finally</code></h3>
+        <pre><code>try {
+    int a = 10 / 0; // This will cause exception
+} catch (Exception e) {
+    System.out.println("❌ Exception: " + e);
+} finally {
+    System.out.println("✅ Finally block always runs");
+}</code></pre>
+        <p><strong>Output:</strong><br>
+        ❌ Exception: / by zero <br>
+        ✅ Finally block always runs</p>
+    </div>
+
+    <div class="example-box">
+        <h3>✅ Example 3: Using <code>finalize()</code></h3>
+        <pre><code>class Demo {
     protected void finalize() throws Throwable {
         System.out.println("🗑️ Object is being destroyed by GC");
     }
@@ -399,20 +475,25 @@ void readFile() throws IOException {
 public class Test {
     public static void main(String[] args) {
         Demo obj = new Demo();
-        obj = null; // make eligible for GC
+        obj = null; // Eligible for GC
 
-        System.gc(); // request garbage collection
+        System.gc(); // Request garbage collection
         System.out.println("Main complete");
     }
 }</code></pre>
-                <p><strong>📝 Output ho sakta hai:</strong> Main complete ke baad finalize() message aaye</p>
-            </div>
+        <p><strong>📝 Output ho sakta hai:</strong><br>
+        Main complete <br>
+        🗑️ Object is being destroyed by GC (order not guaranteed)</p>
+    </div>
 
-            <div class="warning-box">
-                <p><strong>⚠️ Note:</strong> <code>finalize()</code> is <strong>deprecated in Java 9+</strong>. Use
-                    <code>AutoCloseable</code> or try-with-resources instead.</p>
-            </div>
-        </div>
+    
+
+    <div class="warning-box" style="background-color: #fff3cd; padding: 10px; border-left: 5px solid #ff9800;">
+        <p><strong>⚠️ Note:</strong> <code>finalize()</code> is <strong>deprecated in Java 9+</strong>. 
+        Use <code>AutoCloseable</code> or <code>try-with-resources</code> for cleanup instead.</p>
+    </div>
+</div>
+
 
 
         <div class="section">

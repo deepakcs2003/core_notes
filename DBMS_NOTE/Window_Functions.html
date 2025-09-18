@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Window Functions - Complete Study Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-20px, -20px); }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .emoji {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding-left: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            border-left-color: #764ba2;
+            transform: translateX(5px);
+        }
+
+        .section h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #a8edea 0%, #fed6e3 100%);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow-x: auto;
+            position: relative;
+            border-left: 4px solid #667eea;
+        }
+
+        .code-block::before {
+            content: 'SQL';
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .syntax-highlight .keyword { color: #63b3ed; }
+        .syntax-highlight .function { color: #f6ad55; }
+        .syntax-highlight .string { color: #68d391; }
+        .syntax-highlight .comment { color: #a0aec0; }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+            padding: 10px 0 10px 30px;
+            position: relative;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        ul li:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        ul li::before {
+            content: '→';
+            position: absolute;
+            left: 10px;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .example-box h4 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .output-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .output-table th {
+            background: #2d3436;
+            color: white;
+            padding: 12px 8px;
+            font-size: 0.85rem;
+        }
+
+        .output-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .output-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+            padding: 25px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border-left: 4px solid #27ae60;
+        }
+
+        .summary-box h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            border: none;
+            padding: 0;
+        }
+
+        /* Image Gallery Styles */
+        .image-gallery {
+            margin-top: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .gallery-header h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .gallery-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .image-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 15px 15px;
+            animation: float 15s infinite linear;
+        }
+
+        .image-placeholder .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .image-card-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .image-card h4 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .image-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .image-upload-note {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .section {
+                padding-left: 20px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="emoji">🌐</span>
+            <h1>SQL Window Functions</h1>
+            <p>Complete Study Guide & Reference</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>🌐 What is a Window Function?</h2>
+                <p>A <span class="highlight">Window Function</span> in SQL performs a calculation across a set of rows that are somehow related to the current row.</p>
+                <ul>
+                    <li>Unlike <strong>aggregate functions</strong> (SUM, AVG, COUNT, etc.), window functions <strong>do not collapse rows into one row</strong>.</li>
+                    <li>Instead, they <strong>return a value for each row</strong>, while still being able to look at other rows in the dataset.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>📌 Why Use Window Functions?</h2>
+                <ul>
+                    <li>To perform calculations <strong>without losing row-level details</strong>.</li>
+                    <li>To calculate <strong>running totals, rankings, moving averages, percentiles</strong> etc.</li>
+                    <li>To compare a row against a group of rows (partition).</li>
+                    <li>More powerful than GROUP BY because you can <strong>keep all rows</strong>.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>📌 Where to Use?</h2>
+                <ul>
+                    <li>Business analytics reports.</li>
+                    <li>Leaderboards (rankings).</li>
+                    <li>Financial data analysis (running totals, moving averages).</li>
+                    <li>Finding the first/last occurrence within groups.</li>
+                    <li>Percentile calculations (e.g., top 10%).</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>📌 Syntax of a Window Function</h2>
+                <div class="code-block">
+                    <pre class="syntax-highlight">
+<span class="function">function_name</span>(expression) 
+<span class="keyword">OVER</span> (
+    <span class="keyword">PARTITION BY</span> column_name   <span class="comment">-- optional (divide rows into groups)</span>
+    <span class="keyword">ORDER BY</span> column_name       <span class="comment">-- optional (define order inside group)</span>
+    <span class="keyword">ROWS</span> or <span class="keyword">RANGE</span> clause       <span class="comment">-- optional (define frame for calculation)</span>
+)
+                    </pre>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📌 Types of Window Functions</h2>
+                
+                <h3>1. Aggregate Window Functions</h3>
+                <p>They extend normal aggregate functions: <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, <code>MAX()</code>, <code>COUNT()</code></p>
+                
+                <div class="example-box">
+                    <h4>👉 Example: Running Total of Salary</h4>
+                    <div class="code-block">
+                        <pre class="syntax-highlight">
+<span class="keyword">SELECT</span> 
+    employee_id,
+    department,
+    salary,
+    <span class="function">SUM</span>(salary) <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department <span class="keyword">ORDER BY</span> employee_id) <span class="keyword">AS</span> running_total
+<span class="keyword">FROM</span> employees;
+                        </pre>
+                    </div>
+                    <p>💡 Here, salaries are summed department-wise, but each row is preserved.</p>
+                </div>
+
+                <h3>2. Ranking Functions</h3>
+                <ul>
+                    <li><code>ROW_NUMBER()</code> → gives unique sequence number.</li>
+                    <li><code>RANK()</code> → gives rank with gaps if duplicates.</li>
+                    <li><code>DENSE_RANK()</code> → gives rank without gaps.</li>
+                    <li><code>NTILE(n)</code> → divides rows into <code>n</code> buckets.</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>👉 Example: Top 3 salaries in each department</h4>
+                    <div class="code-block">
+                        <pre class="syntax-highlight">
+<span class="keyword">SELECT</span> 
+    employee_id,
+    department,
+    salary,
+    <span class="function">RANK</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>) <span class="keyword">AS</span> rank_in_dept
+<span class="keyword">FROM</span> employees
+<span class="keyword">WHERE</span> <span class="function">RANK</span>() <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> department <span class="keyword">ORDER BY</span> salary <span class="keyword">DESC</span>) <= <span class="string">3</span>;
+                        </pre>
+                    </div>
+                </div>
+
+                <h3>3. Value Functions</h3>
+                <ul>
+                    <li><code>FIRST_VALUE(expr)</code> → first row in window.</li>
+                    <li><code>LAST_VALUE(expr)</code> → last row in window.</li>
+                    <li><code>LAG(expr, offset)</code> → previous row value.</li>
+                    <li><code>LEAD(expr, offset)</code> → next row value.</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>👉 Example: Compare employee salary with previous employee</h4>
+                    <div class="code-block">
+                        <pre class="syntax-highlight">
+<span class="keyword">SELECT</span> 
+    employee_id,
+    salary,
+    <span class="function">LAG</span>(salary, <span class="string">1</span>) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> employee_id) <span class="keyword">AS</span> prev_salary,
+    <span class="function">LEAD</span>(salary, <span class="string">1</span>) <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> employee_id) <span class="keyword">AS</span> next_salary
+<span class="keyword">FROM</span> employees;
+                        </pre>
+                    </div>
+                </div>
+
+                <h3>4. Analytic Functions</h3>
+                <ul>
+                    <li><code>PERCENT_RANK()</code> → relative rank between 0 and 1.</li>
+                    <li><code>CUME_DIST()</code> → cumulative distribution.</li>
+                    <li><code>NTILE(n)</code> → divide rows into n parts.</li>
+                </ul>
+
+                <div class="example-box">
+                    <h4>👉 Example: Cumulative distribution of salaries</h4>
+                    <div class="code-block">
+                        <pre class="syntax-highlight">
+<span class="keyword">SELECT</span> 
+    employee_id,
+    salary,
+    <span class="function">CUME_DIST</span>() <span class="keyword">OVER</span> (<span class="keyword">ORDER BY</span> salary) <span class="keyword">AS</span> salary_distribution
+<span class="keyword">FROM</span> employees;
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>📌 Difference Between GROUP BY and Window Functions</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>GROUP BY</th>
+                            <th>Window Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Rows returned</strong></td>
+                            <td>Collapses rows</td>
+                            <td>Keeps all rows</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Usage</strong></td>
+                            <td>Aggregation only</td>
+                            <td>Aggregation + Ranking + Comparisons</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>Total salary per department</td>
+                            <td>Running total, rank per department</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>📌 Real-Life Example</h2>
+                <p>Suppose we have a table <code>sales</code>:</p>
+                
+                <table class="output-table">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>emp_name</th>
+                            <th>region</th>
+                            <th>sales_amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>A</td><td>East</td><td>5000</td></tr>
+                        <tr><td>2</td><td>B</td><td>East</td><td>3000</td></tr>
+                        <tr><td>3</td><td>C</td><td>West</td><td>7000</td></tr>
+                        <tr><td>4</td><td>D</td><td>West</td><td>4000</td></tr>
+                        <tr><td>5</td><td>E</td><td>East</td><td>6000</td></tr>
+                    </tbody>
+                </table>
+
+                <h3>Query: Show each employee's sales, department total, and running total</h3>
+                <div class="code-block">
+                    <pre class="syntax-highlight">
+<span class="keyword">SELECT</span>
+    emp_name,
+    region,
+    sales_amount,
+    <span class="function">SUM</span>(sales_amount) <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> region) <span class="keyword">AS</span> total_sales_region,
+    <span class="function">SUM</span>(sales_amount) <span class="keyword">OVER</span> (<span class="keyword">PARTITION BY</span> region <span class="keyword">ORDER BY</span> sales_amount) <span class="keyword">AS</span> running_sales
+<span class="keyword">FROM</span> sales;
+                    </pre>
+                </div>
+
+                <p><strong>👉 Output:</strong></p>
+                <table class="output-table">
+                    <thead>
+                        <tr>
+                            <th>emp_name</th>
+                            <th>region</th>
+                            <th>sales_amount</th>
+                            <th>total_sales_region</th>
+                            <th>running_sales</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>B</td><td>East</td><td>3000</td><td>14000</td><td>3000</td></tr>
+                        <tr><td>A</td><td>East</td><td>5000</td><td>14000</td><td>8000</td></tr>
+                        <tr><td>E</td><td>East</td><td>6000</td><td>14000</td><td>14000</td></tr>
+                        <tr><td>D</td><td>West</td><td>4000</td><td>11000</td><td>4000</td></tr>
+                        <tr><td>C</td><td>West</td><td>7000</td><td>11000</td><td>11000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-box">
+                <h3>✅ Summary</h3>
+                <ul>
+                    <li>Window functions = aggregate + row-level detail.</li>
+                    <li>Use for running totals, ranks, comparisons, distributions.</li>
+                    <li>Syntax: <code>function() OVER (PARTITION BY ... ORDER BY ... ROWS ...)</code>.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="image-gallery">
+            <div class="gallery-header">
+                <h2>📸 Visual References</h2>
+                <p class="gallery-subtitle">Additional diagrams and examples</p>
+            </div>
+            
+            <div class="image-upload-note">
+                <p><strong>📝 Note:</strong> This section is designed to display your uploaded images (photo1, photo2, ..., photoN). Images will automatically appear here when added to your notes.</p>
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Dynamic image loading section -->
+                <script>
+                    // Function to create image cards
+                    function createImageCard(index) {
+                        return `
+                            <div class="image-card">
+                                <div class="image-placeholder">
+                                    <div>
+                                        <div class="icon">🖼️</div>
+                                        <div>Photo ${index}</div>
+                                    </div>
+                                </div>
+                                <div class="image-card-content">
+                                    <h4>Reference Image ${index}</h4>
+                                    <p>Window Functions example diagram or screenshot</p>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    // Generate placeholder cards for photos 1-6
+                    const galleryGrid = document.querySelector('.gallery-grid');
+                    for (let i = 1; i <= 6; i++) {
+                        galleryGrid.innerHTML += createImageCard(i);
+                    }
+
+                    // Function to load actual images (when available)
+                    function loadImages() {
+                        const imageCards = document.querySelectorAll('.image-placeholder');
+                        
+                        // Loop through potential image files
+                        for (let i = 1; i <= 20; i++) {
+                            const img = new Image();
+                            img.onload = function() {
+                                // If image exists, replace placeholder
+                                if (imageCards[i-1]) {
+                                    imageCards[i-1].innerHTML = `<img src="photo${i}.jpg" alt="Photo ${i}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                                }
+                            };
+                            img.onerror = function() {
+                                // Image doesn't exist, keep placeholder
+                            };
+                            img.src = `photo${i}.jpg`; // Try to load photo1.jpg, photo2.jpg, etc.
+                        }
+                    }
+
+                    // Try to load images when page loads
+                    window.addEventListener('load', loadImages);
+                </script>
+            </div>
+
+            <div style="text-align: center; margin-top: 30px; color: rgba(255,255,255,0.8);">
+                <p><em>💡 Tip: Add your SQL diagram images as photo1.jpg, photo2.jpg, etc. in the same directory for automatic display</em></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

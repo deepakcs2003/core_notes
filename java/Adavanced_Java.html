@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Advanced Topics Study Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+            padding-left: 15px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #8e44ad;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #27ae60;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+
+        pre {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border-left: 4px solid #3182ce;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        ul,
+        ol {
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .important {
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #dc3545;
+            margin: 15px 0;
+        }
+
+        .tip {
+            background-color: #d4edda;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+        }
+
+        strong {
+            color: #2c3e50;
+        }
+
+        code {
+            background-color: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d73a49;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+
+        .toc ul {
+            margin-bottom: 0;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Java Advanced Topics Study Notes</h1>
+
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#annotations">Java Annotations</a></li>
+                <li><a href="#regex">Java RegEx</a></li>
+                <li><a href="#threads">Java Threads</a></li>
+                <li><a href="#lambda">Java Lambda</a></li>
+                <li><a href="#sorting">Java Advanced Sorting</a></li>
+                <li><a href="#interview">Interview Questions and Tips</a></li>
+            </ul>
+        </div>
+
+        <h2 id="annotations">Annotations</h2>
+        <p>
+            Annotations in Java are like labels or notes you add to your code. They give extra info to the compiler,
+            tools, or frameworks.
+            They don't change how the code works but help in understanding or processing the code better.
+            Introduced in Java 5, they are widely used in modern applications like web development, frameworks (Spring,
+            Hibernate), and Android.
+        </p>
+
+        <h3>What Are Annotations?</h3>
+        <ul>
+            <li>They start with '@' symbol, like <code>@Override</code>.</li>
+            <li>You can use them on classes, methods, variables, parameters, or even other annotations.</li>
+            <li>They are metadata (extra information about your code).</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Simple Example:</strong>
+        </div>
+        <pre>
+class Parent {
+    void show() {
+        System.out.println("Parent show");
+    }
+}
+
+class Child extends Parent {
+    @Override  // This annotation checks if we're correctly overriding
+    void show() {
+        System.out.println("Child show");
+    }
+}
+</pre>
+        <p>Here, <code>@Override</code> tells the compiler: "I'm changing the parent's method." If you spell
+            <code>show</code> wrong, it warns you.
+        </p>
+
+        <h4>Built-in Annotations</h4>
+        <ul>
+            <li><strong>@Override</strong>: Checks if a method is overriding a parent method.</li>
+            <li><strong>@Deprecated</strong>: Marks old code that shouldn't be used anymore.</li>
+            <li><strong>@SuppressWarnings</strong>: Ignores compiler warnings.</li>
+        </ul>
+
+        <h3>Detailed Explanation with Code</h3>
+
+        <h4>1. @Override</h4>
+        <pre>
+class Animal {
+    void sound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {  // compiler ensures method matches parent
+        System.out.println("Dog barks");
+    }
+}
+</pre>
+        <p>
+            <strong>Why use?</strong> Prevents mistakes. Without <code>@Override</code>, if you accidentally write
+            <code>sounds()</code> instead of <code>sound()</code>, it won’t override – just create a new method.
+        </p>
+
+        <h4>2. @Deprecated</h4>
+        <pre>
+class OldCode {
+    @Deprecated
+    void oldMethod() {
+        System.out.println("Old logic");
+    }
+}
+
+class Test {
+    public static void main(String[] args) {
+        OldCode oc = new OldCode();
+        oc.oldMethod();  // Compiler shows warning
+    }
+}
+</pre>
+        <p>
+            <strong>Why use?</strong> Tells other developers: "Don’t use this method anymore, there’s a better way."
+            Useful when updating libraries or frameworks.
+        </p>
+
+        <h4>3. @SuppressWarnings</h4>
+        <pre>
+import java.util.*;
+
+class WarningExample {
+    @SuppressWarnings("unchecked")
+    void demo() {
+        List list = new ArrayList(); // Raw type (usually gives warning)
+        list.add("Hello");
+        System.out.println(list.get(0));
+    }
+}
+</pre>
+        <p>
+            <strong>Why use?</strong> Sometimes warnings are unnecessary.
+            This annotation hides them, but use carefully — it may hide real issues.
+        </p>
+
+        <h3>Other Useful Annotations</h3>
+        <ul>
+            <li><strong>@FunctionalInterface</strong>: Marks an interface with only one abstract method (used in Lambda
+                expressions).</li>
+            <li><strong>@SafeVarargs</strong>: Suppresses warnings for varargs with generics.</li>
+            <li><strong>@Retention</strong>, <strong>@Target</strong>, <strong>@Inherited</strong>: Meta-annotations
+                (used when creating your own annotations).</li>
+        </ul>
+
+        <div class="tip">
+            <strong>In easy words:</strong> Annotations are helpful tags that make code smarter, cleaner, and less
+            error-prone.
+            They also reduce boilerplate in frameworks like Spring and Hibernate.
+        </div>
+
+
+        <h2 id="regex">RegEx (Regular Expressions)</h2>
+        <p>
+            RegEx is used to <strong>find, match, or replace</strong> parts of strings using patterns.
+            In Java, it is available in the <code>java.util.regex</code> package (classes: <code>Pattern</code> and
+            <code>Matcher</code>).
+        </p>
+
+        <h3>Basics</h3>
+        <ul>
+            <li><strong>Pattern:</strong> The rule you want to search (e.g., <code>"\\d+"</code> → numbers).</li>
+            <li><strong>Matcher:</strong> Applies the pattern to a string.</li>
+            <li><strong>Common Symbols:</strong>
+                <ul>
+                    <li><code>.</code> → any one character</li>
+                    <li><code>*</code> → zero or more</li>
+                    <li><code>+</code> → one or more</li>
+                    <li><code>\\d</code> → digit (0-9)</li>
+                    <li><code>\\w</code> → word (letters, digits, _)</li>
+                    <li><code>^</code> → start of text</li>
+                    <li><code>$</code> → end of text</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Example: Find numbers in text</strong>
+        </div>
+        <pre>
+import java.util.regex.*;
+
+public class Main {
+    public static void main(String[] args) {
+        String text = "I have 5 apples and 10 oranges.";
+        Pattern p = Pattern.compile("\\d+");  // pattern for numbers
+        Matcher m = p.matcher(text);
+
+        while (m.find()) {
+            System.out.println(m.group());  // prints 5 then 10
+        }
+    }
+}
+</pre>
+
+        <h3>Useful Methods</h3>
+        <ul>
+            <li><code>find()</code> → finds next match</li>
+            <li><code>group()</code> → gets matched value</li>
+            <li><code>matches()</code> → checks if whole string matches pattern</li>
+            <li><code>replaceAll()</code> → replace text
+                <br>Example: <code>text.replaceAll("\\d+", "X")</code> → "I have X apples and X oranges."
+            </li>
+            <li><code>split()</code> → split string
+                <br>Example: <code>"a,b,c".split(",")</code> → ["a","b","c"]
+            </li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Example: Check Email</strong>
+        </div>
+        <pre>
+String email = "test@example.com";
+if (email.matches("^[\\w.-]+@[\\w.-]+\\.[a-z]{2,}$")) {
+    System.out.println("Valid email");
+}
+</pre>
+
+        <p><strong>Common Uses:</strong> Form validation (emails, phone numbers), extracting data, search & replace.</p>
+
+        <div class="tip">
+            <strong>In easy words:</strong>
+            RegEx is a <em>smart search tool</em> for strings. Start with simple rules like <code>\\d</code> for numbers
+            or <code>\\w</code> for words.
+        </div>
+
+        <h2 id="threads"> Threads</h2>
+        <p>Threads let your Java program do many tasks at the same time, like multitasking. This is concurrency. Uses
+            <code>java.lang.Thread</code> and <code>java.util.concurrent</code>.
+        </p>
+
+        <h3>Basics</h3>
+        <ul>
+            <li><strong>Thread:</strong> Small task in a program. All share same memory.</li>
+            <li><strong>Main Thread:</strong> Starts with <code>main()</code> method.</li>
+            <li><strong>Make Threads:</strong>
+                <ol>
+                    <li>Extend Thread:</li>
+                </ol>
+            </li>
+        </ul>
+        <pre>class MyTask extends Thread {
+    public void run() {  // Code here runs in thread
+        System.out.println("Task running");
+    }
+}
+MyTask t = new MyTask();
+t.start();  // Start it</pre>
+
+        <p>2. Use Runnable (better):</p>
+        <pre>class MyRun implements Runnable {
+    public void run() {
+        System.out.println("Run task");
+    }
+}
+Thread t = new Thread(new MyRun());
+t.start();</pre>
+
+        <h4>Thread Life</h4>
+        <img src="https://www.scientecheasy.com/wp-content/uploads/2020/06/thread-life-cycle.png" alt="thred lifecycle"
+            ,style="width:1000px height:auto">
+        <ul>
+            <li><strong>New:</strong> Made but not started.</li>
+            <li><strong>Runnable:</strong> Ready after <code>start()</code>.</li>
+            <li><strong>Running:</strong> Doing <code>run()</code>.</li>
+            <li><strong>Blocked:</strong> Waiting for something.</li>
+            <li><strong>Timed Waiting:</strong> Sleeping.</li>
+            <li><strong>Terminated:</strong> Done or error.</li>
+        </ul>
+
+        <h4>Key Methods</h4>
+        <ul>
+            <li><code>start():</code> Begins thread.</li>
+            <li><code>run():</code> The work (don't call directly).</li>
+            <li><code>sleep(1000):</code> Pause 1 second.</li>
+            <li><code>join():</code> Wait for thread to end.</li>
+            <li><code>interrupt():</code> Ask to stop (thread checks itself).</li>
+        </ul>
+
+        <h4>Sharing Data Safely (Synchronization)</h4>
+        <ul>
+            <li><strong>Problem:</strong> Threads can mess up shared variables (race condition).</li>
+            <li><strong>synchronized:</strong> Lock so one at a time.</li>
+        </ul>
+        <pre>int count = 0;
+synchronized void add() {
+    count++;
+}</pre>
+
+        <ul>
+            <li><strong>Lock:</strong> Better control.</li>
+        </ul>
+        <pre>import java.util.concurrent.locks.*;
+Lock lock = new ReentrantLock();
+lock.lock();
+count++;
+lock.unlock();</pre>
+
+        <ul>
+            <li><strong>volatile:</strong> Makes variable always fresh for all threads.</li>
+            <li><strong>wait()/notify():</strong> Threads talk, like "wait till ready".</li>
+        </ul>
+
+
+
+        <h2 id="lambda">Lambda Expressions</h2>
+        <p>
+            Lambdas were introduced in Java 8. They are a short way to write code (functions) without creating a full
+            class.
+            They work only with <strong>Functional Interfaces</strong> (an interface with exactly one abstract method).
+        </p>
+
+        <h3>Basics</h3>
+        <ul>
+            <li><strong>Syntax:</strong> <code>(parameters) -> { body }</code></li>
+            <li><strong>Example:</strong> <code>(int x) -> x * 2</code> // doubles a number</li>
+            <li><strong>No braces if one line:</strong> <code>() -> "Hi"</code></li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Simple Example:</strong>
+        </div>
+        <pre>
+@FunctionalInterface
+interface Add {
+    int sum(int a, int b);
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Add adder = (a, b) -> a + b;   // Lambda instead of writing a class
+        System.out.println(adder.sum(3, 4));  // Output: 7
+    }
+}
+</pre>
+
+        <h3>Where to Use Lambdas?</h3>
+        <ul>
+            <li><strong>With Lists:</strong> <code>list.forEach(s -> System.out.println(s));</code></li>
+            <li><strong>With Sorting:</strong> <code>Collections.sort(list, (a, b) -> a.compareTo(b));</code></li>
+            <li><strong>With Streams:</strong> <code>list.stream().filter(n -> n > 0).count();</code></li>
+        </ul>
+
+        <div class="tip">
+            <strong>In easy words:</strong> Lambdas make code <em>shorter</em>, <em>cleaner</em>, and are used a lot in
+            modern Java (collections, streams, events).
+        </div>
+
+
+        <h2 id="sorting">Sorting in Java</h2>
+        <p>
+            Sorting means arranging data in order (like A→Z or small→big).
+            In Java, sorting can be done in two ways:
+        </p>
+
+        <h3>Basics</h3>
+        <ul>
+            <li><strong>Arrays:</strong> <code>Arrays.sort(array);</code></li>
+            <li><strong>Lists:</strong> <code>Collections.sort(list);</code></li>
+        </ul>
+
+        <h3>1. Comparable (Natural Sorting)</h3>
+        <p>
+            If you want objects to be sorted in their <em>natural order</em> (like names alphabetically), the class
+            should implement <code>Comparable</code>.
+        </p>
+        <pre>
+class Fruit implements Comparable<Fruit> {
+    String name;
+    Fruit(String n) { name = n; }
+
+    @Override
+    public int compareTo(Fruit other) {
+        return this.name.compareTo(other.name); // A-Z order
+    }
+}
+
+List<Fruit> fruits = new ArrayList<>();
+fruits.add(new Fruit("Banana"));
+fruits.add(new Fruit("Apple"));
+fruits.add(new Fruit("Mango"));
+
+Collections.sort(fruits);  // Sorts by name
+</pre>
+
+        <p><strong>Why?</strong> Comparable is used when the class itself has a default way to compare objects.</p>
+
+        <h3>2. Comparator (Custom Sorting)</h3>
+        <p>
+            If you want <em>different ways</em> to sort, use <code>Comparator</code>.
+        </p>
+        <pre>
+Comparator<Fruit> byLength = 
+    (f1, f2) -> Integer.compare(f1.name.length(), f2.name.length());
+
+fruits.sort(byLength);  // Sorts by name length
+</pre>
+
+        <p><strong>Why?</strong> Comparator is flexible – you can define multiple custom sorting rules without changing
+            the class.</p>
+
+        <h3>Simple Example</h3>
+        <p>Sorting numbers in descending order:</p>
+        <pre>
+List<Integer> nums = Arrays.asList(3, 1, 4);
+nums.sort(Comparator.reverseOrder());  // [4, 3, 1]
+</pre>
+
+        <div class="tip">
+            <strong>In easy words:</strong>
+            - Use <code>Comparable</code> for natural/default order.
+            - Use <code>Comparator</code> for custom rules (like by length, reverse, etc).
+        </div>
+
+
+        <h2 id="interview">Interview Questions and Tips</h2>
+
+        <h3>Questions (Covering All Topics)</h3>
+        <ol>
+            <li><strong>Annotations:</strong> What is <code>@Override</code>? Give example. (Explain it checks
+                overriding.)</li>
+            <li><strong>Annotations:</strong> How to make custom annotation with runtime retention?</li>
+            <li><strong>RegEx:</strong> Write pattern for valid phone: (123) 456-7890.</li>
+            <li><strong>RegEx:</strong> Explain difference between greedy and lazy quantifiers.</li>
+            <li><strong>Threads:</strong> Difference between Thread and Runnable?</li>
+            <li><strong>Threads:</strong> What is synchronization? Why needed?</li>
+            <li><strong>Threads:</strong> Explain deadlock with example.</li>
+            <li><strong>Lambda:</strong> Write lambda for sorting list by length.</li>
+            <li><strong>Lambda:</strong> What is functional interface?</li>
+            <li><strong>Sorting:</strong> Difference between Comparable and Comparator?</li>
+            <li><strong>Sorting:</strong> How to sort objects by multiple fields?</li>
+        </ol>
+
+        <h3>Tips</h3>
+        <div class="tip">
+            <ul>
+                <li><strong>Practice code:</strong> Run examples on IDE like Eclipse.</li>
+                <li><strong>Understand basics first:</strong> Start with simple, then advanced.</li>
+                <li><strong>For interviews:</strong> Explain why (e.g., why synchronize? To avoid races).</li>
+                <li><strong>Common pitfalls:</strong> Forget to handle threads safely, complex RegEx.</li>
+                <li><strong>Read docs:</strong> Java API for details.</li>
+                <li><strong>Mock interviews:</strong> Time yourself explaining.</li>
+                <li><strong>Focus on Java 8+:</strong> Lambdas, streams are hot.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -197,18 +197,10 @@
 
             <div class="diagram-container">
                 <h3>Critical Section Visualization</h3>
-                <img src="https://www.tutorialspoint.com/operating_system/images/critical_section.jpg" alt="Critical Section Diagram" style="max-width: 100%; height: auto;">
+                <img src="http://www.studytonight.com/operating-system/images/critical-section-problem.png" alt="Critical Section Diagram" style="max-width: 100%; height: auto;">
             </div>
 
-            <pre class="code-block">
-Process Structure:
-do {
-    // Entry Section
-    // CRITICAL SECTION
-    // Exit Section  
-    // Remainder Section
-} while (true);
-            </pre>
+            
 
             <div class="example">
                 <strong>Real Example:</strong> Bank ATM withdrawal - Only one person can access account balance at a time to prevent incorrect deductions.
@@ -230,24 +222,7 @@ do {
                 <strong>⚠️ Problem:</strong> When multiple processes access shared data simultaneously, final result depends on execution order.
             </div>
 
-            <div class="visual-demo">
-                <div class="process-box">Process 1</div>
-                <div class="arrow">→</div>
-                <div class="resource-box">Shared<br>Data</div>
-                <div class="arrow">←</div>
-                <div class="process-box">Process 2</div>
-            </div>
-
-            <pre class="code-block">
-Example Race Condition:
-Shared variable: counter = 0
-
-Process 1:               Process 2:
-counter = counter + 1    counter = counter + 1
-
-Expected: counter = 2
-Actual: counter = 1 (Race condition!)
-            </pre>
+            <img src="https://tse3.mm.bing.net/th/id/OIP.bQGsDXVMz2nczPuo0UB3lwHaEj?pid=Api&P=0&h=180" alt="race condition" style="max-width: 100%; height: auto;">
 
             <div class="interview-tip">
                 <strong>🎯 Interview Tip:</strong> Always explain race condition with bank account example - two people withdrawing money simultaneously.
@@ -294,7 +269,7 @@ Actual: counter = 1 (Race condition!)
             
             <div class="diagram-container">
                 <h3>Mutex Working</h3>
-                <img src="https://www.tutorialspoint.com/operating_system/images/mutex.jpg" alt="Mutex Diagram" style="max-width: 100%; height: auto;">
+                <img src="https://i.ytimg.com/vi/bheXxjgv_wU/maxresdefault.jpg" alt="Mutex Diagram" style="max-width: 100%; height: auto;">
             </div>
 
             <pre class="code-block">
@@ -326,11 +301,12 @@ release(lock);
         <!-- Conditional Variables -->
         <div class="concept-section">
             <h2 class="concept-title">5. Conditional Variables</h2>
-            
+            <img src="https://image.slideserve.com/855742/conditional-variables-l.jpg" alt="Mutex Diagram" style="max-width: 100%; height: auto;">
+
             <div class="interview-tip">
                 <strong>🎯 Key Concept:</strong> Condition variables solve busy waiting problem. Thread sleeps until condition is met.
             </div>
-
+            
             <pre class="code-block">
 Condition Variable Operations:
 wait(condition, lock)
@@ -359,7 +335,7 @@ broadcast(condition)
             
             <div class="diagram-container">
                 <h3>Semaphore Concept</h3>
-                <img src="https://www.tutorialspoint.com/operating_system/images/semaphore.jpg" alt="Semaphore Diagram" style="max-width: 100%; height: auto;">
+                <img src="https://image.slidesharecdn.com/semaphores-120927060605-phpapp01/95/semaphores-1-728.jpg?cb=1348726429" alt="Semaphore Diagram" style="max-width: 100%; height: auto;">
             </div>
 
             <pre class="code-block">

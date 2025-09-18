@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
@@ -39,7 +40,7 @@
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .header p {
@@ -60,7 +61,7 @@
             color: white;
             border-radius: 10px;
             text-align: center;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         h3 {
@@ -97,10 +98,11 @@
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
@@ -110,7 +112,7 @@
             background: linear-gradient(135deg, #4299e1, #3182ce);
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
         tr:nth-child(even) {
@@ -168,7 +170,7 @@
 
         .function-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .function-card h4 {
@@ -281,33 +283,35 @@
             .content {
                 padding: 20px;
             }
-            
+
             .header h1 {
                 font-size: 2em;
             }
-            
+
             h2 {
                 font-size: 1.5em;
             }
-            
+
             table {
                 font-size: 0.9em;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 10px;
             }
-            
+
             .kernel-functions {
                 grid-template-columns: 1fr;
             }
-            
+
             .syscall-grid {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
@@ -315,7 +319,7 @@
         </div>
 
         <div class="content">
-        
+
 
             <section id="basic-concepts">
                 <h2>🧠 Program vs Process vs Thread</h2>
@@ -337,7 +341,8 @@
                         </tr>
                         <tr>
                             <td><strong>Thread</strong></td>
-                            <td>A smaller unit of a process. A path of execution within a process. Shares memory with other threads in the same process.</td>
+                            <td>A smaller unit of a process. A path of execution within a process. Shares memory with
+                                other threads in the same process.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -425,7 +430,8 @@
 
             <section id="os-components">
                 <h2>🧩 Components of Operating System</h2>
-                <img src="https://www.ssla.co.uk/wp-content/uploads/2020/08/operating-system-kernel-layers.jpg" alt="OS Components Diagram" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <img src="https://www.ssla.co.uk/wp-content/uploads/2020/08/operating-system-kernel-layers.jpg"
+                    alt="OS Components Diagram" style="width: 100%; border-radius: 10px; margin: 20px 0;">
                 <div class="concept-box">
                     <h4>1. Kernel (Core of the OS)</h4>
                     <ul>
@@ -470,115 +476,137 @@
 
             <section id="buffering-caching-spooling">
                 <h2>🧠 Buffering vs Caching vs Spooling</h2>
-                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230118172634/Spooling-in-OS.png" alt="Buffering vs Caching vs Spooling" style="width: 100%; border-radius: 10px; margin: 20px 0;">
-                <table>
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230118172634/Spooling-in-OS.png"
+                    alt="Buffering vs Caching vs Spooling" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <table border="1" cellspacing="0" cellpadding="8">
                     <thead>
-                        <tr>
-                            <th>Concept</th>
-                            <th>What it is</th>
-                            <th>Example</th>
+                        <tr style="background-color:#f2f2f2;">
+                            <th>Feature</th>
+                            <th>Buffering</th>
+                            <th>Spooling</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Buffering</strong></td>
-                            <td>Temporary storage during a task</td>
-                            <td>YouTube buffering during playback</td>
+                            <td><strong>Storage</strong></td>
+                            <td>Uses main memory (RAM)</td>
+                            <td>Uses secondary storage (Disk)</td>
                         </tr>
                         <tr>
-                            <td><strong>Caching</strong></td>
-                            <td>Storing frequently used data</td>
-                            <td>Webpage loading faster on second visit</td>
+                            <td><strong>Purpose</strong></td>
+                            <td>Handle speed mismatch between producer & consumer</td>
+                            <td>Handle device sharing among multiple processes</td>
                         </tr>
                         <tr>
-                            <td><strong>Spooling</strong></td>
-                            <td>Queueing slower jobs</td>
-                            <td>Printing documents one by one</td>
+                            <td><strong>Operation</strong></td>
+                            <td>Temporary storage during transfer</td>
+                            <td>Queue system for managing device access</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Devices</strong></td>
+                            <td>Mostly used for fast I/O devices (keyboard, mouse, streaming, etc.)</td>
+                            <td>Mostly used for slow devices (printers, plotters, etc.)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Size</strong></td>
+                            <td>Small amount of data</td>
+                            <td>Large amount of data (since stored on disk)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Example</strong></td>
+                            <td>YouTube video buffering, keyboard input</td>
+                            <td>Printer spooling, batch job execution</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </section>
+
+            <section id="kernel-types">
+                <h2>🧬 Types of Kernels</h2>
+                <table border="1" cellpadding="10" cellspacing="0">
+                    <thead style="background-color: #f0f0f0;">
+                        <tr>
+                            <th>Type</th>
+                            <th>Features</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                            <th>Examples</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Monolithic Kernel</strong></td>
+                            <td>All OS services (memory, process, file, I/O) are in kernel space.</td>
+                            <td>
+                                <ul>
+                                    <li>High performance</li>
+                                    <li>Fast communication (no user-kernel mode switch)</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Bulky in size</li>
+                                    <li>Less reliable (one crash may bring whole system down)</li>
+                                    <li>High memory usage</li>
+                                </ul>
+                            </td>
+                            <td>Linux, Unix, MS-DOS</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Microkernel</strong></td>
+                            <td>Only core functionalities (like memory & process management) in kernel. Other services
+                                run in user space.</td>
+                            <td>
+                                <ul>
+                                    <li>Smaller in size</li>
+                                    <li>More stable and secure</li>
+                                    <li>Modular and reliable</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Slower performance</li>
+                                    <li>Overhead due to user-kernel switching</li>
+                                </ul>
+                            </td>
+                            <td>MINIX, Symbian OS, L4 Linux</td>
+                        </tr>
+
+                        <tr>
+                            <td><strong>Hybrid Kernel</strong></td>
+                            <td>Combines features of Monolithic and Microkernels. Some services in kernel, others in
+                                user space.</td>
+                            <td>
+                                <ul>
+                                    <li>Balanced speed and stability</li>
+                                    <li>Modular and extensible</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Still has some overhead</li>
+                                    <li>More complex than pure designs</li>
+                                </ul>
+                            </td>
+                            <td>Windows NT/7/10, macOS</td>
                         </tr>
                     </tbody>
                 </table>
             </section>
 
-           <section id="kernel-types">
-  <h2>🧬 Types of Kernels</h2>
-  <table border="1" cellpadding="10" cellspacing="0">
-    <thead style="background-color: #f0f0f0;">
-      <tr>
-        <th>Type</th>
-        <th>Features</th>
-        <th>Pros</th>
-        <th>Cons</th>
-        <th>Examples</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Monolithic Kernel</strong></td>
-        <td>All OS services (memory, process, file, I/O) are in kernel space.</td>
-        <td>
-          <ul>
-            <li>High performance</li>
-            <li>Fast communication (no user-kernel mode switch)</li>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <li>Bulky in size</li>
-            <li>Less reliable (one crash may bring whole system down)</li>
-            <li>High memory usage</li>
-          </ul>
-        </td>
-        <td>Linux, Unix, MS-DOS</td>
-      </tr>
-
-      <tr>
-        <td><strong>Microkernel</strong></td>
-        <td>Only core functionalities (like memory & process management) in kernel. Other services run in user space.</td>
-        <td>
-          <ul>
-            <li>Smaller in size</li>
-            <li>More stable and secure</li>
-            <li>Modular and reliable</li>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <li>Slower performance</li>
-            <li>Overhead due to user-kernel switching</li>
-          </ul>
-        </td>
-        <td>MINIX, Symbian OS, L4 Linux</td>
-      </tr>
-
-      <tr>
-        <td><strong>Hybrid Kernel</strong></td>
-        <td>Combines features of Monolithic and Microkernels. Some services in kernel, others in user space.</td>
-        <td>
-          <ul>
-            <li>Balanced speed and stability</li>
-            <li>Modular and extensible</li>
-          </ul>
-        </td>
-        <td>
-          <ul>
-            <li>Still has some overhead</li>
-            <li>More complex than pure designs</li>
-          </ul>
-        </td>
-        <td>Windows NT/7/10, macOS</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
 
             <section id="communication">
                 <h2>🔗 Communication: User Mode ↔ Kernel Mode</h2>
-                <img src="https://scaler.com/topics/images/working_system.webp" alt="User Mode and Kernel Mode Communication" style="width: 100%; border-radius: 10px; margin: 20px 0;">
+                <img src="https://scaler.com/topics/images/working_system.webp"
+                    alt="User Mode and Kernel Mode Communication"
+                    style="width: 100%; border-radius: 10px; margin: 20px 0;">
                 <div class="comparison-section">
                     <ul>
                         <li>Apps (in user space) <strong>cannot</strong> directly access hardware.</li>
-                        <li>They request kernel services via <strong>System Calls</strong> (with help of Shell or CLI).</li>
+                        <li>They request kernel services via <strong>System Calls</strong> (with help of Shell or CLI).
+                        </li>
                         <li><strong>System Call = Gateway between User Mode & Kernel Mode</strong></li>
                     </ul>
                 </div>
@@ -589,7 +617,8 @@
                 </div>
                 <div class="highlight">
                     <code>mkdir</code> is not the real function that creates a folder.<br>
-                    It calls a <strong>system call</strong> (like <code>mkdir()</code> syscall in C) to tell kernel to create directory.
+                    It calls a <strong>system call</strong> (like <code>mkdir()</code> syscall in C) to tell kernel to
+                    create directory.
                 </div>
             </section>
 
@@ -597,9 +626,11 @@
                 <h2>📞 What is a System Call?</h2>
                 <div class="comparison-section">
                     <ul>
-                        <li>A <strong>programmatic way</strong> for user applications to <strong>ask OS for resources or services</strong>.</li>
+                        <li>A <strong>programmatic way</strong> for user applications to <strong>ask OS for resources or
+                                services</strong>.</li>
                         <li>Needed because user programs don't have permissions for direct hardware access.</li>
-                        <li><strong>Implemented in C</strong> and triggered by <strong>software interrupts</strong>.</li>
+                        <li><strong>Implemented in C</strong> and triggered by <strong>software interrupts</strong>.
+                        </li>
                     </ul>
                 </div>
 
@@ -704,4 +735,5 @@
         </div>
     </div>
 </body>
+
 </html>

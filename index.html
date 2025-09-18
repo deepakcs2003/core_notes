@@ -73,6 +73,7 @@
     <button onclick="switchTab('os')">OS Notes</button>
     <button onclick="switchTab('java')">Java Notes</button>
     <button onclick="switchTab('cn')">CN Notes</button>
+    <button onclick="switchTab('react')">React Notes</button>
   </div>
 
   <div id="dbms" class="content-section active">
@@ -88,7 +89,8 @@
       <li><a href="DBMS_NOTE/recovery.html">Recovery</a></li>
       <li><a href="DBMS_NOTE/Procedural SQL.html">Procedural SQL</a></li>
       <li><a href="DBMS_NOTE/Regular Expressions (REGEXP).html">Regular Expressions (REGEXP)</a></li>
-
+      <li><a href="DBMS_NOTE/Window_Functions.html">Window Functions</a></li>
+      <li><a href="DBMS_NOTE/mongodb.html">MongoDB</a></li>
     </ul>
   </div>
 
@@ -122,14 +124,28 @@
       <li><a href="java/Java_topics.html">Java Topics</a></li>
       <li><a href="java/IO Streams and File Handling.html">IO Streams & File Handling</a></li>
       <li><a href="java/Relationships_Coupling.html">Relationships & Coupling</a></li>
+      <li><a href="java/Java_Architecture.html">Java Architecture</a></li>
+      <li><a href="java/Adavanced_Java.html">Advanced Java</a></li>
+      <li><a href="java/Collections_FrameWork.html">Collections Framework</a></li>
     </ul>
   </div>
 
-  <div id="cn" class="content-section">
+ <div id="cn" class="content-section">
+  <ul>
+    <li><a href="CN/Introduction to Networking.html">Introduction to Networking</a></li>
+    <li><a href="CN/Network Devices.html">Network Devices</a></li>
+    <li><a href="CN/syllabus.html">Syllabus</a></li>
+    <li><a href="CN/Application_Layer_Protocols.html">Application Layer Protocols</a></li>
+    <li><a href="CN/IP_Addressing_Subnetting.html">IP Addressing & Subnetting</a></li>
+    <li><a href="CN/Networking_security.html">Networking Security</a></li>
+    <li><a href="CN/Transport_Layer_tcp_udp.html">Transport Layer (TCP/UDP)</a></li>
+    <li><a href="CN/VPN.html">VPN</a></li>
+  </ul>
+</div>
+
+  <div id="react" class="content-section">
     <ul>
-      <li><a href="CN/Introduction to Networking.html">Introduction to Networking</a></li>
-      <li><a href="CN/Network Devices.html">Network Devices</a></li>
-      <li><a href="CN/syllabus.html">Syllabus</a></li>
+      <li><a href="react/interview_qeastion.html">React Interview Questions</a></li>
     </ul>
   </div>
 
@@ -147,6 +163,8 @@
         document.querySelector('.tabs button:nth-child(3)').classList.add('active');
       } else if (tabId === 'cn') {
         document.querySelector('.tabs button:nth-child(4)').classList.add('active');
+      } else if (tabId === 'react') {
+        document.querySelector('.tabs button:nth-child(5)').classList.add('active');
       }
     }
   </script>

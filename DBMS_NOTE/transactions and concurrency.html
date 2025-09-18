@@ -146,7 +146,6 @@
         .acid-cards {
             display: grid;
             grid-template-columns: 1fr;
-            /* Only one column */
             gap: 20px;
             margin: 20px 0;
         }
@@ -174,11 +173,9 @@
             padding: 0;
         }
 
-
         .problem-grid {
             display: flex;
             flex-direction: column;
-            /* One card per row */
             gap: 20px;
             margin: 20px 0;
         }
@@ -190,7 +187,6 @@
             padding: 20px;
             border-left: 4px solid #f39c12;
             width: 100%;
-            /* Full width of container */
         }
 
         .problem-card h4 {
@@ -198,41 +194,32 @@
             margin-bottom: 10px;
         }
 
-
-        .states-flow {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
+        .success-card {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
             border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #28a745;
+            width: 100%;
         }
 
-        .state {
-            background: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            margin: 5px;
-            font-weight: bold;
-            text-align: center;
-            min-width: 120px;
+        .success-card h4 {
+            color: #28a745;
+            margin-bottom: 10px;
         }
 
-        .state.failed {
-            background: #dc3545;
+        .danger-card {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid #dc3545;
+            width: 100%;
         }
 
-        .state.active {
-            background: #007bff;
-        }
-
-        .arrow {
-            font-size: 1.5em;
-            color: #667eea;
-            margin: 0 10px;
+        .danger-card h4 {
+            color: #dc3545;
+            margin-bottom: 10px;
         }
 
         .summary-grid {
@@ -295,6 +282,20 @@
             font-size: 1.2em;
         }
 
+        .key-point {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .key-point::before {
+            content: "🔑 ";
+            font-size: 1.2em;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2em;
@@ -307,10 +308,6 @@
             .acid-cards {
                 grid-template-columns: 1fr;
             }
-
-            .states-flow {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
@@ -319,95 +316,83 @@
     <div class="container">
         <div class="header">
             <h1>💾 Database Transactions and Concurrency</h1>
+            <p>Complete Guide for Database Management Systems</p>
         </div>
 
         <div class="section">
             <h2>💡 What is a Transaction?</h2>
             <div class="highlight">
-                <p>A <strong>transaction</strong> is a set of operations that perform a <strong>single logical
-                        task</strong> in a database.</p>
+                <p>A <strong>transaction</strong> is a collection of operations that performs a <strong>single logical unit of work</strong> in a database application.</p>
             </div>
 
             <div class="example">
                 <h4>🔍 Real-World Example: Banking Transfer</h4>
-                <p>Imagine you're using a banking app to <strong>transfer ₹1000</strong> from <strong>Account A to
-                        Account B</strong>.</p>
-                <p>This task involves:</p>
+                <p>Imagine you're using a banking app to <strong>transfer ₹1000</strong> from <strong>Account A to Account B</strong>.</p>
+                <p>This task involves multiple operations:</p>
                 <pre>
 1. BEGIN TRANSACTION
 2. Deduct ₹1000 from Account A
 3. Add ₹1000 to Account B
 4. COMMIT TRANSACTION
         </pre>
-                <p>This is <strong>one transaction</strong>. If any step fails, the whole operation should fail.</p>
+                <p>This entire process is <strong>one transaction</strong>. If any step fails, the whole operation must be rolled back.</p>
             </div>
 
-            <div class="image-container">
-                <p><em>Banking transactions require all operations to succeed or fail together</em></p>
-            </div>
-
-            <h3>🧱 What is an Operation in a Transaction?</h3>
+            <h3>🧱 Operations in a Transaction</h3>
             <div class="highlight">
-                <p>In a transaction, an <strong>operation</strong> is a single step like reading, writing, updating, or
-                    committing data in the database.</p>
-                <p>Together, multiple operations complete the logical task.</p>
+                <p>In a transaction, an <strong>operation</strong> is a single database action like reading, writing, updating, or committing data.</p>
+                <p>Multiple operations together complete the logical task of the transaction.</p>
             </div>
 
             <div class="example">
-                <h4>✅ Common Types of Operations</h4>
+                <h4>✅ Common Database Operations</h4>
                 <ul>
-                    <li><strong>BEGIN TRANSACTION</strong> – Start the transaction</li>
-                    <li><strong>READ(X)</strong> – Read value of X</li>
-                    <li><strong>WRITE(X)</strong> – Update value of X</li>
-                    <li><strong>COMMIT</strong> – Save changes</li>
-                    <li><strong>ABORT</strong> – Cancel and rollback</li>
+                    <li><strong>BEGIN TRANSACTION</strong> – Initialize the transaction</li>
+                    <li><strong>READ(X)</strong> – Read the value of variable X</li>
+                    <li><strong>WRITE(X)</strong> – Update the value of variable X</li>
+                    <li><strong>COMMIT</strong> – Make changes permanent</li>
+                    <li><strong>ROLLBACK/ABORT</strong> – Cancel transaction and undo changes</li>
                 </ul>
             </div>
 
             <div class="example">
-                <h4>📘 Example: Transfer ₹1000 from A to B (Step-by-step)</h4>
+                <h4>📘 Detailed Example: Transfer ₹1000 from A to B</h4>
                 <pre>
 Transaction T1:
 
 1. BEGIN TRANSACTION
-2. READ(A)           -- Get balance of Account A
-3. A = A - 1000      -- Deduct ₹1000
-4. WRITE(A)          -- Save new balance of A
-5. READ(B)           -- Get balance of Account B
-6. B = B + 1000      -- Add ₹1000
-7. WRITE(B)          -- Save new balance of B
-8. COMMIT            -- Finalize the transaction
+2. READ(A)           -- Get current balance of Account A
+3. A = A - 1000      -- Calculate new balance (deduct ₹1000)
+4. WRITE(A)          -- Update Account A with new balance
+5. READ(B)           -- Get current balance of Account B
+6. B = B + 1000      -- Calculate new balance (add ₹1000)
+7. WRITE(B)          -- Update Account B with new balance
+8. COMMIT            -- Make all changes permanent
         </pre>
             </div>
 
-            <div class="image-container">
-                <p><em>Each READ and WRITE is an operation. Together, they make one complete transaction.</em></p>
+            <div class="key-point">
+                <strong>Key Point:</strong> Each READ and WRITE is an individual operation. Together, all operations form one complete transaction that maintains data integrity.
             </div>
         </div>
 
-
         <div class="section">
-            <h2>✅ ACID Properties (Very Important for Interviews)</h2>
-            <p>ACID properties are a set of rules that ensure database transactions are processed reliably, even in case
-                of failures or concurrent access.</p>
+            <h2>✅ ACID Properties (Critical for Interviews)</h2>
+            <p>ACID properties are fundamental principles that ensure database transactions are processed reliably and maintain data integrity, even during system failures or concurrent access.</p>
 
             <div class="acid-cards">
-
                 <!-- Atomicity -->
                 <div class="acid-card">
                     <h3>🔄 Atomicity</h3>
-                    <p>All operations in a transaction are treated as a single unit – either all succeed or none at all.
-                    </p>
+                    <p>All operations in a transaction are treated as a single, indivisible unit – either all operations succeed completely or none are applied at all.</p>
                     <div class="example">
                         <h4>💡 Real-World Example:</h4>
-                        <p style="color:black; font-style: italic;">When transferring ₹1000 from Account A to B, if
-                            deduction from A fails, the amount must not be added to B.</p>
+                        <p style="color:black; font-style: italic;">During a ₹1000 transfer from Account A to B, if the deduction from Account A succeeds but adding to Account B fails, the system must automatically rollback the deduction to maintain consistency.</p>
                         <pre>
 BEGIN TRANSACTION
-   Deduct ₹1000 from A
-   Add ₹1000 to B
-COMMIT
--- If any step fails, rollback both
+   Deduct ₹1000 from A → SUCCESS
+   Add ₹1000 to B → FAILURE
+ROLLBACK -- Automatically undo deduction from A
                 </pre>
                     </div>
                 </div>
@@ -415,17 +400,18 @@ COMMIT
                 <!-- Consistency -->
                 <div class="acid-card">
                     <h3>⚖️ Consistency</h3>
-                    <p>The database must always remain in a valid state before and after the transaction.</p>
+                    <p>The database must remain in a valid state before and after the transaction, maintaining all defined rules, constraints, and relationships.</p>
                     <div class="example">
                         <h4>💡 Real-World Example:</h4>
-                        <p style="color: black; font-style: italic;">Total money in the system should be the same before
-                            and after a transfer.</p>
+                        <p style="color: black; font-style: italic;">The total money in the banking system must remain constant during transfers. Also, business rules like "account balance cannot be negative" must be enforced.</p>
                         <pre>
 Before Transaction:
    A = ₹5000, B = ₹3000 → Total = ₹8000
 
 After Transaction (₹1000 A to B):
    A = ₹4000, B = ₹4000 → Total = ₹8000 ✅
+
+Constraint Check: Both balances ≥ 0 ✅
                 </pre>
                     </div>
                 </div>
@@ -433,17 +419,16 @@ After Transaction (₹1000 A to B):
                 <!-- Isolation -->
                 <div class="acid-card">
                     <h3>🔒 Isolation</h3>
-                    <p>Each transaction runs independently. Partial results of one transaction are not visible to
-                        others.</p>
+                    <p>Each transaction executes independently without interference from concurrent transactions. Intermediate results of one transaction are not visible to others until completion.</p>
                     <div class="example">
                         <h4>💡 Real-World Example:</h4>
-                        <p style="color: black; font-style: italic;">Two users transferring money simultaneously won’t
-                            interfere with each other’s balances.</p>
+                        <p style="color: black; font-style: italic;">Two users making simultaneous transfers from the same account should not see each other's intermediate balance calculations, preventing incorrect final balances.</p>
                         <pre>
-User 1: Transfer ₹500 A → B
-User 2: Transfer ₹1000 C → D
+User 1: Transfer ₹500 A → B (concurrent)
+User 2: Transfer ₹300 A → C (concurrent)
 
--- Isolation ensures these run safely in parallel without data conflict
+-- Isolation ensures both transactions see the original
+-- balance of A and calculate correctly without interference
                 </pre>
                     </div>
                 </div>
@@ -451,513 +436,501 @@ User 2: Transfer ₹1000 C → D
                 <!-- Durability -->
                 <div class="acid-card">
                     <h3>💾 Durability</h3>
-                    <p>Once a transaction is committed, the changes are permanent – even if the system crashes.</p>
+                    <p>Once a transaction is committed successfully, the changes are permanently stored and will survive system crashes, power failures, or other system problems.</p>
                     <div class="example">
                         <h4>💡 Real-World Example:</h4>
-                        <p style="color:black; font-style: italic;">If a user completes a payment and the app crashes,
-                            the payment still goes through.</p>
+                        <p style="color:black; font-style: italic;">After a successful online payment shows "Transaction Complete", even if the system crashes immediately afterward, the payment record is permanently saved and cannot be lost.</p>
                         <pre>
-COMMIT
+COMMIT TRANSACTION → SUCCESS
 
--- Data saved in log or backup
--- After power failure: data is restored from logs ✅
+-- Data written to persistent storage (disk/logs)
+-- After power failure: data recovered from logs ✅
+-- Transaction effects are permanent
                 </pre>
                     </div>
                 </div>
-
             </div>
 
-            <div class="image-container">
-                <p><em>ACID properties ensure database reliability, correctness, and integrity during all
-                        transactions.</em></p>
+            <div class="key-point">
+                <strong>Interview Tip:</strong> Always explain ACID with concrete examples. Interviewers often ask: "What happens if a bank transfer fails halfway through?" The answer demonstrates your understanding of Atomicity.
             </div>
         </div>
 
-
         <div class="section">
             <h2>🤝 Concurrent Execution</h2>
-            <p>When <strong>multiple transactions run at the same time</strong>, it's called <strong>concurrent
-                    execution</strong>.</p>
+            <p>When <strong>multiple transactions execute simultaneously</strong> on the same database, it's called <strong>concurrent execution</strong>. This is essential for modern database performance.</p>
 
             <div class="note-tip">
-                <strong>Why Concurrency?</strong> To improve performance and user experience.
+                <strong>Why is Concurrency Important?</strong> It improves system throughput, reduces response time, and provides better user experience by allowing multiple users to work simultaneously.
             </div>
 
             <div class="example">
                 <h4>🎬 Movie Ticket Booking Example</h4>
-                <p>Imagine many users are booking movie tickets online at the same time. The system processes many
-                    transactions in parallel, but must ensure that <strong>no one gets the same seat</strong>.</p>
+                <p>Consider a popular movie release where thousands of users are booking tickets simultaneously. The system must process many concurrent transactions while ensuring that:</p>
 
-                <pre>Transaction 1: User A books Seat 5A
-Transaction 2: User B books Seat 7C  
-Transaction 3: User C books Seat 5A ← Should be blocked!</pre>
+                <pre>Transaction 1: User A books Seat 5A at 2:15 PM
+Transaction 2: User B books Seat 7C at 2:15 PM  
+Transaction 3: User C attempts Seat 5A at 2:15 PM ← Must be prevented!
+
+Result: Only User A gets Seat 5A, User C sees "Seat Unavailable"</pre>
             </div>
 
-            <div class="image-container">
-                <p><em>Multiple users booking tickets simultaneously - perfect example of concurrency</em></p>
+            <div class="key-point">
+                <strong>Key Challenge:</strong> Concurrent execution must maintain data consistency while maximizing performance. Poor concurrency control can lead to data corruption, incorrect results, or system deadlocks.
             </div>
         </div>
 
-
         <div class="section">
             <h2>🔄 Transaction States</h2>
-            <p>In a DBMS, a transaction moves through several states to ensure safe and correct execution. The diagram
-                below shows the complete life cycle:</p>
+            <p>Every transaction in a DBMS goes through a well-defined sequence of states to ensure safe execution and proper recovery capabilities.</p>
 
             <div class="image-container">
                 <img src="https://www.scaler.com/topics/images/transaction-state-in-dbms1.webp"
                     alt="Transaction States in DBMS" style="max-width: 100%; border-radius: 8px; margin-bottom: 10px;">
-                <p><em>Visual flow of transaction states including commit, abort, and rollback.</em></p>
+                <p><em>Transaction State Diagram showing the lifecycle from Active to Terminated</em></p>
             </div>
 
-            <h4>🧭 Explanation of Each State</h4>
+            <h3>🧭 Detailed Explanation of Transaction States</h3>
             <table>
                 <tr>
                     <th>State</th>
-                    <th>Meaning</th>
-                    <th>Transition</th>
-                    <th>Example</th>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Active</span></td>
-                    <td>Transaction is currently executing (doing read/write)</td>
-                    <td>→ Partially Committed (if successful) or → Failed (if error)</td>
-                    <td>User clicks "Recharge ₹100"</td>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Partially Committed</span></td>
-                    <td>Final step executed; about to save changes</td>
-                    <td>→ Committed (if successful) or → Failed (if error)</td>
-                    <td>Recharge sent to operator, waiting for response</td>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Committed</span></td>
-                    <td>All changes made permanent in the database</td>
-                    <td>→ Terminated</td>
-                    <td>"Recharge Successful" message shown</td>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Failed</span></td>
-                    <td>Error occurred during transaction</td>
-                    <td>→ Aborted</td>
-                    <td>Network failure or recharge error</td>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Aborted</span></td>
-                    <td>Transaction rolled back (undone)</td>
-                    <td>→ Terminated</td>
-                    <td>Recharge failed and money returned</td>
-                </tr>
-                <tr>
-                    <td><span class="code-inline">Terminated</span></td>
-                    <td>Transaction completed successfully or aborted safely</td>
-                    <td>End of transaction</td>
-                    <td>Recharge is either complete or failed, system ready for new transaction</td>
-                </tr>
-            </table>
-
-            <h4>📘 Real-World Example in <code>&lt;pre&gt;</code> format</h4>
-            <pre>
-Recharge Transaction Flow
-
-1. BEGIN TRANSACTION
-2. READ(wallet_balance)
-3. wallet_balance = wallet_balance - ₹100
-4. WRITE(wallet_balance)
-5. Send recharge request
-
-If success:
-6. COMMIT → Move to COMMITTED → TERMINATED
-
-If failure:
-6. FAIL → Move to FAILED → ROLLBACK → ABORTED → TERMINATED
-    </pre>
-        </div>
-
-
-        <div class="section">
-            <h2>📅 What is a Schedule?</h2>
-            <p>A <strong>Schedule</strong> is the order in which operations (like read, write) from multiple
-                transactions are executed.</p>
-
-            <div class="example">
-                <h4>Types of Schedules:</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div>
-                        <h5>🔄 Serial Schedule</h5>
-                        <pre>T1: read(A) → write(A) → commit
-T2: read(B) → write(B) → commit</pre>
-                        <p><em>One transaction at a time</em></p>
-                    </div>
-
-                    <div>
-                        <h5>🔀 Concurrent Schedule (parallel schedules)</h5>
-                        <pre>T1: read(A)
-T2: read(B)
-T1: write(A)
-T2: write(B)</pre>
-                        <p><em>Multiple transactions interleaved</em></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="image-container">
-                <p><em>Database scheduling manages the order of transaction execution</em></p>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>⚠️ Problems in Concurrency</h2>
-            <p>Jab multiple transactions ek hi samay par execute karte hain bina proper control ke, to data galat ho
-                sakta hai. Yeh problem ko kehte hain: <strong>Concurrency Issues</strong>.</p>
-
-            <h4>💥 Dirty Read (Uncommitted Read)</h4>
-
-            <div class="problem-card">
-                <p><strong>Definition:</strong> Jab ek transaction (T2) kisi doosre transaction (T1) ke
-                    <strong>uncommitted data</strong> ko read kar leta hai, to agar T1 fail ho jaye, T2 galat data ke
-                    basis pe kaam kar chuka hota hai.
-                </p>
-
-                <p><strong>🛍️ Real-World Example:</strong> Aapka friend T1 aapke account se ₹500 nikalta hai, aur aap
-                    T2 me balance check karke ₹1500 dekh lete ho. Par T1 fail ho jata hai aur rollback ho jata hai.
-                    Aapne jo balance dekha wo galat tha.</p>
-
-                <!-- Image from user -->
-                <div style="text-align: center; margin: 20px 0;">
-                    <img src="https://beginnersbook.com/wp-content/uploads/2022/07/DBMS-concurrency-control-problem_2.jpg"
-                        alt="Dirty Read Problem Table"
-                        style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
-                    <p style="font-style: italic; font-size: 14px;">Image: Timeline of Dirty Read Problem between T1 and
-                        T2</p>
-                </div>
-
-                <h5>🧠 Step-by-Step Explanation:</h5>
-                <ul>
-                    <li><strong>t1–t3 (T1):</strong> T1 reads A, deducts ₹500, and writes new value. But it has not
-                        committed yet.</li>
-                    <li><strong>t4–t5 (T2):</strong> T2 reads A’s new (uncommitted) value and adds ₹100. This is the
-                        dirty read.</li>
-                    <li><strong>t6 (T1):</strong> T1 fails due to some issue.</li>
-                    <li><strong>t7 (T1):</strong> T1 rolls back. That means its update is cancelled.</li>
-                    <li><strong>t7 (T2):</strong> But T2 already used that uncommitted value and wrote it. Now the
-                        database is inconsistent.</li>
-                </ul>
-
-                <div style="color: #c0392b; font-weight: bold;">
-                    🔴 T2 ne galat data use kar liya jo kabhi commit nahi hua. Isko hi Dirty Read kehte hain.
-                </div>
-            </div>
-            <div class="section">
-                <h4>📝 Lost Update</h4>
-
-                <div class="problem-card">
-                    <p><strong>Definition:</strong> Jab do transactions same data ko read karte hain aur update karte
-                        hain bina synchronization ke, to ek transaction ka update dusre ke update se chhup jata hai.
-                        Isse kehte hain <strong>Lost Update</strong>.</p>
-
-                    <p><strong>🛍️ Real-World Example:</strong> Alice aur Bob ek product ki quantity update kar rahe
-                        hain. Dono ne same original value (7) read ki. Par Bob ne jab last me commit kiya, to Alice ka
-                        update (quantity = 6) chhup gaya aur final value ban gayi quantity = 10.</p>
-
-                    <!-- Image -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://s3-us-west-1.amazonaws.com/morpheus-staging/system/spud_media/466/original/lostupdate001.png?1424555949"
-                            alt="Lost Update Example - Alice and Bob"
-                            style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
-                        <p style="font-style: italic; font-size: 14px;">Image: Lost Update between Alice and Bob</p>
-                    </div>
-
-                    <h5>🧠 Step-by-Step Explanation:</h5>
-                    <ul>
-                        <li><strong>Step 1:</strong> Alice transaction start karti hai aur product ki quantity read
-                            karti hai (value: 7).</li>
-                        <li><strong>Step 2:</strong> Bob bhi transaction start karta hai aur same quantity read karta
-                            hai (value: 7).</li>
-                        <li><strong>Step 3:</strong> Alice quantity ko 6 set karta hai aur commit karta hai.</li>
-                        <li><strong>Step 4:</strong> Bob quantity ko 10 set karta hai (based on old value 7) aur commit
-                            karta hai.</li>
-                        <li><strong>Result:</strong> Alice ka update (6) overwrite ho gaya. Final quantity = 10.</li>
-                    </ul>
-
-                    <div style="color: #c0392b; font-weight: bold;">
-                        🔴 Bob ne Alice ke update ko ignore kar diya — yeh hota hai Lost Update Problem.
-                    </div>
-                </div>
-            </div>
-            <div class="section">
-                <h4>🔄 Read-Write Conflict (Unrepeatable Write)</h4>
-
-                <div class="problem-card">
-                    <p><strong>Definition:</strong> Jab ek transaction data ko read karke uspar operation karta hai, aur
-                        beech me doosra transaction usi data ko overwrite kar deta hai, to pehle transaction ka update
-                        dusre ko ignore kar deta hai.</p>
-
-                    <p><strong>🛍️ Real-World Example:</strong> Do log ek hi account balance X par kaam kar rahe hain. A
-                        ne X ko +15 kiya, par write nahi kiya tha. B ne X ko read kiya, -25 kiya, aur write bhi kar
-                        diya. Jab A ne apna write kiya, to B ka change chhup gaya.</p>
-
-                    <!-- Image from user -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://miro.medium.com/v2/resize:fit:1054/1*21oTXDZc8ZHcLk0IacHqRg.png"
-                            alt="Read Write Conflict Example"
-                            style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
-                        <p style="font-style: italic; font-size: 14px;">Image: Read-Write Conflict – Final value of X
-                            becomes 115, B’s update is lost.</p>
-                    </div>
-
-                    <h5>🧠 Step-by-Step Explanation:</h5>
-                    <ul>
-                        <li><strong>Step 1:</strong> Transaction A reads X = 100 and prepares to update X = 115</li>
-                        <li><strong>Step 2:</strong> Before A writes, Transaction B reads X = 100, subtracts 25 → X =
-                            75, and writes it</li>
-                        <li><strong>Step 3:</strong> Transaction A now writes its old planned value: X = 115</li>
-                        <li><strong>Final Result:</strong> B’s change (X = 75) is overwritten — data conflict occurs
-                        </li>
-                    </ul>
-
-                    <div style="color: #c0392b; font-weight: bold;">
-                        🔴 B ne X = 75 likha tha, lekin A ne bina B ke write ka dhyan rakhe apna X = 115 overwrite kar
-                        diya.
-                        Isse kehte hain Read-Write Conflict ya Lost Effect of Write.
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>🔁 Recoverable vs Irrecoverable Schedule</h2>
-                <p>Jab multiple transactions ek hi data ke sath kaam karte hain, to hume dekhna padta hai ki koi
-                    transaction galat data pe commit to nahi kar raha. Iske liye schedule ka type define kiya jata hai.
-                </p>
-
-                <!-- Recoverable -->
-                <div class="problem-card">
-                    <h4>✅ Recoverable Schedule</h4>
-                    <p><strong>Definition:</strong> Ek transaction T2 tabhi commit kare jab usne jo data read kiya hai,
-                        wo T1 pehle se commit kar chuka ho.</p>
-                    <p><strong>🛍️ Real-World Example:</strong> T1 updates salary and commits, fir T2 reads that salary
-                        and commits. Agar T1 fail hota to T2 ne kuch commit nahi kiya hota — so safe.</p>
-
-                    <ul>
-                        <li><strong>T1:</strong> WRITE salary = ₹80,000 → <strong>COMMIT</strong></li>
-                        <li><strong>T2:</strong> READ salary → COMMIT</li>
-                    </ul>
-
-                    <div style="color: green; font-weight: bold;">
-                        ✅ Safe Schedule: T2 waits until T1 commits. Rollback possible.
-                    </div>
-                </div>
-
-                <!-- Irrecoverable -->
-                <div class="problem-card">
-                    <h4>❌ Irrecoverable Schedule</h4>
-                    <p><strong>Definition:</strong> Ek transaction T2 read kar leta hai uncommitted data (dirty read),
-                        aur commit bhi kar deta hai. Agar T1 fail hua to rollback impossible ho jata hai.</p>
-
-                    <p><strong>🛍️ Real-World Example:</strong> Loan approve hua salary ₹80,000 ke basis pe, par later
-                        pata chala T1 ne wo salary rollback ki thi.</p>
-
-                    <ul>
-                        <li><strong>T1:</strong> WRITE salary = ₹80,000</li>
-                        <li><strong>T2:</strong> READ salary → COMMIT</li>
-                        <li><strong>T1:</strong> ROLLBACK</li>
-                    </ul>
-
-                    <div style="color: #c0392b; font-weight: bold;">
-                        ❌ Dangerous Schedule: T2 committed on uncommitted data of T1. Now rollback is impossible.
-                    </div>
-                </div>
-            </div>
-
-            <div class="section">
-                <h2>🔄 Cascading vs Cascadeless Schedule</h2>
-                <p>When multiple transactions interact with shared data, their commit order and read/write timing
-                    decides if the system can recover properly or not.</p>
-
-                <!-- Cascadeless Schedule -->
-                <div class="problem-card">
-                    <h4>✅ Cascadeless Schedule</h4>
-                    <p><strong>Definition:</strong> Ek transaction tabhi kisi aur ka data read karta hai jab wo pehle
-                        commit ho chuka ho.</p>
-                    <p><strong>📌 Advantage:</strong> No cascading rollback, safe, and consistent.</p>
-
-                    <!-- Image -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250115150841846842/cascadeless_schedule_1.webp" alt="Cascadeless Schedule"
-                            style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
-                        <p style="font-style: italic; font-size: 14px;">All transactions (T2, T3) only read after T1
-                            commits — No cascading rollback possible.</p>
-                    </div>
-
-                    <ul>
-                        <li><strong>T1:</strong> Reads/Writes A → <strong>Commits</strong></li>
-                        <li><strong>T2:</strong> Reads A (after T1 commits), Writes A → Commits</li>
-                        <li><strong>T3:</strong> Reads A (after T2 commits), Writes A → Commits</li>
-                    </ul>
-
-                    <div style="color: green; font-weight: bold;">
-                        ✅ Safe: Even if T1 fails, T2 and T3 would never read its uncommitted data.
-                    </div>
-                </div>
-
-                <!-- Cascading Schedule -->
-                <div class="problem-card">
-                    <h4>⚠️ Cascading Schedule (Recoverable)</h4>
-                    <p><strong>Definition:</strong> Jab ek transaction dusre ka uncommitted data read karta hai, to agar
-                        pehla transaction fail ho gaya, to baaki sab rollback karne padte hain.</p>
-                    <p><strong>📌 Problem:</strong> Chain of rollbacks = cascading abort</p>
-
-                    <!-- Image -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <img src="https://www.gatevidyalay.com/wp-content/uploads/2018/06/Cascading-Schedule-Cascading-Rollback-Cascading-Abort-1.png" alt="Cascading Schedule"
-                            style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
-                        <p style="font-style: italic; font-size: 14px;">T2, T3, T4 all read A before T1 commits — If T1
-                            fails, they must rollback.</p>
-                    </div>
-
-                    <ul>
-                        <li><strong>T1:</strong> Reads/Writes A, <strong>but fails</strong></li>
-                        <li><strong>T2:</strong> Reads A (before T1 commits), Writes A → Must rollback</li>
-                        <li><strong>T3:</strong> Reads A (before T2 commits), Writes A → Must rollback</li>
-                        <li><strong>T4:</strong> Reads A (before T3 commits), Writes A → Must rollback</li>
-                    </ul>
-
-                    <div style="color: #c0392b; font-weight: bold;">
-                        ❌ Risky: Failure of T1 causes T2, T3, T4 to rollback — cascading failure.
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-
-
-
-
-    
-
-        <div class="section">
-            <h2>🔐 Deadlock in Concurrency</h2>
-            <p>A <strong>deadlock</strong> occurs when two or more transactions wait indefinitely for each other to
-                release resources.</p>
-
-            <div class="example">
-                <h4>🔄 Deadlock Example</h4>
-                <pre>Transaction 1: 
-- Locks Account A
-- Waits for Account B
-
-Transaction 2:
-- Locks Account B  
-- Waits for Account A
-
-Result: Both transactions wait forever!</pre>
-            </div>
-
-            <div class="note-tip">
-                <strong>Deadlock Prevention:</strong> Use timeout mechanisms, resource ordering, or deadlock detection
-                algorithms to prevent and resolve deadlocks.
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🧠 Real-World Summary</h2>
-            <div class="summary-grid">
-                <div class="summary-card">
-                    <h4>💳 UPI Payment</h4>
-                    <p>Perfect example of a <strong>Transaction</strong> with ACID properties</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4>🔄 All-or-Nothing</h4>
-                    <p>Demonstrates <strong>Atomicity</strong> - complete success or complete failure</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4>🎬 Movie Booking</h4>
-                    <p>Shows <strong>Isolation</strong> - two users can't book same seat</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4>💾 Crash Recovery</h4>
-                    <p>Illustrates <strong>Durability</strong> - refund processed even after crash</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4>👁️ Wrong Balance</h4>
-                    <p>Example of <strong>Dirty Read</strong> - seeing incomplete transaction</p>
-                </div>
-
-                <div class="summary-card">
-                    <h4>📝 Profile Update</h4>
-                    <p>Shows <strong>Lost Update</strong> - two edits overwrite each other</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🎯 Interview Tips</h2>
-            <div class="highlight">
-                <ul style="margin-left: 20px;">
-                    <li><strong>Always explain ACID with real examples</strong> - banking transfers, e-commerce orders
-                    </li>
-                    <li><strong>Know the difference between serial and concurrent schedules</strong></li>
-                    <li><strong>Understand common concurrency problems</strong> - dirty read, lost update, phantom read
-                    </li>
-                    <li><strong>Explain deadlock with practical scenarios</strong> - two users trying to transfer money
-                    </li>
-                    <li><strong>Practice drawing transaction state diagrams</strong></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2>🔗 Quick Reference</h2>
-            <table>
-                <tr>
-                    <th>Concept</th>
-                    <th>Key Point</th>
+                    <th>Description</th>
+                    <th>Next State</th>
                     <th>Real-World Example</th>
                 </tr>
                 <tr>
-                    <td>Transaction</td>
-                    <td>Logical unit of work</td>
-                    <td>Bank transfer, online purchase</td>
+                    <td><span class="code-inline">Active</span></td>
+                    <td>Transaction is currently executing read/write operations</td>
+                    <td>→ Partially Committed (success)<br>→ Failed (error occurs)</td>
+                    <td>User clicks "Transfer ₹500" and operations are being processed</td>
                 </tr>
                 <tr>
-                    <td>Atomicity</td>
-                    <td>All or nothing</td>
-                    <td>Payment succeeds completely or fails completely</td>
+                    <td><span class="code-inline">Partially Committed</span></td>
+                    <td>All operations completed successfully, but changes not yet made permanent</td>
+                    <td>→ Committed (if write to disk succeeds)<br>→ Failed (if write fails)</td>
+                    <td>Transfer calculations complete, waiting for database write confirmation</td>
                 </tr>
                 <tr>
-                    <td>Consistency</td>
-                    <td>Database remains valid</td>
-                    <td>Account balances always correct</td>
+                    <td><span class="code-inline">Committed</span></td>
+                    <td>All changes successfully written to permanent storage</td>
+                    <td>→ Terminated</td>
+                    <td>User sees "Transfer Successful" message, money actually moved</td>
                 </tr>
                 <tr>
-                    <td>Isolation</td>
-                    <td>Transactions don't interfere</td>
-                    <td>Multiple users can't book same seat</td>
+                    <td><span class="code-inline">Failed</span></td>
+                    <td>Error occurred during execution, transaction cannot proceed</td>
+                    <td>→ Aborted</td>
+                    <td>Network timeout during transfer or insufficient balance detected</td>
                 </tr>
                 <tr>
-                    <td>Durability</td>
-                    <td>Changes persist</td>
-                    <td>Transaction survives system crash</td>
+                    <td><span class="code-inline">Aborted</span></td>
+                    <td>Transaction rolled back, all changes undone</td>
+                    <td>→ Terminated</td>
+                    <td>Failed transfer rolled back, original balances restored</td>
                 </tr>
                 <tr>
-                    <td>Concurrency</td>
-                    <td>Multiple transactions simultaneously</td>
-                    <td>Many users using ATM at same time</td>
-                </tr>
-                <tr>
-                    <td>Deadlock</td>
-                    <td>Circular wait condition</td>
-                    <td>Two users waiting for each other's resources</td>
+                    <td><span class="code-inline">Terminated</span></td>
+                    <td>Transaction completed (either successfully committed or aborted)</td>
+                    <td>End state</td>
+                    <td>System ready for new transactions, resources freed</td>
                 </tr>
             </table>
+
+            <div class="example">
+                <h4>📘 Complete Transaction Lifecycle Example</h4>
+                <pre>
+Mobile Recharge Transaction:
+
+1. ACTIVE: BEGIN TRANSACTION
+2. ACTIVE: READ(wallet_balance) → ₹1000
+3. ACTIVE: wallet_balance = wallet_balance - ₹100 → ₹900
+4. ACTIVE: WRITE(wallet_balance)
+5. ACTIVE: Send recharge request to telecom provider
+6. PARTIALLY COMMITTED: All operations executed successfully
+
+If telecom confirms recharge:
+7. COMMITTED: Changes written to disk
+8. TERMINATED: Show "Recharge Successful"
+
+If telecom rejects recharge:
+7. FAILED: Recharge request denied
+8. ABORTED: Rollback wallet_balance to ₹1000
+9. TERMINATED: Show "Recharge Failed"
+    </pre>
+            </div>
         </div>
+
+        <div class="section">
+            <h2>📅 What is a Schedule?</h2>
+            <p>A <strong>Schedule</strong> is the chronological order in which operations from multiple concurrent transactions are executed by the database system.</p>
+
+            <div class="example">
+                <h4>📊 Types of Schedules:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <h5>🔄 Serial Schedule</h5>
+                        <pre>T1: READ(A) → WRITE(A) → COMMIT
+T2: READ(B) → WRITE(B) → COMMIT</pre>
+                        <p><em>Transactions execute one after another (no overlap)</em></p>
+                        <div class="success-card">
+                            <p><strong>Advantage:</strong> Always consistent and safe</p>
+                            <p><strong>Disadvantage:</strong> Poor performance due to no parallelism</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h5>🔀 Concurrent Schedule</h5>
+                        <pre>T1: READ(A)
+T2: READ(B)
+T1: WRITE(A)
+T2: WRITE(B)
+T1: COMMIT
+T2: COMMIT</pre>
+                        <p><em>Operations from different transactions are interleaved</em></p>
+                        <div class="warning">
+                            <p><strong>Advantage:</strong> Better performance and resource utilization</p>
+                            <p><strong>Risk:</strong> May cause data inconsistency if not properly controlled</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Important:</strong> The goal of concurrency control is to ensure that concurrent schedules produce the same results as some serial schedule, maintaining both performance and consistency.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚠️ Concurrency Control Problems</h2>
+            <p>When multiple transactions execute concurrently without proper control mechanisms, several serious problems can occur that compromise data integrity and consistency.</p>
+
+            <h3>💥 1. Dirty Read (Reading Uncommitted Data)</h3>
+            <div class="danger-card">
+                <h4>Problem Definition</h4>
+                <p>A transaction T2 reads data that has been modified by transaction T1, but T1 has not yet committed. If T1 later aborts, T2 has used incorrect data for its operations.</p>
+
+                <h5>🛍️ Real-World Example: Online Shopping</h5>
+                <p>Your friend T1 adds ₹500 worth of items to their cart (reducing available inventory), and you T2 check the stock showing "2 items left". However, T1's payment fails and the transaction rolls back. You made your purchase decision based on incorrect stock information.</p>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="https://www.gatevidyalay.com/wp-content/uploads/2018/05/Dirty-Read-Problem-Concurrency-Problems-in-DBMS.png"
+                        alt="Dirty Read Problem Timeline" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+                    <p style="font-style: italic; font-size: 14px;">Timeline showing how T2 reads uncommitted changes from T1</p>
+                </div>
+
+                <h5>🧠 Step-by-Step Analysis:</h5>
+                <ul>
+                    <li><strong>t1–t3 (T1):</strong> T1 reads account A, deducts ₹500, writes new balance (uncommitted)</li>
+                    <li><strong>t4–t5 (T2):</strong> T2 reads A's modified value and uses it for calculation</li>
+                    <li><strong>t6 (T1):</strong> T1 encounters an error and must abort</li>
+                    <li><strong>t7 (T1):</strong> T1 rolls back, undoing its changes</li>
+                    <li><strong>t8 (T2):</strong> T2 commits based on the incorrect data it read</li>
+                </ul>
+
+                <div style="color: #dc3545; font-weight: bold; margin-top: 15px;">
+                    🔴 Result: T2 committed changes based on data that was never actually committed, leading to inconsistent database state.
+                </div>
+            </div>
+
+            <h3>📝 2. Lost Update Problem</h3>
+            <div class="danger-card">
+                <h4>Problem Definition</h4>
+                <p>Two transactions read the same data item, modify it independently, and both update the database. The update from one transaction overwrites the update from the other, resulting in lost changes.</p>
+
+                <h5>🛍️ Real-World Example: Inventory Management</h5>
+                <p>Alice and Bob are both warehouse managers updating the same product's quantity. Alice reduces it by 1 (sold), Bob increases it by 3 (restocked). Due to poor timing, Bob's update overwrites Alice's, making it appear the sale never happened.</p>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="https://s3-us-west-1.amazonaws.com/morpheus-staging/system/spud_media/466/original/lostupdate001.png?1424555949"
+                        alt="Lost Update Example" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+                    <p style="font-style: italic; font-size: 14px;">Timeline showing how Bob's update overwrites Alice's changes</p>
+                </div>
+
+                <h5>🧠 Step-by-Step Analysis:</h5>
+                <ul>
+                    <li><strong>Step 1:</strong> Alice reads quantity = 7 (original value)</li>
+                    <li><strong>Step 2:</strong> Bob reads quantity = 7 (same original value)</li>
+                    <li><strong>Step 3:</strong> Alice calculates 7-1=6 and commits her update</li>
+                    <li><strong>Step 4:</strong> Bob calculates 7+3=10 (based on original value) and commits</li>
+                    <li><strong>Final Result:</strong> Database shows quantity = 10, but should be 9 (7-1+3)</li>
+                </ul>
+
+                <div style="color: #dc3545; font-weight: bold; margin-top: 15px;">
+                    🔴 Result: Alice's sale record is completely lost. Inventory count is incorrect, potentially causing financial losses.
+                </div>
+            </div>
+
+            <h3>🔄 3. Non-Repeatable Read</h3>
+            <div class="danger-card">
+                <h4>Problem Definition</h4>
+                <p>A transaction reads the same data item multiple times and gets different values because another transaction modified and committed the data between the reads.</p>
+
+                <h5>🛍️ Real-World Example: Price Comparison</h5>
+                <p>You're comparing product prices: first read shows ₹1000, you check other products, then read the same product again and see ₹1200. Another user's price update transaction occurred between your two reads.</p>
+
+                <pre>
+T1 (Your Session):
+    READ(product_price) → ₹1000
+    ... (checking other products)
+T2 (Admin Session):
+    UPDATE product_price = ₹1200
+    COMMIT
+T1 continues:
+    READ(product_price) → ₹1200 (different value!)
+                </pre>
+
+                <div style="color: #dc3545; font-weight: bold; margin-top: 15px;">
+                    🔴 Result: Your transaction sees inconsistent data, making it difficult to make reliable decisions within a single transaction.
+                </div>
+            </div>
+
+            <h3>👻 4. Phantom Read</h3>
+            <div class="danger-card">
+                <h4>Problem Definition</h4>
+                <p>A transaction executes a query (with WHERE condition) multiple times and gets different result sets because another transaction inserted or deleted rows that match the condition.</p>
+
+                <h5>🛍️ Real-World Example: Report Generation</h5>
+                <p>You're generating a sales report for products priced above ₹500. First query returns 10 products. While processing, new products are added. Second query returns 15 products, creating inconsistent report data.</p>
+
+                <pre>
+T1 (Report Generation):
+    SELECT COUNT(*) FROM products WHERE price > 500; → 10 rows
+T2 (Product Addition):
+    INSERT INTO products VALUES ('New Product', 600);
+    COMMIT
+T1 continues:
+    SELECT * FROM products WHERE price > 500; → 11 rows (phantom!)
+                </pre>
+
+                <div style="color: #dc3545; font-weight: bold; margin-top: 15px;">
+                    🔴 Result: Your report contains inconsistent counts and data, potentially leading to incorrect business decisions.
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>Solution Preview:</strong> These problems are solved using isolation levels (READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE) and locking mechanisms which we'll cover in advanced topics.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 Schedule Recoverability</h2>
+            <p>When multiple transactions interact with shared data, the system must ensure that it can recover properly from failures. This leads us to classify schedules based on their recoverability properties.</p>
+
+            <h3>✅ Recoverable Schedule</h3>
+            <div class="success-card">
+                <h4>Definition</h4>
+                <p>A schedule is <strong>recoverable</strong> if, for every pair of transactions T1 and T2, if T2 reads data written by T1, then T1 must commit before T2 commits.</p>
+
+                <h5>🛍️ Real-World Example: Payroll Processing</h5>
+                <p>T1 calculates and updates an employee's salary to ₹80,000. T2 reads this salary to generate tax calculations. T2 only commits its tax calculations AFTER T1 has successfully committed the salary update.</p>
+
+                <pre>
+T1: WRITE(salary = ₹80,000)
+T1: COMMIT ✅
+T2: READ(salary) → ₹80,000
+T2: Calculate taxes based on ₹80,000
+T2: COMMIT ✅
+                </pre>
+
+                <div style="color: #28a745; font-weight: bold; margin-top: 15px;">
+                    ✅ Safe: If T1 had failed, T2 would not have committed incorrect tax calculations. Recovery is possible by rolling back T2 if needed.
+                </div>
+            </div>
+
+            <h3>❌ Non-Recoverable Schedule</h3>
+            <div class="danger-card">
+                <h4>Definition</h4>
+                <p>A schedule is <strong>non-recoverable</strong> if a transaction T2 commits after reading uncommitted data from T1, and then T1 aborts. This makes recovery impossible.</p>
+
+                <h5>🛍️ Real-World Example: Loan Approval</h5>
+                <p>T1 updates a customer's credit score to 750. T2 reads this score and approves a loan (commits). Later, T1 encounters an error and rolls back the credit score update. The loan was approved based on invalid data!</p>
+
+                <pre>
+T1: WRITE(credit_score = 750)
+T2: READ(credit_score) → 750
+T2: Approve loan based on score 750
+T2: COMMIT ✅ (loan approved)
+T1: ABORT ❌ (credit score rollback)
+                </pre>
+
+                <div style="color: #dc3545; font-weight: bold; margin-top: 15px;">
+                    ❌ Dangerous: T2 has already committed the loan approval, but it was based on data that was never actually committed. This cannot be undone automatically.
+                </div>
+            </div>
+
+            <h3>🔄 Cascading vs Cascadeless Schedules</h3>
+            
+            <h4>✅ Cascadeless Schedule (No Cascading Rollback)</h4>
+            <div class="success-card">
+                <p><strong>Definition:</strong> A transaction only reads data from other transactions that have already committed. This prevents cascading rollbacks.</p>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250115150841846842/cascadeless_schedule_1.webp" 
+                         alt="Cascadeless Schedule Example" 
+                         style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+                    <p style="font-style: italic; font-size: 14px;">T2 and T3 only read data after T1 commits - ensuring no cascading rollback</p>
+                </div>
+
+                <h5>🧠 Timeline Analysis:</h5>
+                <ul>
+                    <li><strong>T1:</strong> Modifies data X, then commits</li>
+                    <li><strong>T2:</strong> Reads X only AFTER T1 commits, then commits</li>
+                    <li><strong>T3:</strong> Reads X only AFTER T2 commits, then commits</li>
+                </ul>
+
+                <div style="color: #28a745; font-weight: bold; margin-top: 15px;">
+                    ✅ Advantage: Even if T1 fails during execution, T2 and T3 are unaffected because they never read uncommitted data. No chain reaction of rollbacks.
+                </div>
+            </div>
+
+            <h4>⚠️ Cascading Schedule (Chain Rollback Risk)</h4>
+            <div class="problem-card">
+                <p><strong>Definition:</strong> When transactions read uncommitted data from other transactions, creating a chain where failure of one transaction forces rollback of multiple dependent transactions.</p>
+
+                <div style="text-align: center; margin: 20px 0;">
+                    <img src="https://www.gatevidyalay.com/wp-content/uploads/2018/06/Cascading-Schedule-Cascading-Rollback-Cascading-Abort-1.png" 
+                         alt="Cascading Schedule Example" 
+                         style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+                    <p style="font-style: italic; font-size: 14px;">T2, T3, T4 all read uncommitted data - creating a cascade effect if T1 fails</p>
+                </div>
+
+                <h5>🧠 Chain Reaction Analysis:</h5>
+                <ul>
+                    <li><strong>T1:</strong> Modifies data X but fails before committing</li>
+                    <li><strong>T2:</strong> Read X from T1 (uncommitted) → Must rollback</li>
+                    <li><strong>T3:</strong> Read X from T2 (now invalid) → Must rollback</li>
+                    <li><strong>T4:</strong> Read X from T3 (now invalid) → Must rollback</li>
+                </ul>
+
+                <div style="color: #f39c12; font-weight: bold; margin-top: 15px;">
+                    ⚠️ Problem: One transaction's failure causes a domino effect, rolling back multiple transactions and significantly impacting system performance.
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Deadlock in Database Systems</h2>
+            <p>A <strong>deadlock</strong> occurs when two or more transactions are blocked indefinitely, each waiting for the other to release resources they need.</p>
+
+            <div class="example">
+                <h4>🔄 Classic Deadlock Example</h4>
+                <p>Consider two users trying to transfer money between the same two accounts simultaneously:</p>
+                
+                <pre>
+Transaction T1 (User A): Transfer ₹100 from Account X to Account Y
+1. LOCK Account X
+2. Wait for LOCK on Account Y (held by T2)
+
+Transaction T2 (User B): Transfer ₹200 from Account Y to Account X  
+1. LOCK Account Y
+2. Wait for LOCK on Account X (held by T1)
+
+Result: Both transactions wait forever!
+                </pre>
+            </div>
+
+            <div class="danger-card">
+                <h4>🚨 Deadlock Conditions (All must be present)</h4>
+                <ul>
+                    <li><strong>Mutual Exclusion:</strong> Resources cannot be shared simultaneously</li>
+                    <li><strong>Hold and Wait:</strong> Transactions hold resources while waiting for others</li>
+                    <li><strong>No Preemption:</strong> Resources cannot be forcibly taken away</li>
+                    <li><strong>Circular Wait:</strong> A chain of transactions each waiting for the next</li>
+                </ul>
+            </div>
+
+            <div class="success-card">
+                <h4>🛠️ Deadlock Prevention Strategies</h4>
+                <ul>
+                    <li><strong>Resource Ordering:</strong> Always acquire locks in a predefined order (e.g., by account number)</li>
+                    <li><strong>Timeout Mechanisms:</strong> Abort transaction if it waits too long for a resource</li>
+                    <li><strong>Deadlock Detection:</strong> Use algorithms to detect cycles in wait-for graphs</li>
+                    <li><strong>Timestamp Ordering:</strong> Older transactions get priority over newer ones</li>
+                </ul>
+            </div>
+
+            <div class="example">
+                <h4>💡 Deadlock Prevention in Practice</h4>
+                <pre>
+// Instead of this (can cause deadlock):
+Transaction T1: LOCK(Account_5), LOCK(Account_3)
+Transaction T2: LOCK(Account_3), LOCK(Account_5)
+
+// Use this (ordered locking):
+Transaction T1: LOCK(Account_3), LOCK(Account_5)  // Always lower ID first
+Transaction T2: LOCK(Account_3), LOCK(Account_5)  // Same order prevents deadlock
+                </pre>
+            </div>
+        </div>
+
+      
+
+        <div class="section">
+            <h2>🧠 Real-World Applications</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4>💳 Banking Systems</h4>
+                    <p>Use <strong>SERIALIZABLE</strong> isolation for money transfers to ensure absolute consistency</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>🛒 E-commerce</h4>
+                    <p>Use <strong>READ COMMITTED</strong> for product catalogs, <strong>SERIALIZABLE</strong> for checkout</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>📊 Analytics</h4>
+                    <p>Use <strong>READ UNCOMMITTED</strong> for reports where slight inconsistency is acceptable for speed</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>🎮 Gaming</h4>
+                    <p>Use <strong>REPEATABLE READ</strong> for player stats, preventing mid-game inconsistencies</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>🏥 Healthcare</h4>
+                    <p>Use <strong>SERIALIZABLE</strong> for patient records where data accuracy is life-critical</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>📱 Social Media</h4>
+                    <p>Use <strong>READ COMMITTED</strong> for feeds, allowing real-time updates without blocking</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Interview Preparation Guide</h2>
+            <div class="highlight">
+                <h4>🔥 Most Asked Interview Questions</h4>
+                <ul style="margin-left: 20px;">
+                    <li><strong>Explain ACID properties with banking examples</strong> - Focus on atomicity in money transfers</li>
+                    <li><strong>What problems occur in concurrent execution?</strong> - Dirty read, lost update, phantom read</li>
+                    <li><strong>How do you prevent deadlocks?</strong> - Resource ordering, timeouts, detection algorithms</li>
+                    <li><strong>Difference between recoverable and cascadeless schedules?</strong> - Commit ordering and rollback implications</li>
+                    <li><strong>Which isolation level would you choose for a banking app?</strong> - SERIALIZABLE with justification</li>
+                    <li><strong>Design a solution for the lost update problem</strong> - Locking mechanisms or optimistic concurrency</li>
+                </ul>
+            </div>
+
+            <div class="key-point">
+                <strong>Pro Tip:</strong> Always provide concrete examples. Instead of saying "atomicity ensures all-or-nothing," explain "if transferring ₹1000 fails after debiting sender, the system automatically reverses the debit."
+            </div>
+
+            <div class="warning">
+                <strong>Common Mistakes to Avoid:</strong>
+                <ul>
+                    <li>Confusing consistency (ACID) with consistency (CAP theorem)</li>
+                    <li>Thinking higher isolation levels are always better (they reduce performance)</li>
+                    <li>Not understanding that deadlock prevention and detection are different approaches</li>
+                    <li>Mixing up recoverable vs serializable schedules</li>
+                </ul>
+            </div>
+        </div>
+
+       
+
     </div>
 </body>
-
 </html>

@@ -217,27 +217,41 @@
         </div>
 
         <h4>B) Secondary Indexing</h4>
-        <div class="example">
-            <strong>Definition:</strong> Two-level indexing technique used to reduce mapping size of primary index.
-            Points to location where data is found but actual data is not sorted. Also known as non-clustered indexing.
-        </div>
+       <div class="example">
+    <strong>Definition:</strong> 
+    Secondary Indexing is an additional index created on non-primary attributes (other than the primary key). 
+    It allows faster searching on columns like <em>Name</em> or <em>City</em>, even if they are not sorted. 
+    It is also known as <strong>Non-Clustered Indexing</strong>.
+    <ul>
+        <li>Primary index → built only on the primary key (unique, one per table).</li>
+        <li>Secondary index → built on other columns (can be unique or non-unique).</li>
+        <li>Helps in searching efficiently without scanning the whole table.</li>
+    </ul>
+</div>
 
-        <div class="structure-visual">
-            <h4>Secondary Index Structure</h4>
-            <img src="https://scaler.com/topics/images/secondary-indexing.webp" alt="Secondary Index Structure"
-                style="width: 800px; height: auto; margin: 20px 0;  ">
-        </div>
 
-        <div class="characteristics">
-            <strong>Characteristics of Secondary Indexing:</strong>
-            <ul>
-                <li>Search Keys are Candidate Keys</li>
-                <li>Search Keys are sorted but actual data may not be sorted</li>
-                <li>Requires more time than primary indexing</li>
-                <li>Search Keys cannot be null</li>
-                <li>Faster than clustered but slower than primary indexing</li>
-            </ul>
-        </div>
+
+<div class="structure-visual">
+    <h4>Secondary Index Structure</h4>
+    <img src="https://scaler.com/topics/images/secondary-indexing.webp" 
+         alt="Secondary Index Structure"
+         style="width: 800px; height: auto; margin: 20px 0;">
+</div>
+
+<div class="characteristics">
+    <strong>Characteristics of Secondary Indexing:</strong>
+    <ul>
+        <li>Can be created on <strong>any column</strong> (not just the primary key).</li>
+        <li>Search Keys may be unique (e.g., Email) or non-unique (e.g., City).</li>
+        <li>Index entries are sorted, but the actual data is not necessarily sorted.</li>
+        <li>Multiple secondary indexes can exist in one table.</li>
+        <li>Requires <strong>extra storage</strong> and update overhead.</li>
+        <li>Faster than a full table scan but slower than primary indexing.</li>
+    </ul>
+</div>
+
+
+
 
         <h4>C) Cluster Indexing (ordered but non key)</h4>
         <div class="example">

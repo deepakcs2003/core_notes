@@ -202,19 +202,91 @@
         <div class="section">
             <h2>📦 Java Memory Areas (Explained Simply)</h2>
             <img src="https://miro.medium.com/max/1200/1*mt3-woLnTOy73WsiS54xQA.png" alt="Java Memory Areas" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
-            <div class="memory-area">
-                <h3>1. Heap Memory (Main Storage)</h3>
-                <ul>
-                    <li><strong>Stores:</strong> All objects (new keyword), instance variables</li>
-                    <li><strong>Shared by:</strong> All threads</li>
-                    <li><strong>Cleaned by:</strong> Garbage Collector</li>
-                </ul>
-                <div class="example">
-                    <strong>🔧 Example:</strong>
-                    <pre>String name = new String("Deepak");</pre>
-                    <p><strong>👉 Result:</strong> "Deepak" is stored in <strong>Heap</strong></p>
-                </div>
-            </div>
+           <div class="memory-area">
+    <h3>1. Heap Memory (Main Storage)</h3>
+    <ul>
+        <li><strong>Stores:</strong> 
+            <ul>
+                <li>All objects created using <code>new</code> keyword</li>
+                <li>Instance variables</li>
+                <li>Runtime constant pool (part of Method Area)</li>
+                <li>String Pool (special memory area inside Heap)</li>
+            </ul>
+        </li>
+        <li><strong>Shared by:</strong> All threads</li>
+        <li><strong>Cleaned by:</strong> Garbage Collector (GC)</li>
+        <li><strong>Divided into:</strong> 
+            <ul>
+                <li><strong>Young Generation:</strong> Newly created objects (Eden + Survivor spaces)</li>
+                <li><strong>Old Generation:</strong> Long-lived objects</li>
+                <li><strong>Metaspace (Java 8+):</strong> Class metadata, method info</li>
+            </ul>
+        </li>
+    </ul>
+
+    <div class="example">
+        <strong>🔧 Example 1:</strong>
+        <pre>String name = new String("Deepak");</pre>
+        <p><strong>👉 Result:</strong> 
+            One <code>"Deepak"</code> in <strong>String Pool</strong> + another new object in <strong>Heap</strong>.
+        </p>
+    </div>
+
+    <div class="example">
+        <strong>🔧 Example 2 (String Pool):</strong>
+        <pre>String s1 = "Hello";  
+String s2 = "Hello";</pre>
+        <p><strong>👉 Result:</strong> Both <code>s1</code> and <code>s2</code> point to the same object in 
+            <strong>String Pool</strong>, no duplicate created.</p>
+    </div>
+
+    <div class="example">
+        <strong>🔧 Example 3 (intern() method):</strong>
+        <pre>String s1 = new String("World");  
+String s2 = s1.intern();  
+String s3 = "World";</pre>
+        <p><strong>👉 Result:</strong> 
+            <code>s2</code> and <code>s3</code> refer to the same object in 
+            <strong>String Pool</strong>, but <code>s1</code> is a separate object in Heap.</p>
+    </div>
+
+    <div class="note">
+        <p>📌 <strong>Important Notes on Heap & String Pool:</strong></p>
+        <ul>
+            <li>Heap is the biggest memory area in JVM, used for almost all object storage.</li>
+            <li>Memory management in Heap is automatic (handled by Garbage Collector).</li>
+            <li>String Pool optimizes memory by reusing immutable <code>String</code> objects.</li>
+            <li>Too many Strings without pooling can cause <strong>OutOfMemoryError</strong>.</li>
+        </ul>
+    </div>
+
+    <div class="intern-info">
+        <h4>🔑 About <code>intern()</code></h4>
+        <ul>
+            <li><code>intern()</code> is a method of <code>String</code> class.</li>
+            <li>It checks whether the String already exists in the <strong>String Pool</strong>.</li>
+            <li>If it exists → returns reference from the pool.</li>
+            <li>If it doesn’t exist → adds the String to the pool and returns that reference.</li>
+        </ul>
+        <div class="example">
+            <pre>
+String x = new String("Java");
+String y = x.intern();
+String z = "Java";
+
+System.out.println(x == y); // false
+System.out.println(y == z); // true
+            </pre>
+        </div>
+        <p><strong>👉 Why use <code>intern()</code>?</strong></p>
+        <ul>
+            <li>Helps save memory by avoiding duplicate String objects.</li>
+            <li>Improves performance when many identical Strings are used (e.g., large text processing, XML/JSON parsing).</li>
+            <li>But: Excessive interning may increase GC pressure (trade-off).</li>
+        </ul>
+    </div>
+</div>
+
 
             <div class="memory-area">
                 <h3>2. Stack Memory (Per Thread)</h3>

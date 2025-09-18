@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Collections Framework Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: #2d3748;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(16px);
+        }
+
+        h1 {
+            color: #1a202c;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 4px solid #667eea;
+        }
+
+        h2 {
+            color: #2d3748;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            box-shadow: 0 10px 15px -3px rgba(102, 126, 234, 0.3);
+        }
+
+        h3 {
+            color: #4a5568;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        h4 {
+            color: #e53e3e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 18px;
+            text-align: justify;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        ul,
+        ol {
+            margin-left: 35px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .code-block {
+            background: #1a202c;
+            color: #f7fafc;
+            border: 2px solid #2d3748;
+            border-radius: 12px;
+            padding: 25px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 14px;
+            margin: 25px 0;
+            overflow-x: auto;
+            white-space: pre;
+            box-shadow: 0 15px 35px rgba(26, 32, 44, 0.3);
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fef5e7 0%, #fffbf0 100%);
+            padding: 25px;
+            border-left: 6px solid #f6ad55;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 10px 15px -3px rgba(246, 173, 85, 0.1);
+        }
+
+        .note {
+            background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
+            padding: 25px;
+            border-left: 6px solid #4299e1;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 10px 15px -3px rgba(66, 153, 225, 0.1);
+        }
+
+        .warning {
+            background: linear-gradient(135deg, #fed7d7 0%, #ffeaea 100%);
+            padding: 25px;
+            border-left: 6px solid #e53e3e;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 10px 15px -3px rgba(229, 62, 62, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            font-size: 14px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px 18px;
+            vertical-align: top;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        tr:hover {
+            background-color: #edf2f7;
+            transition: background-color 0.3s ease;
+        }
+
+        .toc {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .toc h3 {
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .toc li::before {
+            content: counter(item);
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toc ul {
+            counter-reset: item;
+        }
+
+        .toc a {
+            color: #4a5568;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+        }
+
+        strong {
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        code {
+            background: #edf2f7;
+            color: #e53e3e;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .interface-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+            border: 2px solid #cbd5e0;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .interface-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .method-list {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+                padding: 12px 20px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Java Collections Framework Notes</h1>
+
+        <div class="highlight">
+            <strong>Quick Overview:</strong> JCF is like a toolbox in Java for handling groups of objects (like lists or
+            maps). It helps you store, add, remove, and work with data easily. It started in Java version 1.2 and is
+            mostly in the `java.util` package.
+        </div>
+
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#what-is-jcf">What is Java Collections Framework?</a></li>
+                <li><a href="#core-interfaces">Core Interfaces (Blueprints)</a></li>
+                <li><a href="#implementations">Concrete Implementations (Real Classes)</a></li>
+                <li><a href="#iterators">Iterators and Looping</a></li>
+                <li><a href="#sorting">Comparators and Sorting</a></li>
+                <li><a href="#utilities">Utility Classes (Helpers)</a></li>
+                <li><a href="#generics">Generics in Collections</a></li>
+                <li><a href="#concurrency">Concurrency and Thread-Safety</a></li>
+                <li><a href="#best-practices">Best Practices and Common Mistakes</a></li>
+                <li><a href="#advanced">Advanced Topics</a></li>
+                <li><a href="#interview">Interview Questions and Tips</a></li>
+            </ul>
+        </div>
+        <img src="https://miro.medium.com/v2/resize:fit:1358/1*UqqMx9-33s7m_i2tN0vT7w.png" alt="Simple Image"
+            style="display:block; margin:auto; width: 1000px;; height:auto;">
+        <section id="what-is-jcf">
+            <h2>What is Java Collections Framework?</h2>
+
+            <h3>Basic Idea</h3>
+            <p>JCF gives you ready-made ways to store and manage collections (groups) of objects. It includes rules
+                (interfaces), actual tools (classes), helpful methods (algorithms), and extra helpers.</p>
+
+            <h3>Parts of JCF</h3>
+            <ul>
+                <li><strong>Interfaces:</strong> Like blueprints that say what a collection can do (e.g., List for
+                    ordered items)</li>
+                <li><strong>Implementations(classes):</strong> Real classes that follow those blueprints (e.g.,
+                    ArrayList is a type of List)</li>
+                <li><strong>Algorithms:</strong> Ready functions to sort, search, or mix up items (in classes like
+                    Collections)</li>
+                <li><strong>Support Classes:</strong> Things like iterators (to loop through items) or comparators (to
+                    sort)</li>
+            </ul>
+
+            <h3>Why Use It?</h3>
+            <ul>
+                <li>Saves time: No need to make your own data structures</li>
+                <li>Fast and safe: Built-in speed and checks for errors</li>
+                <li>Works together: Easy to switch between different types</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li>Collections can grow or shrink (except fixed ones like arrays)</li>
+                <li>Holds objects (numbers like int become Integer automatically)</li>
+                <li>Since Java 5, uses "generics" for type safety (e.g., only strings in a list of strings)</li>
+            </ul>
+
+            <h3>Main Roots</h3>
+            <ul>
+                <li><code>Collection</code> interface: For most collections (not maps)</li>
+                <li><code>Map</code> interface: For key-value pairs</li>
+            </ul>
+
+            <div class="note">
+                <strong>Simple Example:</strong> Imagine a shopping list. JCF lets you add items, remove them, check if
+                something is there, without worrying about how it's stored.
+            </div>
+
+            <div class="code-block">import java.util.ArrayList; // Import a collection class
+                import java.util.Collection; // Import the interface
+
+                Collection&lt;String&gt; shopping = new ArrayList&lt;&gt;(); // Create a collection
+                shopping.add("Apple"); // Add item
+                shopping.add("Banana");
+                System.out.println(shopping.size()); // Output: 2 (how many items)</div>
+        </section>
+
+        <section id="core-interfaces">
+            <h2>Core Interfaces (Blueprints)</h2>
+            <p>Interfaces define what you can do with collections. They build on each other.</p>
+
+            <div class="interface-card">
+                <h3>1. Collection Interface(eg.List,Queue,Set)</h3>
+                <p><strong>What it is:</strong> The main blueprint for groups of items (elements). No order or no
+                    duplicates guaranteed here.</p>
+
+                <div class="method-list">
+                    <h4>Key Actions (Methods):</h4>
+                    <ul>
+                        <li><code>add(E item)</code>: Put in a new item. Returns true if added</li>
+                        <li><code>addAll(Collection other)</code>: Add everything from another group</li>
+                        <li><code>remove(Object item)</code>: Take out the first matching item</li>
+                        <li><code>removeAll(Collection other)</code>: Remove all items that are in the other group</li>
+                        <li><code>retainAll(Collection other)</code>: Keep only items that are in both (like overlap)
+                        </li>
+                        <li><code>contains(Object item)</code>: Check if item is there (true/false)</li>
+                        <li><code>size()</code>: How many items</li>
+                        <li><code>isEmpty()</code>: True if nothing inside</li>
+                        <li><code>clear()</code>: Empty it all</li>
+                        <li><code>iterator()</code>: Get a tool to loop through items</li>
+                        <li><code>toArray()</code>: Turn into a plain array</li>
+                    </ul>
+                </div>
+
+                <p><strong>Explanation:</strong> This is basic for all non-map collections. It lets you add/remove/check
+                    without caring about order.</p>
+
+                <div class="code-block">Collection&lt;Integer&gt; numbers = new ArrayList&lt;&gt;();
+                    numbers.add(1);
+                    numbers.add(2);
+                    if (numbers.contains(1)) {
+                    System.out.println("Has 1"); // Output: Has 1
+                    }
+                    numbers.remove(1);
+                    System.out.println(numbers.size()); // Output: 1</div>
+            </div>
+
+            <div class="interface-card">
+                <h3>2. List Interface (Extends Collection)</h3>
+                <p><strong>What it is:</strong> An ordered group where duplicates are okay. You can access by position
+                    (index, starting from 0).</p>
+
+                <div class="method-list">
+                    <h4>Extra Actions:</h4>
+                    <ul>
+                        <li><code>get(int index)</code>: Get item at position</li>
+                        <li><code>set(int index, E item)</code>: Change item at position</li>
+                        <li><code>add(int index, E item)</code>: Insert at specific spot</li>
+                        <li><code>remove(int index)</code>: Remove from position</li>
+                        <li><code>indexOf(Object item)</code>: Find first position of item (-1 if not found)</li>
+                        <li><code>lastIndexOf(Object item)</code>: Find last position</li>
+                        <li><code>subList(int start, int end)</code>: Get a part of the list as a view</li>
+                        <li><code>listIterator()</code>: Tool to go forward/backward</li>
+                    </ul>
+                </div>
+
+                <p><strong>Explanation:</strong> Good when order matters, like a to-do list. You can insert anywhere,
+                    but it might shift items.</p>
+
+                <div class="code-block">List&lt;String&gt; fruits = new ArrayList&lt;&gt;();
+                    fruits.add("Apple");
+                    fruits.add("Banana");
+                    fruits.add(1, "Orange"); // Insert at index 1
+                    System.out.println(fruits.get(1)); // Output: Orange
+                    fruits.set(0, "Grape"); // Change first item
+                    System.out.println(fruits); // Output: [Grape, Orange, Banana]</div>
+            </div>
+
+            <div class="interface-card">
+                <h3>3. Set Interface (Extends Collection)</h3>
+                <p><strong>What it is:</strong> Group with no duplicates. No fixed order.</p>
+                <p><strong>Actions:</strong> Same as Collection, but add won't add if already there (returns false).</p>
+                <p><strong>Explanation:</strong> Uses equals() and hashCode() to check uniqueness. Great for unique
+                    items like IDs.</p>
+
+                <div class="method-list">
+                    <h4>Sub-Blueprints:</h4>
+                    <ul>
+                        <li><strong>SortedSet:</strong> Keeps items sorted (small to big)
+                            <ul>
+                                <li>Extra: <code>first()</code> (smallest), <code>last()</code> (biggest),
+                                    <code>headSet(E to)</code>, <code>tailSet(E from)</code>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>NavigableSet:</strong> Like SortedSet but easier to find closest items
+                            <ul>
+                                <li>Extra: <code>lower(E item)</code> (just below), <code>floor(E item)</code>,
+                                    <code>ceiling(E item)</code>, <code>higher(E item)</code>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="code-block">Set&lt;String&gt; colors = new HashSet&lt;&gt;();
+                    colors.add("Red");
+                    colors.add("Red"); // Won't add duplicate
+                    System.out.println(colors.size()); // Output: 1</div>
+            </div>
+
+            <div class="interface-card">
+                <h3>4. Queue Interface (Extends Collection)</h3>
+                <p><strong>What it is:</strong> Group for waiting items, usually first-in-first-out (FIFO, like a line).
+                </p>
+
+                <div class="method-list">
+                    <h4>Actions:</h4>
+                    <ul>
+                        <li><code>offer(E item)</code>: Add if possible (false if full)</li>
+                        <li><code>poll()</code>: Remove and get first (null if empty)</li>
+                        <li><code>remove()</code>: Remove first (error if empty)</li>
+                        <li><code>peek()</code>: See first without removing (null if empty)</li>
+                        <li><code>element()</code>: See first (error if empty)</li>
+                    </ul>
+                </div>
+
+                <p><strong>Explanation:</strong> For tasks in order, like printing jobs.</p>
+
+                <p><strong>Sub-Blueprint: Deque</strong> (Double-ended queue): Add/remove from both ends. Can act as
+                    stack (last-in-first-out, LIFO).</p>
+
+                <div class="code-block">
+                    Queue&lt;String&gt; line = new LinkedList&lt;&gt;();<br>
+                    line.offer("Person1");<br>
+                    line.offer("Person2");<br>
+                    System.out.println(line.poll()); // Output: Person1 (removes first)
+                </div>
+
+                <hr>
+
+                <h4>🔒 BlockingQueue (Sub-interface of Queue)</h4>
+                <p><strong>What it is:</strong> A thread-safe queue used in concurrent programming.
+                    If queue is <em>full</em>, producer threads wait; if <em>empty</em>, consumer threads wait.</p>
+
+                <div class="method-list">
+                    <h4>Special Blocking Methods:</h4>
+                    <ul>
+                        <li><code>put(E item)</code>: Waits if queue is full before inserting.</li>
+                        <li><code>take()</code>: Waits if queue is empty before removing.</li>
+                        <li><code>offer(E item, long timeout, TimeUnit unit)</code>: Adds item, waits for space if
+                            needed.</li>
+                        <li><code>poll(long timeout, TimeUnit unit)</code>: Removes item, waits if empty.</li>
+                    </ul>
+                </div>
+
+                <p><strong>Common Implementations:</strong> <code>ArrayBlockingQueue</code>,
+                    <code>LinkedBlockingQueue</code>,
+                    <code>PriorityBlockingQueue</code>.
+                </p>
+
+                <div class="code-block">
+                    import java.util.concurrent.*;<br><br>
+                    BlockingQueue&lt;String&gt; queue = new ArrayBlockingQueue&lt;&gt;(2);<br>
+                    queue.put("Task1");<br>
+                    queue.put("Task2");<br>
+                    // queue.put("Task3"); // waits here until space available<br><br>
+                    System.out.println(queue.take()); // removes "Task1"
+                </div>
+            </div>
+
+
+            <div class="interface-card">
+                <h3>5. Map Interface</h3>
+                <p><strong>What it is:</strong> Not from Collection. Stores pairs: key (unique) and value.</p>
+
+                <div class="method-list">
+                    <h4>Actions:</h4>
+                    <ul>
+                        <li><code>put(K key, V value)</code>: Add or update pair</li>
+                        <li><code>get(Object key)</code>: Get value for key (null if none)</li>
+                        <li><code>remove(Object key)</code>: Remove pair</li>
+                        <li><code>containsKey(Object key)</code>, <code>containsValue(Object value)</code></li>
+                        <li><code>keySet()</code>: Get all keys as Set</li>
+                        <li><code>values()</code>: Get all values as Collection</li>
+                        <li><code>entrySet()</code>: Get pairs as Set of entries</li>
+                        <li><code>putAll(Map other)</code>: Add from another map</li>
+                        <li><code>size()</code>, <code>isEmpty()</code>, <code>clear()</code></li>
+                    </ul>
+                </div>
+
+                <p><strong>Explanation:</strong> Like a dictionary: key is word, value is meaning. Keys can't repeat.
+                </p>
+
+                <div class="code-block">Map&lt;String, Integer&gt; ages = new HashMap&lt;&gt;();
+                    ages.put("Alice", 25);
+                    ages.put("Bob", 30);
+                    System.out.println(ages.get("Alice")); // Output: 25
+                    ages.remove("Bob");</div>
+            </div>
+        </section>
+
+        <section id="implementations">
+            <h2>Concrete Implementations (Real Classes)</h2>
+            <p>These are the actual tools you use. Here are the main classes organized by type:</p>
+
+            <h3>List Classes</h3>
+            <table>
+                <tr>
+                    <th>Class Name</th>
+                    <th>What It Does</th>
+                    <th>Speed (Key Actions)</th>
+                    <th>When to Use</th>
+                    <th>Thread Safe?</th>
+                </tr>
+                <tr>
+                    <td>ArrayList</td>
+                    <td>Growable array. Fast to get by index.</td>
+                    <td>Get/Set: Fast (O(1))<br>Add/Remove end: Fast<br>Add/Remove middle: Slow (O(n))</td>
+                    <td>Everyday lists, quick access</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>LinkedList</td>
+                    <td>Chain of links. Implements List and Deque.</td>
+                    <td>Get/Set: Slow (O(n))<br>Add/Remove ends: Fast (O(1))</td>
+                    <td>Add/remove often at ends (queues)</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Vector</td>
+                    <td>Old version of ArrayList, but safe for threads.</td>
+                    <td>Like ArrayList, but slower</td>
+                    <td>Old code or simple thread safety</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>Stack</td>
+                    <td>Builds on Vector, for stacks (LIFO).</td>
+                    <td>Push/Pop: Fast</td>
+                    <td>Stacks, but better use Deque now</td>
+                    <td>Yes</td>
+                </tr>
+            </table>
+
+            <div class="code-block">List&lt;Integer&gt; nums = new ArrayList&lt;&gt;();
+                nums.add(10);
+                nums.add(20);</div>
+
+            <h3>Set Classes</h3>
+            <table>
+                <tr>
+                    <th>Class Name</th>
+                    <th>What It Does</th>
+                    <th>Speed</th>
+                    <th>When to Use</th>
+                    <th>Thread Safe?</th>
+                </tr>
+                <tr>
+                    <td>HashSet</td>
+                    <td>Uses hash for no order.</td>
+                    <td>Add/Remove/Check: Fast (O(1) average)</td>
+                    <td>Quick unique checks, no order</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>LinkedHashSet</td>
+                    <td>Like HashSet, but remembers add order.</td>
+                    <td>Like HashSet</td>
+                    <td>Unique with order</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>TreeSet</td>
+                    <td>Sorted tree.</td>
+                    <td>Add/Remove/Check: O(log n)</td>
+                    <td>Sorted uniques. Needs sort rule.</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>EnumSet</td>
+                    <td>For enum types, very fast.</td>
+                    <td>All: O(1)</td>
+                    <td>Sets of enums</td>
+                    <td>No</td>
+                </tr>
+            </table>
+
+            <div class="code-block">Set&lt;Integer&gt; unique = new HashSet&lt;&gt;();
+                unique.add(5);
+                unique.add(5); // Ignored</div>
+
+            <h3>Queue/Deque Classes</h3>
+            <table>
+                <tr>
+                    <th>Class Name</th>
+                    <th>What It Does</th>
+                    <th>Speed</th>
+                    <th>When to Use</th>
+                    <th>Thread Safe?</th>
+                </tr>
+                <tr>
+                    <td>ArrayDeque</td>
+                    <td>Growable array for both ends. Faster than LinkedList.</td>
+                    <td>Add/Remove: Fast (O(1))</td>
+                    <td>Queues or stacks</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>LinkedList</td>
+                    <td>As above.</td>
+                    <td>Ends: Fast</td>
+                    <td>Queues</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>PriorityQueue</td>
+                    <td>Heap for priorities (not fully sorted).</td>
+                    <td>Add/Remove: O(log n)<br>Peek: O(1)</td>
+                    <td>Tasks by importance</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>ConcurrentLinkedQueue</td>
+                    <td>Thread-safe unlimited queue.</td>
+                    <td>O(1)</td>
+                    <td>Multi-thread queues</td>
+                    <td>Yes</td>
+                </tr>
+            </table>
+
+            <div class="code-block">Queue&lt;Integer&gt; tasks = new PriorityQueue&lt;&gt;();
+                tasks.offer(3);
+                tasks.offer(1);
+                System.out.println(tasks.poll()); // Output: 1 (smallest first)</div>
+
+            <h3>Map Classes</h3>
+            <table>
+                <tr>
+                    <th>Class Name</th>
+                    <th>What It Does</th>
+                    <th>Speed</th>
+                    <th>When to Use</th>
+                    <th>Thread Safe?</th>
+                </tr>
+                <tr>
+                    <td>HashMap</td>
+                    <td>Hash table, allows null. No order.</td>
+                    <td>Put/Get/Remove: O(1) average</td>
+                    <td>Everyday maps</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>LinkedHashMap</td>
+                    <td>Like HashMap, tracks order (add or access).</td>
+                    <td>Like HashMap</td>
+                    <td>Order matters, like caches</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>TreeMap</td>
+                    <td>Sorted tree for keys.</td>
+                    <td>O(log n)</td>
+                    <td>Sorted maps</td>
+                    <td>No</td>
+                </tr>
+                <tr>
+                    <td>Hashtable</td>
+                    <td>Old, thread-safe, no null.</td>
+                    <td>Like HashMap, slower</td>
+                    <td>Old code</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>ConcurrentHashMap</td>
+                    <td>Thread-safe, fast for many users.</td>
+                    <td>O(1)</td>
+                    <td>Multi-thread maps</td>
+                    <td>Yes</td>
+                </tr>
+            </table>
+
+            <div class="code-block">Map&lt;String, String&gt; phoneBook = new HashMap&lt;&gt;();
+                phoneBook.put("Alice", "123-456");</div>
+        </section>
+
+        <section id="iterators">
+            <h2>Iterators and Looping</h2>
+            <ul>
+                <li><strong>Iterator:</strong> Tool from <code>iterator()</code> to go through items one by one.
+                    <ul>
+                        <li>Actions: <code>hasNext()</code> (more items?), <code>next()</code> (get next),
+                            <code>remove()</code> (delete last got)
+                        </li>
+                        <li><strong>Fail-fast:</strong> Errors if you change collection while looping (except with
+                            <code>remove()</code>)
+                        </li>
+                        <li><strong>Limitation:</strong> Can only move forward, not backward</li>
+                    </ul>
+                </li>
+
+                <li><strong>ListIterator:</strong> For lists, can go both forward and backward.
+                    <ul>
+                        <li>Extra: <code>hasPrevious()</code>, <code>previous()</code>, <code>add()</code>,
+                            <code>set()</code>
+                        </li>
+                        <li><strong>Note:</strong> Only available for List classes (ArrayList, LinkedList, etc.)</li>
+                    </ul>
+                </li>
+
+                <li><strong>Spliterator:</strong> (Java 8+) Designed for parallel processing.
+                    <ul>
+                        <li>Used internally in <code>Streams</code> API</li>
+                        <li>Can split tasks across multiple threads</li>
+                        <li>Supports bulk operations like <code>trySplit()</code>, <code>forEachRemaining()</code></li>
+                    </ul>
+                </li>
+
+                <li><strong>Enhanced For-Loop:</strong> Easy syntax: <code>for (String s : list)</code>
+                    <ul>
+                        <li>Internally uses Iterator</li>
+                        <li>Readable, but cannot remove elements while looping</li>
+                    </ul>
+                </li>
+
+                <li><strong>Fail-Fast vs Fail-Safe:</strong>
+                    <ul>
+                        <li><strong>Fail-Fast:</strong> Throws <code>ConcurrentModificationException</code> if
+                            collection is modified (e.g., <code>ArrayList</code>, <code>HashSet</code>).</li>
+                        <li><strong>Fail-Safe:</strong> Works on a copy (snapshot), no error if modified (e.g.,
+                            <code>CopyOnWriteArrayList</code>, <code>ConcurrentHashMap</code>).
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="code-block">
+                List&lt;String&gt; items = Arrays.asList("A", "B");<br>
+                Iterator&lt;String&gt; it = items.iterator();<br>
+                while (it.hasNext()) {<br>
+                &nbsp;&nbsp;System.out.println(it.next()); // A then B<br>
+                }<br>
+            </div>
+        </section>
+
+
+        <section id="sorting">
+            <h2>Comparators and Sorting</h2>
+            <ul>
+                <li><strong>Comparable:</strong>
+                    - Interface inside java.lang.<br>
+                    - Used when a class defines its <em>natural ordering</em> (like A–Z for Strings, ascending for
+                    Numbers).<br>
+                    - Method: <code>int compareTo(T o)</code> → returns negative, zero, or positive.
+                </li>
+                <li><strong>Comparator:</strong>
+                    - Interface inside java.util.<br>
+                    - Used when we want <em>custom sorting rules</em> outside the class.<br>
+                    - Method: <code>int compare(T o1, T o2)</code>.
+                </li>
+            </ul>
+
+            <pre class="code-block">
+import java.util.*;
+
+// ✅ Example 1: Using Comparable (natural order)
+class Student implements Comparable<Student> {
+    int id;
+    String name;
+    Student(int id, String name) {
+        this.id = id; this.name = name;
+    }
+    // Natural order: by id (ascending)
+    public int compareTo(Student other) {
+        return this.id - other.id;
+    }
+    public String toString() { return id + "-" + name; }
+}
+
+// ✅ Example 2: Using Comparator (custom order)
+class NameComparator implements Comparator<Student> {
+    public int compare(Student s1, Student s2) {
+        return s1.name.compareTo(s2.name); // sort by name
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<Student> list = new ArrayList<>();
+        list.add(new Student(3, "Deepak"));
+        list.add(new Student(1, "Tushar"));
+        list.add(new Student(2, "Shreeram"));
+
+        // 🔹 Natural sort (Comparable → by id)
+        Collections.sort(list);
+        System.out.println("Sorted by ID (Comparable): " + list);
+
+        // 🔹 Custom sort (Comparator → by name)
+        Collections.sort(list, new NameComparator());
+        System.out.println("Sorted by Name (Comparator): " + list);
+
+        // 🔹 Even shorter using lambda Comparator
+        list.sort((a, b) -> b.id - a.id);
+        System.out.println("Sorted by ID Desc (Lambda Comparator): " + list);
+    }
+}
+</pre>
+
+        </section>
+
+
+        <section id="utilities">
+            <h2>Utility Classes (Helpers)</h2>
+
+            <h3>1. Collections Class</h3>
+            <p>Static helpers:</p>
+            <ul>
+                <li><code>sort(List list)</code>: Sort naturally</li>
+                <li><code>sort(List list, Comparator c)</code>: Custom sort</li>
+                <li><code>binarySearch(List list, Object key)</code>: Find in sorted list</li>
+                <li><code>reverse(List)</code>, <code>shuffle(List)</code>, <code>swap(List, i, j)</code></li>
+                <li><code>unmodifiableCollection(Collection c)</code>: Make read-only</li>
+                <li><code>synchronizedCollection(Collection c)</code>: Make thread-safe</li>
+                <li><code>checkedCollection(Collection c, Class type)</code>: Extra type checks</li>
+                <li><code>emptyList()</code>, <code>singleton(item)</code>: Small fixed collections</li>
+            </ul>
+
+            <div class="code-block">List&lt;String&gt; words = new ArrayList&lt;&gt;(Arrays.asList("B", "A"));
+                Collections.sort(words); // Now ["A", "B"]</div>
+
+            <h3>2. Arrays Class</h3>
+            <p>For plain arrays:</p>
+            <ul>
+                <li><code>sort(array)</code>, <code>binarySearch(array, key)</code></li>
+                <li><code>asList(items...)</code>: Turn array to list (fixed size)</li>
+                <li><code>fill(array, value)</code>, <code>copyOf(array, length)</code></li>
+            </ul>
+
+            <div class="code-block">int[] arr = {3, 1, 2};
+                Arrays.sort(arr); // Now {1,2,3}</div>
+        </section>
+
+        <section id="generics">
+            <h2>Generics in Collections</h2>
+            <ul>
+                <li><strong>Old Way (Before Java 5):</strong> No types, like <code>List list = new ArrayList();</code> –
+                    can mix types, errors at run time</li>
+                <li><strong>New Way:</strong> <code>List&lt;String&gt; list = new ArrayList&lt;&gt;();</code> – Only
+                    strings, checks at compile</li>
+                <li><strong>Wildcards:</strong> <code>?</code> (any), <code>? extends Type</code> (subtypes),
+                    <code>? super Type</code> (supertypes) for flexibility
+                </li>
+            </ul>
+
+            <div class="code-block">List&lt;? extends Number&gt; nums = new ArrayList&lt;Integer&gt;(); // Can read
+                Numbers</div>
+        </section>
+
+       <section id="concurrency">
+    <h2>Concurrency and Thread-Safety</h2>
+
+    <div class="warning">
+        <strong>Problem:</strong> Most normal collections (like <code>ArrayList</code>, <code>HashMap</code>, 
+        <code>HashSet</code>) are <em>not thread-safe</em>. If multiple threads update them at the same time, 
+        you can get data corruption or <code>ConcurrentModificationException</code>.
+    </div>
+
+    <h3>Fixes:</h3>
+    <ul>
+        <li><strong>1. Wrappers (Synchronized Collections):</strong> 
+            Use <code>Collections.synchronizedXXX()</code> to make existing collections thread-safe.<br>
+            Example: <code>Collections.synchronizedList(new ArrayList&lt;&gt;())</code>
+            <ul>
+                <li>Simple and easy to use</li>
+                <li>Whole collection is locked → slower for high concurrency</li>
+            </ul>
+            <p>Meaning of XXX</p>
+            <ul>
+                <li>synchronizedList() → makes a List thread-safe</li>
+                <li>synchronizedSet() → makes a Set thread-safe</li>
+                <li>synchronizedMap() → makes a Map thread-safe</li>
+                <li>synchronizedCollection() → makes a generic Collection thread-safe</li>
+            </ul>
+        </li>
+
+        <li><strong>2. Concurrent Collections:</strong> 
+            Classes in <code>java.util.concurrent</code> are designed for multi-threading.<br>
+            Examples:
+            <ul>
+                <li><code>ConcurrentHashMap</code>: Thread-safe HashMap (no full lock, faster)</li>
+                <li><code>CopyOnWriteArrayList</code>: Thread-safe List (good for more reads than writes)</li>
+                <li><code>CopyOnWriteArraySet</code>: Thread-safe Set</li>
+                <li><code>BlockingQueue</code> (e.g., ArrayBlockingQueue, LinkedBlockingQueue): 
+                    For producer-consumer pattern</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>Explanation:</h3>
+    <p>
+        - Use <strong>synchronized wrappers</strong> for small, simple multi-threaded tasks.<br>
+        - Use <strong>concurrent collections</strong> for servers, thread pools, or real-time systems where
+        many threads read/write data at the same time.<br>
+        - <strong>Fail-Fast Iterators</strong> throw errors if modified during iteration, while 
+        <strong>Fail-Safe Iterators</strong> (in concurrent collections) work on a snapshot and don’t throw errors.
+    </p>
+
+    <h3>Examples:</h3>
+
+    <pre class="code-block">// ✅ Example 1: Synchronized Map
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Map&lt;String, String&gt; safeMap = Collections.synchronizedMap(new HashMap&lt;&gt;());
+        safeMap.put("A", "Apple");
+        safeMap.put("B", "Banana");
+
+        synchronized (safeMap) { // Must lock while iterating
+            for (String key : safeMap.keySet()) {
+                System.out.println(key + " → " + safeMap.get(key));
+            }
+        }
+    }
+}
+</pre>
+
+    <pre class="code-block">// ✅ Example 2: ConcurrentHashMap (no need to lock manually)
+import java.util.concurrent.*;
+
+public class Main {
+    public static void main(String[] args) {
+        ConcurrentHashMap&lt;Integer, String&gt; cmap = new ConcurrentHashMap&lt;&gt;();
+        cmap.put(1, "Deepak");
+        cmap.put(2, "Shreeram");
+        cmap.put(3, "Tushar");
+
+        // Multiple threads can safely access without explicit sync
+        cmap.forEach((id, name) -> System.out.println(id + " → " + name));
+    }
+}
+</pre>
+
+    <pre class="code-block">// ✅ Example 3: CopyOnWriteArrayList (safe iteration even with updates)
+import java.util.concurrent.*;
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        CopyOnWriteArrayList&lt;String&gt; list = new CopyOnWriteArrayList&lt;&gt;();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+
+        for (String s : list) {
+            System.out.println(s);
+            list.add("D"); // No error, works safely
+        }
+        System.out.println("Final List: " + list);
+    }
+}
+</pre>
+</section>
+
+
+        <section id="advanced">
+            <h2>Advanced Topics</h2>
+            <ul>
+                <li><strong>Hashing Inside:</strong> HashMap uses buckets (lists in array), turns to trees if too full
+                    for speed</li>
+                <li><strong>Capacity/Load:</strong> HashMap starts at 16, grows at 75% full</li>
+                <li><strong>Views:</strong> <code>keySet()</code> is live – changes affect map</li>
+                <li><strong>Old Classes:</strong> Vector/Hashtable/Stack – Skip for new code</li>
+                <li><strong>Custom:</strong> Extend AbstractList/etc. for your own</li>
+                <li><strong>Tuning:</strong> Set start size: <code>new HashMap(100)</code> to avoid growing</li>
+            </ul>
+        </section>
+
+        <section id="interview">
+            <h2>Interview Questions and Tips</h2>
+
+            <h3>Common Interview Questions</h3>
+            <div class="interface-card">
+                <h4>1. What is the difference between List, Set, and Map?</h4>
+                <p><strong>Answer:</strong> List: Ordered, duplicates ok. Set: No duplicates, no order (usually). Map:
+                    Key-value, unique keys.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>2. When to use ArrayList vs. LinkedList?</h4>
+                <p><strong>Answer:</strong> ArrayList: Fast get by index. LinkedList: Fast add/remove at ends.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>3. How does HashMap work inside?</h4>
+                <p><strong>Answer:</strong> Uses hash to find bucket, handles collisions with lists/trees.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>4. What is fail-fast iterator?</h4>
+                <p><strong>Answer:</strong> Throws error if collection changes during loop.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>5. Explain generics in collections.</h4>
+                <p><strong>Answer:</strong> Add type like &lt;String&gt; for safety.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>6. How to make a collection thread-safe?</h4>
+                <p><strong>Answer:</strong> Use synchronized wrapper or concurrent classes.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>7. Difference between Comparable and Comparator?</h4>
+                <p><strong>Answer:</strong> Comparable: In class itself. Comparator: Separate for custom.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>8. What is PriorityQueue?</h4>
+                <p><strong>Answer:</strong> Heap for min/max priority.</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>9. How to sort a list?</h4>
+                <p><strong>Answer:</strong> Collections.sort(list).</p>
+            </div>
+
+            <div class="interface-card">
+                <h4>10. What are views in Map (like keySet)?</h4>
+                <p><strong>Answer:</strong> Live subsets that change with map.</p>
+            </div>
+
+            <h3>Tips for Interviews</h3>
+            <div class="highlight">
+                <ul>
+                    <li><strong>Prepare Basics:</strong> Know interfaces and when to use each implementation (e.g.,
+                        HashSet for uniqueness)</li>
+                    <li><strong>Code Examples:</strong> Practice writing simple code like adding to a map or sorting a
+                        list</li>
+                    <li><strong>Common Mistakes:</strong> Talk about overriding equals/hashCode for custom keys</li>
+                    <li><strong>Performance:</strong> Mention Big O (e.g., O(1) for HashMap get)</li>
+                    <li><strong>Modern Java:</strong> Know generics, streams, and concurrent stuff</li>
+                    <li><strong>Practice:</strong> Solve problems like "Implement a LRU cache" using LinkedHashMap</li>
+                    <li><strong>Explain Clearly:</strong> Use simple words, draw diagrams if possible</li>
+                    <li><strong>Edge Cases:</strong> Think about nulls, empty collections, duplicates</li>
+                </ul>
+            </div>
+
+            <div class="note">
+                <h4>Quick Reference for Interviews:</h4>
+                <ul>
+                    <li><strong>Need order + duplicates?</strong> → ArrayList</li>
+                    <li><strong>Need unique items?</strong> → HashSet</li>
+                    <li><strong>Need key-value pairs?</strong> → HashMap</li>
+                    <li><strong>Need sorting?</strong> → TreeSet/TreeMap</li>
+                    <li><strong>Need thread safety?</strong> → ConcurrentHashMap</li>
+                    <li><strong>Need queue/stack?</strong> → ArrayDeque</li>
+                    <li><strong>Need priority?</strong> → PriorityQueue</li>
+                </ul>
+            </div>
+        </section>
+
+      
+    </div>
+</body>
+
+</html>
