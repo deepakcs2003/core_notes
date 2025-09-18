@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Interview Questions - Study Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: #34495e;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 25px;
+            font-size: 1.1em;
+        }
+        
+        .question {
+            background: white;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .question-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.05em;
+            margin-bottom: 10px;
+        }
+        
+        .answer {
+            margin-top: 10px;
+        }
+        
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            border: 1px solid #34495e;
+        }
+        
+        .tips {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .tips h3 {
+            margin-top: 0;
+            color: white;
+        }
+        
+        .tips ul {
+            margin: 0;
+        }
+        
+        .tips li {
+            margin: 8px 0;
+        }
+        
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 React Interview Questions & Answers</h1>
+    <p style="text-align: center; color: #7f8c8d; font-style: italic;">Comprehensive guide covering hooks, performance optimization, state management, and advanced React concepts</p>
+
+    <div class="question">
+        <div class="question-title">1. What is the purpose of `useCallback` hook in React?</div>
+        <div class="answer">
+            <p><span class="highlight">useCallback</span> is a hook that returns a memoized version of a callback function. It prevents the function from being recreated on every render, which is useful when passing callbacks to child components to avoid unnecessary re-renders.</p>
+            <p><strong>Example:</strong></p>
+            <pre>import { useCallback, useState } from 'react';
+
+function Parent() {
+  const [count, setCount] = useState(0);
+  const handleClick = useCallback(() => {
+    console.log('Button clicked!');
+  }, []); // Empty dependency array means function is memoized
+  
+  return &lt;Child onClick={handleClick} /&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">2. What is `useMemo`, and when should you use it?</div>
+        <div class="answer">
+            <p><span class="highlight">useMemo</span> is a hook that memoizes the result of a computation, so it's only recalculated when dependencies change. Use it to optimize performance for expensive calculations.</p>
+            <p><strong>Example:</strong></p>
+            <pre>import { useMemo, useState } from 'react';
+
+function ExpensiveComponent({ numbers }) {
+  const sum = useMemo(() => {
+    return numbers.reduce((a, b) => a + b, 0);
+  }, [numbers]);
+  
+  return &lt;div&gt;Sum: {sum}&lt;/div&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">3. How do you handle side effects in React?</div>
+        <div class="answer">
+            <p>Side effects (like data fetching, timers, or DOM updates) are handled using the <span class="highlight">useEffect</span> hook in functional components or lifecycle methods (<code>componentDidMount</code>, <code>componentDidUpdate</code>, <code>componentWillUnmount</code>) in class components.</p>
+            <p><strong>Example with useEffect:</strong></p>
+            <pre>import { useEffect, useState } from 'react';
+
+function DataFetcher() {
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    fetch('https://api.example.com/data')
+      .then(res => res.json())
+      .then(setData);
+      
+    return () => console.log('Cleanup'); // Cleanup on unmount
+  }, []);
+  
+  return &lt;div&gt;{data ? data.name : 'Loading...'}&lt;/div&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">4. What is a Pure Component in React?</div>
+        <div class="answer">
+            <p>A <span class="highlight">Pure Component</span> is a class component that automatically implements <code>shouldComponentUpdate</code> with a shallow comparison of props and state to prevent unnecessary re-renders. Functional components can achieve this with <code>React.memo</code>.</p>
+            <p><strong>Example:</strong></p>
+            <pre>class PureComp extends React.PureComponent {
+  render() {
+    return &lt;div&gt;{this.props.value}&lt;/div&gt;;
+  }
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">5. What is the difference between `useEffect` and `useLayoutEffect`?</div>
+        <div class="answer">
+            <ul>
+                <li><strong>useEffect:</strong> Runs asynchronously after the DOM is updated, suitable for most side effects like data fetching.</li>
+                <li><strong>useLayoutEffect:</strong> Runs synchronously after render but before the browser paints, useful for DOM measurements (e.g., getting element dimensions).</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>import { useLayoutEffect } from 'react';
+
+function LayoutEffectExample() {
+  useLayoutEffect(() => {
+    console.log('Runs before painting');
+  }, []);
+  
+  return &lt;div&gt;Hello&lt;/div&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">6. How do you prevent a component from re-rendering unnecessarily?</div>
+        <div class="answer">
+            <p>To prevent unnecessary re-renders:</p>
+            <ul>
+                <li>Use <code>React.memo</code> for functional components to skip renders if props haven't changed.</li>
+                <li>Use <code>shouldComponentUpdate</code> or extend <code>PureComponent</code> in class components.</li>
+                <li>Avoid creating new functions/objects in the render method.</li>
+            </ul>
+            <p><strong>Example with React.memo:</strong></p>
+            <pre>const MyComponent = React.memo(({ value }) => {
+  return &lt;div&gt;{value}&lt;/div&gt;;
+});</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">7. What is the `useRef` hook, and how is it used?</div>
+        <div class="answer">
+            <p><span class="highlight">useRef</span> creates a mutable object that persists across renders. It's commonly used to:</p>
+            <ul>
+                <li>Access DOM elements directly.</li>
+                <li>Store values that don't trigger re-renders when changed.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>import { useRef } from 'react';
+
+function InputFocus() {
+  const inputRef = useRef(null);
+  const focusInput = () => inputRef.current.focus();
+  
+  return (
+    &lt;div&gt;
+      &lt;input ref={inputRef} /&gt;
+      &lt;button onClick={focusInput}&gt;Focus&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">8. How do you handle authentication in a React app?</div>
+        <div class="answer">
+            <p>Authentication can be handled by:</p>
+            <ul>
+                <li>Storing user data (e.g., token) in localStorage or state management (like Redux).</li>
+                <li>Using Context API to share auth state across components.</li>
+                <li>Protecting routes with React Router.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>import { useContext } from 'react';
+import { AuthContext } from './AuthContext';
+
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useContext(AuthContext);
+  return isAuthenticated ? children : &lt;Redirect to="/login" /&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">9. What is the purpose of `React.Fragment`?</div>
+        <div class="answer">
+            <p><span class="highlight">React.Fragment</span> lets you group multiple elements without adding extra DOM nodes (like a <code>&lt;div&gt;</code>). It's useful for cleaner HTML output.</p>
+            <p><strong>Example:</strong></p>
+            <pre>function List() {
+  return (
+    &lt;React.Fragment&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+    &lt;/React.Fragment&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">10. What is lazy loading in React, and how do you implement it?</div>
+        <div class="answer">
+            <p>Lazy loading delays loading of components until they're needed, improving app performance. Use <span class="highlight">React.lazy</span> and <span class="highlight">Suspense</span>.</p>
+            <p><strong>Example:</strong></p>
+            <pre>import { lazy, Suspense } from 'react';
+
+const LazyComponent = lazy(() => import('./LazyComponent'));
+
+function App() {
+  return (
+    &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+      &lt;LazyComponent /&gt;
+    &lt;/Suspense&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">11. What is the difference between `useState` and `useRef` for managing values?</div>
+        <div class="answer">
+            <ul>
+                <li><strong>useState:</strong> Updates state and triggers a re-render when the state changes.</li>
+                <li><strong>useRef:</strong> Stores a value that persists across renders but doesn't trigger a re-render when changed.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>function Example() {
+  const [count, setCount] = useState(0); // Triggers re-render
+  const refCount = useRef(0); // No re-render
+  
+  return (
+    &lt;div&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;State: {count}&lt;/button&gt;
+      &lt;button onClick={() => (refCount.current += 1)}&gt;Ref: {refCount.current}&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">12. How do you handle errors in async operations in React?</div>
+        <div class="answer">
+            <p>Use try-catch in async functions inside <code>useEffect</code> or other hooks, and maintain an error state to display error messages.</p>
+            <p><strong>Example:</strong></p>
+            <pre>import { useState, useEffect } from 'react';
+
+function DataFetcher() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch('https://api.example.com/data');
+        const result = await res.json();
+        setData(result);
+      } catch (err) {
+        setError('Failed to fetch data');
+      }
+    }
+    fetchData();
+  }, []);
+  
+  return &lt;div&gt;{error ? error : data ? data.name : 'Loading...'}&lt;/div&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">13. What is the `key` prop, and what happens if you don't use it in a list?</div>
+        <div class="answer">
+            <p>The <span class="highlight">key</span> prop uniquely identifies elements in a list, helping React efficiently update the DOM. Without a <code>key</code>, React may re-render the entire list, causing performance issues or incorrect UI updates.</p>
+            <p><strong>Example:</strong></p>
+            <pre>const items = ['Apple', 'Banana'];
+
+function List() {
+  return (
+    &lt;ul&gt;
+      {items.map(item => (
+        &lt;li key={item}&gt;{item}&lt;/li&gt; // Use unique key
+      ))}
+    &lt;/ul&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">14. How do you manage global state in a React app?</div>
+        <div class="answer">
+            <p>Global state can be managed using:</p>
+            <ul>
+                <li><strong>Context API:</strong> For simple state sharing across components.</li>
+                <li><strong>Redux:</strong> For complex state management with predictable state changes.</li>
+                <li><strong>Zustand</strong> or <strong>Recoil:</strong> Modern, lightweight alternatives.</li>
+            </ul>
+            <p><strong>Example with Context:</strong></p>
+            <pre>const GlobalContext = React.createContext();
+
+function App() {
+  const [state, setState] = useState({ theme: 'light' });
+  
+  return (
+    &lt;GlobalContext.Provider value={{ state, setState }}&gt;
+      &lt;Child /&gt;
+    &lt;/GlobalContext.Provider&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">15. What is the difference between `React.memo` and `useMemo`?</div>
+        <div class="answer">
+            <ul>
+                <li><strong>React.memo:</strong> A higher-order component that prevents a functional component from re-rendering if props haven't changed.</li>
+                <li><strong>useMemo:</strong> A hook that memoizes a value or computation to avoid recalculating it unnecessarily.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>const MemoizedComponent = React.memo(({ value }) => &lt;div&gt;{value}&lt;/div&gt;);
+
+const expensiveValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">16. How do you test React components?</div>
+        <div class="answer">
+            <p>React components can be tested using libraries like:</p>
+            <ul>
+                <li><strong>Jest:</strong> For writing test cases and assertions.</li>
+                <li><strong>React Testing Library:</strong> For rendering components and testing user interactions.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>import { render, screen } from '@testing-library/react';
+
+test('renders button', () => {
+  render(&lt;Button label="Click me" /&gt;);
+  expect(screen.getByText('Click me')).toBeInTheDocument();
+});</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">17. What is the purpose of `React.StrictMode`?</div>
+        <div class="answer">
+            <p><span class="highlight">React.StrictMode</span> is a tool for highlighting potential problems in a React app during development. It:</p>
+            <ul>
+                <li>Checks for deprecated APIs.</li>
+                <li>Warns about unsafe lifecycle methods.</li>
+                <li>Detects unexpected side effects (e.g., double-rendering in development).</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>function App() {
+  return (
+    &lt;React.StrictMode&gt;
+      &lt;MyComponent /&gt;
+    &lt;/React.StrictMode&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">18. How do you handle routing in a single-page application (SPA)?</div>
+        <div class="answer">
+            <p>Use <span class="highlight">React Router</span> to manage routing in an SPA. It allows navigation without full page reloads. Key components:</p>
+            <ul>
+                <li><strong>BrowserRouter:</strong> Enables routing.</li>
+                <li><strong>Route:</strong> Maps paths to components.</li>
+                <li><strong>Switch:</strong> Renders the first matching route.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+function App() {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Switch&gt;
+        &lt;Route path="/home" component={Home} /&gt;
+        &lt;Route path="/about" component={About} /&gt;
+      &lt;/Switch&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">19. What are custom hooks, and how do you create one?</div>
+        <div class="answer">
+            <p>Custom hooks are reusable functions that encapsulate logic using React hooks. They start with "use" and can call other hooks.</p>
+            <p><strong>Example:</strong></p>
+            <pre>import { useState, useEffect } from 'react';
+
+function useFetch(url) {
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    fetch(url)
+      .then(res => res.json())
+      .then(setData);
+  }, [url]);
+  
+  return data;
+}
+
+function Component() {
+  const data = useFetch('https://api.example.com/data');
+  return &lt;div&gt;{data ? data.name : 'Loading...'}&lt;/div&gt;;
+}</pre>
+        </div>
+    </div>
+
+    <div class="question">
+        <div class="question-title">20. How do you optimize a React app for SEO?</div>
+        <div class="answer">
+            <p>To make a React app SEO-friendly:</p>
+            <ul>
+                <li>Use <strong>Server-Side Rendering (SSR)</strong> with frameworks like Next.js to generate HTML on the server.</li>
+                <li>Add meta tags using libraries like <code>react-helmet</code>.</li>
+                <li>Ensure proper URL structure with React Router.</li>
+            </ul>
+            <p><strong>Example with react-helmet:</strong></p>
+            <pre>import { Helmet } from 'react-helmet';
+
+function Page() {
+  return (
+    &lt;div&gt;
+      &lt;Helmet&gt;
+        &lt;title&gt;My Page Title&lt;/title&gt;
+        &lt;meta name="description" content="This is my page" /&gt;
+      &lt;/Helmet&gt;
+      &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}</pre>
+        </div>
+    </div>
+
+    <div class="tips">
+        <h3>🎯 Tips for Interview Success</h3>
+        <ul>
+            <li><strong>Practice coding questions:</strong> Be ready to write small components (e.g., a counter, form, or todo list) on a whiteboard or coding platform.</li>
+            <li><strong>Explain your thought process:</strong> When answering, describe why you're using a specific hook, component, or pattern.</li>
+            <li><strong>Know modern React:</strong> Focus on hooks, functional components, and modern libraries like React Router or Redux Toolkit.</li>
+            <li><strong>Understand trade-offs:</strong> Be prepared to discuss when to use Context vs. Redux or <code>useMemo</code> vs. <code>useCallback</code>.</li>
+            <li><strong>Debugging skills:</strong> Be ready to explain how you'd debug issues like infinite re-renders or failed API calls.</li>
+        </ul>
+    </div>
+
+    <footer style="text-align: center; margin-top: 40px; color: #7f8c8d; border-top: 1px solid #ecf0f1; padding-top: 20px;">
+        <p>📚 Happy studying! Good luck with your React interview! 🚀</p>
+    </footer>
+</body>
+</html>
