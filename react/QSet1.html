@@ -20,7 +20,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
@@ -50,6 +50,70 @@
             padding: 30px;
         }
 
+        /* Question Index Styles */
+        .question-index {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .question-index h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            text-align: center;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .index-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .index-section {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #667eea;
+        }
+
+        .index-section h4 {
+            color: #4c51bf;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .index-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .index-section li {
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+
+        .index-section a {
+            color: #4a5568;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .index-section a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
         .section {
             margin-bottom: 40px;
         }
@@ -72,6 +136,7 @@
             border-radius: 8px;
             overflow: hidden;
             transition: box-shadow 0.3s ease;
+            scroll-margin-top: 20px;
         }
 
         .question-block:hover {
@@ -102,30 +167,61 @@
             margin-bottom: 0;
         }
 
+        /* VS Code Style Code Blocks */
         pre {
-            background: #1a202c;
-            color: #e2e8f0;
+            background: #1e1e1e;
+            color: #d4d4d4;
             padding: 20px;
             border-radius: 6px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 14px;
             line-height: 1.5;
             overflow-x: auto;
             margin: 15px 0;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid #007acc;
+            position: relative;
         }
 
+        /* VS Code syntax highlighting */
         .keyword {
-            color: #81c784;
+            color: #569cd6; /* Blue */
         }
 
         .string {
-            color: #ffab91;
+            color: #ce9178; /* Orange */
         }
 
         .comment {
-            color: #78909c;
+            color: #6a9955; /* Green */
             font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa; /* Yellow */
+        }
+
+        .variable {
+            color: #9cdcfe; /* Light blue */
+        }
+
+        .number {
+            color: #b5cea8; /* Light green */
+        }
+
+        .operator {
+            color: #d4d4d4; /* White */
+        }
+
+        .jsx-tag {
+            color: #4fc1ff; /* Light blue */
+        }
+
+        .jsx-attribute {
+            color: #92c5ff; /* Lighter blue */
+        }
+
+        .jsx-string {
+            color: #ce9178; /* Orange */
         }
 
         table {
@@ -184,6 +280,15 @@
             font-weight: 500;
         }
 
+        code {
+            background: #f7fafc;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #e53e3e;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -203,6 +308,10 @@
                 font-size: 1.2rem;
             }
 
+            .index-grid {
+                grid-template-columns: 1fr;
+            }
+
             pre {
                 font-size: 12px;
                 padding: 15px;
@@ -218,69 +327,130 @@
         </div>
 
         <div class="content">
+            <!-- Question Index -->
+            <div class="question-index">
+                <h3>📋 Quick Navigation - All Questions</h3>
+                <div class="index-grid">
+                    <div class="index-section">
+                        <h4>🟢 Basic React Questions (1-6)</h4>
+                        <ul>
+                            <li><a href="#q1">1. What is React, and why is it used?</a></li>
+                            <li><a href="#q2">2. What is a component in React?</a></li>
+                            <li><a href="#q3">3. What are props in React?</a></li>
+                            <li><a href="#q4">4. What is state in React?</a></li>
+                            <li><a href="#q5">5. What is JSX?</a></li>
+                            <li><a href="#q6">6. Difference between props and state?</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="index-section">
+                        <h4>🟡 Intermediate React Questions (7-11)</h4>
+                        <ul>
+                            <li><a href="#q7">7. What is the Virtual DOM?</a></li>
+                            <li><a href="#q8">8. What are React lifecycle methods?</a></li>
+                            <li><a href="#q9">9. What are React Hooks?</a></li>
+                            <li><a href="#q10">10. What is the purpose of useEffect?</a></li>
+                            <li><a href="#q11">11. What is the key prop?</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="index-section">
+                        <h4>🔴 Advanced React Questions (12-16)</h4>
+                        <ul>
+                            <li><a href="#q12">12. Controlled vs uncontrolled components?</a></li>
+                            <li><a href="#q13">13. What is the Context API?</a></li>
+                            <li><a href="#q14">14. What are higher-order components?</a></li>
+                            <li><a href="#q15">15. What is React Router?</a></li>
+                            <li><a href="#q16">16. How to optimize React performance?</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="index-section">
+                        <h4>🟣 Theory-Based Questions (17-20)</h4>
+                        <ul>
+                            <li><a href="#q17">17. useState vs useReducer?</a></li>
+                            <li><a href="#q18">18. How does React handle events?</a></li>
+                            <li><a href="#q19">19. What is prop drilling?</a></li>
+                            <li><a href="#q20">20. What is server-side rendering?</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="index-section">
+                        <h4>💻 Coding Questions (21-25)</h4>
+                        <ul>
+                            <li><a href="#q21">21. How to fetch data in React?</a></li>
+                            <li><a href="#q22">22. How to handle forms in React?</a></li>
+                            <li><a href="#q23">23. How to conditionally render?</a></li>
+                            <li><a href="#q24">24. What is error handling in React?</a></li>
+                            <li><a href="#q25">25. How to use Redux in React?</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="section">
                 <h2 class="section-title">Basic React Questions</h2>
 
-                <div class="question-block">
+                <div class="question-block" id="q1">
                     <div class="question">1. What is React, and why is it used?</div>
                     <div class="answer">
                         <p>React is a JavaScript library used to build user interfaces (UI) for web applications. It helps create reusable UI components, manage the state of an application, and efficiently update the UI when data changes. React is used because it makes building fast, interactive, and scalable web apps easier.</p>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q2">
                     <div class="question">2. What is a component in React?</div>
                     <div class="answer">
                         <p>A component is a reusable piece of code that defines a part of the UI, like a button, form, or header. There are two types:</p>
                         <p><strong>Functional Components:</strong> Simple functions that return JSX.<br>
                         <strong>Class Components:</strong> Classes that extend <span class="highlight">React.Component</span> and have a <span class="highlight">render</span> method.</p>
                         <p>Example of a functional component:</p>
-<pre>function Welcome() {
-  return &lt;h1&gt;Hello, World!&lt;/h1&gt;;
+<pre><span class="keyword">function</span> <span class="function">Welcome</span>() {
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;h1&gt;</span>Hello, World!<span class="jsx-tag">&lt;/h1&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q3">
                     <div class="question">3. What are props in React?</div>
                     <div class="answer">
                         <p>Props (short for properties) are used to pass data from a parent component to a child component. Props are read-only, meaning a child component cannot change the props it receives.</p>
                         <p>Example:</p>
-<pre>function Greeting(props) {
-  return &lt;h1&gt;Hello, {props.name}!&lt;/h1&gt;;
+<pre><span class="keyword">function</span> <span class="function">Greeting</span>(<span class="variable">props</span>) {
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;h1&gt;</span>Hello, {<span class="variable">props</span>.<span class="variable">name</span>}!<span class="jsx-tag">&lt;/h1&gt;</span>;
 }
-&lt;Greeting name="Alice" /&gt;</pre>
+<span class="jsx-tag">&lt;Greeting</span> <span class="jsx-attribute">name</span>=<span class="jsx-string">"Alice"</span> <span class="jsx-tag">/&gt;</span></pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q4">
                     <div class="question">4. What is state in React?</div>
                     <div class="answer">
                         <p>State is an object that holds data that a component can use and change over time. When the state changes, React re-renders the component to reflect the new data. State is managed within a component (using <span class="highlight">useState</span> in functional components or <span class="highlight">this.state</span> in class components).</p>
                         <p>Example:</p>
-<pre>import { useState } from 'react';
-function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    &lt;div&gt;
-      &lt;p&gt;Count: {count}&lt;/p&gt;
-      &lt;button onClick={() =&gt; setCount(count + 1)}&gt;Add&lt;/button&gt;
-    &lt;/div&gt;
+<pre><span class="keyword">import</span> { <span class="variable">useState</span> } <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">function</span> <span class="function">Counter</span>() {
+  <span class="keyword">const</span> [<span class="variable">count</span>, <span class="variable">setCount</span>] = <span class="function">useState</span>(<span class="number">0</span>);
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;div&gt;</span>
+      <span class="jsx-tag">&lt;p&gt;</span>Count: {<span class="variable">count</span>}<span class="jsx-tag">&lt;/p&gt;</span>
+      <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">onClick</span>={() =&gt; <span class="function">setCount</span>(<span class="variable">count</span> + <span class="number">1</span>)}<span class="jsx-tag">&gt;</span>Add<span class="jsx-tag">&lt;/button&gt;</span>
+    <span class="jsx-tag">&lt;/div&gt;</span>
   );
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q5">
                     <div class="question">5. What is JSX?</div>
                     <div class="answer">
                         <p>JSX stands for JavaScript XML. It is a syntax extension for JavaScript that looks like HTML but allows you to write UI elements in JavaScript. JSX makes React code easier to read and write.</p>
                         <p>Example:</p>
-<pre>const element = &lt;h1&gt;Hello, World!&lt;/h1&gt;;</pre>
+<pre><span class="keyword">const</span> <span class="variable">element</span> = <span class="jsx-tag">&lt;h1&gt;</span>Hello, World!<span class="jsx-tag">&lt;/h1&gt;</span>;</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q6">
                     <div class="question">6. What is the difference between props and state?</div>
                     <div class="answer">
                         <table>
@@ -316,14 +486,14 @@ function Counter() {
             <div class="section">
                 <h2 class="section-title">Intermediate React Questions</h2>
 
-                <div class="question-block">
+                <div class="question-block" id="q7">
                     <div class="question">7. What is the Virtual DOM?</div>
                     <div class="answer">
                         <p>The Virtual DOM is a lightweight copy of the real DOM (Document Object Model). React uses it to improve performance. When state or props change, React updates the Virtual DOM first, compares it with the previous version (using a process called reconciliation), and then updates only the changed parts in the real DOM.</p>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q8">
                     <div class="question">8. What are React lifecycle methods?</div>
                     <div class="answer">
                         <p>Lifecycle methods are special methods in class components that run at specific stages of a component's life (mounting, updating, unmounting). Examples:</p>
@@ -331,60 +501,60 @@ function Counter() {
                         <strong>componentDidUpdate:</strong> Runs after the component updates (e.g., when props/state change).<br>
                         <strong>componentWillUnmount:</strong> Runs before the component is removed (e.g., clean up timers).</p>
                         <p>Example:</p>
-<pre>class MyComponent extends React.Component {
-  componentDidMount() {
-    console.log("Component is mounted!");
+<pre><span class="keyword">class</span> <span class="function">MyComponent</span> <span class="keyword">extends</span> <span class="variable">React</span>.<span class="variable">Component</span> {
+  <span class="function">componentDidMount</span>() {
+    <span class="variable">console</span>.<span class="function">log</span>(<span class="string">"Component is mounted!"</span>);
   }
-  render() {
-    return &lt;div&gt;Hello&lt;/div&gt;;
+  <span class="function">render</span>() {
+    <span class="keyword">return</span> <span class="jsx-tag">&lt;div&gt;</span>Hello<span class="jsx-tag">&lt;/div&gt;</span>;
   }
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q9">
                     <div class="question">9. What are React Hooks?</div>
                     <div class="answer">
                         <p>Hooks are functions that let you use state and other React features in functional components. They were introduced in React 16.8 to avoid class components. Common hooks:</p>
                         <p><strong>useState:</strong> Manages state in functional components.<br>
                         <strong>useEffect:</strong> Handles side effects (like fetching data or setting timers).</p>
                         <p>Example:</p>
-<pre>import { useState, useEffect } from 'react';
-function Example() {
-  const [data, setData] = useState(null);
-  useEffect(() =&gt; {
-    fetchData().then(result =&gt; setData(result));
+<pre><span class="keyword">import</span> { <span class="variable">useState</span>, <span class="variable">useEffect</span> } <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">function</span> <span class="function">Example</span>() {
+  <span class="keyword">const</span> [<span class="variable">data</span>, <span class="variable">setData</span>] = <span class="function">useState</span>(<span class="keyword">null</span>);
+  <span class="function">useEffect</span>(() =&gt; {
+    <span class="function">fetchData</span>().<span class="function">then</span>(<span class="variable">result</span> =&gt; <span class="function">setData</span>(<span class="variable">result</span>));
   }, []);
-  return &lt;div&gt;{data}&lt;/div&gt;;
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;div&gt;</span>{<span class="variable">data</span>}<span class="jsx-tag">&lt;/div&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q10">
                     <div class="question">10. What is the purpose of useEffect?</div>
                     <div class="answer">
                         <p><span class="highlight">useEffect</span> is a hook used to handle side effects in functional components, such as fetching data, updating the DOM, or setting up subscriptions. It runs after the component renders.</p>
                         <p>• The first argument is a function with the side effect.<br>
                         • The second argument (dependency array) controls when the effect runs.</p>
                         <p>Example:</p>
-<pre>useEffect(() =&gt; {
-  console.log("Effect ran!");
-}, [count]); // Runs when `count` changes</pre>
+<pre><span class="function">useEffect</span>(() =&gt; {
+  <span class="variable">console</span>.<span class="function">log</span>(<span class="string">"Effect ran!"</span>);
+}, [<span class="variable">count</span>]); <span class="comment">// Runs when `count` changes</span></pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q11">
                     <div class="question">11. What is the key prop, and why is it used?</div>
                     <div class="answer">
                         <p>The <span class="highlight">key</span> prop is a special attribute used when rendering lists in React. It helps React identify which items in a list have changed, added, or removed, making updates more efficient.</p>
                         <p>Example:</p>
-<pre>const items = ['Apple', 'Banana', 'Orange'];
-return (
-  &lt;ul&gt;
-    {items.map((item, index) =&gt; (
-      &lt;li key={index}&gt;{item}&lt;/li&gt;
+<pre><span class="keyword">const</span> <span class="variable">items</span> = [<span class="string">'Apple'</span>, <span class="string">'Banana'</span>, <span class="string">'Orange'</span>];
+<span class="keyword">return</span> (
+  <span class="jsx-tag">&lt;ul&gt;</span>
+    {<span class="variable">items</span>.<span class="function">map</span>((<span class="variable">item</span>, <span class="variable">index</span>) =&gt; (
+      <span class="jsx-tag">&lt;li</span> <span class="jsx-attribute">key</span>={<span class="variable">index</span>}<span class="jsx-tag">&gt;</span>{<span class="variable">item</span>}<span class="jsx-tag">&lt;/li&gt;</span>
     ))}
-  &lt;/ul&gt;
+  <span class="jsx-tag">&lt;/ul&gt;</span>
 );</pre>
                     </div>
                 </div>
@@ -393,60 +563,60 @@ return (
             <div class="section">
                 <h2 class="section-title">Advanced React Questions</h2>
 
-                <div class="question-block">
+                <div class="question-block" id="q12">
                     <div class="question">12. What is the difference between controlled and uncontrolled components?</div>
                     <div class="answer">
                         <p><strong>Controlled Components:</strong> Form inputs whose value is controlled by React state.</p>
                         <p>Example:</p>
-<pre>function Form() {
-  const [value, setValue] = useState('');
-  return &lt;input value={value} onChange={(e) =&gt; setValue(e.target.value)} /&gt;;
+<pre><span class="keyword">function</span> <span class="function">Form</span>() {
+  <span class="keyword">const</span> [<span class="variable">value</span>, <span class="variable">setValue</span>] = <span class="function">useState</span>(<span class="string">''</span>);
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">value</span>={<span class="variable">value</span>} <span class="jsx-attribute">onChange</span>={(<span class="variable">e</span>) =&gt; <span class="function">setValue</span>(<span class="variable">e</span>.<span class="variable">target</span>.<span class="variable">value</span>)} <span class="jsx-tag">/&gt;</span>;
 }</pre>
                         <p><strong>Uncontrolled Components:</strong> Form inputs that store their own value in the DOM (accessed via refs).</p>
                         <p>Example:</p>
-<pre>function Form() {
-  const inputRef = useRef();
-  return &lt;input ref={inputRef} /&gt;;
+<pre><span class="keyword">function</span> <span class="function">Form</span>() {
+  <span class="keyword">const</span> <span class="variable">inputRef</span> = <span class="function">useRef</span>();
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">ref</span>={<span class="variable">inputRef</span>} <span class="jsx-tag">/&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q13">
                     <div class="question">13. What is the Context API?</div>
                     <div class="answer">
                         <p>The Context API allows you to share data (like themes or user info) across components without passing props manually through every level of the component tree.</p>
                         <p>Example:</p>
-<pre>const ThemeContext = React.createContext('light');
-function App() {
-  return (
-    &lt;ThemeContext.Provider value="dark"&gt;
-      &lt;Child /&gt;
-    &lt;/ThemeContext.Provider&gt;
+<pre><span class="keyword">const</span> <span class="variable">ThemeContext</span> = <span class="variable">React</span>.<span class="function">createContext</span>(<span class="string">'light'</span>);
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;ThemeContext.Provider</span> <span class="jsx-attribute">value</span>=<span class="jsx-string">"dark"</span><span class="jsx-tag">&gt;</span>
+      <span class="jsx-tag">&lt;Child /&gt;</span>
+    <span class="jsx-tag">&lt;/ThemeContext.Provider&gt;</span>
   );
 }
-function Child() {
-  const theme = useContext(ThemeContext);
-  return &lt;p&gt;Theme: {theme}&lt;/p&gt;;
+<span class="keyword">function</span> <span class="function">Child</span>() {
+  <span class="keyword">const</span> <span class="variable">theme</span> = <span class="function">useContext</span>(<span class="variable">ThemeContext</span>);
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;p&gt;</span>Theme: {<span class="variable">theme</span>}<span class="jsx-tag">&lt;/p&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q14">
                     <div class="question">14. What are higher-order components (HOCs)?</div>
                     <div class="answer">
                         <p>A higher-order component (HOC) is a function that takes a component and returns a new component with additional functionality. HOCs are used for code reuse, like adding authentication or data fetching.</p>
                         <p>Example:</p>
-<pre>function withLogger(WrappedComponent) {
-  return function(props) {
-    console.log('Rendering', WrappedComponent.name);
-    return &lt;WrappedComponent {...props} /&gt;;
+<pre><span class="keyword">function</span> <span class="function">withLogger</span>(<span class="variable">WrappedComponent</span>) {
+  <span class="keyword">return function</span>(<span class="variable">props</span>) {
+    <span class="variable">console</span>.<span class="function">log</span>(<span class="string">'Rendering'</span>, <span class="variable">WrappedComponent</span>.<span class="variable">name</span>);
+    <span class="keyword">return</span> <span class="jsx-tag">&lt;WrappedComponent</span> {...<span class="variable">props</span>} <span class="jsx-tag">/&gt;</span>;
   };
 }
-const EnhancedComponent = withLogger(MyComponent);</pre>
+<span class="keyword">const</span> <span class="variable">EnhancedComponent</span> = <span class="function">withLogger</span>(<span class="variable">MyComponent</span>);</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q15">
                     <div class="question">15. What is React Router, and how does it work?</div>
                     <div class="answer">
                         <p>React Router is a library for handling navigation and routing in React apps. It allows you to create single-page applications with multiple views. Key components:</p>
@@ -454,27 +624,27 @@ const EnhancedComponent = withLogger(MyComponent);</pre>
                         <strong>Route:</strong> Maps a URL path to a component.<br>
                         <strong>Link:</strong> Creates navigation links.</p>
                         <p>Example:</p>
-<pre>import { BrowserRouter, Route, Link } from 'react-router-dom';
-function App() {
-  return (
-    &lt;BrowserRouter&gt;
-      &lt;Link to="/home"&gt;Home&lt;/Link&gt;
-      &lt;Route path="/home" component={Home} /&gt;
-    &lt;/BrowserRouter&gt;
+<pre><span class="keyword">import</span> { <span class="variable">BrowserRouter</span>, <span class="variable">Route</span>, <span class="variable">Link</span> } <span class="keyword">from</span> <span class="string">'react-router-dom'</span>;
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;BrowserRouter&gt;</span>
+      <span class="jsx-tag">&lt;Link</span> <span class="jsx-attribute">to</span>=<span class="jsx-string">"/home"</span><span class="jsx-tag">&gt;</span>Home<span class="jsx-tag">&lt;/Link&gt;</span>
+      <span class="jsx-tag">&lt;Route</span> <span class="jsx-attribute">path</span>=<span class="jsx-string">"/home"</span> <span class="jsx-attribute">component</span>={<span class="variable">Home</span>} <span class="jsx-tag">/&gt;</span>
+    <span class="jsx-tag">&lt;/BrowserRouter&gt;</span>
   );
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q16">
                     <div class="question">16. How can you optimize performance in a React application?</div>
                     <div class="answer">
                         <p>To improve performance:</p>
                         <p><strong>Use React.memo:</strong> Prevents unnecessary re-renders of functional components.</p>
-<pre>const MyComponent = React.memo(() =&gt; &lt;div&gt;Hello&lt;/div&gt;);</pre>
+<pre><span class="keyword">const</span> <span class="variable">MyComponent</span> = <span class="variable">React</span>.<span class="function">memo</span>(() =&gt; <span class="jsx-tag">&lt;div&gt;</span>Hello<span class="jsx-tag">&lt;/div&gt;</span>);</pre>
                         <p><strong>Avoid unnecessary state updates:</strong> Use <span class="highlight">shouldComponentUpdate</span> or <span class="highlight">React.memo</span>.<br>
                         <strong>Use lazy loading:</strong> Load components only when needed with <span class="highlight">React.lazy</span> and <span class="highlight">Suspense</span>.</p>
-<pre>const LazyComponent = React.lazy(() =&gt; import('./Component'));</pre>
+<pre><span class="keyword">const</span> <span class="variable">LazyComponent</span> = <span class="variable">React</span>.<span class="function">lazy</span>(() =&gt; <span class="keyword">import</span>(<span class="string">'./Component'</span>));</pre>
                         <p><strong>Optimize re-renders:</strong> Avoid inline functions and objects in JSX.<br>
                         <strong>Use production build:</strong> Run <span class="highlight">npm run build</span> for optimized code.</p>
                     </div>
@@ -484,35 +654,35 @@ function App() {
             <div class="section">
                 <h2 class="section-title">Practical/Theory-Based Questions</h2>
 
-                <div class="question-block">
+                <div class="question-block" id="q17">
                     <div class="question">17. What is the difference between useState and useReducer?</div>
                     <div class="answer">
                         <p><strong>useState:</strong> Manages simple state in functional components. Best for independent values (e.g., a counter).</p>
-<pre>const [count, setCount] = useState(0);</pre>
+<pre><span class="keyword">const</span> [<span class="variable">count</span>, <span class="variable">setCount</span>] = <span class="function">useState</span>(<span class="number">0</span>);</pre>
                         <p><strong>useReducer:</strong> Manages complex state logic with a reducer function. Best for state with multiple sub-values or dependencies.</p>
-<pre>function reducer(state, action) {
-  switch (action.type) {
-    case 'increment': return { count: state.count + 1 };
-    default: return state;
+<pre><span class="keyword">function</span> <span class="function">reducer</span>(<span class="variable">state</span>, <span class="variable">action</span>) {
+  <span class="keyword">switch</span> (<span class="variable">action</span>.<span class="variable">type</span>) {
+    <span class="keyword">case</span> <span class="string">'increment'</span>: <span class="keyword">return</span> { <span class="variable">count</span>: <span class="variable">state</span>.<span class="variable">count</span> + <span class="number">1</span> };
+    <span class="keyword">default</span>: <span class="keyword">return</span> <span class="variable">state</span>;
   }
 }
-const [state, dispatch] = useReducer(reducer, { count: 0 });</pre>
+<span class="keyword">const</span> [<span class="variable">state</span>, <span class="variable">dispatch</span>] = <span class="function">useReducer</span>(<span class="variable">reducer</span>, { <span class="variable">count</span>: <span class="number">0</span> });</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q18">
                     <div class="question">18. How does React handle events?</div>
                     <div class="answer">
                         <p>React uses synthetic events, a cross-browser wrapper around native DOM events. Event handlers are attached to elements in JSX and are named in camelCase (e.g., <span class="highlight">onClick</span> instead of <span class="highlight">onclick</span>).</p>
                         <p>Example:</p>
-<pre>function Button() {
-  const handleClick = () =&gt; alert('Clicked!');
-  return &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;;
+<pre><span class="keyword">function</span> <span class="function">Button</span>() {
+  <span class="keyword">const</span> <span class="function">handleClick</span> = () =&gt; <span class="function">alert</span>(<span class="string">'Clicked!'</span>);
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">onClick</span>={<span class="variable">handleClick</span>}<span class="jsx-tag">&gt;</span>Click me<span class="jsx-tag">&lt;/button&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q19">
                     <div class="question">19. What is prop drilling, and how can you avoid it?</div>
                     <div class="answer">
                         <p>Prop drilling is when you pass props through multiple levels of components to reach a deeply nested component. It can make code messy.</p>
@@ -523,17 +693,17 @@ const [state, dispatch] = useReducer(reducer, { count: 0 });</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q20">
                     <div class="question">20. What is server-side rendering (SSR) in React?</div>
                     <div class="answer">
                         <p>Server-side rendering means rendering React components on the server and sending the HTML to the client. This improves performance and SEO. Frameworks like <strong>Next.js</strong> make SSR easier.</p>
                         <p>Example (in Next.js):</p>
-<pre>export async function getServerSideProps() {
-  const data = await fetchData();
-  return { props: { data } };
+<pre><span class="keyword">export async function</span> <span class="function">getServerSideProps</span>() {
+  <span class="keyword">const</span> <span class="variable">data</span> = <span class="keyword">await</span> <span class="function">fetchData</span>();
+  <span class="keyword">return</span> { <span class="variable">props</span>: { <span class="variable">data</span> } };
 }
-function Page({ data }) {
-  return &lt;div&gt;{data}&lt;/div&gt;;
+<span class="keyword">function</span> <span class="function">Page</span>({ <span class="variable">data</span> }) {
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;div&gt;</span>{<span class="variable">data</span>}<span class="jsx-tag">&lt;/div&gt;</span>;
 }</pre>
                     </div>
                 </div>
@@ -542,96 +712,96 @@ function Page({ data }) {
             <div class="section">
                 <h2 class="section-title">Common Coding Questions</h2>
 
-                <div class="question-block">
+                <div class="question-block" id="q21">
                     <div class="question">21. How would you fetch data in a React component?</div>
                     <div class="answer">
                         <p>Use <span class="highlight">useEffect</span> to fetch data when the component mounts.</p>
                         <p>Example:</p>
-<pre>import { useState, useEffect } from 'react';
-function DataFetcher() {
-  const [data, setData] = useState(null);
-  useEffect(() =&gt; {
-    fetch('https://api.example.com/data')
-      .then(response =&gt; response.json())
-      .then(data =&gt; setData(data));
+<pre><span class="keyword">import</span> { <span class="variable">useState</span>, <span class="variable">useEffect</span> } <span class="keyword">from</span> <span class="string">'react'</span>;
+<span class="keyword">function</span> <span class="function">DataFetcher</span>() {
+  <span class="keyword">const</span> [<span class="variable">data</span>, <span class="variable">setData</span>] = <span class="function">useState</span>(<span class="keyword">null</span>);
+  <span class="function">useEffect</span>(() =&gt; {
+    <span class="function">fetch</span>(<span class="string">'https://api.example.com/data'</span>)
+      .<span class="function">then</span>(<span class="variable">response</span> =&gt; <span class="variable">response</span>.<span class="function">json</span>())
+      .<span class="function">then</span>(<span class="variable">data</span> =&gt; <span class="function">setData</span>(<span class="variable">data</span>));
   }, []);
-  return &lt;div&gt;{data ? data.name : 'Loading...'}&lt;/div&gt;;
+  <span class="keyword">return</span> <span class="jsx-tag">&lt;div&gt;</span>{<span class="variable">data</span> ? <span class="variable">data</span>.<span class="variable">name</span> : <span class="string">'Loading...'</span>}<span class="jsx-tag">&lt;/div&gt;</span>;
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q22">
                     <div class="question">22. How do you handle forms in React?</div>
                     <div class="answer">
                         <p>Use controlled components to manage form input values with state.</p>
                         <p>Example:</p>
-<pre>function Form() {
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const handleChange = (e) =&gt; {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+<pre><span class="keyword">function</span> <span class="function">Form</span>() {
+  <span class="keyword">const</span> [<span class="variable">formData</span>, <span class="variable">setFormData</span>] = <span class="function">useState</span>({ <span class="variable">name</span>: <span class="string">''</span>, <span class="variable">email</span>: <span class="string">''</span> });
+  <span class="keyword">const</span> <span class="function">handleChange</span> = (<span class="variable">e</span>) =&gt; {
+    <span class="function">setFormData</span>({ ...<span class="variable">formData</span>, [<span class="variable">e</span>.<span class="variable">target</span>.<span class="variable">name</span>]: <span class="variable">e</span>.<span class="variable">target</span>.<span class="variable">value</span> });
   };
-  const handleSubmit = (e) =&gt; {
-    e.preventDefault();
-    console.log(formData);
+  <span class="keyword">const</span> <span class="function">handleSubmit</span> = (<span class="variable">e</span>) =&gt; {
+    <span class="variable">e</span>.<span class="function">preventDefault</span>();
+    <span class="variable">console</span>.<span class="function">log</span>(<span class="variable">formData</span>);
   };
-  return (
-    &lt;form onSubmit={handleSubmit}&gt;
-      &lt;input name="name" value={formData.name} onChange={handleChange} /&gt;
-      &lt;input name="email" value={formData.email} onChange={handleChange} /&gt;
-      &lt;button type="submit"&gt;Submit&lt;/button&gt;
-    &lt;/form&gt;
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;form</span> <span class="jsx-attribute">onSubmit</span>={<span class="variable">handleSubmit</span>}<span class="jsx-tag">&gt;</span>
+      <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">name</span>=<span class="jsx-string">"name"</span> <span class="jsx-attribute">value</span>={<span class="variable">formData</span>.<span class="variable">name</span>} <span class="jsx-attribute">onChange</span>={<span class="variable">handleChange</span>} <span class="jsx-tag">/&gt;</span>
+      <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">name</span>=<span class="jsx-string">"email"</span> <span class="jsx-attribute">value</span>={<span class="variable">formData</span>.<span class="variable">email</span>} <span class="jsx-attribute">onChange</span>={<span class="variable">handleChange</span>} <span class="jsx-tag">/&gt;</span>
+      <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">type</span>=<span class="jsx-string">"submit"</span><span class="jsx-tag">&gt;</span>Submit<span class="jsx-tag">&lt;/button&gt;</span>
+    <span class="jsx-tag">&lt;/form&gt;</span>
   );
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q23">
                     <div class="question">23. How do you conditionally render components?</div>
                     <div class="answer">
                         <p>Use conditional operators (<span class="highlight">&&</span>, <span class="highlight">||</span>, ternary) or <span class="highlight">if</span> statements to render components based on conditions.</p>
                         <p>Example:</p>
-<pre>function Conditional() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  return (
-    &lt;div&gt;
-      {isLoggedIn ? &lt;Welcome /&gt; : &lt;Login /&gt;}
-      &lt;button onClick={() =&gt; setIsLoggedIn(!isLoggedIn)}&gt;
+<pre><span class="keyword">function</span> <span class="function">Conditional</span>() {
+  <span class="keyword">const</span> [<span class="variable">isLoggedIn</span>, <span class="variable">setIsLoggedIn</span>] = <span class="function">useState</span>(<span class="keyword">false</span>);
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;div&gt;</span>
+      {<span class="variable">isLoggedIn</span> ? <span class="jsx-tag">&lt;Welcome /&gt;</span> : <span class="jsx-tag">&lt;Login /&gt;</span>}
+      <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">onClick</span>={() =&gt; <span class="function">setIsLoggedIn</span>(!<span class="variable">isLoggedIn</span>)}<span class="jsx-tag">&gt;</span>
         Toggle Login
-      &lt;/button&gt;
-    &lt;/div&gt;
+      <span class="jsx-tag">&lt;/button&gt;</span>
+    <span class="jsx-tag">&lt;/div&gt;</span>
   );
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q24">
                     <div class="question">24. What is error handling in React?</div>
                     <div class="answer">
                         <p>Use <strong>Error Boundaries</strong> to catch errors in components and display a fallback UI.</p>
                         <p>Example:</p>
-<pre>class ErrorBoundary extends React.Component {
-  state = { hasError: false };
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
+<pre><span class="keyword">class</span> <span class="function">ErrorBoundary</span> <span class="keyword">extends</span> <span class="variable">React</span>.<span class="variable">Component</span> {
+  <span class="variable">state</span> = { <span class="variable">hasError</span>: <span class="keyword">false</span> };
+  <span class="keyword">static</span> <span class="function">getDerivedStateFromError</span>(<span class="variable">error</span>) {
+    <span class="keyword">return</span> { <span class="variable">hasError</span>: <span class="keyword">true</span> };
   }
-  render() {
-    if (this.state.hasError) {
-      return &lt;h1&gt;Something went wrong!&lt;/h1&gt;;
+  <span class="function">render</span>() {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="variable">state</span>.<span class="variable">hasError</span>) {
+      <span class="keyword">return</span> <span class="jsx-tag">&lt;h1&gt;</span>Something went wrong!<span class="jsx-tag">&lt;/h1&gt;</span>;
     }
-    return this.props.children;
+    <span class="keyword">return</span> <span class="keyword">this</span>.<span class="variable">props</span>.<span class="variable">children</span>;
   }
 }
-function App() {
-  return (
-    &lt;ErrorBoundary&gt;
-      &lt;MyComponent /&gt;
-    &lt;/ErrorBoundary&gt;
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;ErrorBoundary&gt;</span>
+      <span class="jsx-tag">&lt;MyComponent /&gt;</span>
+    <span class="jsx-tag">&lt;/ErrorBoundary&gt;</span>
   );
 }</pre>
                     </div>
                 </div>
 
-                <div class="question-block">
+                <div class="question-block" id="q25">
                     <div class="question">25. How do you use Redux in a React app?</div>
                     <div class="answer">
                         <p>Redux is a state management library. Steps to use it:</p>
@@ -640,30 +810,30 @@ function App() {
                         3. Use <span class="highlight">Provider</span> to make the store available.<br>
                         4. Use <span class="highlight">useSelector</span> and <span class="highlight">useDispatch</span> to access and update state.</p>
                         <p>Example:</p>
-<pre>import { createStore } from 'redux';
-import { Provider, useSelector, useDispatch } from 'react-redux';
-const reducer = (state = { count: 0 }, action) =&gt; {
-  switch (action.type) {
-    case 'INCREMENT': return { count: state.count + 1 };
-    default: return state;
+<pre><span class="keyword">import</span> { <span class="variable">createStore</span> } <span class="keyword">from</span> <span class="string">'redux'</span>;
+<span class="keyword">import</span> { <span class="variable">Provider</span>, <span class="variable">useSelector</span>, <span class="variable">useDispatch</span> } <span class="keyword">from</span> <span class="string">'react-redux'</span>;
+<span class="keyword">const</span> <span class="function">reducer</span> = (<span class="variable">state</span> = { <span class="variable">count</span>: <span class="number">0</span> }, <span class="variable">action</span>) =&gt; {
+  <span class="keyword">switch</span> (<span class="variable">action</span>.<span class="variable">type</span>) {
+    <span class="keyword">case</span> <span class="string">'INCREMENT'</span>: <span class="keyword">return</span> { <span class="variable">count</span>: <span class="variable">state</span>.<span class="variable">count</span> + <span class="number">1</span> };
+    <span class="keyword">default</span>: <span class="keyword">return</span> <span class="variable">state</span>;
   }
 };
-const store = createStore(reducer);
-function App() {
-  return (
-    &lt;Provider store={store}&gt;
-      &lt;Counter /&gt;
-    &lt;/Provider&gt;
+<span class="keyword">const</span> <span class="variable">store</span> = <span class="function">createStore</span>(<span class="variable">reducer</span>);
+<span class="keyword">function</span> <span class="function">App</span>() {
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;Provider</span> <span class="jsx-attribute">store</span>={<span class="variable">store</span>}<span class="jsx-tag">&gt;</span>
+      <span class="jsx-tag">&lt;Counter /&gt;</span>
+    <span class="jsx-tag">&lt;/Provider&gt;</span>
   );
 }
-function Counter() {
-  const count = useSelector(state =&gt; state.count);
-  const dispatch = useDispatch();
-  return (
-    &lt;div&gt;
-      &lt;p&gt;Count: {count}&lt;/p&gt;
-      &lt;button onClick={() =&gt; dispatch({ type: 'INCREMENT' })}&gt;Add&lt;/button&gt;
-    &lt;/div&gt;
+<span class="keyword">function</span> <span class="function">Counter</span>() {
+  <span class="keyword">const</span> <span class="variable">count</span> = <span class="function">useSelector</span>(<span class="variable">state</span> =&gt; <span class="variable">state</span>.<span class="variable">count</span>);
+  <span class="keyword">const</span> <span class="variable">dispatch</span> = <span class="function">useDispatch</span>();
+  <span class="keyword">return</span> (
+    <span class="jsx-tag">&lt;div&gt;</span>
+      <span class="jsx-tag">&lt;p&gt;</span>Count: {<span class="variable">count</span>}<span class="jsx-tag">&lt;/p&gt;</span>
+      <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">onClick</span>={() =&gt; <span class="function">dispatch</span>({ <span class="variable">type</span>: <span class="string">'INCREMENT'</span> })}<span class="jsx-tag">&gt;</span>Add<span class="jsx-tag">&lt;/button&gt;</span>
+    <span class="jsx-tag">&lt;/div&gt;</span>
   );
 }</pre>
                     </div>
@@ -671,16 +841,64 @@ function Counter() {
             </div>
 
             <div class="tips">
-                <h4>Additional Tips for React Interviews</h4>
+                <h4>🎯 Additional Tips for React Interviews</h4>
                 <ul>
                     <li><strong>Understand the basics:</strong> Be clear on components, props, state, and JSX.</li>
                     <li><strong>Practice hooks:</strong> useState, useEffect, useContext, and useReducer are commonly asked.</li>
                     <li><strong>Know performance optimization:</strong> Be ready to explain React.memo, lazy loading, and avoiding unnecessary renders.</li>
                     <li><strong>Be prepared to code:</strong> Practice building small apps (e.g., a todo list or form) to demonstrate your skills.</li>
                     <li><strong>Learn modern React:</strong> Focus on functional components and hooks, as class components are less common now.</li>
+                    <li><strong>Understand the ecosystem:</strong> Familiarize yourself with popular libraries like React Router, Redux, and testing tools.</li>
+                    <li><strong>Practice whiteboard coding:</strong> Be ready to write React code on paper or a whiteboard without an IDE.</li>
+                </ul>
+            </div>
+
+            <div class="tips" style="background: #f0f9ff; border-color: #3b82f6;">
+                <h4 style="color: #1e40af;">🚀 Quick Study Tips</h4>
+                <ul style="color: #1e3a8a;">
+                    <li><strong>Use the question index above</strong> to jump directly to topics you want to review</li>
+                    <li><strong>Practice coding examples</strong> in a code editor to build muscle memory</li>
+                    <li><strong>Explain concepts out loud</strong> as if teaching someone else</li>
+                    <li><strong>Build a small project</strong> using multiple concepts from this guide</li>
+                    <li><strong>Review error messages</strong> and debugging techniques in React DevTools</li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight current question in index when scrolling
+        window.addEventListener('scroll', function() {
+            const questionBlocks = document.querySelectorAll('.question-block');
+            const indexLinks = document.querySelectorAll('.index-section a');
+            
+            questionBlocks.forEach((block, index) => {
+                const rect = block.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    // Remove active class from all links
+                    indexLinks.forEach(link => link.style.fontWeight = 'normal');
+                    // Add active class to current link
+                    const currentLink = document.querySelector(`a[href="#${block.id}"]`);
+                    if (currentLink) {
+                        currentLink.style.fontWeight = 'bold';
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
