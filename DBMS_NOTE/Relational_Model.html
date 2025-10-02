@@ -177,34 +177,63 @@
         </ul>
 
         <div class="example-box">
-            <h3>📌 Real-World Analogy: College Record System</h3>
-            <table>
-                <tr>
-                    <th>Roll_No</th>
-                    <th>Name(only allowed <b>String</b> this is one type of domain)</th>
-                    <th>Age(only allowed <b>Integer</b> this is one type of domain)</th>
-                    <th>Course_ID</th>
-                </tr>
-                <tr>
-                    <td>101</td>
-                    <td>Ravi</td>
-                    <td>20</td>
-                    <td>C101</td>
-                </tr>
-                <tr>
-                    <td>102</td>
-                    <td>Meena</td>
-                    <td>21</td>
-                    <td>C102</td>
-                </tr>
-            </table>
-            <ul>
-                <li>Table = "Student"</li>
-                <li>Each row = 1 student → <strong>Tuple</strong></li>
-                <li>Each column → <strong>Attribute</strong></li>
-                <li>Age column only allows integers → <strong>Domain</strong></li>
-            </ul>
-        </div>
+    <h3>📌 Real-World Analogy: College Record System</h3>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Roll_No</th>
+            <th>Name (only allowed <b>String</b> → Domain)</th>
+            <th>Age (only allowed <b>Integer</b> → Domain)</th>
+            <th>Course_ID</th>
+        </tr>
+        <tr>
+            <td>101</td>
+            <td>Ravi</td>
+            <td>20</td>
+            <td>C101</td>
+        </tr>
+        <tr>
+            <td>102</td>
+            <td>Meena</td>
+            <td>21</td>
+            <td>C102</td>
+        </tr>
+    </table>
+
+    <ul>
+        <li>Table = "Student"</li>
+        <li>Each row = 1 student → <strong>Tuple</strong></li>
+        <li>Each column → <strong>Attribute</strong></li>
+        <li>Age column only allows integers → <strong>Domain</strong></li>
+    </ul>
+
+    <h3>📌 MySQL Datatypes with Example & Use Case</h3>
+    <pre>
+-- Creating the Student table with MySQL datatypes
+CREATE TABLE Student (
+    Roll_No INT PRIMARY KEY,              -- INT → Numeric values (e.g., 101, 102)
+    Name VARCHAR(50),                     -- VARCHAR → Variable length string (e.g., 'Ravi')
+    Age INT CHECK (Age >= 18),            -- INT → Only whole numbers (e.g., 20)
+    Course_ID CHAR(5),                    -- CHAR → Fixed length string (e.g., 'C101')
+    DOB DATE,                             -- DATE → Stored in 'YYYY-MM-DD' format
+    Admission_Date DATETIME,              -- DATETIME → 'YYYY-MM-DD HH:MM:SS'
+    Remarks TEXT                          -- TEXT → Long text storage (not CLOB in MySQL)
+);
+    </pre>
+
+    <h4>🔹 Common MySQL Datatypes & Use Cases</h4>
+    <ul>
+        <li><b>INT</b> → Whole numbers (e.g., Roll_No, Age, Salary, Quantity)</li>
+        <li><b>VARCHAR(n)</b> → Variable-length text (e.g., Names, Emails, Addresses)</li>
+        <li><b>CHAR(n)</b> → Fixed-length text (e.g., Course_ID, Gender 'M/F')</li>
+        <li><b>DATE</b> → Stores only date in <code>'YYYY-MM-DD'</code> (e.g., '2025-10-01')</li>
+        <li><b>DATETIME</b> → Stores date & time in <code>'YYYY-MM-DD HH:MM:SS'</code></li>
+        <li><b>TIMESTAMP</b> → Auto-updated time values (useful for Created_At, Updated_At)</li>
+        <li><b>DECIMAL(p,s)</b> → Exact decimals (e.g., Price DECIMAL(10,2) → 99999999.99)</li>
+        <li><b>BOOLEAN</b> (alias of TINYINT(1)) → True/False values</li>
+        <li><b>TEXT</b> → Long character text (e.g., Remarks, Description) ✅ replaces CLOB</li>
+        <li><b>BLOB</b> → Binary data (e.g., Images, PDF files)</li>
+    </ul>
+</div>
 
         <div class="image-container">
             <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250111112649494919/relational_model.webp"
@@ -269,22 +298,7 @@
         </div>
 
         <!-- Table Relationships -->
-        <div class="concept-box">
-            <h3>🔁 Table Relationships</h3>
-            <ul>
-                <li><strong>One-to-One:</strong> One student → One locker</li>
-                <li><strong>One-to-Many:</strong> One course → Many students</li>
-                <li><strong>Many-to-One:</strong> Many students → One course</li>
-
-                <li><strong>Many-to-Many:</strong> Students ↔ Clubs</li>
-            </ul>
-        </div>
-
-        <!-- Extra Diagram -->
-        <div class="image-container">
-            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250111112649494919/relational_model.webp"
-                alt="Relational Model Example" style="width: 700px;">
-        </div>
+        
 
         <!-- Integrity Constraints -->
         <div class="concept-box">
@@ -353,38 +367,7 @@ INSERT INTO Student (Student_ID, Course_ID) VALUES (101, 'C999');
                 </li>
             </ul>
 
-            <h4>✅ Summary Table:</h4>
-            <table border="1" cellpadding="6" cellspacing="0">
-                <tr>
-                    <th>Action</th>
-                    <th>Effect on Child</th>
-                </tr>
-                <tr>
-                    <td>ON INSERT (invalid FK)</td>
-                    <td>Insert fails if referenced key is missing in parent</td>
-                </tr>
-                <tr>
-                    <td>ON DELETE CASCADE</td>
-                    <td>Deletes matching child rows</td>
-                </tr>
-                <tr>
-                    <td>ON DELETE SET NULL</td>
-                    <td>Sets foreign key to NULL</td>
-                </tr>
-                <tr>
-                    <td>ON DELETE NO ACTION</td>
-                    <td>Prevents deletion if child exists</td>
-                </tr>
-                <tr>
-                    <td>ON UPDATE CASCADE</td>
-                    <td>Updates foreign key in child</td>
-                </tr>
-                <tr>
-                    <td>ON UPDATE NO ACTION</td>
-                    <td>Prevents update if child exists</td>
-                </tr>
-            </table>
-        </div>
+           
 
         
         <!-- Quick Summary -->

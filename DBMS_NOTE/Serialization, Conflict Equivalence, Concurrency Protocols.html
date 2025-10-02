@@ -329,22 +329,17 @@ Final Result: ₹2000 ❌ (Lost T1's deposit!)</pre>
 
             <!-- Section 2: Conflict Equivalence -->
             <div class="section">
-                <h2><span class="emoji">⚔️</span> 2. Conflict Equivalence & Conflict Serializability (Hinglish
+                <h2><span class="emoji">⚔️</span> 2. Conflict Equivalence & Conflict Serializability (Simple English
                     Explanation)</h2>
 
-                <h3>✅ Conflict Equivalent Schedules</h3>
-                <p>Do schedules tab conflict equivalent hote hain jab:</p>
-                <ul>
-                    <li>Unme same set of transactions hote hain</li>
-                    <li>Jo operations conflict karte hain unka order dono mein same hota hai</li>
-                </ul>
+                <img src="conflict_equivalent.png" alt="Conflict Equivalent Schedules" style="max-width: 100%; border-radius: 8px;">
 
-                <h3>🧮 Conflicting Operations kya hoti hain?</h3>
-                <p>Do operations tab conflict karti hain jab:</p>
+                <h3>🧮 What are Conflicting Operations?</h3>
+                <p>Two operations conflict if their relative order must be preserved. They conflict when:</p>
                 <ul>
-                    <li>Alag-alag transactions se ho</li>
-                    <li>Same data item ko access kar rahi ho</li>
-                    <li>Aur kam se kam ek write operation ho</li>
+                    <li>They belong to different transactions</li>
+                    <li>They access the same data item.</li>
+                    <li>**At least one of the operations is a Write operation.</li>
                 </ul>
 
                 <div class="table-container">
@@ -359,85 +354,69 @@ Final Result: ₹2000 ❌ (Lost T1's deposit!)</pre>
                             <td>Read(A)</td>
                             <td>Read(A)</td>
                             <td class="success">No</td>
-                            <td>Sirf reading, koi conflict nahi</td>
+                            <td>Reading data does not change it (Read-Read is safe).</td>
                         </tr>
                         <tr>
                             <td>Read(A)</td>
                             <td>Write(A)</td>
                             <td class="error">Yes</td>
-                            <td>Read-Write conflict</td>
+                            <td>Read-Write conflict. The read may miss the write.</td>
                         </tr>
                         <tr>
                             <td>Write(A)</td>
                             <td>Read(A)</td>
                             <td class="error">Yes</td>
-                            <td>Write-Read conflict</td>
+                            <td>Write-Read conflict. The read may see an incorrect value.</td>
                         </tr>
                         <tr>
                             <td>Write(A)</td>
                             <td>Write(A)</td>
                             <td class="error">Yes</td>
-                            <td>Write-Write conflict</td>
+                            <td>Write-Write conflict. The final value depends on the order.</td>
                         </tr>
                     </table>
                 </div>
 
                 <h3>🔄 Conflict Serializability</h3>
-                <p>Agar ek schedule ko sirf non-conflicting operations ko swap karke ek serial schedule mein badla ja
-                    sake,
-                    toh woh <strong>conflict serializable</strong> kehlata hai.</p>
+                <img src="conflict_serializability.png" alt="Conflict Serializability" style="max-width: 100%; border-radius: 8px;">
+                <p>A schedule is <strong>conflict serializable</strong> if it is conflict equivalent to any serial
+                    schedule. You check
+                    this using the <strong></strong>Precedence Graph</strong> method.</p>
 
-                <div class="example-box">
-                    <h4>🧪 Example: Schedule S</h4>
-                    <pre>
-Time:      1     2     3     4     5     6     7     8
-T1:       R(A)  W(A)         R(B)  W(B)
-T2:             R(A)  W(A)         R(B)  W(B)
-        </pre>
-
-                    <p><strong>Conflicting operations:</strong></p>
-                    <ul>
-                        <li>T1.W(A) → T2.R(A): Write-Read conflict</li>
-                        <li>T1.W(A) → T2.W(A): Write-Write conflict</li>
-                        <li>T1.R(B) → T2.W(B): Read-Write conflict</li>
-                        <li>T1.W(B) → T2.R(B): Write-Read conflict</li>
-                        <li>T1.W(B) → T2.W(B): Write-Write conflict</li>
-                    </ul>
-
-                    <h4>📊 Precedence Graph (T1 → T2)</h4>
-                    <pre>
-Nodes: T1, T2
-Edges: T1 → T2 (multiple conflicts)
-
-✅ No cycle → Conflict Serializable
-✅ Equivalent to serial order: T1 → T2
-        </pre>
-                </div>
+              
 
                 <div class="tip-box">
-                    <h4>🧠 Yaad Rakho (Tips)</h4>
+                    <h4>🧠 Key Takeaways (Tips)</h4>
                     <ul>
-                        <li>Conflict = alag transaction + same data + ek write</li>
-                        <li>Precedence graph banao: nodes = transactions</li>
-                        <li>Cycle nahi = Serializable ✅</li>
-                        <li>Cycle hai = Not Serializable ❌</li>
+                        <li>Conflict = different transaction + same data + at least one write</li>
+                        <li>Use the Precedence Graph: nodes are transactions.</li>
+                        <li>If there is No cycle in the graph =conflict Serializable ✅</li>
+                        <li>If there is a cycle in the graph = Not conflict Serializable ❌</li>
+                        <li>if schedule is conflict Serializable, then convert into serial-schedule 
+                        by checking the in-degree of each transaction in the precedence graph. lower to Higher(start with 0->1->2)</li>
                     </ul>
                 </div>
 
                 <hr>
 
-                <h2><span class="emoji">👁️</span> View Serializability (Hinglish)</h2>
+                <h2><span class="emoji">👁️</span> View Serializability (Simple English)</h2>
 
                 <h3>📌 Definition:</h3>
-                <p>Agar ek schedule ka result same ho jaise kisi serial schedule ka hota — including what values
-                    transactions read/write — toh woh <strong>view serializable</strong> hota hai.</p>
+                <p>A schedule is <strong>view serializable</strong> if its result is exactly the same as the result of
+                    some serial
+                    schedule—including the values that transactions read and write.</p>
 
-                <h3>🔍 3 Main Conditions Check Karte Hain:</h3>
+                <h3>🔍 3 Main Conditions to Check:</h3>
                 <ul>
-                    <li><strong>Initial Read Same:</strong> Start mein sab same data padhein</li>
-                    <li><strong>Read From Same Transaction:</strong> Jo write kisi transaction ne kiya, wohi read ho
-                    </li>
-                    <li><strong>Final Write Same:</strong> End mein same transaction ne data write kiya ho</li>
+                    <li><strong>Initial Read Same:</strong> Each transaction reads the same initial value in both the
+                        original and serial
+                        schedule.</li>
+                    <li><strong>Read From Same Transaction:</strong> If a transaction reads a value written by another
+                        transaction, that
+                        relationship must be preserved in the serial schedule.</li>
+                    <li><strong>Final Write Same:</strong> The transaction that performs the final write on each data
+                        item must be the
+                        same in both the original and serial schedule.</li>
                 </ul>
 
                 <h3>📚 Difference between Conflict & View Serializability:</h3>
@@ -449,24 +428,24 @@ Edges: T1 → T2 (multiple conflicts)
                             <th>View Serializability</th>
                         </tr>
                         <tr>
-                            <td>Check karna</td>
-                            <td>Easy (graph se)</td>
-                            <td>Difficult (manually)</td>
+                            <td>Check Method</td>
+                            <td>Easy (using the graph).</td>
+                            <td>Difficult (checking every possible serial order).</td>
                         </tr>
                         <tr>
                             <td>Strictness</td>
-                            <td>More strict</td>
-                            <td>Less strict</td>
+                            <td>More strict (focuses on operation order).</td>
+                            <td>Less strict (focuses on the final result).</td>
                         </tr>
                         <tr>
                             <td>Allowable Schedules</td>
-                            <td>Kam</td>
-                            <td>Zyada</td>
+                            <td>Fewer schedules are allowed.</td>
+                            <td>More schedules are allowed.</td>
                         </tr>
                         <tr>
-                            <td>Example usage</td>
-                            <td>Mostly practical systems</td>
-                            <td>More theoretical</td>
+                            <td>Practical Use</td>
+                            <td>Most practical database systems use this.</td>
+                            <td>More theoretical.</td>
                         </tr>
                     </table>
                 </div>
@@ -474,13 +453,15 @@ Edges: T1 → T2 (multiple conflicts)
                 <div class="tip-box">
                     <h4>👓 Simple Tip:</h4>
                     <ul>
-                        <li>Conflict Serializable: Graph banao, cycle nahi to ✅</li>
-                        <li>View Serializable: Agar reads & writes ka result same ho</li>
-                        <li>Har Conflict Serializable bhi View Serializable hota hai — but reverse zaroori nahi</li>
+                        <li>**Conflict Serializable:** Use the graph, no cycle = safe.</li>
+                        <li>**View Serializable:** The final outcome (all reads and writes) must match a serial order.
+                        </li>
+                        <li>**All Conflict Serializable schedules are also View Serializable**, but not all View
+                            Serializable schedules are
+                            Conflict Serializable.</li>
                     </ul>
                 </div>
             </div>
-
 
 
             <div class="section">
@@ -499,32 +480,7 @@ Edges: T1 → T2 (multiple conflicts)
                         hai, koi aur transaction access nahi kar sakta.</li>
                 </ul>
 
-                <table border="1" cellpadding="8" cellspacing="0">
-                    <tr>
-                        <th>Lock Type</th>
-                        <th>Purpose</th>
-                        <th>Can Read?</th>
-                        <th>Can Write?</th>
-                        <th>Others Can Read?</th>
-                        <th>Others Can Write?</th>
-                    </tr>
-                    <tr>
-                        <td><strong>Shared (S)</strong></td>
-                        <td>Reading</td>
-                        <td>✅</td>
-                        <td>❌</td>
-                        <td>✅</td>
-                        <td>❌</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Exclusive (X)</strong></td>
-                        <td>Reading + Writing</td>
-                        <td>✅</td>
-                        <td>✅</td>
-                        <td>❌</td>
-                        <td>❌</td>
-                    </tr>
-                </table>
+              
 
                 <h4>📌 Lock Compatibility Matrix</h4>
                 <p>Yeh matrix batata hai ki agar ek lock laga hua hai, to doosra lock lag sakta hai ya nahi:</p>

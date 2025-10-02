@@ -16,6 +16,22 @@
       color: #222;
       margin-bottom: 40px;
     }
+    .top-bar {
+      text-align: right;
+      margin-bottom: 15px;
+    }
+    .top-bar a {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .top-bar a:hover {
+      background-color: #218838;
+    }
     .tabs {
       text-align: center;
       margin-bottom: 30px;
@@ -65,6 +81,11 @@
   </style>
 </head>
 <body>
+
+  <!-- 🔹 Create Test Button -->
+  <div class="top-bar">
+    <a href="test.html">➕ Create Test</a>
+  </div>
 
   <h1>📚 Notes Hub – DBMS, OS, Java & CN</h1>
 
@@ -130,18 +151,18 @@
     </ul>
   </div>
 
- <div id="cn" class="content-section">
-  <ul>
-    <li><a href="CN/Introduction to Networking.html">Introduction to Networking</a></li>
-    <li><a href="CN/Network Devices.html">Network Devices</a></li>
-    <li><a href="CN/syllabus.html">Syllabus</a></li>
-    <li><a href="CN/Application_Layer_Protocols.html">Application Layer Protocols</a></li>
-    <li><a href="CN/IP_Addressing_Subnetting.html">IP Addressing & Subnetting</a></li>
-    <li><a href="CN/Networking_security.html">Networking Security</a></li>
-    <li><a href="CN/Transport_Layer_tcp_udp.html">Transport Layer (TCP/UDP)</a></li>
-    <li><a href="CN/VPN.html">VPN</a></li>
-  </ul>
-</div>
+  <div id="cn" class="content-section">
+    <ul>
+      <li><a href="CN/Introduction to Networking.html">Introduction to Networking</a></li>
+      <li><a href="CN/Network Devices.html">Network Devices</a></li>
+      <li><a href="CN/syllabus.html">Syllabus</a></li>
+      <li><a href="CN/Application_Layer_Protocols.html">Application Layer Protocols</a></li>
+      <li><a href="CN/IP_Addressing_Subnetting.html">IP Addressing & Subnetting</a></li>
+      <li><a href="CN/Networking_security.html">Networking Security</a></li>
+      <li><a href="CN/Transport_Layer_tcp_udp.html">Transport Layer (TCP/UDP)</a></li>
+      <li><a href="CN/VPN.html">VPN</a></li>
+    </ul>
+  </div>
 
   <div id="react" class="content-section">
     <ul>
@@ -149,7 +170,6 @@
       <li><a href="react/QSet1.html">Questions set 1</a></li>
       <li><a href="react/Qset2.html"> Questions set 2</a></li>
       <li><a href="react/Qset3.html">Questions set 3</a></li>
-
     </ul>
   </div>
 
