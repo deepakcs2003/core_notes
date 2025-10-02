@@ -187,13 +187,52 @@
             align-items: center;
             margin-bottom: 20px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 15px;
         }
 
         .question-counter {
             font-size: 14px;
             color: var(--text-secondary);
             font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-small.btn-back {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-small.btn-back:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-small.btn-submit {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-small.btn-submit:hover {
+            background: #059669;
+            transform: translateY(-2px);
         }
 
         .timer {
@@ -408,6 +447,20 @@
             .btn {
                 width: 100%;
             }
+
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .btn-small {
+                flex: 1;
+            }
         }
 
         .checkbox-wrapper {
@@ -559,7 +612,11 @@ Who wrote Hamlet?,Dickens|Shakespeare|Austen|Orwell,Shakespeare,William Shakespe
 
             <div class="question-header">
                 <span id="questionCounter" class="question-counter"></span>
-                <span id="timer" class="timer hidden"></span>
+                <div class="header-actions">
+                    <span id="timer" class="timer hidden"></span>
+                    <button class="btn-small btn-back" onclick="confirmBackToHome()">🏠 Back</button>
+                    <button class="btn-small btn-submit" onclick="confirmSubmitQuiz()">✅ Submit</button>
+                </div>
             </div>
 
             <div id="questionText" class="question-text"></div>
@@ -1052,6 +1109,25 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
             // Show retry button only in practice mode if there are wrong answers
             if (quizMode === 'practice' && wrongQuestions.length > 0) {
                 document.getElementById('retryWrongBtn').classList.remove('hidden');
+            }
+        }
+
+        function confirmSubmitQuiz() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            let message = 'Are you sure you want to submit the quiz?';
+            
+            if (unanswered > 0) {
+                message = `You have ${unanswered} unanswered question(s). Do you still want to submit?`;
+            }
+            
+            if (confirm(message)) {
+                submitQuiz();
+            }
+        }
+
+        function confirmBackToHome() {
+            if (confirm('Are you sure you want to go back? Your current progress will be lost.')) {
+                restartQuiz();
             }
         }
 
