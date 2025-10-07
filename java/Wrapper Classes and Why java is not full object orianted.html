@@ -76,7 +76,7 @@
         .section {
             margin-bottom: 30px;
             padding: 25px;
-            background: #f8f9fa;
+            background: #c0e487;
             border-radius: 10px;
             border: 1px solid #e9ecef;
         }
@@ -260,6 +260,18 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
+        details {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #579bde;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .comparison-grid {
                 grid-template-columns: 1fr;
@@ -288,52 +300,13 @@
             <p>A <strong>Wrapper class</strong> is a class whose object <strong>wraps a primitive data type</strong>.
                 Java provides these classes in the <code>java.lang</code> package to convert primitive types into
                 <strong>objects</strong>.</p>
+            <img src="https://techvidvan.com/tutorials/wp-content/uploads/sites/2/2020/03/java-wrapper-class-hierarchy.jpg" alt="Java Wrapper Classes Hierarchy" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+            <img src="https://media.licdn.com/dms/image/v2/D5612AQGKq87tW7kglg/article-inline_image-shrink_1500_2232/article-inline_image-shrink_1500_2232/0/1712586917377?e=2147483647&v=beta&t=GahErTLE1jGF6lS2e6CW05Ac3rijkwsJcZIYnXHXHA4" alt="Primitive vs Wrapper Classes Table" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
         </div>
 
         <div class="section">
-            <h2>🧱 Primitive Types vs Wrapper Classes</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Primitive Type</th>
-                        <th>Wrapper Class</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>byte</code></td>
-                        <td><code>Byte</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>short</code></td>
-                        <td><code>Short</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>int</code></td>
-                        <td><code>Integer</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>long</code></td>
-                        <td><code>Long</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>float</code></td>
-                        <td><code>Float</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>double</code></td>
-                        <td><code>Double</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>char</code></td>
-                        <td><code>Character</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>boolean</code></td>
-                        <td><code>Boolean</code></td>
-                    </tr>
-                </tbody>
-            </table>
+           
+            <p><strong>Key Difference:</strong> Primitives are not objects, stored on stack, faster; Wrappers are objects, stored on heap, can be null, have methods.</p>
         </div>
 
         <div class="section">
@@ -358,8 +331,8 @@
         <div class="section">
             <h2>🔁 Autoboxing and Unboxing</h2>
             <div class="info-box">
-                <p><strong>Autoboxing</strong> = primitive ➡️ object</p>
-                <p><strong>Unboxing</strong> = object ➡️ primitive</p>
+                <p><strong>Autoboxing</strong> = primitive ➡️ object (like putting primitive in a box)</p>
+                <p><strong>Unboxing</strong> = object ➡️ primitive (opening the box)</p>
             </div>
 
             <pre>
@@ -377,6 +350,7 @@ public class AutoBoxingExample {
         System.out.println("Primitive: " + b);
     }
 }</pre>
+            <p><strong>Note:</strong> Introduced in Java 5 for seamless conversion. But beware of NullPointerException during unboxing if wrapper is null.</p>
         </div>
 
         <div class="section">
@@ -390,6 +364,7 @@ ages.add(30);
 
 int sum = ages.get(0) + ages.get(1); // Unboxing: Integer ➝ int
 System.out.println("Sum of ages: " + sum);</pre>
+            <p><strong>Analogy:</strong> Primitives are like raw ingredients; wrappers are packaged versions for storage in a fridge (collections).</p>
         </div>
 
         <div class="section">
@@ -413,6 +388,28 @@ public class WrapperMethods {
         System.out.println("Is Uppercase: " + Character.isUpperCase(ch));
     }
 }</pre>
+            <p><strong>Key Point:</strong> All wrappers are immutable – once created, value can't change.</p>
+        </div>
+
+        <div class="section">
+            <h2>🤔 Interactive Self-Quiz for Wrapper Classes</h2>
+            <p>Test your understanding with these expandable questions. Click to reveal answers.</p>
+            <details>
+                <summary>What is the wrapper for int?</summary>
+                <p>Integer</p>
+            </details>
+            <details>
+                <summary>What happens in autoboxing?</summary>
+                <p>Primitive to wrapper object conversion automatically.</p>
+            </details>
+            <details>
+                <summary>Can wrappers be null?</summary>
+                <p>Yes, unlike primitives.</p>
+            </details>
+            <details>
+                <summary>Why use parseInt?</summary>
+                <p>To convert String to int.</p>
+            </details>
         </div>
 
         <div class="interview-section">
@@ -444,6 +441,18 @@ public class WrapperMethods {
                     <tr>
                         <td>Can you store <code>int</code> in ArrayList?</td>
                         <td>Not directly — it uses <code>Integer</code> via autoboxing.</td>
+                    </tr>
+                    <tr>
+                        <td>Are wrapper classes immutable?</td>
+                        <td>Yes, their values cannot be changed after creation.</td>
+                    </tr>
+                    <tr>
+                        <td>What is the risk with unboxing?</td>
+                        <td>NullPointerException if wrapper is null.</td>
+                    </tr>
+                    <tr>
+                        <td>Difference between valueOf() and parseInt()?</td>
+                        <td>valueOf() returns Integer, parseInt() returns int.</td>
                     </tr>
                 </tbody>
             </table>
@@ -503,6 +512,7 @@ class Demo&lt;T extends Number&gt; {
                     <li><code>&lt;? extends Number&gt;</code> – any subclass of Number</li>
                     <li><code>&lt;? super Integer&gt;</code> – any superclass of Integer</li>
                 </ul>
+                <p><strong>Analogy:</strong> Wildcards are like jokers in cards – flexible but with rules.</p>
 
                 <h3 style="color: black;">✅ Summary</h3>
                 <ul>
@@ -511,6 +521,59 @@ class Demo&lt;T extends Number&gt; {
                     <li>Makes code more readable and safer</li>
                 </ul>
             </div>
+
+            <div class="section">
+                <h2>🤔 Interactive Self-Quiz for Generics</h2>
+                <p>Test your understanding with these expandable questions. Click to reveal answers.</p>
+                <details>
+                    <summary>What problem do generics solve?</summary>
+                    <p>Type safety in collections without casting.</p>
+                </details>
+                <details>
+                    <summary>What is <? extends T>?</summary>
+                    <p>Upper bounded wildcard – subtypes of T.</p>
+                </details>
+                <details>
+                    <summary>Can generics use primitives?</summary>
+                    <p>No, only reference types; use wrappers for primitives.</p>
+                </details>
+            </div>
+
+            <h2 style="color: black;">📌 Interview Point of View (Generics)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>🔹 Question</th>
+                        <th>💬 Expected Answer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>What are generics in Java?</td>
+                        <td>Parameterized types for type-safe code.</td>
+                    </tr>
+                    <tr>
+                        <td>Benefits of generics?</td>
+                        <td>Type safety, no casting, compile-time checks.</td>
+                    </tr>
+                    <tr>
+                        <td>What is erasure?</td>
+                        <td>Generics info removed at compile-time for backward compatibility.</td>
+                    </tr>
+                    <tr>
+                        <td>Difference between List<?> and List<Object>?</td>
+                        <td>List<?> is raw wildcard, can't add; List<Object> can add Objects.</td>
+                    </tr>
+                    <tr>
+                        <td>What are bounded generics?</td>
+                        <td>Restrict types, e.g., <T extends Number>.</td>
+                    </tr>
+                    <tr>
+                        <td>PECS rule?</td>
+                        <td>Producer Extends, Consumer Super for wildcards.</td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
 
@@ -529,6 +592,7 @@ class Demo&lt;T extends Number&gt; {
             <div class="highlight-box">
                 <strong>Examples:</strong> <code>Smalltalk</code>, <code>Ruby</code>, <code>Scala</code>
             </div>
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjJScqnTo2MqMl59R-L_QLiQ7gRa0FJ-0LNTVXTR4u7pdFROlkPdR2P2cN2yfZt34pug8mJ7W6s9ozxu_vwlKvA0m_Wi8oz7p6FDMon3FaQYcb0RlA7XqAUjVo2k9-efsHCuD2iiAOWAkg/w640-h360/image.png" alt="Why Java is not Fully OOP Infographic" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
         </div>
 
         <div class="section">
@@ -544,7 +608,7 @@ class Demo&lt;T extends Number&gt; {
                     <tr>
                         <td><strong>Primitive Types</strong></td>
                         <td>Java has <code>int</code>, <code>float</code>, <code>char</code>, etc., which are not
-                            objects.</td>
+                            objects. (For performance reasons)</td>
                     </tr>
                     <tr>
                         <td><strong>Static Methods/Variables</strong></td>
@@ -560,20 +624,10 @@ class Demo&lt;T extends Number&gt; {
                     </tr>
                 </tbody>
             </table>
+            <p><strong>Why Primitives?</strong> Faster execution, less memory – primitives on stack, objects on heap.</p>
         </div>
 
-        <div class="section">
-            <h2>📘 Real-World Analogy</h2>
-            <div class="analogy">
-                <h3>🔧 Toolkit Analogy</h3>
-                <p>Think of a programming language like a <strong>toolkit</strong>.</p>
-                <p>In Java, sometimes it uses <strong>tools outside the object world</strong> (like <code>int</code>
-                    instead of <code>Integer</code>), which breaks the pure object-oriented rule.</p>
-                <p>Whereas in Smalltalk:</p>
-                <pre style="background: #2d3748; color: #e2e8f0; padding: 15px; border-radius: 5px; margin: 10px 0;">
-3 + 4   "Even 3 is an object, and + is a message"</pre>
-            </div>
-        </div>
+        
 
         <div class="section">
             <h2>🔄 Comparison: Java vs Pure OOP</h2>
@@ -597,6 +651,23 @@ class Demo&lt;T extends Number&gt; {
                     </ul>
                 </div>
             </div>
+        </div>
+
+        <div class="section">
+            <h2>🤔 Interactive Self-Quiz for OOP Concepts</h2>
+            <p>Test your understanding with these expandable questions. Click to reveal answers.</p>
+            <details>
+                <summary>Why primitives in Java?</summary>
+                <p>For better performance and memory efficiency.</p>
+            </details>
+            <details>
+                <summary>Is static method OOP?</summary>
+                <p>No, as it doesn't require an object instance.</p>
+            </details>
+            <details>
+                <summary>Example of pure OOP language?</summary>
+                <p>Smalltalk or Ruby.</p>
+            </details>
         </div>
 
         <div class="interview-section">
@@ -624,6 +695,14 @@ class Demo&lt;T extends Number&gt; {
                     <tr>
                         <td>What breaks pure OOP in Java?</td>
                         <td><code>int</code>, <code>boolean</code>, static methods/fields, etc.</td>
+                    </tr>
+                    <tr>
+                        <td>Can Java be considered OOP?</td>
+                        <td>Yes, it's OOP but not purely due to non-object elements.</td>
+                    </tr>
+                    <tr>
+                        <td>Advantages of not being pure OOP?</td>
+                        <td>Better performance with primitives, easier static utilities.</td>
                     </tr>
                 </tbody>
             </table>
@@ -656,6 +735,7 @@ class Demo&lt;T extends Number&gt; {
                 <li><strong>Autoboxing</strong> = primitive to object | <strong>Unboxing</strong> = object to primitive
                 </li>
                 <li>Java is <strong>not fully object-oriented</strong> due to use of primitives and statics</li>
+                <li><strong>Generics</strong>: Type-safe, reusable code with &lt;T&gt;</li>
             </ul>
         </div>
     </div>

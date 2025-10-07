@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
             margin: 0 auto;
             background: white;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             padding: 30px;
         }
 
@@ -133,10 +134,11 @@
             background: white;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -198,13 +200,16 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>MySQL Procedural SQL Interview Guide</h1>
-        
+
         <div class="intro">
             <h2>Introduction to Procedural SQL in MySQL</h2>
-            <p><strong>MySQL's Procedural SQL</strong> (also known as MySQL stored programs) allows you to write logic-driven, reusable code <strong>inside the database itself</strong>. Unlike basic SQL (which is declarative), procedural SQL introduces:</p>
+            <p><strong>MySQL's Procedural SQL</strong> (also known as MySQL stored programs) allows you to write
+                logic-driven, reusable code <strong>inside the database itself</strong>. Unlike basic SQL (which is
+                declarative), procedural SQL introduces:</p>
             <ul>
                 <li>Variables</li>
                 <li>Loops</li>
@@ -218,17 +223,19 @@
         <div class="section-divider"></div>
 
         <h2>1. Variables in MySQL</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>Variables are used to store values temporarily in memory. You must declare them using <span class="code-inline">DECLARE</span> and assign using <span class="code-inline">SET</span>.</p>
+            <p>Variables are used to store values temporarily in memory. You must declare them using <span
+                    class="code-inline">DECLARE</span> and assign using <span class="code-inline">SET</span>.</p>
         </div>
 
         <div class="key-points">
             <h4>📌 Key Points:</h4>
             <ul>
                 <li>Scope is <strong>within the block</strong> they are declared.</li>
-                <li>You can define data types like <span class="code-inline">INT</span>, <span class="code-inline">VARCHAR</span>, <span class="code-inline">DECIMAL</span>, etc.</li>
+                <li>You can define data types like <span class="code-inline">INT</span>, <span
+                        class="code-inline">VARCHAR</span>, <span class="code-inline">DECIMAL</span>, etc.</li>
             </ul>
         </div>
 
@@ -239,10 +246,11 @@ SET v_salary = 45000;</pre>
         <div class="section-divider"></div>
 
         <h2>2. Control Structures</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>Control structures allow <strong>conditional</strong> and <strong>repetitive</strong> execution of code. MySQL supports:</p>
+            <p>Control structures allow <strong>conditional</strong> and <strong>repetitive</strong> execution of code.
+                MySQL supports:</p>
             <ul>
                 <li>IF...THEN...ELSE</li>
                 <li>CASE</li>
@@ -291,10 +299,18 @@ END REPEAT;</pre>
         <div class="section-divider"></div>
 
         <h2>3. Stored Procedures</h2>
-        
+        <pre>
+CREATE PROCEDURE CalculateTotalSalary()
+BEGIN
+    SELECT SUM(salary) AS TotalSalary
+    FROM Employees;
+END;
+</pre>
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>A <strong>stored procedure</strong> is a named set of SQL statements saved in the database. It performs <strong>an action</strong> but does <strong>not return a value directly</strong> (though OUT parameters can be used).</p>
+            <p>A <strong>stored procedure</strong> is a named set of SQL statements saved in the database. It performs
+                <strong>an action</strong> but does <strong>not return a value directly</strong> (though OUT parameters
+                can be used).</p>
         </div>
 
         <div class="key-points">
@@ -303,6 +319,11 @@ END REPEAT;</pre>
                 <li>Reusability</li>
                 <li>Modularity</li>
                 <li>Improved performance (stored once, parsed once)</li>
+            </ul>
+            <p><h4>When to use:</h4></p>
+            <ul>
+                <li>When a certain query or set of queries needs to be executed frequently.</li>
+                <li>When you want to improve performance by storing and reusing precompiled SQL code.</li>
             </ul>
         </div>
 
@@ -315,10 +336,11 @@ END;</pre>
         <div class="section-divider"></div>
 
         <h2>4. Stored Functions</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>A <strong>stored function</strong> is like a procedure but it <strong>returns a single value</strong> directly using <span class="code-inline">RETURN</span>.</p>
+            <p>A <strong>stored function</strong> is like a procedure but it <strong>returns a single value</strong>
+                directly using <span class="code-inline">RETURN</span>.</p>
         </div>
 
         <div class="use-case">
@@ -340,10 +362,12 @@ END;</pre>
         <div class="section-divider"></div>
 
         <h2>5. Triggers</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>A <strong>trigger</strong> is a block of code that <strong>automatically runs</strong> in response to events like <span class="code-inline">INSERT</span>, <span class="code-inline">UPDATE</span>, or <span class="code-inline">DELETE</span>.</p>
+            <p>A <strong>trigger</strong> is a block of code that <strong>automatically runs</strong> in response to
+                events like <span class="code-inline">INSERT</span>, <span class="code-inline">UPDATE</span>, or <span
+                    class="code-inline">DELETE</span>.</p>
         </div>
 
         <div class="key-points">
@@ -375,10 +399,11 @@ END;</pre>
         <div class="section-divider"></div>
 
         <h2>6. Cursors</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>A <strong>cursor</strong> is a pointer that allows <strong>row-by-row processing</strong> of query results.</p>
+            <p>A <strong>cursor</strong> is a pointer that allows <strong>row-by-row processing</strong> of query
+                results.</p>
         </div>
 
         <div class="key-points">
@@ -416,7 +441,7 @@ CLOSE cur;</pre>
         <div class="section-divider"></div>
 
         <h2>7. Exception Handling (HANDLERS)</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
             <p>MySQL lets you handle exceptions using <strong>DECLARE HANDLER</strong> statements.</p>
@@ -446,7 +471,7 @@ CLOSE cur;</pre>
         <div class="section-divider"></div>
 
         <h2>8. Parameters (IN, OUT, INOUT)</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
             <p>Procedures can accept and return parameters:</p>
@@ -470,7 +495,7 @@ SELECT @result;</pre>
         <div class="section-divider"></div>
 
         <h2>9. Events (Scheduled Jobs)</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
             <p>An <strong>event</strong> is a scheduled task run at a specific time or interval.</p>
@@ -496,10 +521,12 @@ DO
         <div class="section-divider"></div>
 
         <h2>10. DELIMITER</h2>
-        
+
         <div class="theory">
             <h4>📘 Theory:</h4>
-            <p>The <span class="code-inline">DELIMITER</span> command is <strong>not SQL</strong>, but a <strong>MySQL client instruction</strong> used to change the end-of-statement marker so you can define complex blocks (which may include <span class="code-inline">;</span> inside them).</p>
+            <p>The <span class="code-inline">DELIMITER</span> command is <strong>not SQL</strong>, but a <strong>MySQL
+                    client instruction</strong> used to change the end-of-statement marker so you can define complex
+                blocks (which may include <span class="code-inline">;</span> inside them).</p>
         </div>
 
         <h4>✅ Usage:</h4>
@@ -513,7 +540,7 @@ DELIMITER ;</pre>
         <div class="section-divider"></div>
 
         <h2>11. Difference Between Procedure vs Function</h2>
-        
+
         <table>
             <thead>
                 <tr>
@@ -553,11 +580,14 @@ DELIMITER ;</pre>
             <ol>
                 <li>Learn how to <strong>use parameters and cursors inside procedures</strong>.</li>
                 <li>Understand <strong>trigger types and timing</strong>.</li>
-                <li>Practice how <strong>exception handling</strong> works with <span class="code-inline">HANDLER</span>.</li>
-                <li>Know the <strong>differences</strong> between <strong>stored procedure, function, trigger</strong>.</li>
+                <li>Practice how <strong>exception handling</strong> works with <span
+                        class="code-inline">HANDLER</span>.</li>
+                <li>Know the <strong>differences</strong> between <strong>stored procedure, function, trigger</strong>.
+                </li>
                 <li>Be ready to <strong>write basic procedure/function</strong> on the spot.</li>
             </ol>
         </div>
     </div>
 </body>
+
 </html>

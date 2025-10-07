@@ -225,6 +225,36 @@
             border-top: 4px solid #4299e1;
         }
 
+        .diagram {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .diagram img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .diagram img:hover {
+            transform: scale(1.05);
+        }
+
+        details {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -253,14 +283,14 @@
     <div class="container">
         <div class="header">
             <h1>☕ Java I/O Streams and File Handling</h1>
-            <p>Complete Guide with Examples and Best Practices</p>
+            <p>Complete Guide with Examples, Best Practices, and Interview Preparation</p>
         </div>
 
         <!-- Section 1: Introduction -->
         <div class="section">
             <div class="section-header">✅ 1. What is Java I/O?</div>
             <div class="section-content">
-                <p><strong>"I/O" means Input and Output</strong></p>
+                <p><strong>"I/O" means Input and Output</strong>. Java I/O is used to perform read and write operations with various sources like files, networks, keyboards, etc.</p>
                 <div class="intro-grid">
                     <div class="intro-card">
                         <h4>📥 Input</h4>
@@ -273,6 +303,9 @@
                         <p><em>Example: Writing to a file</em></p>
                     </div>
                 </div>
+                <div class="highlight">
+                    <p>Java I/O is part of the <code>java.io</code> package and provides abstractions for reading and writing data.</p>
+                </div>
             </div>
         </div>
 
@@ -281,7 +314,7 @@
             <div class="section-header">✅ 2. Java Streams Concept</div>
             <div class="section-content">
                 <div class="highlight">
-                    <p>A <strong>stream</strong> is like a <strong>pipe</strong> or <strong>channel</strong> that flows data.</p>
+                    <p>A <strong>stream</strong> is like a <strong>pipe</strong> or <strong>channel</strong> that flows data in a sequence. Streams can be chained together for more complex operations.</p>
                 </div>
                 <div class="intro-grid">
                     <div class="intro-card">
@@ -312,24 +345,180 @@
                     <tbody>
                         <tr>
                             <td><strong>Byte Stream</strong></td>
-                            <td>Handles <strong>binary data</strong></td>
-                            <td>Images, PDFs, audio</td>
+                            <td>Handles <strong>binary data</strong> (8 bits)</td>
+                            <td>Images, PDFs, audio, any non-text data</td>
                         </tr>
                         <tr>
                             <td><strong>Character Stream</strong></td>
-                            <td>Handles <strong>text data</strong></td>
-                            <td>Text files, strings</td>
+                            <td>Handles <strong>text data</strong> (16 bits Unicode)</td>
+                            <td>Text files, strings, handling character encoding</td>
                         </tr>
                     </tbody>
                 </table>
+                <details>
+                    <summary>More on Byte vs Character Streams</summary>
+                    <p>Byte streams are low-level and operate on raw bytes, while character streams handle encoding and decoding automatically, making them suitable for internationalized text.</p>
+                </details>
             </div>
+        </div>
+
+        <!-- New Section: Stream Class Hierarchy -->
+        <div class="section">
+            <div class="section-header">✅ 3.1 Stream Class Hierarchy</div>
+            <div class="section-content">
+                <p>Understanding the class hierarchy helps in choosing the right stream for the task. Here's an interactive diagram (hover to zoom):</p>
+                <div class="diagram">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250904151536944343/byte_streams_.webp" alt="Java IO Stream Hierarchy Diagram 1">
+                    <p>Java Byte Stream Hierarchy</p>
+                </div>
+                <div class="diagram">
+                    <img src="https://chortle.ccsu.edu/javaLessons/chap103/ioHierarchyTop.gif" alt="Java IO Stream Hierarchy Diagram 2">
+                    <p>Java I/O Class Hierarchy </p>
+                </div>
+                <div class="diagram">
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250904151613336166/character_streams.webp" alt="Java IO Stream Hierarchy Diagram 3">
+                    <p>Java Character Stream Hierarchy</p>
+                </div>
+                <div class="diagram">
+                    <img src="https://www.tutorialspoint.com/java/images/file_io.jpg" alt="Java IO Stream Hierarchy Diagram 4">
+                    <p>Java Object Stream Hierarchy</p>
+                </div>
+            </div>
+            <h4>🔹 Important Stream Methods</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Method</th>
+                            <th>Description</th>
+                            <th>Return Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>InputStream</code></td>
+                            <td><code>read()</code></td>
+                            <td>Reads the next byte of data</td>
+                            <td><code>int</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>InputStream</code></td>
+                            <td><code>read(byte[])</code></td>
+                            <td>Reads bytes into an array</td>
+                            <td><code>int</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>InputStream</code></td>
+                            <td><code>available()</code></td>
+                            <td>Returns an estimate of available bytes to read</td>
+                            <td><code>int</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>InputStream</code></td>
+                            <td><code>skip(long)</code></td>
+                            <td>Skips over and discards specified bytes</td>
+                            <td><code>long</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>InputStream</code></td>
+                            <td><code>close()</code></td>
+                            <td>Closes the input stream</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>OutputStream</code></td>
+                            <td><code>write(int)</code></td>
+                            <td>Writes a single byte</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>OutputStream</code></td>
+                            <td><code>write(byte[])</code></td>
+                            <td>Writes an array of bytes</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>OutputStream</code></td>
+                            <td><code>flush()</code></td>
+                            <td>Flushes any buffered data to the output</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>OutputStream</code></td>
+                            <td><code>close()</code></td>
+                            <td>Closes the output stream</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Reader</code></td>
+                            <td><code>read()</code></td>
+                            <td>Reads a single character</td>
+                            <td><code>int</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Reader</code></td>
+                            <td><code>read(char[])</code></td>
+                            <td>Reads characters into an array</td>
+                            <td><code>int</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Reader</code></td>
+                            <td><code>close()</code></td>
+                            <td>Closes the reader</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Writer</code></td>
+                            <td><code>write(int)</code></td>
+                            <td>Writes a single character</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Writer</code></td>
+                            <td><code>write(char[])</code></td>
+                            <td>Writes an array of characters</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Writer</code></td>
+                            <td><code>write(String)</code></td>
+                            <td>Writes a string</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Writer</code></td>
+                            <td><code>flush()</code></td>
+                            <td>Flushes buffered data to the output</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>Writer</code></td>
+                            <td><code>close()</code></td>
+                            <td>Closes the writer</td>
+                            <td><code>void</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>BufferedReader</code></td>
+                            <td><code>readLine()</code></td>
+                            <td>Reads a line of text</td>
+                            <td><code>String</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>BufferedWriter</code></td>
+                            <td><code>newLine()</code></td>
+                            <td>Writes a line separator</td>
+                            <td><code>void</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+           
         </div>
 
         <!-- Section 4: Byte Streams -->
         <div class="section">
             <div class="section-header">✅ 4. Byte Streams (For Binary Data)</div>
             <div class="section-content">
-                <p>Byte streams read/write <strong>1 byte at a time</strong>.</p>
+                <p>Byte streams read/write <strong>1 byte at a time</strong>. They are abstract classes: <code>InputStream</code> and <code>OutputStream</code>.</p>
                 
                 <h4>🔹 Read a file using Byte Stream</h4>
                 <div class="code-title">ReadByteExample.java</div>
@@ -362,6 +551,26 @@ public class WriteByteExample {
     }
 }</pre>
                 </div>
+                <details>
+                    <summary>Using try-with-resources for Auto-closing</summary>
+                    <div class="code-block">
+                        <pre>import java.io.*;
+
+public class ReadByteWithResources {
+    public static void main(String[] args) {
+        try (FileInputStream fis = new FileInputStream("data.txt")) {
+            int i;
+            while ((i = fis.read()) != -1) {
+                System.out.print((char) i);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+                    </div>
+                    <p>This ensures streams are closed automatically, preventing resource leaks.</p>
+                </details>
             </div>
         </div>
 
@@ -369,7 +578,7 @@ public class WriteByteExample {
         <div class="section">
             <div class="section-header">✅ 5. Character Streams (For Text Data)</div>
             <div class="section-content">
-                <p>Character streams read/write <strong>characters (2 bytes)</strong>.</p>
+                <p>Character streams read/write <strong>characters (2 bytes)</strong>. Abstract classes: <code>Reader</code> and <code>Writer</code>.</p>
                 
                 <h4>🔹 Read a file using Character Stream</h4>
                 <div class="code-title">ReadCharExample.java</div>
@@ -401,6 +610,21 @@ public class WriteCharExample {
     }
 }</pre>
                 </div>
+                <details>
+                    <summary>Example with PrintWriter for formatted output</summary>
+                    <div class="code-block">
+                        <pre>import java.io.*;
+
+public class PrintWriterExample {
+    public static void main(String[] args) throws Exception {
+        PrintWriter pw = new PrintWriter(new FileWriter("data.txt"));
+        pw.println("Hello");
+        pw.printf("Formatted: %d %s", 10, "items");
+        pw.close();
+    }
+}</pre>
+                    </div>
+                </details>
             </div>
         </div>
 
@@ -409,7 +633,7 @@ public class WriteCharExample {
             <div class="section-header">✅ 6. Buffered Streams (Fast Reading/Writing)</div>
             <div class="section-content">
                 <div class="highlight">
-                    <p><strong>Buffered streams make input/output faster</strong> by reducing the number of system calls.</p>
+                    <p><strong>Buffered streams make input/output faster</strong> by reducing the number of system calls through buffering data in memory.</p>
                 </div>
                 
                 <h4>🔹 BufferedReader for fast reading</h4>
@@ -428,6 +652,21 @@ public class BufferedReadExample {
     }
 }</pre>
                 </div>
+
+                <h4>🔹 BufferedWriter for fast writing</h4>
+                <div class="code-title">BufferedWriteExample.java</div>
+                <div class="code-block">
+                    <pre>import java.io.*;
+
+public class BufferedWriteExample {
+    public static void main(String[] args) throws Exception {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("data.txt"));
+        bw.write("Efficient writing!");
+        bw.newLine();
+        bw.close();
+    }
+}</pre>
+                </div>
             </div>
         </div>
 
@@ -435,8 +674,94 @@ public class BufferedReadExample {
         <div class="section">
             <div class="section-header">✅ 7. File Handling (Creating, Reading, Writing, Deleting Files)</div>
             <div class="section-content">
-                <p>Java has a <code>File</code> class to handle files.</p>
-                
+                <p>Java has a <code>File</code> class to handle files and directories.</p>
+                 <h4>🔹 Important File Class Methods</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Description</th>
+                            <th>Return Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>createNewFile()</code></td>
+                            <td>Creates a new empty file if it doesn't exist</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>delete()</code></td>
+                            <td>Deletes the file or directory</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>exists()</code></td>
+                            <td>Checks if the file or directory exists</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>getName()</code></td>
+                            <td>Returns the name of the file or directory</td>
+                            <td><code>String</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>getAbsolutePath()</code></td>
+                            <td>Returns the absolute pathname string</td>
+                            <td><code>String</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>length()</code></td>
+                            <td>Returns the size of the file in bytes</td>
+                            <td><code>long</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>listFiles()</code></td>
+                            <td>Returns an array of files in the directory</td>
+                            <td><code>File[]</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>mkdir()</code></td>
+                            <td>Creates a directory</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>mkdirs()</code></td>
+                            <td>Creates a directory and any necessary parent directories</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>canRead()</code></td>
+                            <td>Checks if the file is readable</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>canWrite()</code></td>
+                            <td>Checks if the file is writable</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>isFile()</code></td>
+                            <td>Checks if the path is a regular file</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>isDirectory()</code></td>
+                            <td>Checks if the path is a directory</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>lastModified()</code></td>
+                            <td>Returns the last modified time in milliseconds</td>
+                            <td><code>long</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>setReadOnly()</code></td>
+                            <td>Sets the file to read-only</td>
+                            <td><code>boolean</code></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="steps">
                     <div class="step">
                         <h4>Create a file</h4>
@@ -511,6 +836,43 @@ public class DeleteFileExample {
 }</pre>
                         </div>
                     </div>
+
+                    <div class="step">
+                        <h4>Create a directory</h4>
+                        <div class="code-title">CreateDirectoryExample.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+public class CreateDirectoryExample {
+    public static void main(String[] args) {
+        File dir = new File("mydir");
+        if (dir.mkdir()) {
+            System.out.println("Directory created");
+        } else {
+            System.out.println("Directory already exists or failed");
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <h4>List files in a directory</h4>
+                        <div class="code-title">ListFilesExample.java</div>
+                        <div class="code-block">
+                            <pre>import java.io.*;
+
+public class ListFilesExample {
+    public static void main(String[] args) {
+        File dir = new File(".");
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            System.out.println(file.getName());
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -520,7 +882,7 @@ public class DeleteFileExample {
             <div class="section-header">✅ 8. Serialization (Save Object to File)</div>
             <div class="section-content">
                 <div class="highlight">
-                    <p><strong>Serialization = Saving object to file</strong></p>
+                    <p><strong>Serialization = Saving object to file</strong>. Deserialization = Reading object from file.</p>
                 </div>
                 
                 <div class="steps">
@@ -544,23 +906,121 @@ class Student implements Serializable {
                     <div class="step">
                         <h4>Serialize (save object)</h4>
                         <div class="code-block">
-                            <pre>ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student.ser"));
-Student s = new Student(1, "Deepak");
-oos.writeObject(s);
-oos.close();</pre>
+                            <pre>import java.io.*;
+
+public class SerializeExample {
+    public static void main(String[] args) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("student.ser"));
+        Student s = new Student(1, "Deepak");
+        oos.writeObject(s);
+        oos.close();
+    }
+}</pre>
                         </div>
                     </div>
 
                     <div class="step">
                         <h4>Deserialize (read object)</h4>
                         <div class="code-block">
-                            <pre>ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.ser"));
-Student s = (Student) ois.readObject();
-System.out.println(s.id + " " + s.name);
-ois.close();</pre>
+                            <pre>import java.io.*;
+
+public class DeserializeExample {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("student.ser"));
+        Student s = (Student) ois.readObject();
+        System.out.println(s.id + " " + s.name);
+        ois.close();
+    }
+}</pre>
                         </div>
                     </div>
                 </div>
+                <details>
+                    <summary>Transient and SerialVersionUID</summary>
+                    <p>Use <code>transient</code> keyword to exclude fields from serialization. <code>serialVersionUID</code> is used for version control during deserialization.</p>
+                    <div class="code-block">
+                        <pre>class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    transient int temp; // not serialized
+    // ...
+}</pre>
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- New Section: Common Exceptions -->
+        <div class="section">
+            <div class="section-header">✅ 8.1 Common I/O Exceptions</div>
+            <div class="section-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Exception</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>IOException</code></td>
+                            <td>General I/O error</td>
+                        </tr>
+                        <tr>
+                            <td><code>FileNotFoundException</code></td>
+                            <td>File does not exist</td>
+                        </tr>
+                        <tr>
+                            <td><code>EOFException</code></td>
+                            <td>End of file reached unexpectedly</td>
+                        </tr>
+                        <tr>
+                            <td><code>InvalidClassException</code></td>
+                            <td>Issue during deserialization</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- New Section: Best Practices -->
+        <div class="section">
+            <div class="section-header">✅ 8.2 Best Practices</div>
+            <div class="section-content">
+                <ul>
+                    <li>Always close streams in finally block or use try-with-resources (Java 7+).</li>
+                    <li>Use buffered streams for performance.</li>
+                    <li>Handle exceptions properly.</li>
+                    <li>For large files, read in chunks.</li>
+                    <li>Use NIO for non-blocking I/O in high-performance apps.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- New Section: Java NIO -->
+        <div class="section">
+            <div class="section-header">✅ 8.3 Introduction to Java NIO (Advanced)</div>
+            <div class="section-content">
+                <p>Java NIO (New I/O) is an alternative to standard I/O, introduced in Java 1.4. It provides non-blocking I/O, channels, buffers, and selectors.</p>
+                <div class="highlight">
+                    <p>Key classes: <code>Path</code>, <code>Files</code>, <code>ByteBuffer</code>, <code>Channel</code>.</p>
+                </div>
+                <h4>🔹 Read file using NIO</h4>
+                <div class="code-block">
+                    <pre>import java.nio.file.*;
+import java.io.IOException;
+
+public class NIOReadExample {
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("data.txt");
+        byte[] bytes = Files.readAllBytes(path);
+        System.out.println(new String(bytes));
+    }
+}</pre>
+                </div>
+                <details>
+                    <summary>Difference between IO and NIO</summary>
+                    <p>IO is stream-oriented and blocking, NIO is buffer-oriented and non-blocking.</p>
+                </details>
             </div>
         </div>
 
@@ -612,6 +1072,10 @@ ois.close();</pre>
                             <td>Load object</td>
                             <td><code>ObjectInputStream</code></td>
                         </tr>
+                        <tr>
+                            <td>NIO File Operations</td>
+                            <td><code>Files</code>, <code>Path</code></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -627,23 +1091,80 @@ ois.close();</pre>
                     <div class="question">
                         <strong>1. Difference between FileReader and BufferedReader?</strong>
                         <p>• FileReader reads char by char.</p>
-                        <p>• BufferedReader reads full line, faster.</p>
+                        <p>• BufferedReader reads full line, faster, and buffers data for efficiency.</p>
                     </div>
 
                     <div class="question">
                         <strong>2. What is Serialization?</strong>
-                        <p>• Saving an object's state into a file.</p>
+                        <p>• Saving an object's state into a file or stream. The class must implement Serializable interface.</p>
                     </div>
 
                     <div class="question">
                         <strong>3. What's the difference between byte and character stream?</strong>
-                        <p>• Byte stream → binary data</p>
-                        <p>• Character stream → text data</p>
+                        <p>• Byte stream → binary data, operates on 8-bit bytes.</p>
+                        <p>• Character stream → text data, operates on 16-bit Unicode characters, handles encoding.</p>
                     </div>
 
                     <div class="question">
                         <strong>4. How do you read large files efficiently?</strong>
-                        <p>• Use <code>BufferedReader</code></p>
+                        <p>• Use <code>BufferedReader</code> or <code>BufferedInputStream</code> to reduce I/O operations.</p>
+                        <p>• Read in chunks using byte arrays.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>5. What is the purpose of transient keyword in serialization?</strong>
+                        <p>• It marks fields that should not be serialized, like sensitive data or derived fields.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>6. Explain try-with-resources.</strong>
+                        <p>• Introduced in Java 7, it automatically closes resources like streams after the try block, even if exceptions occur.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>7. Difference between Java IO and NIO?</strong>
+                        <p>• IO is blocking and stream-oriented.</p>
+                        <p>• NIO is non-blocking, buffer-oriented, and supports selectors for scalability.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>8. How to copy a file in Java?</strong>
+                        <p>• Use <code>Files.copy(source, target)</code> in NIO, or manually read from InputStream and write to OutputStream.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>9. What is ObjectOutputStream and ObjectInputStream?</strong>
+                        <p>• Used for serialization and deserialization of objects.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>10. How to handle FileNotFoundException?</strong>
+                        <p>• It's a subclass of IOException. Check if the file exists before opening, or catch and handle gracefully.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>11. What are Filter Streams?</strong>
+                        <p>• They add functionality to other streams, like DataInputStream for reading primitives.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>12. Explain RandomAccessFile.</strong>
+                        <p>• Allows reading and writing at any position in the file using seek().</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>13. How to get the size of a file?</strong>
+                        <p>• Use <code>File.length()</code> or <code>Files.size(path)</code>.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>14. What is PipedInputStream and PipedOutputStream?</strong>
+                        <p>• Used for communication between threads, like pipes.</p>
+                    </div>
+
+                    <div class="question">
+                        <strong>15. Why use Scanner for input?</strong>
+                        <p>• It can parse primitive types and strings easily from input sources.</p>
                     </div>
                 </div>
             </div>

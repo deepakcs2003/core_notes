@@ -164,6 +164,17 @@
             color: black;
             border-left: 4px solid white;
         }
+        details {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -180,8 +191,9 @@
                 <li>Handle <span class="highlight">class information</span></li>
             </ul>
             <div class="key-point">
-                <strong>👉 Key Point:</strong> Java automatically manages memory using the <strong>JVM (Java Virtual Machine)</strong> and <strong>Garbage Collector</strong> (like a cleaner).
+                <strong>👉 Key Point:</strong> Java automatically manages memory using the <strong>JVM (Java Virtual Machine)</strong> and <strong>Garbage Collector</strong> (like a cleaner). This prevents memory leaks common in languages like C/C++ where manual management is required.
             </div>
+            <p><strong>Mnemonic to Remember:</strong> JVM is like a "Janitor Vacuuming Messes" – it cleans up automatically so you don't have to worry about forgetting to free memory.</p>
         </div>
 
         <div class="section">
@@ -190,111 +202,120 @@
                 <p><strong>Imagine your computer is a house:</strong></p>
                 <img src="https://www.softwaretestingo.com/wp-content/uploads/2023/09/JVM-Memory-Management-In-Java.png" alt="JVM Memory Management" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
                 <ul>
-                    <li><strong>Heap</strong> = Big cupboard shared by everyone — stores all <strong>objects</strong></li>
-                    <li><strong>Stack</strong> = Small desk each person (thread) uses — stores <strong>local variables</strong> and <strong>method info</strong></li>
-                    <li><strong>Method Area</strong> = Library — stores <strong>blueprints</strong> (class info, static data)</li>
-                    <li><strong>PC Register</strong> = Pointer showing what you're currently doing</li>
-                    <li><strong>Native Stack</strong> = A side tool area if you call <strong>C/C++ functions</strong></li>
+                    <li><strong>Heap</strong> = Big cupboard shared by everyone — stores all <strong>objects</strong> (think of it as a party hall where objects come and go).</li>
+                    <li><strong>Stack</strong> = Small desk each person (thread) uses — stores <strong>local variables</strong> and <strong>method info</strong> (like a stack of plates, last in first out).</li>
+                    <li><strong>Method Area</strong> = Library — stores <strong>blueprints</strong> (class info, static data).</li>
+                    <li><strong>PC Register</strong> = Pointer showing what you're currently doing.</li>
+                    <li><strong>Native Stack</strong> = A side tool area if you call <strong>C/C++ functions</strong>.</li>
                 </ul>
+                <p><strong>Easy to Remember:</strong> Heap for "Heavy Objects", Stack for "Short-term Stuff".</p>
             </div>
         </div>
 
         <div class="section">
             <h2>📦 Java Memory Areas (Explained Simply)</h2>
             <img src="https://miro.medium.com/max/1200/1*mt3-woLnTOy73WsiS54xQA.png" alt="Java Memory Areas" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
-           <div class="memory-area">
-    <h3>1. Heap Memory (Main Storage)</h3>
-    <ul>
-        <li><strong>Stores:</strong> 
-            <ul>
-                <li>All objects created using <code>new</code> keyword</li>
-                <li>Instance variables</li>
-                <li>Runtime constant pool (part of Method Area)</li>
-                <li>String Pool (special memory area inside Heap)</li>
-            </ul>
-        </li>
-        <li><strong>Shared by:</strong> All threads</li>
-        <li><strong>Cleaned by:</strong> Garbage Collector (GC)</li>
-        <li><strong>Divided into:</strong> 
-            <ul>
-                <li><strong>Young Generation:</strong> Newly created objects (Eden + Survivor spaces)</li>
-                <li><strong>Old Generation:</strong> Long-lived objects</li>
-                <li><strong>Metaspace (Java 8+):</strong> Class metadata, method info</li>
-            </ul>
-        </li>
-    </ul>
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20190614230114/JVM-Architecture-diagram.jpg" alt="JVM Memory Areas Overview" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+            <img src="http://brucehenry.github.io/blog/public/2018/02/07/JVM-Memory-Structure/JVM-Memory.png" alt="JVM Memory Structure" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+            <div class="memory-area">
+                <h3>1. Heap Memory (Main Storage)</h3>
+                <img src="https://www.baeldung.com/wp-content/uploads/2018/07/java-heap-stack-diagram.png" alt="Java Heap and Stack Diagram" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+                <img src="https://lh4.googleusercontent.com/RlpxXx62qN0d3x6uc2qlfOYv9SfS9DX-XZYSCJn_pXIbyuSGTxdSjx8mc4nH7H7A57EuE6qnqyryLqpDUANhlsL0nNnWc6HuHtQp1c4k3meXE1kJLppHAu5Br3_CIdoOw4SQSqrI=w1200-h630-p-k-no-nu" alt="Hotspot Heap Structure" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+                <ul>
+                    <li><strong>Stores:</strong> 
+                        <ul>
+                            <li>All objects created using <code>new</code> keyword</li>
+                            <li>Instance variables</li>
+                            <li>Runtime constant pool (part of Method Area)</li>
+                            <li>String Pool (special memory area inside Heap)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Shared by:</strong> All threads</li>
+                    <li><strong>Cleaned by:</strong> Garbage Collector (GC)</li>
+                    <li><strong>Divided into:</strong> 
+                        <ul>
+                            <li><strong>Young Generation:</strong> Newly created objects (Eden + Survivor spaces) – most objects die young, like butterflies.</li>
+                            <li><strong>Old Generation:</strong> Long-lived objects – survivors promoted here.</li>
+                            <li><strong>Metaspace (Java 8+):</strong> Class metadata, method info – replaced PermGen.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>Mnemonic:</strong> Heap = "Huge Elderly Area for Persistent Stuff" (Young for new, Old for survivors).</p>
 
-    <div class="example">
-        <strong>🔧 Example 1:</strong>
-        <pre>String name = new String("Deepak");</pre>
-        <p><strong>👉 Result:</strong> 
-            One <code>"Deepak"</code> in <strong>String Pool</strong> + another new object in <strong>Heap</strong>.
-        </p>
-    </div>
+                <div class="example">
+                    <strong>🔧 Example 1:</strong>
+                    <pre>String name = new String("Deepak");</pre>
+                    <p><strong>👉 Result:</strong> 
+                        One <code>"Deepak"</code> in <strong>String Pool</strong> + another new object in <strong>Heap</strong>.
+                    </p>
+                </div>
 
-    <div class="example">
-        <strong>🔧 Example 2 (String Pool):</strong>
-        <pre>String s1 = "Hello";  
+                <div class="example">
+                    <strong>🔧 Example 2 (String Pool):</strong>
+                    <pre>String s1 = "Hello";  
 String s2 = "Hello";</pre>
-        <p><strong>👉 Result:</strong> Both <code>s1</code> and <code>s2</code> point to the same object in 
-            <strong>String Pool</strong>, no duplicate created.</p>
-    </div>
+                    <p><strong>👉 Result:</strong> Both <code>s1</code> and <code>s2</code> point to the same object in 
+                        <strong>String Pool</strong>, no duplicate created.</p>
+                </div>
 
-    <div class="example">
-        <strong>🔧 Example 3 (intern() method):</strong>
-        <pre>String s1 = new String("World");  
+                <div class="example">
+                    <strong>🔧 Example 3 (intern() method):</strong>
+                    <pre>String s1 = new String("World");  
 String s2 = s1.intern();  
 String s3 = "World";</pre>
-        <p><strong>👉 Result:</strong> 
-            <code>s2</code> and <code>s3</code> refer to the same object in 
-            <strong>String Pool</strong>, but <code>s1</code> is a separate object in Heap.</p>
-    </div>
+                    <p><strong>👉 Result:</strong> 
+                        <code>s2</code> and <code>s3</code> refer to the same object in 
+                        <strong>String Pool</strong>, but <code>s1</code> is a separate object in Heap.</p>
+                </div>
 
-    <div class="note">
-        <p>📌 <strong>Important Notes on Heap & String Pool:</strong></p>
-        <ul>
-            <li>Heap is the biggest memory area in JVM, used for almost all object storage.</li>
-            <li>Memory management in Heap is automatic (handled by Garbage Collector).</li>
-            <li>String Pool optimizes memory by reusing immutable <code>String</code> objects.</li>
-            <li>Too many Strings without pooling can cause <strong>OutOfMemoryError</strong>.</li>
-        </ul>
-    </div>
+                <div class="note">
+                    <p>📌 <strong>Important Notes on Heap & String Pool:</strong></p>
+                    <ul>
+                        <li>Heap is the biggest memory area in JVM, used for almost all object storage.</li>
+                        <li>Memory management in Heap is automatic (handled by Garbage Collector).</li>
+                        <li>String Pool optimizes memory by reusing immutable <code>String</code> objects.</li>
+                        <li>Too many Strings without pooling can cause <strong>OutOfMemoryError</strong>.</li>
+                    </ul>
+                </div>
 
-    <div class="intern-info">
-        <h4>🔑 About <code>intern()</code></h4>
-        <ul>
-            <li><code>intern()</code> is a method of <code>String</code> class.</li>
-            <li>It checks whether the String already exists in the <strong>String Pool</strong>.</li>
-            <li>If it exists → returns reference from the pool.</li>
-            <li>If it doesn’t exist → adds the String to the pool and returns that reference.</li>
-        </ul>
-        <div class="example">
-            <pre>
+                <div class="intern-info">
+                    <h4>🔑 About <code>intern()</code></h4>
+                    <ul>
+                        <li><code>intern()</code> is a method of <code>String</code> class.</li>
+                        <li>It checks whether the String already exists in the <strong>String Pool</strong>.</li>
+                        <li>If it exists → returns reference from the pool.</li>
+                        <li>If it doesn’t exist → adds the String to the pool and returns that reference.</li>
+                    </ul>
+                    <div class="example">
+                        <pre>
 String x = new String("Java");
 String y = x.intern();
 String z = "Java";
 
 System.out.println(x == y); // false
 System.out.println(y == z); // true
-            </pre>
-        </div>
-        <p><strong>👉 Why use <code>intern()</code>?</strong></p>
-        <ul>
-            <li>Helps save memory by avoiding duplicate String objects.</li>
-            <li>Improves performance when many identical Strings are used (e.g., large text processing, XML/JSON parsing).</li>
-            <li>But: Excessive interning may increase GC pressure (trade-off).</li>
-        </ul>
-    </div>
-</div>
+                        </pre>
+                    </div>
+                    <p><strong>👉 Why use <code>intern()</code>?</strong></p>
+                    <ul>
+                        <li>Helps save memory by avoiding duplicate String objects.</li>
+                        <li>Improves performance when many identical Strings are used (e.g., large text processing, XML/JSON parsing).</li>
+                        <li>But: Excessive interning may increase GC pressure (trade-off).</li>
+                    </ul>
+                </div>
+            </div>
 
 
             <div class="memory-area">
                 <h3>2. Stack Memory (Per Thread)</h3>
+                <img src="https://media.geeksforgeeks.org/wp-content/uploads/20250603130602663836/Stack-Vs-Heap-Memory-Allocation.webp" alt="Stack vs Heap Comparison" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+                <img src="https://www.spec-india.com/wp-content/uploads/2023/09/Stack-vs-Heap-Java.jpg" alt="Stack vs Heap Visual" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
                 <ul>
                     <li><strong>Stores:</strong> Local variables, method calls</li>
                     <li><strong>Each thread gets:</strong> Its own stack</li>
                     <li><strong>Cleared when:</strong> Method ends</li>
                 </ul>
+                <p><strong>Mnemonic:</strong> Stack = "Swift Temporary Area for Calls and Keywords" (LIFO like a stack of books).</p>
                 <div class="example">
                     <strong>🔧 Example:</strong>
                     <pre>int a = 10;</pre>
@@ -308,6 +329,7 @@ System.out.println(y == z); // true
                     <li><strong>Stores:</strong> Class definitions, static variables, method names</li>
                     <li><strong>Loaded:</strong> Once per class</li>
                 </ul>
+                <p><strong>Mnemonic:</strong> Method Area = "Master Archive for Templates and Statics".</p>
                 <div class="example">
                     <strong>🔧 Example:</strong>
                     <pre>static int collegeCode = 123;</pre>
@@ -321,6 +343,7 @@ System.out.println(y == z); // true
                     <li>Keeps track of <strong>which line</strong> in the method is being executed</li>
                     <li>Each thread has one</li>
                 </ul>
+                <p><strong>Mnemonic:</strong> PC Register = "Personal Compass for Running Instructions".</p>
             </div>
 
             <div class="memory-area">
@@ -328,6 +351,7 @@ System.out.println(y == z); // true
                 <ul>
                     <li>Only used when you call <strong>native (C/C++) code</strong> from Java using JNI</li>
                 </ul>
+                <p><strong>Mnemonic:</strong> Native Stack = "Niche Space for External Tools".</p>
             </div>
         </div>
 
@@ -367,10 +391,15 @@ System.out.println(y == z); // true
         <div class="section">
             <h2>🧹 What is Garbage Collection?</h2>
             <div class="gc-info">
+                <img src="https://www.oracle.com/webfolder/technetwork/tutorials/obe/java/gc01/images/gcslides/Slide1.png" alt="JVM Architecture with GC" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
+                <img src="https://miro.medium.com/1*lcGAPYaYNWoMj_6e3rJRuA.png" alt="Garbage Collection Execution Flow" style="width:100%; border-radius: 8px; margin-bottom: 20px;">
                 <ul>
                     <li>It <strong>automatically removes unused objects</strong> from the Heap to free memory</li>
                     <li>No need to use <code>free()</code> like in C/C++</li>
+                    <li><strong>Generational GC:</strong> Divides heap into Young (short-lived) and Old (long-lived) for efficiency.</li>
+                    <li><strong>Stop-the-World:</strong> Pauses app during GC – minimize with tuning.</li>
                 </ul>
+                <p><strong>Mnemonic:</strong> GC = "Garbage Cleaner" – like a robot vacuum that runs when the room (heap) is messy.</p>
                 
                 <div class="example">
                     <strong>🔧 Example:</strong>
@@ -421,6 +450,138 @@ s1 = null; <span class="code-comment">// Now the object is not used → eligible
             </table>
         </div>
 
+        <div class="section">
+            <h2>🤔 Interactive Self-Quiz for Interviews</h2>
+            <p>Test your understanding with these expandable questions. Click to reveal answers.</p>
+            <details>
+                <summary>What is the difference between Heap and Stack?</summary>
+                <p>Heap stores objects (shared, GC managed), Stack stores local vars and method calls (per thread, LIFO).</p>
+            </details>
+            <details>
+                <summary>When does an object become eligible for GC?</summary>
+                <p>When it has no live references (null or out of scope).</p>
+            </details>
+            <details>
+                <summary>What are Young and Old Generations?</summary>
+                <p>Young: New objects (Eden + Survivors), Old: Long-lived objects promoted after surviving GC cycles.</p>
+            </details>
+            <details>
+                <summary>What is Stop-the-World?</summary>
+                <p>GC pauses all threads to collect garbage safely.</p>
+            </details>
+            <details>
+                <summary>What are types of references?</summary>
+                <p>Strong (default), Soft (collected when low memory), Weak (collected eagerly), Phantom (for cleanup).</p>
+            </details>
+        </div>
+
+        <div class="section">
+            <h2>💼 Real Interview Questions on Java Memory Management</h2>
+            <p>These are commonly asked questions in interviews, compiled from sources like Baeldung, Medium, JavaCodeGeeks, and in28minutes.</p>
+            <table>
+                <tr>
+                    <th>❓ Question</th>
+                    <th>✅ Answer</th>
+                </tr>
+                <tr>
+                    <td>What Does the Statement “Memory Is Managed in Java” Mean?</td>
+                    <td>Java uses JVM and GC for automatic allocation/deallocation, unlike C where it's manual.</td>
+                </tr>
+                <tr>
+                    <td>What Is Garbage Collection and What Are Its Advantages?</td>
+                    <td>Process to reclaim unused memory. Advantages: No manual free, prevents leaks, focus on logic.</td>
+                </tr>
+                <tr>
+                    <td>Are There Any Disadvantages of Garbage Collection?</td>
+                    <td>Performance impact due to pauses; tune with algorithms like G1 or ZGC.</td>
+                </tr>
+                <tr>
+                    <td>What Is the Meaning of the Term “Stop-The-World”?</td>
+                    <td>Application pauses during GC to allow safe collection.</td>
+                </tr>
+                <tr>
+                    <td>What Are Stack and Heap? What Is Stored in Each?</td>
+                    <td>Stack: Local vars, method calls. Heap: Objects, shared.</td>
+                </tr>
+                <tr>
+                    <td>Describe Generational Garbage Collection.</td>
+                    <td>Heap divided into Young (Eden, Survivors) and Old; minor GC for Young, major for Old.</td>
+                </tr>
+                <tr>
+                    <td>When Does an Object Become Eligible for Garbage Collection?</td>
+                    <td>No live references; null, scope end, or circular without external refs.</td>
+                </tr>
+                <tr>
+                    <td>How Do You Trigger Garbage Collection from Java Code?</td>
+                    <td>System.gc() suggests, but not forced.</td>
+                </tr>
+                <tr>
+                    <td>What Happens When There Is Not Enough Heap Space?</td>
+                    <td>OutOfMemoryError thrown.</td>
+                </tr>
+                <tr>
+                    <td>Is It Possible to “Resurrect” an Object Eligible for GC?</td>
+                    <td>Yes, in finalize() by assigning to static, but only once.</td>
+                </tr>
+                <tr>
+                    <td>Describe Strong, Weak, Soft, and Phantom References.</td>
+                    <td>Strong: Prevents GC. Soft: GC when low mem. Weak: Eager GC. Phantom: For post-GC cleanup.</td>
+                </tr>
+                <tr>
+                    <td>Can Circular References Be GC'ed?</td>
+                    <td>Yes, if unreachable from roots.</td>
+                </tr>
+                <tr>
+                    <td>How Are Strings Represented in Memory?</td>
+                    <td>As objects with char[] and hash; constants in string pool.</td>
+                </tr>
+                <tr>
+                    <td>What Is StringBuilder? Difference from + and StringBuffer?</td>
+                    <td>Mutable string manipulation. + creates new strings. StringBuffer is thread-safe.</td>
+                </tr>
+                <tr>
+                    <td>What is the Java Memory Model?</td>
+                    <td>Defines thread-memory interactions for visibility and synchronization.</td>
+                </tr>
+                <tr>
+                    <td>Describe the different parts of the Java heap memory.</td>
+                    <td>Young (Eden, S0, S1), Old, Metaspace.</td>
+                </tr>
+                <tr>
+                    <td>How does the garbage collector know which objects to collect?</td>
+                    <td>Using marking (reachable from roots) and sweeping.</td>
+                </tr>
+                <tr>
+                    <td>What is a memory leak in Java, and how can it be prevented?</td>
+                    <td>Unused objects retained by references. Prevent by nullifying refs, using tools like MAT.</td>
+                </tr>
+                <tr>
+                    <td>What is the difference between the finalize() method and Cleaner/PhantomReference?</td>
+                    <td>finalize() deprecated, unreliable. Cleaner/Phantom for reliable cleanup.</td>
+                </tr>
+                <tr>
+                    <td>How is Java different from C & C++ in terms of memory management?</td>
+                    <td>Automatic vs manual allocation/free.</td>
+                </tr>
+                <tr>
+                    <td>Why Are Memory Leaks Rare in Java?</td>
+                    <td>Due to automatic GC.</td>
+                </tr>
+                <tr>
+                    <td>What Are Generations in Java Garbage Collection?</td>
+                    <td>Young and Old for efficient GC based on object lifespan.</td>
+                </tr>
+                <tr>
+                    <td>What Are the Types of Garbage Collectors in Java?</td>
+                    <td>Serial, Parallel, G1, ZGC.</td>
+                </tr>
+                <tr>
+                    <td>Why is finalize() Method Deprecated in Java 9?</td>
+                    <td>Unreliable, performance issues; use try-with-resources or Cleaner.</td>
+                </tr>
+            </table>
+        </div>
+
         <div class="summary-box">
             <h2>📝 Final Summary</h2>
             <table>
@@ -460,6 +621,7 @@ s1 = null; <span class="code-comment">// Now the object is not used → eligible
                     <li>JVM memory has <strong>Heap</strong>, <strong>Stack</strong>, and <strong>Method Area</strong></li>
                     <li>Objects → Heap, Variables → Stack, Class Info → Method Area</li>
                     <li><strong>Garbage Collector</strong> frees memory automatically</li>
+                    <li>Understand generations, references, and GC types for advanced questions.</li>
                 </ul>
             </div>
         </div>

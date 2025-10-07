@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic-wise Image Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .topic-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topic-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .topic-header:hover {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: -10px -10px 25px -10px;
+            border-radius: 10px;
+        }
+
+        .topic-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .topic-title {
+            font-size: 1.8em;
+            color: #333;
+            text-transform: capitalize;
+        }
+
+        .image-count {
+            margin-left: auto;
+            background: #f0f0f0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .image-grid.expanded {
+            max-height: 10000px;
+            opacity: 1;
+            margin-top: 20px;
+        }
+
+        .toggle-icon {
+            margin-left: 15px;
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+            color: #667eea;
+        }
+
+        .toggle-icon.rotated {
+            transform: rotate(180deg);
+        }
+
+        .image-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .image-wrapper {
+            width: 100%;
+            height: 200px;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card:hover .image-wrapper img {
+            transform: scale(1.1);
+        }
+
+        .image-name {
+            padding: 15px;
+            font-size: 0.9em;
+            color: #555;
+            text-align: center;
+            background: white;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .image-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            z-index: 1001;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close:hover {
+            color: #ccc;
+        }
+
+        /* Navigation buttons */
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            font-size: 40px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            backdrop-filter: blur(10px);
+            z-index: 1001;
+        }
+
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .topic-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Important Topics</h1>
+        <div id="gallery"></div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="close">&times;</span>
+        <button class="modal-nav modal-prev">&#10094;</button>
+        <img class="modal-content" id="modalImage">
+        <button class="modal-nav modal-next">&#10095;</button>
+        <div class="image-counter" id="imageCounter"></div>
+    </div>
+
+    <script>
+        // ========================================
+        // CONFIGURATION: Add your topics here!
+        // ========================================
+        const topicFolders = {
+            'topics/equals_and_HashCode': {
+                icon: '🗺️',
+                imageCount: 11,
+                extension: 'png'
+            },
+            'topics/Singleton_Class': {
+                icon: '🔒',
+                imageCount: 12,
+                extension: 'png'
+            },
+            'topics/HashMap_Working': {
+                icon: '🗃️',
+                imageCount: 18,
+                extension: 'png'
+            },
+        };
+
+        // ========================================
+        // Generate image paths automatically
+        // ========================================
+        function generateImagePaths(folderPath, count, extension) {
+            const images = [];
+            for (let i = 1; i <= count; i++) {
+                images.push(`${folderPath}/photo (${i}).${extension}`);
+            }
+            return images;
+        }
+
+        // ========================================
+        // Render Functions
+        // ========================================
+        function getTopicName(path) {
+            return path.split('/').pop().replace(/_/g, ' ');
+        }
+
+        function getImageName(path) {
+            return path.split('/').pop().split('.')[0];
+        }
+
+        function renderGallery() {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            for (const [folder, config] of Object.entries(topicFolders)) {
+                const images = generateImagePaths(folder, config.imageCount, config.extension);
+                
+                const section = document.createElement('div');
+                section.className = 'topic-section';
+
+                const topicName = getTopicName(folder);
+                const header = document.createElement('div');
+                header.className = 'topic-header';
+                header.innerHTML = `
+                    <div class="topic-icon">${config.icon}</div>
+                    <h2 class="topic-title">${topicName}</h2>
+                    <span class="image-count">${images.length} images</span>
+                    <span class="toggle-icon">▼</span>
+                `;
+
+                const grid = document.createElement('div');
+                grid.className = 'image-grid';
+
+                // Add click handler to toggle images
+                header.onclick = function(e) {
+                    // Don't trigger if clicking on an image card
+                    if (!e.target.closest('.image-card')) {
+                        grid.classList.toggle('expanded');
+                        const toggleIcon = header.querySelector('.toggle-icon');
+                        toggleIcon.classList.toggle('rotated');
+                    }
+                };
+
+                images.forEach((imagePath, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'image-card';
+                    card.dataset.topic = folder;
+                    card.innerHTML = `
+                        <div class="image-wrapper">
+                            <img src="${imagePath}" alt="${getImageName(imagePath)}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\'padding:20px;color:#999;\'>Image not found</div>'">
+                        </div>
+                        <div class="image-name">Photo ${index + 1}</div>
+                    `;
+                    card.onclick = () => openModal(imagePath, folder);
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(header);
+                section.appendChild(grid);
+                gallery.appendChild(section);
+            }
+        }
+
+        // ========================================
+        // Modal functionality
+        // ========================================
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        const prevBtn = document.querySelector('.modal-prev');
+        const nextBtn = document.querySelector('.modal-next');
+        const imageCounter = document.getElementById('imageCounter');
+        
+        let currentTopicImages = [];
+        let currentImageIndex = 0;
+
+        function updateCounter() {
+            imageCounter.textContent = `${currentImageIndex + 1} / ${currentTopicImages.length}`;
+        }
+
+        function openModal(imagePath, topic) {
+            // Get only images from the current topic
+            const topicCards = Array.from(document.querySelectorAll(`.image-card[data-topic="${topic}"]`));
+            currentTopicImages = topicCards.map(card => card.querySelector('img').src);
+            
+            currentImageIndex = currentTopicImages.indexOf(imagePath);
+            modal.style.display = 'block';
+            modalImg.src = imagePath;
+            updateCounter();
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % currentTopicImages.length;
+            modalImg.src = currentTopicImages[currentImageIndex];
+            updateCounter();
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + currentTopicImages.length) % currentTopicImages.length;
+            modalImg.src = currentTopicImages[currentImageIndex];
+            updateCounter();
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        prevBtn.onclick = function(e) {
+            e.stopPropagation();
+            showPrevImage();
+        }
+
+        nextBtn.onclick = function(e) {
+            e.stopPropagation();
+            showNextImage();
+        }
+
+        modal.onclick = function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Keyboard support for modal
+        document.addEventListener('keydown', function(e) {
+            if (modal.style.display === 'block') {
+                if (e.key === 'Escape') {
+                    modal.style.display = 'none';
+                } else if (e.key === 'ArrowRight') {
+                    showNextImage();
+                } else if (e.key === 'ArrowLeft') {
+                    showPrevImage();
+                }
+            }
+        });
+
+        // Initialize gallery
+        renderGallery();
+    </script>
+</body>
+</html>

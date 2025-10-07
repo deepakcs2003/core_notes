@@ -450,42 +450,48 @@
 
             <button class="toggle-btn" onclick="toggleSection('prevention-details')">Show Prevention Details</button>
             <div id="prevention-details" class="collapsible">
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>Condition</th>
-                            <th>Prevention Method</th>
-                            <th>Pros</th>
-                            <th>Cons</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Mutual Exclusion</strong></td>
-                            <td>Make resources shareable</td>
-                            <td>Simple approach</td>
-                            <td>Not possible for all resources</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hold & Wait</strong></td>
-                            <td>Request all resources at once</td>
-                            <td>Prevents partial allocation</td>
-                            <td>Resource waste, starvation</td>
-                        </tr>
-                        <tr>
-                            <td><strong>No Preemption</strong></td>
-                            <td>Allow resource preemption</td>
-                            <td>Breaks deadlock cycle</td>
-                            <td>May cause livelock</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Circular Wait</strong></td>
-                            <td>Order resources numerically</td>
-                            <td>Most practical method</td>
-                            <td>Requires resource ordering</td>
-                        </tr>
-                    </tbody>
-                </table>
+             <table class="comparison-table">
+    <thead>
+        <tr>
+            <th>Condition</th>
+            <th>Prevention Method</th>
+            <th>Pros</th>
+            <th>Cons</th>
+            <th>Example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Mutual Exclusion</strong></td>
+            <td>Make resources shareable whenever possible</td>
+            <td>Simple to apply for some resources (e.g., read-only files)</td>
+            <td>Not possible for resources that must be used exclusively (e.g., printer)</td>
+            <td>Allow multiple processes to read the same file in parallel</td>
+        </tr>
+        <tr>
+            <td><strong>Hold & Wait</strong></td>
+            <td>Require processes to request all resources at once before execution</td>
+            <td>Eliminates partial allocation → prevents circular dependency</td>
+            <td>May cause resource underutilization and starvation if a process holds resources it doesn’t need yet</td>
+            <td>A program must request CPU, memory, and disk all at once before starting</td>
+        </tr>
+        <tr>
+            <td><strong>No Preemption</strong></td>
+            <td>If a process holding some resources requests others and can’t get them, release its current resources</td>
+            <td>Breaks potential deadlock cycle by freeing resources</td>
+            <td>Frequent preemptions can cause <strong>livelock</strong> (processes repeatedly release and reacquire resources without progress)</td>
+            <td>If a process holding CPU and requesting I/O can’t get it, CPU is preempted and given to another</td>
+        </tr>
+        <tr>
+            <td><strong>Circular Wait</strong></td>
+            <td>Impose a linear ordering on resource types and require processes to request in increasing order</td>
+            <td>Most practical and widely used method</td>
+            <td>Requires predefined ordering of all resources, which may not always be flexible</td>
+            <td>A process must request printer (R1) before scanner (R2); cannot request in reverse</td>
+        </tr>
+    </tbody>
+</table>
+
             </div>
         </div>
 
