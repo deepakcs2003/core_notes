@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Express.js Interview Guide with Diagrams</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+        }
+        h1 {
+            text-align: center;
+            color: #1a5276;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            font-size: 1.8em;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        h2:hover {
+            color: #e74c3c;
+        }
+        p {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        code {
+            font-family: 'Consolas', monospace;
+        }
+        .pro-tip {
+            font-style: italic;
+            color: #27ae60;
+            background: #e8f8f5;
+            padding: 10px;
+            border-left: 4px solid #27ae60;
+            border-radius: 4px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .toggle-content {
+            display: none;
+        }
+        .toggle-content.active {
+            display: block;
+        }
+        .toggle-btn {
+            background: #3498db;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        .toggle-btn:hover {
+            background: #2980b9;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+            font-size: 1.1em;
+            background: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>30-45 Express.js Interview Questions to Ace Your Interview (With Diagrams & MongoDB Section)</h1>
+        <p>Here’s a neat, clean, and interactive HTML guide for revising Express.js concepts. Each question includes a simple explanation, code example (if relevant), how to explain it, and a pro tip. We've added diagrams for key topics and a new MongoDB section with 5 extra questions. Click the question titles to toggle content!</p>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">1. What’s Express.js in simple words?</h2>
+            <div class="toggle-content active">
+                <p><strong>Explanation</strong>: Express.js is like a helper for Node.js that makes building web apps or APIs super easy. It’s a framework that handles routing (directing users to the right page) and middleware (functions that process requests). It’s like a fast-food counter—quick, flexible, and gets the job done!</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const express = require('express');
+const app = express();
+app.get('/', (req, res) => res.send('Hey, welcome!'));
+app.listen(3000, () => console.log('Server’s up at port 3000!'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Require Express, create an app instance, add a GET route, and listen on a port. It’s async and non-blocking for handling many users.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Mention Express is lightweight and flexible, unlike raw Node.js, which is like cooking from scratch—Express saves time!</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">2. How do you install Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: You add Express to your project using npm, like downloading an app. It’s stored in your project’s folder for consistency.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>npm init -y  # Sets up package.json
+npm install express  # Adds Express</code></pre>
+                <p><strong>How to Explain Code</strong>: Init creates a package file, then install adds Express.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use a specific version (e.g., `npm install express@4.18.2`) for production stability, like locking a recipe.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">3. How do you set up a basic Express server?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: It’s like starting a food truck. Create an Express app, define routes, and listen on a port. Here’s a diagram of the HTTP request-response cycle:</p>
+                <img src="https://www.google.com/images?q=http+request+response+cycle+in+express.js+diagram" alt="HTTP Request-Response Cycle in Express.js">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const express = require('express');
+const app = express();
+app.get('/', (req, res) => res.send('Welcome to my food truck!'));
+app.listen(3000, () => console.log('Truck’s open at http://localhost:3000'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Require Express, create app, add route, listen. Reference the diagram: Client sends request, server processes, sends response.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: `app.listen` uses Node’s HTTP server, great for handling lots of requests.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">4. What’s routing in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Routing is like a GPS for your app—it directs users to the right page based on URL and method (GET, POST). Here’s a routing diagram:</p>
+                <img src="https://www.google.com/images?q=express.js+routing+diagram" alt="Express.js Routing Diagram">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.get('/home', (req, res) => res.send('You’re home!'));
+app.post('/order', (req, res) => res.send('Order placed!'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Use app.get for reads, app.post for creates. Diagram shows routes directing to controllers.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use patterns like `/user/:id` for dynamic URLs. Order specific routes before general ones.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">5. What’s middleware in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Middleware is like a chef checking ingredients before cooking. It runs during a request (e.g., logging, auth). Here’s a middleware chain diagram:</p>
+                <img src="https://www.google.com/images?q=express.js+middleware+chain+diagram" alt="Express.js Middleware Chain Diagram">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use((req, res, next) => {
+  console.log('Got a request for:', req.url);
+  next();
+});</code></pre>
+                <p><strong>How to Explain Code</strong>: Logs URL, calls next(). Diagram shows request through middleware to response.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Middleware is Express’s backbone—split tasks like logging. Avoid heavy middleware early to prevent slowdowns.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">6. What does `next()` do in middleware?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: `next()` passes the request to the next middleware or route, like passing a plate to the next chef.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use((req, res, next) => {
+  if (req.query.vip === 'true') next();
+  else res.send('Sorry, VIPs only!');
+});</code></pre>
+                <p><strong>How to Explain Code</strong>: Checks VIP query, calls next() or sends response.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: `next('error')` jumps to error middleware. Use after `await` in async code.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">7. How do you serve static files (like images or CSS)?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Static files are like ready-to-serve snacks. Use `express.static` to serve files from a folder.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use(express.static('public'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Serves files in 'public' directly (e.g., /style.css).</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use a “public” folder for safety. Pair with a CDN for speed.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">8. What’s `req.params`?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Grabs dynamic URL parts, like `/user/123` where `123` is in `req.params.id`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.get('/user/:id', (req, res) => res.send(`User ID: ${req.params.id}`));</code></pre>
+                <p><strong>How to Explain Code</strong>: :id captures the URL value.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Validate `req.params` to prevent hacks.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">9. How do you send JSON in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use `res.json()` to send data as JSON, perfect for APIs.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.get('/api/menu', (req, res) => res.json({ dish: 'Pizza', price: 10 }));</code></pre>
+                <p><strong>How to Explain Code</strong>: Sends object as JSON with correct headers.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: `res.json()` handles edge cases better than `res.send()`. Use status codes for REST APIs.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">10. What HTTP methods does Express support?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Supports all: GET, POST, PUT, DELETE, PATCH, etc. Like different customer requests.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use for REST APIs (e.g., GET `/users`). Handle CORS for cross-origin requests.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">11. How do you handle a 404 (page not found)?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Add a catch-all middleware to handle unmatched routes.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use((req, res) => res.status(404).send('Oops, page not found!'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Runs last, sets 404 status.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Return JSON for APIs or log 404s for analytics.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">12. What’s `express.Router()`?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: A mini-app for grouping routes, like a separate menu for drinks.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const router = express.Router();
+router.get('/drinks', (req, res) => res.send('Coffee or tea?'));
+app.use('/api', router);</code></pre>
+                <p><strong>How to Explain Code</strong>: Create router, add routes, mount to app.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Routers keep code clean. Add middleware for specific routes.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">13. How do you add middleware to a specific route?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Add middleware before the route handler.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const checkUser = (req, res, next) => { next(); };
+app.get('/secret', checkUser, (req, res) => res.send('Secret menu!'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Middleware runs before handler.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Great for route-specific auth. Chain multiple middleware.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">14. What are the arguments of middleware functions?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Middleware gets `req`, `res`, `next`. Error middleware gets `err` too.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: `req` and `res` are mutable, like adding notes to an order.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">15. What’s the difference between `app.use()` and `app.get()`?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: `app.use()` runs middleware for all requests; `app.get()` handles only GET requests.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `app.use()` for global tasks, `app.get()` for specific pages.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">16. How do you handle query parameters?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Query params (e.g., `?name=John`) are in `req.query`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.get('/search', (req, res) => res.send(`Searching for: ${req.query.q}`));</code></pre>
+                <p><strong>How to Explain Code</strong>: Access req.query.q directly.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Validate query params for security.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">17. What’s the default port for Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: No strict default, but 3000 is common for dev.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `process.env.PORT` for cloud platforms.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">18. How is Node.js different from Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Node.js is the engine; Express.js is a toolkit for easier app building.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Express saves time, but Node is faster for simple apps.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">19. What are some cool features of Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Routing, middleware, static files, templates like Pug.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Works with async/await and integrates with MongoDB.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">20. What’s a `.env` file for?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Stores secrets like API keys. Load with `dotenv`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>require('dotenv').config();
+app.listen(process.env.PORT || 3000);</code></pre>
+                <p><strong>How to Explain Code</strong>: Loads env vars, uses PORT or 3000.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Part of 12-factor apps, keeps secrets out of Git.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">21. What are JWTs?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: JSON Web Tokens are secure tickets for users (header, payload, signature).</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const jwt = require('jsonwebtoken');
+const token = jwt.sign({ userId: 1 }, 'mysecret');</code></pre>
+                <p><strong>How to Explain Code</strong>: Signs payload with secret.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Stateless auth with `express-jwt` for protected routes.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">22. What’s Bcrypt for?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Hashes passwords securely with salt.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const bcrypt = require('bcrypt');
+bcrypt.hash('myPassword', 10, (err, hash) => { /* save hash */ });</code></pre>
+                <p><strong>How to Explain Code</strong>: Hash with 10 rounds.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Higher rounds are safer but slower.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">23. Why separate the Express app and server?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Keep app (routes, middleware) and server (`app.listen`) separate.</p>
+                <p><strong>Code Example</strong> (if asked): (app.js)</p>
+                <pre><code>const express = require('express');
+const app = express();
+app.get('/', (req, res) => res.send('Hello!'));
+module.exports = app;</code></pre>
+                <p>(server.js):</p>
+                <pre><code>const app = require('./app');
+app.listen(3000);</code></pre>
+                <p><strong>How to Explain Code</strong>: Export app, import and listen.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Helps testing and scaling.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">24. What’s ESLint?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Checks code for mistakes and consistency.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use with `eslint-plugin-node` for Express rules.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">25. What’s the difference between `res.send()` and `res.json()`?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: `res.send()` sends anything; `res.json()` sends JSON.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: `res.json()` is better for APIs, handles edge cases.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">26. What’s scaffolding in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Creates starter project with `express-generator`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>npm install -g express-generator
+express my-cool-app</code></pre>
+                <p><strong>How to Explain Code</strong>: Install globally, generate app.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Customize for your needs.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">27. What’s CORS in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Allows cross-origin data sharing.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const cors = require('cors');
+app.use(cors({ origin: 'http://mywebsite.com' }));</code></pre>
+                <p><strong>How to Explain Code</strong>: Enables CORS for specific origins.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Configure origins for security. Handle preflight requests.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">28. What are built-in middlewares in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Tools like `express.json()`, `express.urlencoded()`, `express.static()`.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Replaced `body-parser` in Express 4+.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">29. How do you set app settings in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use `app.set(name, value)` for settings.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.set('view engine', 'pug');
+app.set('views', './views');</code></pre>
+                <p><strong>How to Explain Code</strong>: Sets Pug and views folder.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `app.get(name)` to check settings.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">30. Which template engines work with Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Supports Pug, EJS, Handlebars.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Pug is clean; templates help SEO.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">31. How do you send plain HTML in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use `res.send()` or `res.sendFile()`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.get('/', (req, res) => res.send('&lt;h1&gt;Hello World!&lt;/h1&gt;'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Sends raw HTML.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use templates or caching for efficiency.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">32. What’s `res.cookie()` for?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Sets cookies in the browser.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>res.cookie('username', 'John', { maxAge: 900000, httpOnly: true });</code></pre>
+                <p><strong>How to Explain Code</strong>: Sets cookie with options.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `httpOnly`, `secure` for safety.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">33. What’s the Pug template engine?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Pug writes HTML with indentation.</p>
+                <p><strong>Code Example</strong> (if asked): (app.js)</p>
+                <pre><code>app.set('view engine', 'pug');
+app.get('/', (req, res) => res.render('index', { title: 'My App' }));</code></pre>
+                <p>(index.pug):</p>
+                <pre><code>doctype html
+html
+  head
+    title= title
+  body
+    h1 Welcome!</code></pre>
+                <p><strong>How to Explain Code</strong>: Set engine, render view.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Pug’s mixins make reusable HTML easy.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">34. How do you handle errors in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use middleware with four arguments (`err, req, res, next`). Here’s an error handling flowchart:</p>
+                <img src="https://www.google.com/images?q=express.js+error+handling+flowchart" alt="Express.js Error Handling Flowchart">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send('Something broke!');
+});</code></pre>
+                <p><strong>How to Explain Code</strong>: Catches errors, logs, sends 500. Diagram shows sync/async error flow.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Log with Winston, return user-friendly messages.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">35. How do you parse JSON data from requests?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use `express.json()` for POST JSON data.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.use(express.json());
+app.post('/data', (req, res) => res.send(`Got: ${req.body.name}`));</code></pre>
+                <p><strong>How to Explain Code</strong>: Parses body to req.body.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Set size limit (`{ limit: '1mb' }`) for safety.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">36. What’s the difference between `req.params`, `req.query`, and `req.body`?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: 
+                    <ul>
+                        <li>`req.params`: From URL paths (e.g., `/user/123` → `req.params.id`).</li>
+                        <li>`req.query`: From queries (e.g., `?name=John` → `req.query.name`).</li>
+                        <li>`req.body`: From POST/PUT data.</li>
+                    </ul>
+                </p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `params` for IDs, `query` for filters, `body` for payloads. Secure `body` with HTTPS.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">37. How do you add authentication in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use middleware like Passport.js or JWT for login checks.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const jwt = require('express-jwt');
+app.use('/secure', jwt({ secret: 'mykey', algorithms: ['HS256'] }));</code></pre>
+                <p><strong>How to Explain Code</strong>: Checks JWT in headers.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Combine JWT with bcrypt, rate-limit attacks.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">38. What’s Helmet in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Adds security headers to protect against attacks.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const helmet = require('helmet');
+app.use(helmet());</code></pre>
+                <p><strong>How to Explain Code</strong>: Adds default security headers.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Customize headers for specific needs.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">39. How do you use environment variables in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Store settings in `.env`, load with `dotenv`.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>require('dotenv').config();
+const dbUrl = process.env.DB_URL;</code></pre>
+                <p><strong>How to Explain Code</strong>: Loads vars, access with process.env.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Part of 12-factor apps, keeps secrets safe.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">40. What’s Morgan in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Logs HTTP requests for debugging.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const morgan = require('morgan');
+app.use(morgan('tiny'));</code></pre>
+                <p><strong>How to Explain Code</strong>: Logs in 'tiny' format.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use `tiny` for dev, `combined` for prod. Pair with Winston.</p>
+            </div>
+        </div>
+
+        <h1>MongoDB Integration with Express.js</h1>
+        <p>Added 5 questions on MongoDB for deeper understanding.</p>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">41. How do you connect MongoDB to Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use `mongoose` to connect to MongoDB. Here’s a connection flow diagram:</p>
+                <img src="https://www.google.com/images?q=express.js+mongodb+connection+diagram" alt="Express.js MongoDB Connection Diagram">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/mydb', { useNewUrlParser: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Connection error', err));</code></pre>
+                <p><strong>How to Explain Code</strong>: Connect with DB URL, handle success/error. Diagram shows Client → Express → MongoDB.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use environment variables for DB URL. Handle reconnection in production.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">42. What is Mongoose?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Mongoose is an ODM for MongoDB, providing schema-based data modeling.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Translates JS objects to MongoDB documents, simplifies NoSQL.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">43. How to define a schema in Mongoose?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Schemas define document structure. Here’s a schema diagram:</p>
+                <img src="https://www.google.com/images?q=mongoose+schema+in+express.js+diagram" alt="Mongoose Schema Diagram">
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  age: Number
+});
+const User = mongoose.model('User', userSchema);</code></pre>
+                <p><strong>How to Explain Code</strong>: Define schema, compile model. Diagram shows Node.js → Mongoose → MongoDB.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Add validators for data integrity.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">44. How to perform CRUD operations with Mongoose in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Use model methods for Create, Read, Update, Delete.</p>
+                <p><strong>Code Example</strong> (if asked): (Create)</p>
+                <pre><code>app.post('/users', async (req, res) => {
+  const user = new User(req.body);
+  await user.save();
+  res.send(user);
+});</code></pre>
+                <p>(Read): await User.find();</p>
+                <p>(Update): await User.updateOne({ _id: id }, { $set: { name: 'New' } });</p>
+                <p>(Delete): await User.deleteOne({ _id: id });</p>
+                <p><strong>How to Explain Code</strong>: Use async/await for DB operations.</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Use try-catch, populate() for relationships.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">45. How to handle MongoDB errors in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>: Catch MongoDB errors with Express error middleware.</p>
+                <p><strong>Code Example</strong> (if asked):</p>
+                <pre><code>app.post('/users', async (req, res, next) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.send(user);
+  } catch (err) {
+    next(err);
+  }
+});</code></pre>
+                <p><strong>How to Explain Code</strong>: Try-catch passes errors to next().</p>
+                <p class="pro-tip"><strong>Pro Tip</strong>: Log specific errors (e.g., DuplicateKey) with Winston.</p>
+            </div>
+        </div>
+
+        <h1>How to Impress in Your Interview</h1>
+        <ul>
+            <li><strong>Use analogies and diagrams</strong>: Explain with food truck analogy, point to diagrams.</li>
+            <li><strong>Handle code questions</strong>: Write code, explain line-by-line, tie to diagrams.</li>
+            <li><strong>Show practical knowledge</strong>: Mention security (Helmet, HTTPS), performance (caching, async).</li>
+            <li><strong>Talk tools</strong>: Reference Passport, Morgan, dotenv, Mongoose.</li>
+            <li><strong>Keep it simple</strong>: Explain like to a friend.</li>
+            <li><strong>Ask questions</strong>: Ask how they use tools in their stack.</li>
+        </ul>
+
+        <p>With these notes, code, and visuals, you’re ready to shine! Practice explaining in your own words.</p>
+    </div>
+
+    <script>
+        function toggleContent(element) {
+            const content = element.nextElementSibling;
+            content.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
