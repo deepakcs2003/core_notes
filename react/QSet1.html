@@ -734,24 +734,81 @@
                     <div class="question">22. How do you handle forms in React?</div>
                     <div class="answer">
                         <p>Use controlled components to manage form input values with state.</p>
-                        <p>Example:</p>
-<pre><span class="keyword">function</span> <span class="function">Form</span>() {
-  <span class="keyword">const</span> [<span class="variable">formData</span>, <span class="variable">setFormData</span>] = <span class="function">useState</span>({ <span class="variable">name</span>: <span class="string">''</span>, <span class="variable">email</span>: <span class="string">''</span> });
-  <span class="keyword">const</span> <span class="function">handleChange</span> = (<span class="variable">e</span>) =&gt; {
-    <span class="function">setFormData</span>({ ...<span class="variable">formData</span>, [<span class="variable">e</span>.<span class="variable">target</span>.<span class="variable">name</span>]: <span class="variable">e</span>.<span class="variable">target</span>.<span class="variable">value</span> });
+ <pre><codeco>
+import React, { useState } from "react";
+function SimpleForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    profilePic: null,
+  });
+
+  // Handle input change
+  const handleChange = (e) =&gt; {
+    const { name, value, files } = e.target;
+    if (name === "profilePic") {
+      setFormData({ ...formData, profilePic: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
-  <span class="keyword">const</span> <span class="function">handleSubmit</span> = (<span class="variable">e</span>) =&gt; {
-    <span class="variable">e</span>.<span class="function">preventDefault</span>();
-    <span class="variable">console</span>.<span class="function">log</span>(<span class="variable">formData</span>);
+
+  // Handle form submit
+  const handleSubmit = (e) =&gt; {
+    e.preventDefault();
+    console.log("Form Data:", formData);
   };
-  <span class="keyword">return</span> (
-    <span class="jsx-tag">&lt;form</span> <span class="jsx-attribute">onSubmit</span>={<span class="variable">handleSubmit</span>}<span class="jsx-tag">&gt;</span>
-      <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">name</span>=<span class="jsx-string">"name"</span> <span class="jsx-attribute">value</span>={<span class="variable">formData</span>.<span class="variable">name</span>} <span class="jsx-attribute">onChange</span>={<span class="variable">handleChange</span>} <span class="jsx-tag">/&gt;</span>
-      <span class="jsx-tag">&lt;input</span> <span class="jsx-attribute">name</span>=<span class="jsx-string">"email"</span> <span class="jsx-attribute">value</span>={<span class="variable">formData</span>.<span class="variable">email</span>} <span class="jsx-attribute">onChange</span>={<span class="variable">handleChange</span>} <span class="jsx-tag">/&gt;</span>
-      <span class="jsx-tag">&lt;button</span> <span class="jsx-attribute">type</span>=<span class="jsx-string">"submit"</span><span class="jsx-tag">&gt;</span>Submit<span class="jsx-tag">&lt;/button&gt;</span>
-    <span class="jsx-tag">&lt;/form&gt;</span>
+
+  return (
+    &lt;form onSubmit={handleSubmit} className="space-y-4 p-4"&gt;
+      &lt;div&gt;
+        &lt;label&gt;Name:&lt;/label&gt;
+        &lt;input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="border p-2 rounded w-full"
+          required
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Email:&lt;/label&gt;
+        &lt;input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="border p-2 rounded w-full"
+          required
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;div&gt;
+        &lt;label&gt;Profile Picture:&lt;/label&gt;
+        &lt;input
+          type="file"
+          name="profilePic"
+          onChange={handleChange}
+          accept="image/*"
+          className="border p-2 rounded w-full"
+        /&gt;
+      &lt;/div&gt;
+
+      &lt;button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      &gt;
+        Submit
+      &lt;/button&gt;
+    &lt;/form&gt;
   );
-}</pre>
+}
+export default SimpleForm;
+</code>
+</pre>
+
                     </div>
                 </div>
 
