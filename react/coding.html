@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Interview Questions Revision Sheet</title>
+  <style>
+    :root {
+      --primary-color: #61DAFB;
+      /* React Blue */
+      --secondary-color: #282c34;
+      /* Dark Background */
+      --text-color: #abb2bf;
+      --bg-color: #21252b;
+      --code-bg: #282c34;
+      --border-color: #3b4048;
+      --success-color: #98c379;
+      /* Green */
+      --warning-color: #e5c07b;
+      /* Yellow */
+      --error-color: #e06c75;
+      /* Red */
+      --keyword-color: #c678dd;
+      /* Purple */
+      --tag-color: #e06c75;
+      --attr-name-color: #d19a66;
+      --string-color: #98c379;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: var(--secondary-color);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    h1,
+    h2 {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 10px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .question-card {
+      background-color: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 25px;
+      padding: 20px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .question-card:hover {
+      box-shadow: 0 0 10px var(--primary-color);
+    }
+
+    h3 {
+      color: var(--warning-color);
+      margin-top: 20px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    code {
+      font-family: 'Fira Code', 'Courier New', monospace;
+      background-color: rgba(0, 0, 0, 0.2);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: var(--string-color);
+    }
+
+    pre {
+      background-color: var(--code-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 5px;
+      padding: 15px;
+      overflow-x: auto;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background-color: transparent;
+      padding: 0;
+      color: #fff;
+    }
+
+    .code-keyword {
+      color: var(--keyword-color);
+    }
+
+    .code-function {
+      color: var(--primary-color);
+    }
+
+    .code-string {
+      color: var(--string-color);
+    }
+
+    .code-comment {
+      color: #5c6370;
+      font-style: italic;
+    }
+
+    .code-tag {
+      color: var(--tag-color);
+    }
+
+    .code-attr-name {
+      color: var(--attr-name-color);
+    }
+
+    .code-attr-value {
+      color: var(--string-color);
+    }
+
+    .code-number {
+      color: var(--attr-name-color);
+    }
+
+    .note {
+      background-color: rgba(229, 192, 123, 0.1);
+      border-left: 4px solid var(--warning-color);
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>React Interview Prep Sheet ⚛️</h1>
+
+    <div class="question-card">
+      <h2>1. Counter App</h2>
+      <h3>📋 Explanation</h3>
+      <p>This is a fundamental test of your understanding of state management using the <code>useState</code> hook.
+        State allows a component to remember information and re-render when that information changes.
+      </p>
+      <div class="note">
+        <strong>Key Concept:</strong> <code>useState</code> returns an array with two elements: the current state value
+        and a function to update it.
+      </div>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Counter.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">Counter</span>() {
+  <span class="code-comment">// Initialize state 'count' with a default value of 0</span>
+  <span class="code-keyword">const</span> [count, setCount] = <span class="code-function">useState</span>(<span class="code-number">0</span>);
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Count: {count}&lt;/h2&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setCount</span>(count + <span class="code-number">1</span>)}&gt;Increment&lt;/button&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setCount</span>(count - <span class="code-number">1</span>)}&gt;Decrement&lt;/button&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setCount</span>(<span class="code-number">0</span>)}&gt;Reset&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-keyword">export default</span> Counter;
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>2. Toggle Switch</h2>
+      <h3>📋 Explanation</h3>
+      <p>This demonstrates handling boolean state. The core idea is to flip the current boolean value when an event
+        occurs, typically a button click. The UI then conditionally renders different text or styles based on this
+        boolean state.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// ToggleSwitch.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ToggleSwitch</span>() {
+  <span class="code-keyword">const</span> [isOn, setIsOn] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+
+  <span class="code-keyword">const</span> <span class="code-function">handleToggle</span> = () => {
+    <span class="code-function">setIsOn</span>(prevIsOn => !prevIsOn);
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={handleToggle}&gt;
+        {isOn ? <span class="code-string">'ON'</span> : <span class="code-string">'OFF'</span>}
+      &lt;/button&gt;
+      &lt;p&gt;The switch is {isOn ? <span class="code-string">'ON'</span> : <span class="code-string">'OFF'</span>}.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-keyword">export default</span> ToggleSwitch;
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>3. Todo List</h2>
+      <h3>📋 Explanation</h3>
+      <p>A classic. This tests your ability to manage an array of objects in state. Key operations include adding a new
+        item, removing an item (usually by its unique <code>id</code>), and updating an item (like toggling its
+        completion status). This often involves using array methods like <code>map</code>, <code>filter</code>, and
+        creating new arrays to ensure immutability.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// TodoList.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">TodoList</span>() {
+  <span class="code-keyword">const</span> [todos, setTodos] = <span class="code-function">useState</span>([]);
+  <span class="code-keyword">const</span> [input, setInput] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+
+  <span class="code-keyword">const</span> <span class="code-function">addTodo</span> = () => {
+    <span class="code-keyword">if</span> (input.trim() === <span class="code-string">''</span>) <span class="code-keyword">return</span>;
+    <span class="code-function">setTodos</span>([...todos, { <span class="code-attr-name">id</span>: Date.<span class="code-function">now</span>(), <span class="code-attr-name">text</span>: input, <span class="code-attr-name">completed</span>: <span class="code-keyword">false</span> }]);
+    <span class="code-function">setInput</span>(<span class="code-string">''</span>);
+  };
+
+  <span class="code-keyword">const</span> <span class="code-function">deleteTodo</span> = (<span class="code-attr-name">id</span>) => {
+    <span class="code-function">setTodos</span>(todos.<span class="code-function">filter</span>(todo => todo.id !== id));
+  };
+  
+  <span class="code-keyword">const</span> <span class="code-function">toggleComplete</span> = (<span class="code-attr-name">id</span>) => {
+      <span class="code-function">setTodos</span>(todos.<span class="code-function">map</span>(todo => 
+        todo.id === id ? { ...todo, <span class="code-attr-name">completed</span>: !todo.completed } : todo
+      ));
+  }
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input <span class="code-attr-name">type</span>=<span class="code-string">"text"</span> <span class="code-attr-name">value</span>={input} <span class="code-attr-name">onChange</span>={e => <span class="code-function">setInput</span>(e.target.value)} /&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={addTodo}&gt;Add Todo&lt;/button&gt;
+      &lt;ul&gt;
+        {todos.<span class="code-function">map</span>(todo => (
+          &lt;li <span class="code-attr-name">key</span>={todo.id} <span class="code-attr-name">style</span>={{ <span class="code-attr-name">textDecoration</span>: todo.completed ? <span class="code-string">'line-through'</span> : <span class="code-string">'none'</span> }}&gt;
+            &lt;span <span class="code-attr-name">onClick</span>={() => <span class="code-function">toggleComplete</span>(todo.id)}&gt;{todo.text}&lt;/span&gt;
+            &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">deleteTodo</span>(todo.id)}&gt;X&lt;/button&gt;
+          &lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-keyword">export default</span> TodoList;
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>4 & 5. Parent-Child Communication</h2>
+      <h3>📋 Explanation</h3>
+      <p>This is a core React concept.
+        <br><strong>4. Parent-to-Child:</strong> Data flows down via <strong>props</strong>. A parent component passes
+        data to its child by defining attributes on the child component tag in its JSX.
+        <br><strong>5. Child-to-Parent:</strong> Data flows up via <strong>callbacks</strong>. The parent passes a
+        function down to the child as a prop. The child can then call this function, passing data as an argument, which
+        the parent receives.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// ParentComponent.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+<span class="code-keyword">import</span> ChildComponent <span class="code-keyword">from</span> <span class="code-string">'./ChildComponent'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ParentComponent</span>() {
+  <span class="code-keyword">const</span> [messageForChild, setMessageForChild] = <span class="code-function">useState</span>(<span class="code-string">'Hello from Parent!'</span>);
+  <span class="code-keyword">const</span> [messageFromChild, setMessageFromChild] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+
+  <span class="code-comment">// Callback function to be passed to the child</span>
+  <span class="code-keyword">const</span> <span class="code-function">handleChildData</span> = (<span class="code-attr-name">data</span>) => {
+    <span class="code-function">setMessageFromChild</span>(data);
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Parent Component&lt;/h2&gt;
+      &lt;p&gt;Message from child: {messageFromChild}&lt;/p&gt;
+      &lt;ChildComponent <span class="code-attr-name">message</span>={messageForChild} <span class="code-attr-name">onData</span>={handleChildData} /&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// ChildComponent.js</span>
+<span class="code-keyword">function</span> <span class="code-function">ChildComponent</span>({ <span class="code-attr-name">message</span>, <span class="code-attr-name">onData</span> }) {
+  <span class="code-keyword">const</span> [childInput, setChildInput] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">sendDataToParent</span> = () => {
+    <span class="code-function">onData</span>(childInput); <span class="code-comment">// Call the callback prop</span>
+  }
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h3&gt;Child Component&lt;/h3&gt;
+      &lt;p&gt;Message from parent: {message}&lt;/p&gt;
+      &lt;input <span class="code-attr-name">type</span>=<span class="code-string">"text"</span> <span class="code-attr-name">value</span>={childInput} <span class="code-attr-name">onChange</span>={e => <span class="code-function">setChildInput</span>(e.target.value)} /&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={sendDataToParent}&gt;Send Data to Parent&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>6. Form Handling</h2>
+      <h3>📋 Explanation</h3>
+      <p>This tests your ability to create "controlled components," where React state is the single source of truth for
+        form inputs. You manage the form's data using `useState`, update the state on every keystroke with an `onChange`
+        handler, and handle submission logic in an `onSubmit` handler.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// MyForm.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">MyForm</span>() {
+  <span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>({ <span class="code-attr-name">username</span>: <span class="code-string">''</span>, <span class="code-attr-name">password</span>: <span class="code-string">''</span> });
+
+  <span class="code-keyword">const</span> <span class="code-function">handleChange</span> = (<span class="code-attr-name">e</span>) => {
+    <span class="code-keyword">const</span> { name, value } = e.target;
+    <span class="code-function">setFormData</span>(prevData => ({ ...prevData, [name]: value }));
+  };
+
+  <span class="code-keyword">const</span> <span class="code-function">handleSubmit</span> = (<span class="code-attr-name">e</span>) => {
+    e.<span class="code-function">preventDefault</span>();
+    alert(`Username: ${formData.username}, Password: ${formData.password}`);
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;form <span class="code-attr-name">onSubmit</span>={handleSubmit}&gt;
+      &lt;input <span class="code-attr-name">type</span>=<span class="code-string">"text"</span> <span class="code-attr-name">name</span>=<span class="code-string">"username"</span> <span class="code-attr-name">value</span>={formData.username} <span class="code-attr-name">onChange</span>={handleChange} <span class="code-attr-name">placeholder</span>=<span class="code-string">"Username"</span>/&gt;
+      &lt;input <span class="code-attr-name">type</span>=<span class="code-string">"password"</span> <span class="code-attr-name">name</span>=<span class="code-string">"password"</span> <span class="code-attr-name">value</span>={formData.password} <span class="code-attr-name">onChange</span>={handleChange} <span class="code-attr-name">placeholder</span>=<span class="code-string">"Password"</span>/&gt;
+      &lt;button <span class="code-attr-name">type</span>=<span class="code-string">"submit"</span>&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>7. List Rendering</h2>
+      <h3>📋 Explanation</h3>
+      <p>React renders lists of components using JavaScript's <code>.map()</code> array method. The most important rule
+        is to assign a unique and stable <code>key</code> prop to each list item. This key helps React identify which
+        items have changed, are added, or are removed, which is crucial for performance.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// UserList.js</span>
+<span class="code-keyword">function</span> <span class="code-function">UserList</span>() {
+  <span class="code-keyword">const</span> users = [
+    { <span class="code-attr-name">id</span>: <span class="code-number">1</span>, <span class="code-attr-name">name</span>: <span class="code-string">'Alice'</span> },
+    { <span class="code-attr-name">id</span>: <span class="code-number">2</span>, <span class="code-attr-name">name</span>: <span class="code-string">'Bob'</span> },
+    { <span class="code-attr-name">id</span>: <span class="code-number">3</span>, <span class="code-attr-name">name</span>: <span class="code-string">'Charlie'</span> },
+  ];
+
+  <span class="code-keyword">return</span> (
+    &lt;ul&gt;
+      {users.<span class="code-function">map</span>(user => (
+        &lt;li <span class="code-attr-name">key</span>={user.id}&gt;{user.name}&lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>8. Conditional Rendering</h2>
+      <h3>📋 Explanation</h3>
+      <p>This is about displaying different UI elements based on a certain condition or state. Common techniques include
+        using an <code>if</code> statement, the ternary operator (<code>condition ? ... : ...</code>), or the logical
+        AND operator (<code>condition && ...</code>).
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// AuthStatus.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">AuthStatus</span>() {
+  <span class="code-keyword">const</span> [isLoggedIn, setIsLoggedIn] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {isLoggedIn ? (
+        &lt;p&gt;Welcome back!&lt;/p&gt;
+      ) : (
+        &lt;p&gt;Please log in.&lt;/p&gt;
+      )}
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setIsLoggedIn</span>(!isLoggedIn)}&gt;
+        {isLoggedIn ? <span class="code-string">'Logout'</span> : <span class="code-string">'Login'</span>}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>9 & 10. Fetch API Data with Loading & Error States</h2>
+      <h3>📋 Explanation</h3>
+      <p>This tests your knowledge of side effects with the <code>useEffect</code> hook and asynchronous operations. The
+        flow is:
+        <br>1. Set <code>loading</code> state to <code>true</code>.
+        <br>2. Fetch data inside <code>useEffect</code> (with an empty dependency array <code>[]</code> to run only once
+        on mount).
+        <br>3. If successful, store the data in state and set <code>loading</code> to <code>false</code>.
+        <br>4. If it fails, store the error in an <code>error</code> state and set <code>loading</code> to
+        <code>false</code>.
+        <br>5. Conditionally render a loading indicator, an error message, or the data.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// DataFetcher.js</span>
+<span class="code-keyword">import</span> React, { useState, useEffect } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">DataFetcher</span>() {
+  <span class="code-keyword">const</span> [data, setData] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  <span class="code-keyword">const</span> [loading, setLoading] = <span class="code-function">useState</span>(<span class="code-keyword">true</span>);
+  <span class="code-keyword">const</span> [error, setError] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">const</span> <span class="code-function">fetchData</span> = <span class="code-keyword">async</span> () => {
+      <span class="code-keyword">try</span> {
+        <span class="code-keyword">const</span> response = <span class="code-keyword">await</span> <span class="code-function">fetch</span>(<span class="code-string">'https://jsonplaceholder.typicode.com/todos/1'</span>);
+        <span class="code-keyword">if</span> (!response.ok) {
+          <span class="code-keyword">throw new</span> <span class="code-function">Error</span>(<span class="code-string">'Network response was not ok'</span>);
+        }
+        <span class="code-keyword">const</span> result = <span class="code-keyword">await</span> response.<span class="code-function">json</span>();
+        <span class="code-function">setData</span>(result);
+      } <span class="code-keyword">catch</span> (error) {
+        <span class="code-function">setError</span>(error.message);
+      } <span class="code-keyword">finally</span> {
+        <span class="code-function">setLoading</span>(<span class="code-keyword">false</span>);
+      }
+    };
+
+    <span class="code-function">fetchData</span>();
+  }, []); <span class="code-comment">// Empty array means this effect runs once on mount</span>
+
+  <span class="code-keyword">if</span> (loading) <span class="code-keyword">return</span> &lt;p&gt;Loading...&lt;/p&gt;;
+  <span class="code-keyword">if</span> (error) <span class="code-keyword">return</span> &lt;p&gt;Error: {error}&lt;/p&gt;;
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Fetched Data&lt;/h2&gt;
+      &lt;p&gt;Title: {data?.title}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>11. useEffect for a Timer</h2>
+      <h3>📋 Explanation</h3>
+      <p>This demonstrates the lifecycle management capabilities of <code>useEffect</code>, specifically the cleanup
+        function. An interval is a side effect that needs to be "cleaned up" when the component unmounts to prevent
+        memory leaks. The function returned from `useEffect` serves this purpose.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Timer.js</span>
+<span class="code-keyword">import</span> React, { useState, useEffect } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">Timer</span>() {
+  <span class="code-keyword">const</span> [seconds, setSeconds] = <span class="code-function">useState</span>(<span class="code-number">0</span>);
+
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-keyword">const</span> intervalId = <span class="code-function">setInterval</span>(() => {
+      <span class="code-function">setSeconds</span>(prevSeconds => prevSeconds + <span class="code-number">1</span>);
+    }, <span class="code-number">1000</span>);
+
+    <span class="code-comment">// Cleanup function: runs when the component unmounts</span>
+    <span class="code-keyword">return</span> () => <span class="code-function">clearInterval</span>(intervalId);
+  }, []); <span class="code-comment">// Empty dependency array ensures this runs only once</span>
+
+  <span class="code-keyword">return</span> &lt;h2&gt;Timer: {seconds}s&lt;/h2&gt;;
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>12. useRef to Focus Input</h2>
+      <h3>📋 Explanation</h3>
+      <p>The <code>useRef</code> hook is used to access DOM nodes directly. It creates a mutable object whose
+        <code>.current</code> property is initialized to the passed argument. Attaching the ref to a DOM element's `ref`
+        attribute allows you to interact with that element programmatically, like calling <code>.focus()</code>.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// FocusInput.js</span>
+<span class="code-keyword">import</span> React, { useRef, useEffect } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FocusInput</span>() {
+  <span class="code-keyword">const</span> inputRef = <span class="code-function">useRef</span>(<span class="code-keyword">null</span>);
+
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-comment">// Focus the input element on component mount</span>
+    inputRef.current.<span class="code-function">focus</span>();
+  }, []);
+
+  <span class="code-keyword">return</span> (
+    &lt;input <span class="code-attr-name">ref</span>={inputRef} <span class="code-attr-name">type</span>=<span class="code-string">"text"</span> <span class="code-attr-name">placeholder</span>=<span class="code-string">"I will be focused on load"</span> /&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>13 & 14. Basic and Nested Routing</h2>
+      <h3>📋 Explanation</h3>
+      <p><strong>React Router</strong> is the standard library for routing in React.
+        <br>• <code>BrowserRouter</code>: Wraps your app to enable routing.
+        <br>• <code>Routes</code>: A container for a collection of <code>Route</code> components.
+        <br>• <code>Route</code>: Maps a URL path to a specific component.
+        <br>• <code>Link</code>: Creates navigation links without a full page reload.
+        <br>• <code>Outlet</code>: Used in parent route components to render their child route components.
+      </p>
+      <div class="note"><strong>Note:</strong> This code is conceptual. You need to install
+        <code>react-router-dom</code> to run it.</div>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// App.js (Main Router Setup)</span>
+<span class="code-keyword">import</span> { BrowserRouter, Routes, Route, Link } <span class="code-keyword">from</span> <span class="code-string">'react-router-dom'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">App</span>() {
+  <span class="code-keyword">return</span> (
+    &lt;BrowserRouter&gt;
+      &lt;nav&gt;
+        &lt;Link <span class="code-attr-name">to</span>=<span class="code-string">"/"</span>&gt;Home&lt;/Link&gt; | &lt;Link <span class="code-attr-name">to</span>=<span class="code-string">"/about"</span>&gt;About&lt;/Link&gt; | &lt;Link <span class="code-attr-name">to</span>=<span class="code-string">"/dashboard"</span>&gt;Dashboard&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Routes&gt;
+        &lt;Route <span class="code-attr-name">path</span>=<span class="code-string">"/"</span> <span class="code-attr-name">element</span>={&lt;Home /&gt;} /&gt;
+        &lt;Route <span class="code-attr-name">path</span>=<span class="code-string">"/about"</span> <span class="code-attr-name">element</span>={&lt;About /&gt;} /&gt;
+        &lt;Route <span class="code-attr-name">path</span>=<span class="code-string">"/dashboard/*"</span> <span class="code-attr-name">element</span>={&lt;Dashboard /&gt;} /&gt; <span class="code-comment">// Parent route</span>
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}
+
+<span class="code-comment">// Dashboard.js (Nested Routing)</span>
+<span class="code-keyword">import</span> { Routes, Route, Link, Outlet } <span class="code-keyword">from</span> <span class="code-string">'react-router-dom'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">Dashboard</span>() {
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;h2&gt;Dashboard&lt;/h2&gt;
+      &lt;nav&gt;
+        &lt;Link <span class="code-attr-name">to</span>=<span class="code-string">"profile"</span>&gt;Profile&lt;/Link&gt; | &lt;Link <span class="code-attr-name">to</span>=<span class="code-string">"settings"</span>&gt;Settings&lt;/Link&gt;
+      &lt;/nav&gt;
+      &lt;Outlet /&gt; <span class="code-comment">// Renders the matched child route component here</span>
+      &lt;Routes&gt;
+        &lt;Route <span class="code-attr-name">path</span>=<span class="code-string">"profile"</span> <span class="code-attr-name">element</span>={&lt;Profile /&gt;} /&gt;
+        &lt;Route <span class="code-attr-name">path</span>=<span class="code-string">"settings"</span> <span class="code-attr-name">element</span>={&lt;Settings /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>15. Context API for Theme Switching</h2>
+      <h3>📋 Explanation</h3>
+      <p>The Context API solves the problem of "prop drilling" (passing props down through many levels of components).
+        It allows you to share state that can be considered "global" for a tree of React components.
+        <br>1. <strong>Create Context:</strong> Use <code>React.createContext()</code>.
+        <br>2. <strong>Provide Context:</strong> Create a Provider component that holds the state and wraps the
+        component tree that needs access to it.
+        <br>3. <strong>Consume Context:</strong> Use the <code>useContext</code> hook in any child component to read the
+        context's value.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// ThemeContext.js</span>
+<span class="code-keyword">import</span> React, { createContext, useState, useContext } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">const</span> ThemeContext = <span class="code-function">createContext</span>();
+
+<span class="code-keyword">export const</span> <span class="code-function">ThemeProvider</span> = ({ <span class="code-attr-name">children</span> }) => {
+  <span class="code-keyword">const</span> [theme, setTheme] = <span class="code-function">useState</span>(<span class="code-string">'light'</span>);
+  <span class="code-keyword">const</span> <span class="code-function">toggleTheme</span> = () => {
+    <span class="code-function">setTheme</span>(prevTheme => (prevTheme === <span class="code-string">'light'</span> ? <span class="code-string">'dark'</span> : <span class="code-string">'light'</span>));
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;ThemeContext.Provider <span class="code-attr-name">value</span>={{ theme, toggleTheme }}&gt;
+      {children}
+    &lt;/ThemeContext.Provider&gt;
+  );
+};
+
+<span class="code-keyword">export const</span> <span class="code-function">useTheme</span> = () => <span class="code-function">useContext</span>(ThemeContext);
+
+<span class="code-comment">// SomeComponent.js - Example usage</span>
+<span class="code-keyword">import</span> { useTheme } <span class="code-keyword">from</span> <span class="code-string">'./ThemeContext'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ThemeTogglerButton</span>() {
+  <span class="code-keyword">const</span> { theme, toggleTheme } = <span class="code-function">useTheme</span>();
+  <span class="code-keyword">return</span> (
+    &lt;button <span class="code-attr-name">onClick</span>={toggleTheme} <span class="code-attr-name">style</span>={{ <span class="code-attr-name">background</span>: theme === <span class="code-string">'dark'</span> ? <span class="code-string">'#333'</span> : <span class="code-string">'#FFF'</span>, <span class="code-attr-name">color</span>: theme === <span class="code-string">'dark'</span> ? <span class="code-string">'#FFF'</span> : <span class="code-string">'#333'</span> }}&gt;
+      Toggle to {theme === <span class="code-string">'light'</span> ? <span class="code-string">'dark'</span> : <span class="code-string">'light'</span>} mode
+    &lt;/button&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>16. Global State (Shopping Cart)</h2>
+      <h3>📋 Explanation</h3>
+      <p>Similar to the Theme Switcher, this uses the Context API but with more complex state logic. The state can be an
+        array of cart items. The context provider would expose the cart array and functions like <code>addToCart</code>,
+        <code>removeFromCart</code>, etc. For more complex logic, the provider often uses the <code>useReducer</code>
+        hook internally.
+      </p>
+    </div>
+
+    <div class="question-card">
+      <h2>17. Performance Optimization</h2>
+      <h3>📋 Explanation</h3>
+      <p>This tests your understanding of preventing unnecessary re-renders.
+        <br>• <code>React.memo()</code>: A higher-order component that memoizes a functional component. It re-renders
+        only if its props change.
+        <br>• <code>useCallback()</code>: Memoizes a function. This is useful when passing callbacks to optimized child
+        components that rely on reference equality to prevent unnecessary re-renders.
+        <br>• <code>useMemo()</code>: Memoizes a value. Use it to avoid expensive calculations on every render.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-keyword">const</span> HeavyComponent = React.<span class="code-function">memo</span>(<span class="code-keyword">function</span> <span class="code-function">HeavyComponent</span>({ <span class="code-attr-name">onButtonClick</span> }) {
+  <span class="code-comment">// This component only re-renders if onButtonClick changes</span>
+  <span class="code-keyword">return</span> &lt;button <span class="code-attr-name">onClick</span>={onButtonClick}&gt;Click Me&lt;/button&gt;;
+});
+
+<span class="code-keyword">function</span> <span class="code-function">Parent</span>() {
+  <span class="code-keyword">const</span> [count, setCount] = <span class="code-function">useState</span>(<span class="code-number">0</span>);
+
+  <span class="code-comment">// useMemo: Calculate a value only when 'count' changes</span>
+  <span class="code-keyword">const</span> expensiveValue = <span class="code-function">useMemo</span>(() => {
+    <span class="code-keyword">return</span> count * <span class="code-number">2</span>;
+  }, [count]);
+  
+  <span class="code-comment">// useCallback: Memoize the function so HeavyComponent doesn't re-render unnecessarily</span>
+  <span class="code-keyword">const</span> handleClick = <span class="code-function">useCallback</span>(() => {
+    console.<span class="code-function">log</span>(<span class="code-string">'Button clicked!'</span>);
+  }, []); <span class="code-comment">// Empty dependency array means the function is created only once</span>
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;p&gt;Count: {count}, Expensive Value: {expensiveValue}&lt;/p&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setCount</span>(c => c + <span class="code-number">1</span>)}&gt;Increment Count&lt;/button&gt;
+      &lt;HeavyComponent <span class="code-attr-name">onButtonClick</span>={handleClick} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>18. Dynamic Search/Filter</h2>
+      <h3>📋 Explanation</h3>
+      <p>This common UI pattern involves taking a list of data and an input field. As the user types into the input, the
+        list is filtered in real-time to show only the items that match the search query. This is achieved by holding
+        the search term in state and computing a filtered list on every render.
+      </p>
+      <div class="note">
+        <strong>Key Concept:</strong> The original, full list of items should remain unchanged. The filtering logic
+        should create a new, temporary array for rendering.
+      </div>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// SearchFilter.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">const</span> initialItems = [<span class="code-string">'Apple'</span>, <span class="code-string">'Banana'</span>, <span class="code-string">'Cherry'</span>, <span class="code-string">'Date'</span>, <span class="code-string">'Elderberry'</span>, <span class="code-string">'Fig'</span>];
+
+<span class="code-keyword">function</span> <span class="code-function">SearchFilter</span>() {
+  <span class="code-keyword">const</span> [searchTerm, setSearchTerm] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+
+  <span class="code-comment">// Filter items based on the search term</span>
+  <span class="code-keyword">const</span> filteredItems = initialItems.<span class="code-function">filter</span>(item =>
+    item.<span class="code-function">toLowerCase</span>().<span class="code-function">includes</span>(searchTerm.<span class="code-function">toLowerCase</span>())
+  );
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input
+        <span class="code-attr-name">type</span>=<span class="code-string">"text"</span>
+        <span class="code-attr-name">placeholder</span>=<span class="code-string">"Search for a fruit..."</span>
+        <span class="code-attr-name">value</span>={searchTerm}
+        <span class="code-attr-name">onChange</span>={e => <span class="code-function">setSearchTerm</span>(e.target.value)}
+      /&gt;
+      &lt;ul&gt;
+        {filteredItems.<span class="code-function">map</span>((item, index) => (
+          &lt;li <span class="code-attr-name">key</span>={index}&gt;{item}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-keyword">export default</span> SearchFilter;
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>19. Modal Component</h2>
+      <h3>📋 Explanation</h3>
+      <p>A modal is a dialog box that appears on top of the main content. Its visibility is controlled by a boolean
+        state variable (e.g., <code>isModalOpen</code>). A button in the parent component sets this state to
+        <code>true</code> to open it, and a close button inside the modal sets it back to <code>false</code>. CSS is
+        used to create the overlay and center the modal content.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Modal parent component</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">ModalContainer</span>() {
+  <span class="code-keyword">const</span> [isOpen, setIsOpen] = <span class="code-function">useState</span>(<span class="code-keyword">false</span>);
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={() => <span class="code-function">setIsOpen</span>(<span class="code-keyword">true</span>)}&gt;Open Modal&lt;/button&gt;
+      &lt;Modal <span class="code-attr-name">isOpen</span>={isOpen} <span class="code-attr-name">onClose</span>={() => <span class="code-function">setIsOpen</span>(<span class="code-keyword">false</span>)}&gt;
+        &lt;h2&gt;Modal Title&lt;/h2&gt;
+        &lt;p&gt;This is the content of the modal.&lt;/p&gt;
+      &lt;/Modal&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="code-comment">// Modal.js - The actual modal component</span>
+<span class="code-keyword">function</span> <span class="code-function">Modal</span>({ <span class="code-attr-name">isOpen</span>, <span class="code-attr-name">onClose</span>, <span class="code-attr-name">children</span> }) {
+  <span class="code-keyword">if</span> (!isOpen) <span class="code-keyword">return</span> <span class="code-keyword">null</span>;
+
+  <span class="code-keyword">const</span> overlayStyle = {
+    <span class="code-attr-name">position</span>: <span class="code-string">'fixed'</span>, <span class="code-attr-name">top</span>: <span class="code-number">0</span>, <span class="code-attr-name">left</span>: <span class="code-number">0</span>, <span class="code-attr-name">right</span>: <span class="code-number">0</span>, <span class="code-attr-name">bottom</span>: <span class="code-number">0</span>,
+    <span class="code-attr-name">backgroundColor</span>: <span class="code-string">'rgba(0, 0, 0, 0.7)'</span>,
+    <span class="code-attr-name">display</span>: <span class="code-string">'flex'</span>, <span class="code-attr-name">alignItems</span>: <span class="code-string">'center'</span>, <span class="code-attr-name">justifyContent</span>: <span class="code-string">'center'</span>
+  };
+  
+  <span class="code-keyword">const</span> modalStyle = {
+    <span class="code-attr-name">background</span>: <span class="code-string">'white'</span>, <span class="code-attr-name">padding</span>: <span class="code-string">'20px'</span>, <span class="code-attr-name">borderRadius</span>: <span class="code-string">'5px'</span>, <span class="code-attr-name">color</span>: <span class="code-string">'black'</span>
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div <span class="code-attr-name">style</span>={overlayStyle} <span class="code-attr-name">onClick</span>={onClose}&gt;
+      &lt;div <span class="code-attr-name">style</span>={modalStyle} <span class="code-attr-name">onClick</span>={e => e.<span class="code-function">stopPropagation</span>()}&gt;
+        {children}
+        &lt;button <span class="code-attr-name">onClick</span>={onClose}&gt;Close&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>20. Debounce Input</h2>
+      <h3>📋 Explanation</h3>
+      <p>Debouncing prevents an expensive operation (like an API call) from firing on every single keystroke. Instead,
+        it waits until the user has stopped typing for a specific duration. This is achieved with `useState` and
+        `useEffect`. The effect watches for changes in the input value and sets a timer (`setTimeout`). If the input
+        changes again before the timer finishes, the old timer is cleared and a new one is set.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// DebouncedSearch.js</span>
+<span class="code-keyword">import</span> React, { useState, useEffect } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">DebouncedSearch</span>() {
+  <span class="code-keyword">const</span> [inputValue, setInputValue] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+  <span class="code-keyword">const</span> [debouncedValue, setDebouncedValue] = <span class="code-function">useState</span>(<span class="code-string">''</span>);
+
+  <span class="code-function">useEffect</span>(() => {
+    <span class="code-comment">// Set up a timer</span>
+    <span class="code-keyword">const</span> handler = <span class="code-function">setTimeout</span>(() => {
+      <span class="code-function">setDebouncedValue</span>(inputValue);
+    }, <span class="code-number">500</span>); <span class="code-comment">// 500ms delay</span>
+
+    <span class="code-comment">// Clear the timer if the input value changes</span>
+    <span class="code-keyword">return</span> () => {
+      <span class="code-function">clearTimeout</span>(handler);
+    };
+  }, [inputValue]); <span class="code-comment">// Re-run the effect only when inputValue changes</span>
+
+  <span class="code-comment">// You would use 'debouncedValue' to make your API call</span>
+  
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input
+        <span class="code-attr-name">type</span>=<span class="code-string">"text"</span>
+        <span class="code-attr-name">value</span>={inputValue}
+        <span class="code-attr-name">onChange</span>={e => <span class="code-function">setInputValue</span>(e.target.value)}
+        <span class="code-attr-name">placeholder</span>=<span class="code-string">"Search..."</span>
+      /&gt;
+      &lt;p&gt;Debounced Value: {debouncedValue}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>21. Multi-Step Form</h2>
+      <h3>📋 Explanation</h3>
+      <p>A multi-step form, or "wizard," breaks a long form into smaller, manageable pieces. The state management
+        involves tracking the current step number and a single object containing all the form data from every step.
+        Conditional rendering is used to display the correct component for the current step.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// MultiStepForm.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">MultiStepForm</span>() {
+  <span class="code-keyword">const</span> [step, setStep] = <span class="code-function">useState</span>(<span class="code-number">1</span>);
+  <span class="code-keyword">const</span> [formData, setFormData] = <span class="code-function">useState</span>({ <span class="code-attr-name">name</span>: <span class="code-string">''</span>, <span class="code-attr-name">email</span>: <span class="code-string">''</span>, <span class="code-attr-name">password</span>: <span class="code-string">''</span> });
+
+  <span class="code-keyword">const</span> <span class="code-function">nextStep</span> = () => <span class="code-function">setStep</span>(prev => prev + <span class="code-number">1</span>);
+  <span class="code-keyword">const</span> <span class="code-function">prevStep</span> = () => <span class="code-function">setStep</span>(prev => prev - <span class="code-number">1</span>);
+  
+  <span class="code-keyword">const</span> <span class="code-function">handleChange</span> = input => e => {
+    <span class="code-function">setFormData</span>({ ...formData, [input]: e.target.value });
+  };
+  
+  <span class="code-keyword">switch</span> (step) {
+    <span class="code-keyword">case</span> <span class="code-number">1</span>:
+      <span class="code-keyword">return</span> (&lt;Step1 <span class="code-attr-name">nextStep</span>={nextStep} <span class="code-attr-name">handleChange</span>={handleChange} <span class="code-attr-name">values</span>={formData} /&gt;);
+    <span class="code-keyword">case</span> <span class="code-number">2</span>:
+      <span class="code-keyword">return</span> (&lt;Step2 <span class="code-attr-name">nextStep</span>={nextStep} <span class="code-attr-name">prevStep</span>={prevStep} <span class="code-attr-name">handleChange</span>={handleChange} <span class="code-attr-name">values</span>={formData} /&gt;);
+    <span class="code-keyword">case</span> <span class="code-number">3</span>:
+      <span class="code-keyword">return</span> (&lt;Confirmation <span class="code-attr-name">prevStep</span>={prevStep} <span class="code-attr-name">values</span>={formData} /&gt;);
+    <span class="code-keyword">default</span>:
+      <span class="code-keyword">return</span> (&lt;div&gt;Form Completed&lt;/div&gt;);
+  }
+}
+<span class="code-comment">// Note: Step1, Step2, and Confirmation would be separate components receiving these props.</span>
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>22. File Upload and Preview</h2>
+      <h3>📋 Explanation</h3>
+      <p>React handles file uploads using a standard <code>&lt;input type="file" /&gt;</code> element. The selected file
+        is accessed from the `onChange` event via `event.target.files[0]`. To create a preview for an image, you can use
+        `URL.createObjectURL()` to generate a temporary local URL for the selected file, which can then be used as the
+        `src` for an `&lt;img&gt;` tag.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// FileUploader.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">function</span> <span class="code-function">FileUploader</span>() {
+  <span class="code-keyword">const</span> [selectedFile, setSelectedFile] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+  <span class="code-keyword">const</span> [preview, setPreview] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+
+  <span class="code-keyword">const</span> <span class="code-function">handleFileChange</span> = (e) => {
+    <span class="code-keyword">const</span> file = e.target.files[<span class="code-number">0</span>];
+    <span class="code-keyword">if</span> (file) {
+      <span class="code-function">setSelectedFile</span>(file);
+      <span class="code-function">setPreview</span>(URL.<span class="code-function">createObjectURL</span>(file));
+    }
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;input <span class="code-attr-name">type</span>=<span class="code-string">"file"</span> <span class="code-attr-name">onChange</span>={handleFileChange} /&gt;
+      {selectedFile &amp;&amp; &lt;p&gt;File: {selectedFile.name}&lt;/p&gt;}
+      {preview &amp;&amp; &lt;img <span class="code-attr-name">src</span>={preview} <span class="code-attr-name">alt</span>=<span class="code-string">"Preview"</span> <span class="code-attr-name">width</span>=<span class="code-string">"200"</span> /&gt;}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>23. Tabs Component</h2>
+      <h3>📋 Explanation</h3>
+      <p>A tabs component allows users to switch between different views within the same context. This is managed with a
+        state variable that holds the index of the currently active tab. Clicking a tab button updates this state, and
+        the component conditionally renders the content associated with the active index.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Tabs.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">const</span> TABS_DATA = [
+  { <span class="code-attr-name">label</span>: <span class="code-string">'Tab 1'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for Tab 1'</span> },
+  { <span class="code-attr-name">label</span>: <span class="code-string">'Tab 2'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for Tab 2'</span> },
+  { <span class="code-attr-name">label</span>: <span class="code-string">'Tab 3'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for Tab 3'</span> },
+];
+
+<span class="code-keyword">function</span> <span class="code-function">Tabs</span>() {
+  <span class="code-keyword">const</span> [activeTab, setActiveTab] = <span class="code-function">useState</span>(<span class="code-number">0</span>);
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      &lt;div <span class="code-attr-name">className</span>=<span class="code-string">"tab-list"</span>&gt;
+        {TABS_DATA.<span class="code-function">map</span>((tab, index) => (
+          &lt;button
+            <span class="code-attr-name">key</span>={index}
+            <span class="code-attr-name">onClick</span>={() => <span class="code-function">setActiveTab</span>(index)}
+            <span class="code-attr-name">style</span>={{ <span class="code-attr-name">fontWeight</span>: activeTab === index ? <span class="code-string">'bold'</span> : <span class="code-string">'normal'</span> }}
+          &gt;
+            {tab.label}
+          &lt;/button&gt;
+        ))}
+      &lt;/div&gt;
+      &lt;div <span class="code-attr-name">className</span>=<span class="code-string">"tab-content"</span>&gt;
+        &lt;p&gt;{TABS_DATA[activeTab].content}&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>24. Accordion Component</h2>
+      <h3>📋 Explanation</h3>
+      <p>An accordion allows users to show and hide sections of content. It's managed with a state variable that stores
+        the index of the currently open item. When a user clicks an item's header, the state is updated to that item's
+        index. Clicking the same header again can set the state to a neutral value (like `null`) to close it.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Accordion.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">const</span> ACCORDION_DATA = [
+  { <span class="code-attr-name">title</span>: <span class="code-string">'Section 1'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for section 1.'</span> },
+  { <span class="code-attr-name">title</span>: <span class="code-string">'Section 2'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for section 2.'</span> },
+  { <span class="code-attr-name">title</span>: <span class="code-string">'Section 3'</span>, <span class="code-attr-name">content</span>: <span class="code-string">'Content for section 3.'</span> },
+];
+
+<span class="code-keyword">function</span> <span class="code-function">Accordion</span>() {
+  <span class="code-keyword">const</span> [openIndex, setOpenIndex] = <span class="code-function">useState</span>(<span class="code-keyword">null</span>);
+
+  <span class="code-keyword">const</span> <span class="code-function">handleItemClick</span> = (<span class="code-attr-name">index</span>) => {
+    <span class="code-function">setOpenIndex</span>(openIndex === index ? <span class="code-keyword">null</span> : index);
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div&gt;
+      {ACCORDION_DATA.<span class="code-function">map</span>((item, index) => (
+        &lt;div <span class="code-attr-name">key</span>={index} <span class="code-attr-name">className</span>=<span class="code-string">"accordion-item"</span>&gt;
+          &lt;div <span class="code-attr-name">className</span>=<span class="code-string">"accordion-title"</span> <span class="code-attr-name">onClick</span>={() => <span class="code-function">handleItemClick</span>(index)}&gt;
+            {item.title}
+          &lt;/div&gt;
+          {openIndex === index &amp;&amp; (
+            &lt;div <span class="code-attr-name">className</span>=<span class="code-string">"accordion-content"</span>&gt;{item.content}&lt;/div&gt;
+          )}
+        &lt;/div&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+    </div>
+
+    <div class="question-card">
+      <h2>25. Carousel/Slider Component</h2>
+      <h3>📋 Explanation</h3>
+      <p>A carousel displays a series of items one at a time. Its core logic relies on a state variable for the
+        `currentIndex`. "Next" and "Previous" buttons increment or decrement this index. Logic is required to handle the
+        boundaries: when the user clicks "Next" on the last slide, the index should loop back to 0, and vice-versa for
+        the "Previous" button.
+      </p>
+      <h3>💻 Code</h3>
+      <pre><code class="language-jsx"><span class="code-comment">// Carousel.js</span>
+<span class="code-keyword">import</span> React, { useState } <span class="code-keyword">from</span> <span class="code-string">'react'</span>;
+
+<span class="code-keyword">const</span> SLIDES = [<span class="code-string">'Slide 1'</span>, <span class="code-string">'Slide 2'</span>, <span class="code-string">'Slide 3'</span>, <span class="code-string">'Slide 4'</span>];
+
+<span class="code-keyword">function</span> <span class="code-function">Carousel</span>() {
+  <span class="code-keyword">const</span> [currentIndex, setCurrentIndex] = <span class="code-function">useState</span>(<span class="code-number">0</span>);
+
+  <span class="code-keyword">const</span> <span class="code-function">goToPrevious</span> = () => {
+    <span class="code-keyword">const</span> isFirstSlide = currentIndex === <span class="code-number">0</span>;
+    <span class="code-keyword">const</span> newIndex = isFirstSlide ? SLIDES.length - <span class="code-number">1</span> : currentIndex - <span class="code-number">1</span>;
+    <span class="code-function">setCurrentIndex</span>(newIndex);
+  };
+
+  <span class="code-keyword">const</span> <span class="code-function">goToNext</span> = () => {
+    <span class="code-keyword">const</span> isLastSlide = currentIndex === SLIDES.length - <span class="code-number">1</span>;
+    <span class="code-keyword">const</span> newIndex = isLastSlide ? <span class="code-number">0</span> : currentIndex + <span class="code-number">1</span>;
+    <span class="code-function">setCurrentIndex</span>(newIndex);
+  };
+
+  <span class="code-keyword">return</span> (
+    &lt;div <span class="code-attr-name">style</span>={{ <span class="code-attr-name">display</span>: <span class="code-string">'flex'</span>, <span class="code-attr-name">alignItems</span>: <span class="code-string">'center'</span> }}&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={goToPrevious}&gt;&larr; Prev&lt;/button&gt;
+      &lt;div <span class="code-attr-name">style</span>={{ <span class="code-attr-name">margin</span>: <span class="code-string">'0 20px'</span> }}&gt;
+        &lt;h2&gt;{SLIDES[currentIndex]}&lt;/h2&gt;
+      &lt;/div&gt;
+      &lt;button <span class="code-attr-name">onClick</span>={goToNext}&gt;Next &rarr;&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+</div>
+
+</body>
+</html>
