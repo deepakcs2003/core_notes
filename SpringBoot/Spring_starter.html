@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Framework & Spring Boot Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+
+        .step {
+            background: #f8f9ff;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .note {
+            background: #d4edda;
+            padding: 15px;
+            border-left: 4px solid #28a745;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info {
+            background: #d1ecf1;
+            padding: 15px;
+            border-left: 4px solid #17a2b8;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9ff;
+        }
+
+        .comparison-table tr:hover {
+            background: #e9ecff;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+
+        .diagram img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .tree-structure {
+            background: #2d2d2d;
+            color: #a8e6cf;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #4ec9b0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #28a745;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px;
+        }
+
+        .badge.warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        ul, ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .section {
+            margin: 40px 0;
+        }
+
+        .footer {
+            background: #2d2d2d;
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+     
+
+        <div class="content">
+            <div class="note">
+                <strong>📚 Learning Path:</strong> You're learning <strong>Spring (without Boot)</strong> and then <strong>Spring Boot</strong>. This guide provides step-by-step detailed explanations with working examples.
+            </div>
+
+            <!-- PART 1: Spring without Boot -->
+            <div class="section">
+                <h2>🧩 PART 1: SPRING (WITHOUT BOOT) — XML Configuration</h2>
+
+                <div class="step">
+                    <span class="step-number">Step 1</span>
+                    <h3>Create a New Project</h3>
+                    <ul>
+                        <li>Open <strong>IntelliJ IDEA</strong> → New Project</li>
+                        <li>Choose <strong>Maven</strong> for dependency management</li>
+                        <li>Project name: <code>demoSpring</code></li>
+                        <li>Category: <code>Internal</code></li>
+                        <li>Archetype: <code>quickstart</code></li>
+                        <li>JDK: Select your Java version (e.g., 17)</li>
+                    </ul>
+
+                    <div class="highlight">
+                        <strong>✅ Project Structure Created:</strong>
+                    </div>
+                    <pre class="tree-structure">demoSpring
+ ├── src
+ │   ├── main
+ │   │   ├── java
+ │   │   └── resources
+ │   └── test
+ └── pom.xml</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 2</span>
+                    <h3>Add Spring Framework Dependencies</h3>
+                    <p>Spring is not included automatically, so we add it manually.</p>
+                    <ul>
+                        <li>Go to: <a href="https://mvnrepository.com/" target="_blank">https://mvnrepository.com/</a></li>
+                        <li>Search for: <code>spring-context</code></li>
+                        <li>Choose the version (e.g., 5.3.30)</li>
+                        <li>Copy the dependency to your <code>pom.xml</code></li>
+                    </ul>
+
+                    <pre><code>&lt;dependencies&gt;
+    &lt;!-- Spring Core and Context --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-context&lt;/artifactId&gt;
+        &lt;version&gt;5.3.30&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+                    <div class="info">
+                        <strong>💡 Info:</strong> <code>spring-context</code> automatically includes other basic modules like spring-beans, spring-core, etc.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 3</span>
+                    <h3>Create Java Classes</h3>
+                    
+                    <h4>📁 src/main/java/org/spring/Dev.java</h4>
+                    <pre><code>package org.spring;
+
+public class Dev {
+    public void build() {
+        System.out.println("Dev is building a Spring app...");
+    }
+}</code></pre>
+
+                    <h4>📁 src/main/java/org/spring/Laptop.java</h4>
+                    <pre><code>package org.spring;
+
+public class Laptop {
+    public void compile() {
+        System.out.println("Laptop is compiling code...");
+    }
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 4</span>
+                    <h3>Create Spring Configuration File (spring.xml)</h3>
+                    
+                    <h4>📁 src/main/resources/spring.xml</h4>
+                    <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+
+    &lt;!-- Bean definitions --&gt;
+    &lt;bean id="dev" class="org.spring.Dev"/&gt;
+    &lt;bean id="laptop" class="org.spring.Laptop"/&gt;
+
+&lt;/beans&gt;</code></pre>
+
+                    <div class="note">
+                        <strong>📌 Purpose:</strong> This file tells Spring <strong>which classes (beans)</strong> to manage.
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 5</span>
+                    <h3>Create Main Application Class</h3>
+                    
+                    <h4>📁 src/main/java/org/spring/App.java</h4>
+                    <pre><code>package org.spring;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            new ClassPathXmlApplicationContext("spring.xml");
+
+        Dev dev = (Dev) context.getBean("dev");
+        Laptop laptop = (Laptop) context.getBean("laptop");
+
+        dev.build();
+        laptop.compile();
+    }
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 6</span>
+                    <h3>Run Your Project</h3>
+                    
+                    <div class="output-box">✅ Output:
+Dev is building a Spring app...
+Laptop is compiling code...</div>
+
+                    <div class="highlight">
+                        <strong>🎯 What happens internally:</strong>
+                        <ol>
+                            <li><code>ApplicationContext</code> reads <code>spring.xml</code></li>
+                            <li>It creates the objects (beans) for <code>Dev</code> and <code>Laptop</code></li>
+                            <li>You get those beans from the container and call methods</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="diagram">
+                    <h3>📊 Spring Framework Architecture</h3>
+                    <img src="https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/images/spring-overview.png" alt="Spring Framework Architecture">
+                    <p><em>Spring Framework modules and their relationships</em></p>
+                </div>
+            </div>
+
+            <!-- PART 2: Spring Boot -->
+            <div class="section">
+                <h2>⚙️ PART 2: SPRING BOOT PROJECT (with starter)</h2>
+                <img src="https://www.interviewbit.com/blog/wp-content/uploads/2022/06/Spring-Boot-Workflow-Architecture-1160x696.png" alt="Spring Boot Workflow Architecture">
+                <div class="info">
+                    <strong>🚀 What is Spring Boot?</strong><br>
+                    Spring Boot simplifies the entire Spring setup process with automatic configuration, embedded servers, and starter dependencies.
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 1</span>
+                    <h3>Create New Spring Boot Project</h3>
+                    <ul>
+                        <a href="https://start.spring.io/">https://start.spring.io/</a>
+                        <li>Project name: <code>demoSpringBoot</code></li>
+                        <li>Language: Java</li>
+                        <li>Build System: Maven</li>
+                        <li>Dependencies: Add <strong>Spring Web</strong> and <strong>Spring Boot DevTools</strong></li>
+                    </ul>
+
+                    <pre class="tree-structure">demoSpringBoot
+ ├── src
+ │   ├── main
+ │   │   ├── java/com/example/demoSpringBoot
+ │   │   │     └── DemoSpringBootApplication.java
+ │   │   └── resources
+ │   │         └── application.properties
+ │   └── test
+ └── pom.xml</pre>
+  <pre class="tree-structure">demoSpringBoot
+ shopping-app-backend/
+│
+├─ src/
+│   ├─ main/
+│   │   ├─ java/com/yourcompany/shoppingapp/
+│   │   │   ├─ ShoppingAppApplication.java   <-- main class
+│   │   │   │
+│   │   │   ├─ config/                       <-- security, JWT, CORS configs
+│   │   │   │    └─ SecurityConfig.java
+│   │   │   │
+│   │   │   ├─ controller/                   <-- REST controllers
+│   │   │   │    ├─ AuthController.java
+│   │   │   │    ├─ ProductController.java
+│   │   │   │    ├─ UserController.java
+│   │   │   │    └─ AdminController.java
+│   │   │   │
+│   │   │   ├─ dto/                          <-- optional, for request/response objects
+│   │   │   │    ├─ UserDto.java
+│   │   │   │    ├─ ProductDto.java
+│   │   │   │    └─ AuthRequest.java
+│   │   │   │
+│   │   │   ├─ entity/                       <-- JPA entities
+│   │   │   │    ├─ User.java
+│   │   │   │    ├─ Role.java
+│   │   │   │    ├─ Product.java
+│   │   │   │    ├─ Cart.java
+│   │   │   │    └─ Order.java
+│   │   │   │
+│   │   │   ├─ repository/                   <-- Spring Data JPA repositories
+│   │   │   │    ├─ UserRepository.java
+│   │   │   │    ├─ RoleRepository.java
+│   │   │   │    ├─ ProductRepository.java
+│   │   │   │    ├─ CartRepository.java
+│   │   │   │    └─ OrderRepository.java
+│   │   │   │
+│   │   │   ├─ service/                      <-- business logic layer
+│   │   │   │    ├─ UserService.java
+│   │   │   │    ├─ ProductService.java
+│   │   │   │    ├─ CartService.java
+│   │   │   │    └─ OrderService.java
+│   │   │   │
+│   │   │   └─ exception/                    <-- custom exceptions
+│   │   │        ├─ ResourceNotFoundException.java
+│   │   │        └─ GlobalExceptionHandler.java
+│   │   │
+│   │   └─ resources/
+│   │        ├─ application.properties       <-- database, server configs
+│   │        └─ data.sql (optional)         <-- initial seed data
+│   │
+│   └─ test/
+│        └─ java/com/yourcompany/shoppingapp/
+│             └─ ShoppingAppApplicationTests.java
+│
+├─ pom.xml                                   <-- Maven dependencies
+└─ README.md
+</pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 2</span>
+                    <h3>Understanding Spring Boot Starter</h3>
+                    
+                    <p>In <code>pom.xml</code>, you'll see:</p>
+                    <pre><code>&lt;dependencies&gt;
+    &lt;!-- Core Spring Boot starter --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- For creating web apps (REST APIs, MVC, etc.) --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Optional for hot reload --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+        &lt;optional&gt;true&lt;/optional&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+                    <div class="note">
+                        <strong>✅ Spring Boot Starter = Pre-packaged dependencies</strong>
+                        <ul>
+                            <li>You don't need to manually add spring-core, spring-context, etc.</li>
+                            <li>Boot does automatic configuration</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 3</span>
+                    <h3>Create Your Java Code</h3>
+                    
+                    <h4>📁 src/main/java/com/example/demoSpringBoot/Dev.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Dev {
+    public void build() {
+        System.out.println("Dev is building with Spring Boot!");
+    }
+}</code></pre>
+
+                    <div class="highlight">
+                        <strong>💡 Notice:</strong> We use <code>@Component</code> annotation instead of XML configuration!
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 4</span>
+                    <h3>Main Application Class</h3>
+                    
+                    <h4>📁 src/main/java/com/example/demoSpringBoot/DemoSpringBootApplication.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class DemoSpringBootApplication {
+
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            SpringApplication.run(DemoSpringBootApplication.class, args);
+
+        Dev dev = context.getBean(Dev.class);
+        dev.build();
+    }
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 5</span>
+                    <h3>Run the Application</h3>
+                    
+                    <div class="output-box">✅ Output:
+Dev is building with Spring Boot!</div>
+
+                    <div class="highlight">
+                        <strong>🎯 What happens:</strong>
+                        <ol>
+                            <li><code>@SpringBootApplication</code> automatically sets up configuration, component scanning, and bean creation</li>
+                            <li>No need for <code>spring.xml</code> — everything is done with annotations</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="diagram">
+                    <h3>📊 Spring Boot Architecture</h3>
+                    <img src="https://miro.medium.com/v2/resize:fit:1400/1*VIKhSJoRhWMF0Fz9jQPPTQ.png" alt="Spring Boot Architecture">
+                    <p><em>Spring Boot auto-configuration and starter dependencies</em></p>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="section">
+                <h2>🔍 Spring vs Spring Boot Comparison</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Spring (Without Boot)</th>
+                            <th>Spring Boot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Setup</strong></td>
+                            <td>Manual</td>
+                            <td>Automatic</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Config File</strong></td>
+                            <td>spring.xml</td>
+                            <td>application.properties</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dependencies</strong></td>
+                            <td>Added manually</td>
+                            <td>Comes with Starter</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Run</strong></td>
+                            <td>Normal Java main()</td>
+                            <td>SpringApplication.run()</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bean Creation</strong></td>
+                            <td>XML</td>
+                            <td>@Component, @Service, @Bean</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Web Server</strong></td>
+                            <td>Needs external Tomcat</td>
+                            <td>Built-in server</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Easy for beginners</strong></td>
+                            <td>❌</td>
+                            <td>✅</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="section">
+                <h2>🌱 Conclusion</h2>
+                
+                <div class="note">
+                    <p><strong>Spring without Boot</strong> helps you understand the <em>core concepts</em> — IoC (Inversion of Control), DI (Dependency Injection), ApplicationContext, and Bean configuration.</p>
+                </div>
+
+                <div class="info">
+                    <p><strong>Spring Boot</strong> automates all that and gives you a <strong>ready-to-run</strong> environment with minimal setup, embedded servers, and production-ready features.</p>
+                </div>
+
+                <div class="highlight">
+                    <h3>🎓 Key Takeaways</h3>
+                    <ul>
+                        <li><span class="badge">XML Config</span> Traditional Spring uses XML files to define beans</li>
+                        <li><span class="badge">Annotations</span> Spring Boot uses annotations like @Component, @Service</li>
+                        <li><span class="badge">Auto-Config</span> Spring Boot automatically configures your application</li>
+                        <li><span class="badge">Starters</span> Pre-packaged dependencies for common use cases</li>
+                        <li><span class="badge">Embedded Server</span> No need for external Tomcat/Jetty setup</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Dependency Injection -->
+            <div class="section">
+                <h2>💉 Dependency Injection: Setter vs Constructor</h2>
+                
+                <div class="info">
+                    <strong>📚 What is Dependency Injection?</strong><br>
+                    Dependency Injection (DI) is a design pattern where Spring injects objects and values into your beans. There are two main ways: <strong>Setter Injection</strong> and <strong>Constructor Injection</strong>.
+                </div>
+
+                <!-- Spring XML: Setter Injection -->
+                <h3>🧩 PART 1: Spring (XML) - Dependency Injection</h3>
+
+                <div class="step">
+                    <span class="step-number">1️⃣</span>
+                    <h3>Setter Injection (XML)</h3>
+                    
+                    <p>Spring uses the <strong>setter methods</strong> of a class to inject values or objects.</p>
+
+                    <h4>📁 Dev.java</h4>
+                    <pre><code>package org.spring;
+
+public class Dev {
+    private int id;
+    private String name;
+    private Laptop laptop;
+
+    public Dev() {
+        System.out.println("Dev object created using default constructor");
+    }
+
+    // 🔹 Setter methods (used by Spring for Setter Injection)
+    public void setId(int id) {
+        this.id = id;
+        System.out.println("Setter for id called");
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        System.out.println("Setter for name called");
+    }
+
+    public void setLaptop(Laptop laptop) {
+        this.laptop = laptop;
+        System.out.println("Setter for laptop called");
+    }
+
+    public void build() {
+        System.out.println(name + " (ID: " + id + ") is building a Spring app...");
+        laptop.compile();
+    }
+}</code></pre>
+
+                    <h4>📁 Laptop.java</h4>
+                    <pre><code>package org.spring;
+
+public class Laptop {
+    private String brand;
+
+    public Laptop() {
+        System.out.println("Laptop object created using default constructor");
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+        System.out.println("Setter for brand called");
+    }
+
+    public void compile() {
+        System.out.println("Laptop from brand " + brand + " is compiling code...");
+    }
+}</code></pre>
+
+                    <h4>📁 spring.xml</h4>
+                    <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+
+    &lt;!-- Define Laptop bean --&gt;
+    &lt;bean id="laptop" class="org.spring.Laptop"&gt;
+        &lt;property name="brand" value="HP"/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- Define Dev bean with setter injection --&gt;
+    &lt;bean id="dev" class="org.spring.Dev"&gt;
+        &lt;property name="id" value="101"/&gt;
+        &lt;property name="name" value="Deepak"/&gt;
+        &lt;property name="laptop" ref="laptop"/&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;</code></pre>
+
+                    <h4>📁 App.java</h4>
+                    <pre><code>package org.spring;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            new ClassPathXmlApplicationContext("spring.xml");
+
+        Dev dev = (Dev) context.getBean("dev");
+        dev.build();
+    }
+}</code></pre>
+
+                    <pre class="output-box">✅ Output:
+Laptop object created using default constructor
+Setter for brand called
+Dev object created using default constructor
+Setter for id called
+Setter for name called
+Setter for laptop called
+Deepak (ID: 101) is building a Spring app...
+Laptop from brand HP is compiling code...</p>
+
+                    <div class="highlight">
+                        <strong>🧠 What's Happening?</strong>
+                        <ol>
+                            <li>Spring creates the <strong>Laptop bean</strong> first</li>
+                            <li>Calls its setter → <code>setBrand("HP")</code></li>
+                            <li>Then creates the <strong>Dev bean</strong></li>
+                            <li>Calls each setter one by one:
+                                <ul>
+                                    <li><code>setId(101)</code></li>
+                                    <li><code>setName("Deepak")</code></li>
+                                    <li><code>setLaptop(laptopObject)</code></li>
+                                </ul>
+                            </li>
+                            <li>Finally, you call <code>dev.build()</code></li>
+                        </ol>
+                        <p><strong>✅ Setter Injection = Using setX() methods in XML with &lt;property&gt;</strong></p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2️⃣</span>
+                    <h3>Constructor Injection (XML)</h3>
+                    
+                    <p>Instead of calling setters, Spring can inject values through a <strong>constructor</strong> at the time of bean creation.</p>
+
+                    <h4>📁 Dev.java (constructor-based)</h4>
+                    <pre><code>package org.spring;
+
+public class Dev {
+    private int id;
+    private String name;
+    private Laptop laptop;
+
+    // 🔹 Constructor for injection
+    public Dev(int id, String name, Laptop laptop) {
+        System.out.println("Dev object created using constructor injection");
+        this.id = id;
+        this.name = name;
+        this.laptop = laptop;
+    }
+
+    public void build() {
+        System.out.println(name + " (ID: " + id + 
+            ") is building using constructor injection...");
+        laptop.compile();
+    }
+}</code></pre>
+
+                    <h4>📁 spring.xml (constructor-arg instead of property)</h4>
+                    <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+
+    &lt;bean id="laptop" class="org.spring.Laptop"&gt;
+        &lt;property name="brand" value="Lenovo"/&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- Dev bean using constructor injection --&gt;
+    &lt;bean id="dev" class="org.spring.Dev"&gt;
+        &lt;constructor-arg value="102"/&gt;
+        &lt;constructor-arg value="Aman"/&gt;
+        &lt;constructor-arg ref="laptop"/&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;</code></pre>
+
+                    <pre class="output-box">✅ Output:
+Laptop object created using default constructor
+Setter for brand called
+Dev object created using constructor injection
+Aman (ID: 102) is building using constructor injection...
+Laptop from brand Lenovo is compiling code...</p>
+
+                    <div class="highlight">
+                        <strong>🧠 What's Happening?</strong>
+                        <ol>
+                            <li>Spring sees <code>&lt;constructor-arg&gt;</code> → realizes it must use the matching constructor</li>
+                            <li>It matches arguments by <strong>order</strong> or <strong>type</strong> (you can also use <code>index</code> or <code>name</code>)</li>
+                            <li>Spring directly calls: <code>new Dev(102, "Aman", laptopObject);</code></li>
+                            <li>No setters are called</li>
+                        </ol>
+                        <p><strong>✅ Constructor Injection = Inject dependencies via constructor parameters</strong></p>
+                    </div>
+                </div>
+
+                <div class="comparison-table-wrapper">
+                    <h3>🧾 Setter vs Constructor Injection (Spring XML)</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Setter Injection</th>
+                                <th>Constructor Injection</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Method used</strong></td>
+                                <td>setX()</td>
+                                <td>Constructor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>When called</strong></td>
+                                <td>After object creation</td>
+                                <td>During object creation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>XML Tag</strong></td>
+                                <td>&lt;property&gt;</td>
+                                <td>&lt;constructor-arg&gt;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Flexibility</strong></td>
+                                <td>More flexible, optional dependencies</td>
+                                <td>Best for required dependencies</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Recommended when</strong></td>
+                                <td>You have optional fields</td>
+                                <td>You have mandatory fields</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Spring Boot: Dependency Injection -->
+                <h3>⚙️ PART 2: Spring Boot - Dependency Injection with Annotations</h3>
+
+                <div class="info">
+                    <strong>🚀 Spring Boot removes XML</strong> — you use annotations instead!
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1️⃣</span>
+                    <h3>Setter Injection (Annotation-based)</h3>
+
+                    <h4>📁 Dev.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Dev {
+    private int id;
+    private String name;
+    private Laptop laptop;
+
+    public Dev() {
+        System.out.println("Dev object created");
+    }
+
+    @Autowired
+    public void setLaptop(Laptop laptop) {
+        this.laptop = laptop;
+        System.out.println("Setter injection done using @Autowired");
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void build() {
+        System.out.println(name + " (ID: " + id + 
+            ") is building a Spring Boot app...");
+        laptop.compile();
+    }
+}</code></pre>
+
+                    <h4>📁 Laptop.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class Laptop {
+    private String brand = "HP";
+
+    public void compile() {
+        System.out.println("Laptop from brand " + brand + " is compiling code...");
+    }
+}</code></pre>
+
+                    <h4>📁 DemoSpringBootApplication.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class DemoSpringBootApplication {
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            SpringApplication.run(DemoSpringBootApplication.class, args);
+
+        Dev dev = context.getBean(Dev.class);
+        dev.setId(201);
+        dev.setName("Deepak");
+        dev.build();
+    }
+}</code></pre>
+
+                    <div class="output-box">✅ Output:
+Dev object created
+Setter injection done using @Autowired
+Deepak (ID: 201) is building a Spring Boot app...
+Laptop from brand HP is compiling code...</div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2️⃣</span>
+                    <h3>Constructor Injection (Annotation-based)</h3>
+
+                    <h4>📁 Dev.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class Dev {
+    private int id;
+    private String name;
+    private Laptop laptop;
+
+    // 🔹 Constructor Injection
+    @Autowired
+    public Dev(Laptop laptop) {
+        this.laptop = laptop;
+        System.out.println("Constructor injection done using @Autowired");
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void build() {
+        System.out.println(name + " (ID: " + id + 
+            ") is building using constructor injection...");
+        laptop.compile();
+    }
+}</code></pre>
+
+                    <h4>📁 DemoSpringBootApplication.java</h4>
+                    <pre><code>package com.example.demoSpringBoot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class DemoSpringBootApplication {
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            SpringApplication.run(DemoSpringBootApplication.class, args);
+
+        Dev dev = context.getBean(Dev.class);
+        dev.setId(301);
+        dev.setName("Aman");
+        dev.build();
+    }
+}</code></pre>
+
+                    <pre class="output-box">✅ Output:
+Constructor injection done using @Autowired
+Aman (ID: 301) is building using constructor injection...
+Laptop from brand HP is compiling code...</p>
+                </div>
+
+                <div class="comparison-table-wrapper">
+                    <h3>🎯 Complete Comparison: Spring XML vs Spring Boot Annotations</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Spring XML</th>
+                                <th>Spring Boot (Annotations)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Setter Injection</strong></td>
+                                <td>&lt;property&gt;</td>
+                                <td>@Autowired on setter</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Constructor Injection</strong></td>
+                                <td>&lt;constructor-arg&gt;</td>
+                                <td>@Autowired on constructor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bean Definition</strong></td>
+                                <td>&lt;bean&gt;</td>
+                                <td>@Component, @Service, etc.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Configuration</strong></td>
+                                <td>spring.xml</td>
+                                <td>@SpringBootApplication</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Flexibility</strong></td>
+                                <td>XML-based</td>
+                                <td>Code-based</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="note">
+                    <h3>🧠 Which one to use?</h3>
+                    <p><span class="badge">Constructor Injection</span> When dependency is <strong>mandatory</strong><br>
+                    ✅ More testable and ensures object consistency</p>
+                    <p><span class="badge warning">Setter Injection</span> When dependency is <strong>optional</strong><br>
+                    ✅ More flexible and allows late binding</p>
+                </div>
+
+                <div class="diagram">
+                    <h3>📊 Dependency Injection Flow</h3>
+                    <img src="https://docs.spring.io/spring-framework/reference/_images/container-magic.png" alt="Spring Dependency Injection">
+                    <p><em>How Spring Container manages beans and injects dependencies</em></p>
+                </div>
+            </div>
+
+            <!-- Autowiring Section -->
+            <div class="section">
+                <h2>🔌 Autowiring: byName, byType & Primary Beans</h2>
+
+                <div class="info">
+                    <strong>🎯 What is Autowiring?</strong><br>
+                    Autowiring allows Spring to automatically resolve and inject collaborating beans into your bean. Spring can autowire dependencies <strong>byName</strong>, <strong>byType</strong>, or using <strong>primary</strong> beans.
+                </div>
+
+                <div class="note">
+                    <strong>📋 Goal of this Section:</strong>
+                    <ul>
+                        <li><code>Dev</code> class depends on <code>Computer</code> interface</li>
+                        <li>We have <strong>two implementations</strong>: <code>Laptop</code> and <code>Desktop</code></li>
+                        <li>We'll use <strong>XML autowiring (byName, byType)</strong> and <strong>primary beans</strong></li>
+                    </ul>
+                </div>
+
+                <h3>⚙️ Project Structure</h3>
+                <pre class="tree-structure">demoSpring/
+ ├── src/main/java/org/spring/
+ │   ├── App.java
+ │   ├── Dev.java
+ │   ├── Computer.java (interface)
+ │   ├── Laptop.java
+ │   └── Desktop.java
+ └── src/main/resources/spring.xml</pre>
+
+                <div class="step">
+                    <span class="step-number">Step 1</span>
+                    <h3>Create Interface and Implementations</h3>
+
+                    <h4>🧠 Computer.java (Interface)</h4>
+                    <pre><code>package org.spring;
+
+public interface Computer {
+    void compile();
+}</code></pre>
+
+                    <h4>💻 Laptop.java</h4>
+                    <pre><code>package org.spring;
+
+public class Laptop implements Computer {
+
+    public Laptop() {
+        System.out.println("Laptop bean created!");
+    }
+
+    @Override
+    public void compile() {
+        System.out.println("Compiling on Laptop 💻");
+    }
+}</code></pre>
+
+                    <h4>🖥️ Desktop.java</h4>
+                    <pre><code>package org.spring;
+
+public class Desktop implements Computer {
+
+    public Desktop() {
+        System.out.println("Desktop bean created!");
+    }
+
+    @Override
+    public void compile() {
+        System.out.println("Compiling on Desktop 🖥️");
+    }
+}</code></pre>
+
+                    <h4>👨‍💻 Dev.java</h4>
+                    <pre><code>package org.spring;
+
+public class Dev {
+
+    private Computer computer;  // dependency
+
+    public Dev() {
+        System.out.println("Dev object created!");
+    }
+
+    // ✅ Setter for XML autowire byName
+    public void setComputer(Computer computer) {
+        this.computer = computer;
+    }
+
+    public void build() {
+        System.out.println("Developer is building a project...");
+        computer.compile();
+    }
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 2</span>
+                    <h3>Main Application Class</h3>
+
+                    <h4>📁 App.java</h4>
+                    <pre><code>package org.spring;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class App {
+    public static void main(String[] args) {
+        ApplicationContext context = 
+            new ClassPathXmlApplicationContext("spring.xml");
+
+        Dev dev = (Dev) context.getBean("dev");
+        dev.build();
+    }
+}</code></pre>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Step 3</span>
+                    <h3>Spring Configuration with Autowiring</h3>
+
+                    <h4>📁 spring.xml</h4>
+                    <pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+
+    &lt;!-- ✅ Dev bean with autowire byName --&gt;
+    &lt;!-- It will look for a bean whose id matches the property name 'computer' --&gt;
+    &lt;bean id="dev" class="org.spring.Dev" autowire="byName"/&gt;
+
+    &lt;!-- ✅ Two possible computer beans --&gt;
+    &lt;bean id="computer" class="org.spring.Laptop" primary="true"/&gt;
+    &lt;bean id="desktop1" class="org.spring.Desktop"/&gt;
+
+&lt;/beans&gt;</code></pre>
+
+                    <div class="highlight">
+                        <strong>🔍 Step-by-step behavior of autowire="byName":</strong>
+                        <ol>
+                            <li>Spring creates the <code>Dev</code> bean</li>
+                            <li>It checks for any property inside <code>Dev</code> — here we have <code>setComputer(Computer computer)</code></li>
+                            <li>The property name is <code>computer</code></li>
+                            <li>Spring looks for a bean in XML with <strong>id="computer"</strong></li>
+                            <li>It finds <code>&lt;bean id="computer" class="org.spring.Laptop" .../&gt;</code></li>
+                            <li>So, <strong>Laptop bean</strong> is injected into <code>Dev</code></li>
+                            <li>When you call <code>dev.build()</code>, output will show Laptop's compile</li>
+                        </ol>
+                    </div>
+
+                    <pre class="output-box">✅ Output:
+Laptop bean created!
+Desktop bean created!
+Dev object created!
+Developer is building a project...
+Compiling on Laptop 💻</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Understanding</span>
+                    <h3>💡 Autowiring Concepts Explained</h3>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Concept</th>
+                                <th>Meaning</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>autowire="byName"</strong></td>
+                                <td>Injects a bean whose <strong>id matches the property name</strong></td>
+                                <td>&lt;bean id="dev" autowire="byName"/&gt;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>autowire="byType"</strong></td>
+                                <td>Injects bean by <strong>type (class/interface)</strong> if only one exists</td>
+                                <td>&lt;bean id="dev" autowire="byType"/&gt;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>primary="true"</strong></td>
+                                <td>If multiple beans of same type exist, the primary one is injected</td>
+                                <td>&lt;bean id="computer" primary="true"/&gt;</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ref attribute</strong></td>
+                                <td>Manual injection</td>
+                                <td>&lt;property name="computer" ref="desktop1"/&gt;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">Variations</span>
+                    <h3>🧩 Try These Different Configurations</h3>
+
+                    <h4>1️⃣ Using autowire="byType"</h4>
+                    <pre><code>&lt;bean id="dev" class="org.spring.Dev" autowire="byType"/&gt;</code></pre>
+                    <div class="info">
+                        ➡️ Spring will inject <strong>Laptop</strong> because it's <code>primary="true"</code>
+                    </div>
+
+                    <h4>2️⃣ Manual Injection (no autowire)</h4>
+                    <pre><code>&lt;bean id="dev" class="org.spring.Dev"&gt;
+    &lt;property name="computer" ref="desktop1"/&gt;
+&lt;/bean&gt;</code></pre>
+                    <div class="info">
+                        ➡️ This directly injects <strong>Desktop</strong> instead of Laptop
+                    </div>
+
+                    <h4>3️⃣ Multiple Beans without Primary</h4>
+                    <pre><code>&lt;bean id="laptop1" class="org.spring.Laptop"/&gt;
+&lt;bean id="desktop1" class="org.spring.Desktop"/&gt;
+&lt;bean id="dev" class="org.spring.Dev" autowire="byType"/&gt;</code></pre>
+                    <div class="highlight">
+                        ⚠️ This will throw an error: <strong>NoUniqueBeanDefinitionException</strong><br>
+                        Spring doesn't know which Computer implementation to inject!
+                    </div>
+                </div>
+
+                <div class="comparison-table-wrapper">
+                    <h3>🧠 Complete Autowiring Summary</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Injection Type</th>
+                                <th>XML/Annotation</th>
+                                <th>How It Works</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>By Name</strong></td>
+                                <td>&lt;bean autowire="byName"/&gt;</td>
+                                <td>Matches property name with bean id</td>
+                            </tr>
+                            <tr>
+                                <td><strong>By Type</strong></td>
+                                <td>&lt;bean autowire="byType"/&gt;</td>
+                                <td>Matches property type with bean class</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Manual ref</strong></td>
+                                <td>&lt;property name="computer" ref="desktop1"/&gt;</td>
+                                <td>You decide explicitly</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Primary</strong></td>
+                                <td>primary="true"</td>
+                                <td>Used when multiple beans of same type exist</td>
+                            </tr>
+                            <tr>
+                                <td><strong>@Autowired</strong></td>
+                                <td>Annotation</td>
+                                <td>Does autowiring automatically</td>
+                            </tr>
+                            <tr>
+                                <td><strong>@Qualifier</strong></td>
+                                <td>Annotation</td>
+                                <td>Used with @Autowired to specify bean</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="note">
+                    <h3>✅ Decision Table: Which Bean Gets Injected?</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Scenario</th>
+                                <th>Injected Bean</th>
+                                <th>Why</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>autowire="byName" and bean id = "computer"</td>
+                                <td>Laptop</td>
+                                <td>Matches name <code>computer</code></td>
+                            </tr>
+                            <tr>
+                                <td>autowire="byType" with primary laptop</td>
+                                <td>Laptop</td>
+                                <td>Because laptop is <code>primary="true"</code></td>
+                            </tr>
+                            <tr>
+                                <td>Manual ref to <code>desktop1</code></td>
+                                <td>Desktop</td>
+                                <td>Explicitly referenced</td>
+                            </tr>
+                            <tr>
+                                <td>Remove primary, no ref, two same types</td>
+                                <td>❌ Error</td>
+                                <td>Ambiguous dependency</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="diagram">
+                    <h3>📊 Autowiring Flow Diagram</h3>
+                    <img src="https://media.geeksforgeeks.org/wp-content/uploads/20211103135409/AutoWiring.png" alt="Spring Autowiring">
+                    <p><em>How Spring resolves autowiring: byName, byType, and Primary beans</em></p>
+                </div>
+
+                <div class="highlight">
+                    <h3>🎓 Key Takeaways</h3>
+                    <ul>
+                        <li><span class="badge">byName</span> Matches the property name with bean ID</li>
+                        <li><span class="badge">byType</span> Matches the property type with bean class</li>
+                        <li><span class="badge">Primary</span> Resolves conflicts when multiple beans of same type exist</li>
+                        <li><span class="badge warning">Ambiguity</span> Without primary or qualifier, multiple beans cause errors</li>
+                        <li><span class="badge">Manual</span> Using <code>ref</code> attribute gives you explicit control</li>
+                    </ul>
+                </div>
+            </div>
+
+           
+    </div>
+</body>
+</html>

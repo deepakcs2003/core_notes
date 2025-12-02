@@ -133,10 +133,7 @@
 
 <body>
     <div class="container">
-        <h1>30-45 Express.js Interview Questions to Ace Your Interview (With Diagrams & MongoDB Section)</h1>
-        <p>Here’s a neat, clean, and interactive HTML guide for revising Express.js concepts. Each question includes a
-            simple explanation, code example with comments explaining each line, and a pro tip. We've added diagrams for
-            key topics and a MongoDB section with 5 extra questions. Click the question titles to toggle content!</p>
+        <h1>Express.js Interview Questions</h1>
 
         <div class="section">
             <h2 onclick="toggleContent(this)">1. What’s Express.js in simple words?</h2>
@@ -592,65 +589,68 @@ app.delete('/users/:id', (req, res) => res.send('Delete user'));
         </div>
 
 
-       <div class="section">
-  <h2 onclick="toggleContent(this)">11. How do you handle a 404 (page not found)?</h2>
-  <div class="toggle-content">
+        <div class="section">
+            <h2 onclick="toggleContent(this)">11. How do you handle a 404 (page not found)?</h2>
+            <div class="toggle-content">
 
-    <p><strong>🌐 Simple Meaning:</strong>  
-      A 404 error happens when the client requests a page or route that <b>doesn’t exist</b>.  
-      Express can handle this with a <b>catch-all middleware</b>.
-    </p>
+                <p><strong>🌐 Simple Meaning:</strong>
+                    A 404 error happens when the client requests a page or route that <b>doesn’t exist</b>.
+                    Express can handle this with a <b>catch-all middleware</b>.
+                </p>
 
-    <p><strong>⚙️ How It Works:</strong></p>
-    <ul>
-      <li>Add a middleware at the <b>end of all routes</b>.</li>
-      <li>It catches all requests that don’t match existing routes.</li>
-      <li>Sets status code to <code>404</code> and sends a message or JSON.</li>
-    </ul>
+                <p><strong>⚙️ How It Works:</strong></p>
+                <ul>
+                    <li>Add a middleware at the <b>end of all routes</b>.</li>
+                    <li>It catches all requests that don’t match existing routes.</li>
+                    <li>Sets status code to <code>404</code> and sends a message or JSON.</li>
+                </ul>
 
-    <p><strong>💻 Code Example:</strong></p>
-    <pre><code>
+                <p><strong>💻 Code Example:</strong></p>
+                <pre><code>
 app.use((req, res) => {
   res.status(404).send('Oops, page not found!');
 });
     </code></pre>
 
-    <p><strong>📖 How to Explain:</strong></p>
-    <ul>
-      <li>This middleware runs <b>only if no other route matches</b>.</li>
-      <li><code>res.status(404)</code> sets the HTTP status to 404.</li>
-      <li><code>res.send()</code> sends a user-friendly message.</li>
-    </ul>
+                <p><strong>📖 How to Explain:</strong></p>
+                <ul>
+                    <li>This middleware runs <b>only if no other route matches</b>.</li>
+                    <li><code>res.status(404)</code> sets the HTTP status to 404.</li>
+                    <li><code>res.send()</code> sends a user-friendly message.</li>
+                </ul>
 
-    <p><strong>💡 Pro Tip:</strong></p>
-    <ul>
-      <li>For APIs, return JSON instead of text:  
-        <code>res.status(404).json({ error: 'Not found' })</code></li>
-      <li>Log 404 errors to track broken links or analytics.</li>
-    </ul>
+                <p><strong>💡 Pro Tip:</strong></p>
+                <ul>
+                    <li>For APIs, return JSON instead of text:
+                        <code>res.status(404).json({ error: 'Not found' })</code>
+                    </li>
+                    <li>Log 404 errors to track broken links or analytics.</li>
+                </ul>
 
-    <p><strong>✅ Summary:</strong></p>
-    <ul>
-      <li>🛑 404 = page or route not found</li>
-      <li>⚙️ Use catch-all middleware at the end</li>
-      <li>📝 Send text or JSON to inform the client</li>
-      <li>📊 Logging helps track issues</li>
-    </ul>
+                <p><strong>✅ Summary:</strong></p>
+                <ul>
+                    <li>🛑 404 = page or route not found</li>
+                    <li>⚙️ Use catch-all middleware at the end</li>
+                    <li>📝 Send text or JSON to inform the client</li>
+                    <li>📊 Logging helps track issues</li>
+                </ul>
 
-  </div>
-</div>
+            </div>
+        </div>
 
 
-  <div class="section">
-  <h2 onclick="toggleContent(this)">13. Full Express App Example (Router + Controller + Middleware + Model + DB)</h2>
-  <div class="toggle-content">
+        <div class="section">
+            <h2 onclick="toggleContent(this)">13. Full Express App Example (Router + Controller + Middleware + Model +
+                DB)</h2>
+            <div class="toggle-content">
 
-    <p><strong>🧠 Simple Meaning:</strong>  
-      A full Express app is built by separating the code into different parts — like dividing a restaurant into kitchen (controller), menu (routes), manager (middleware), and storage (database).
-    </p>
+                <p><strong>🧠 Simple Meaning:</strong>
+                    A full Express app is built by separating the code into different parts — like dividing a restaurant
+                    into kitchen (controller), menu (routes), manager (middleware), and storage (database).
+                </p>
 
-    <h3>📁 Folder Structure:</h3>
-    <pre><code>
+                <h3>📁 Folder Structure:</h3>
+                <pre><code>
 project/
 │
 ├── app.js                 # Main app file
@@ -665,16 +665,16 @@ project/
 └── .env                   # Database connection config
     </code></pre>
 
-    <h3>⚙️ Step 1: Middleware (middleware/logger.js)</h3>
-    <pre><code>
+                <h3>⚙️ Step 1: Middleware (middleware/logger.js)</h3>
+                <pre><code>
 module.exports = (req, res, next) => {
   console.log(`[${new Date().toLocaleTimeString()}] ${req.method} ${req.originalUrl}`);
   next();
 };
     </code></pre>
 
-    <h3>🧩 Step 2: User Model (models/User.js)</h3>
-    <pre><code>
+                <h3>🧩 Step 2: User Model (models/User.js)</h3>
+                <pre><code>
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
@@ -686,8 +686,8 @@ const userSchema = new mongoose.Schema({
 module.exports = mongoose.model('User', userSchema);
     </code></pre>
 
-    <h3>👨‍🍳 Step 3: Controller (controllers/userController.js)</h3>
-    <pre><code>
+                <h3>👨‍🍳 Step 3: Controller (controllers/userController.js)</h3>
+                <pre><code>
 const User = require('../models/User');
 
 // CRUD operations
@@ -698,15 +698,16 @@ exports.updateUser = async (req, res) => { /*...*/ };
 exports.deleteUser = async (req, res) => { /*...*/ };
     </code></pre>
 
-    <h3>📌 Step 4: Router (routes/users.js)</h3>
-    <p><strong>Router Meaning:</strong>  
-      <code>express.Router()</code> is a “mini-app” that groups related routes together.  
-      You can add middleware to the router or specific routes.
-    </p>
-    <p><strong>Router Analogy:</strong>  
-      Main app = restaurant, Router = drinks menu, Router-level middleware = waiter checking all drink orders, Route = individual drink.
-    </p>
-    <pre><code>
+                <h3>📌 Step 4: Router (routes/users.js)</h3>
+                <p><strong>Router Meaning:</strong>
+                    <code>express.Router()</code> is a “mini-app” that groups related routes together.
+                    You can add middleware to the router or specific routes.
+                </p>
+                <p><strong>Router Analogy:</strong>
+                    Main app = restaurant, Router = drinks menu, Router-level middleware = waiter checking all drink
+                    orders, Route = individual drink.
+                </p>
+                <pre><code>
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
@@ -728,8 +729,8 @@ router.delete('/:id', userController.deleteUser);
 module.exports = router;
     </code></pre>
 
-    <h3>🚀 Step 5: Main App (app.js)</h3>
-    <pre><code>
+                <h3>🚀 Step 5: Main App (app.js)</h3>
+                <pre><code>
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -755,59 +756,84 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
     </code></pre>
 
-    <h3>🔑 How It Works (Flow):</h3>
-    <ul>
-      <li>🟢 <strong>app.js</strong> → main app, global middleware, mounts routers</li>
-      <li>🟠 <strong>users router</strong> → mini-app grouping all user routes, router-level middleware</li>
-      <li>🔵 <strong>controller</strong> → handles logic for each route</li>
-      <li>🟣 <strong>model</strong> → connects to MongoDB database</li>
-      <li>🟤 <strong>middleware</strong> → logs or validates requests</li>
-      <li>⚫ Catch-all 404 → handles unknown routes</li>
-    </ul>
+                <h3>🔑 How It Works (Flow):</h3>
+                <ul>
+                    <li>🟢 <strong>app.js</strong> → main app, global middleware, mounts routers</li>
+                    <li>🟠 <strong>users router</strong> → mini-app grouping all user routes, router-level middleware
+                    </li>
+                    <li>🔵 <strong>controller</strong> → handles logic for each route</li>
+                    <li>🟣 <strong>model</strong> → connects to MongoDB database</li>
+                    <li>🟤 <strong>middleware</strong> → logs or validates requests</li>
+                    <li>⚫ Catch-all 404 → handles unknown routes</li>
+                </ul>
 
-    <h3>📊 API Endpoints:</h3>
-    <table border="1" cellspacing="0" cellpadding="6">
-      <tr><th>Method</th><th>Route</th><th>Description</th></tr>
-      <tr><td>GET</td><td>/users</td><td>Get all users</td></tr>
-      <tr><td>GET</td><td>/users/:id</td><td>Get user by ID</td></tr>
-      <tr><td>POST</td><td>/users</td><td>Create user</td></tr>
-      <tr><td>PUT</td><td>/users/:id</td><td>Update user</td></tr>
-      <tr><td>DELETE</td><td>/users/:id</td><td>Delete user</td></tr>
-    </table>
+                <h3>📊 API Endpoints:</h3>
+                <table border="1" cellspacing="0" cellpadding="6">
+                    <tr>
+                        <th>Method</th>
+                        <th>Route</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/users</td>
+                        <td>Get all users</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/users/:id</td>
+                        <td>Get user by ID</td>
+                    </tr>
+                    <tr>
+                        <td>POST</td>
+                        <td>/users</td>
+                        <td>Create user</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/users/:id</td>
+                        <td>Update user</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/users/:id</td>
+                        <td>Delete user</td>
+                    </tr>
+                </table>
 
-    <h3>💬 Real-Life Analogy:</h3>
-    <ul>
-      <li>🧾 <b>app.js</b> = Main restaurant manager</li>
-      <li>📋 <b>router</b> = Menu section (e.g., Users menu)</li>
-      <li>👨‍🍳 <b>controller</b> = Chef preparing each order</li>
-      <li>🧱 <b>model</b> = Storage (database)</li>
-      <li>🕵️‍♂️ <b>middleware</b> = Waiter/security guard checking requests</li>
-    </ul>
+                <h3>💬 Real-Life Analogy:</h3>
+                <ul>
+                    <li>🧾 <b>app.js</b> = Main restaurant manager</li>
+                    <li>📋 <b>router</b> = Menu section (e.g., Users menu)</li>
+                    <li>👨‍🍳 <b>controller</b> = Chef preparing each order</li>
+                    <li>🧱 <b>model</b> = Storage (database)</li>
+                    <li>🕵️‍♂️ <b>middleware</b> = Waiter/security guard checking requests</li>
+                </ul>
 
-    <h3>💡 Summary:</h3>
-    <ul>
-      <li>✅ Use <code>express.Router()</code> to organize routes</li>
-      <li>✅ Keep business logic in controllers</li>
-      <li>✅ Use middleware for logging, validation, or security</li>
-      <li>✅ Use Mongoose models to interact with MongoDB</li>
-      <li>✅ Keep app modular, maintainable, and clean</li>
-    </ul>
+                <h3>💡 Summary:</h3>
+                <ul>
+                    <li>✅ Use <code>express.Router()</code> to organize routes</li>
+                    <li>✅ Keep business logic in controllers</li>
+                    <li>✅ Use middleware for logging, validation, or security</li>
+                    <li>✅ Use Mongoose models to interact with MongoDB</li>
+                    <li>✅ Keep app modular, maintainable, and clean</li>
+                </ul>
 
-  </div>
-</div>
+            </div>
+        </div>
 
 
 
-      <div class="section">
-    <h2 onclick="toggleContent(this)">13. How do you add middleware to a specific route?</h2>
-    <div class="toggle-content">
-        <p><strong>🧠 Explanation:</strong>  
-           Middleware can be applied to a single route by placing it <b>before the route handler</b>.  
-           It runs only for that route, allowing conditional checks like authentication or logging.
-        </p>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">13. How do you add middleware to a specific route?</h2>
+            <div class="toggle-content">
+                <p><strong>🧠 Explanation:</strong>
+                    Middleware can be applied to a single route by placing it <b>before the route handler</b>.
+                    It runs only for that route, allowing conditional checks like authentication or logging.
+                </p>
 
-        <p><strong>💻 Code Example:</strong></p>
-        <pre><code>
+                <p><strong>💻 Code Example:</strong></p>
+                <pre><code>
 // Middleware function
 const checkUser = (req, res, next) => {
   console.log('Checking user...');
@@ -822,66 +848,77 @@ app.get('/secret', checkUser, (req, res) => {
 });
         </code></pre>
 
-        <p><strong>🔍 How to Explain:</strong>  
-           - `checkUser` runs <b>before</b> the route handler.  
-           - `next()` passes control to the handler if conditions pass.  
-           - If condition fails, middleware can stop the request and send a response.
-        </p>
+                <p><strong>🔍 How to Explain:</strong>
+                    - `checkUser` runs <b>before</b> the route handler.
+                    - `next()` passes control to the handler if conditions pass.
+                    - If condition fails, middleware can stop the request and send a response.
+                </p>
 
-        <p class="pro-tip"><strong>Pro Tip:</strong>  
-           Use route-specific middleware for auth, logging, validation, or other checks.  
-           You can chain multiple middleware functions for one route.
-        </p>
-    </div>
-</div>
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Use route-specific middleware for auth, logging, validation, or other checks.
+                    You can chain multiple middleware functions for one route.
+                </p>
+            </div>
+        </div>
 
-     <div class="section">
-    <h2 onclick="toggleContent(this)">14. What are the arguments of middleware functions?</h2>
-    <div class="toggle-content">
-        <p><strong>🧠 Explanation:</strong>  
-           Middleware functions receive <code>req</code>, <code>res</code>, and <code>next</code>.  
-           - `req` → request info  
-           - `res` → response object  
-           - `next` → function to pass control to next middleware  
-           <br>
-           Error-handling middleware also receives <code>err</code> as the first argument.
-        </p>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">14. What are the arguments of middleware functions?</h2>
+            <div class="toggle-content">
+                <p><strong>🧠 Explanation:</strong>
+                    Middleware functions receive <code>req</code>, <code>res</code>, and <code>next</code>.
+                    - `req` → request info
+                    - `res` → response object
+                    - `next` → function to pass control to next middleware
+                    <br>
+                    Error-handling middleware also receives <code>err</code> as the first argument.
+                </p>
 
-        <p class="pro-tip"><strong>Pro Tip:</strong>  
-           `req` and `res` are mutable, so you can add data (like notes to an order) for later middleware or routes.
-        </p>
-    </div>
-</div>
-
-
-       <div class="section">
-    <h2 onclick="toggleContent(this)">15. What’s the difference between <code>app.use()</code> and <code>app.get()</code>?</h2>
-    <div class="toggle-content">
-        <p><strong>🧠 Explanation:</strong></p>
-        <ul>
-            <li><code>app.use()</code> → Runs middleware for <b>all HTTP methods</b> and routes (global or path-specific)</li>
-            <li><code>app.get()</code> → Handles <b>only GET requests</b> for a specific route</li>
-        </ul>
-
-        <p><strong>💡 Key Points:</strong></p>
-        <ul>
-            <li>Use <code>app.use()</code> for logging, authentication, or JSON parsing</li>
-            <li>Use <code>app.get()</code> (or <code>app.post()</code>, <code>app.put()</code>) for route-specific logic</li>
-            <li><code>app.use()</code> can take a path to limit its scope, e.g., <code>app.use('/users', middleware)</code></li>
-        </ul>
-
-        <p class="pro-tip"><strong>Pro Tip:</strong> <code>app.use()</code> = global tasks; <code>app.get()</code> = page/route-specific tasks.</p>
-    </div>
-</div>
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    `req` and `res` are mutable, so you can add data (like notes to an order) for later middleware or
+                    routes.
+                </p>
+            </div>
+        </div>
 
 
-       <div class="section">
-    <h2 onclick="toggleContent(this)">16. How do you handle query parameters?</h2>
-    <div class="toggle-content">
-        <p><strong>Explanation:</strong> Query parameters are extra info in a URL after a <code>?</code>, like <code>?q=book&category=novel</code>. You can access them in Express using <code>req.query</code>.</p>
-        
-        <p><strong>Code Example:</strong></p>
-        <pre><code>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">15. What’s the difference between <code>app.use()</code> and
+                <code>app.get()</code>?
+            </h2>
+            <div class="toggle-content">
+                <p><strong>🧠 Explanation:</strong></p>
+                <ul>
+                    <li><code>app.use()</code> → Runs middleware for <b>all HTTP methods</b> and routes (global or
+                        path-specific)</li>
+                    <li><code>app.get()</code> → Handles <b>only GET requests</b> for a specific route</li>
+                </ul>
+
+                <p><strong>💡 Key Points:</strong></p>
+                <ul>
+                    <li>Use <code>app.use()</code> for logging, authentication, or JSON parsing</li>
+                    <li>Use <code>app.get()</code> (or <code>app.post()</code>, <code>app.put()</code>) for
+                        route-specific logic</li>
+                    <li><code>app.use()</code> can take a path to limit its scope, e.g.,
+                        <code>app.use('/users', middleware)</code>
+                    </li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong> <code>app.use()</code> = global tasks;
+                    <code>app.get()</code> = page/route-specific tasks.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">16. How do you handle query parameters?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation:</strong> Query parameters are extra info in a URL after a <code>?</code>, like
+                    <code>?q=book&category=novel</code>. You can access them in Express using <code>req.query</code>.
+                </p>
+
+                <p><strong>Code Example:</strong></p>
+                <pre><code>
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -898,11 +935,15 @@ app.listen(port, () => {
 });
         </code></pre>
 
-        <p><strong>How to Explain:</strong> <code>req.query.q</code> gets the <code>q</code> value from the URL. Example: <code>/search?q=book</code> → <code>searchTerm = 'book'</code>. Similarly, <code>req.query.category</code> gets the category.</p>
+                <p><strong>How to Explain:</strong> <code>req.query.q</code> gets the <code>q</code> value from the URL.
+                    Example: <code>/search?q=book</code> → <code>searchTerm = 'book'</code>. Similarly,
+                    <code>req.query.category</code> gets the category.
+                </p>
 
-        <p class="pro-tip"><strong>Pro Tip:</strong> Always validate query parameters to prevent security issues.</p>
-    </div>
-</div>
+                <p class="pro-tip"><strong>Pro Tip:</strong> Always validate query parameters to prevent security
+                    issues.</p>
+            </div>
+        </div>
 
         <div class="section">
             <h2 onclick="toggleContent(this)">17. What’s the default port for Express?</h2>
@@ -912,13 +953,15 @@ app.listen(port, () => {
             </div>
         </div>
 
-      <div class="section">
-    <h2 onclick="toggleContent(this)">18. How is Node.js different from Express.js?</h2>
-    <div class="toggle-content">
-        <p><strong>Explanation:</strong> Node.js is a JavaScript runtime that lets you run JS on the server. Express.js is a framework built on top of Node.js that provides tools and shortcuts to make building web applications easier and faster.</p>
-        
-        <p><strong>Example:</strong></p>
-        <pre><code>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">18. How is Node.js different from Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation:</strong> Node.js is a JavaScript runtime that lets you run JS on the server.
+                    Express.js is a framework built on top of Node.js that provides tools and shortcuts to make building
+                    web applications easier and faster.</p>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>
 // Node.js alone
 const http = require('http');
 
@@ -938,25 +981,27 @@ app.get('/', (req, res) => res.send('Hello from Express.js!'));
 app.listen(3000, () => console.log('Server running on port 3000'));
         </code></pre>
 
-        <p class="pro-tip"><strong>Pro Tip:</strong> Express simplifies routing, middleware, and other common tasks, but for very simple apps, plain Node.js might be faster.</p>
-    </div>
-</div>
+                <p class="pro-tip"><strong>Pro Tip:</strong> Express simplifies routing, middleware, and other common
+                    tasks, but for very simple apps, plain Node.js might be faster.</p>
+            </div>
+        </div>
 
 
-       <div class="section">
-    <h2 onclick="toggleContent(this)">19. What are some cool features of Express.js?</h2>
-    <div class="toggle-content">
-        <p><strong>Explanation:</strong> Express.js has many features that make building web apps easier:</p>
-        <ul>
-            <li><strong>Routing:</strong> Handle different URLs with different code.</li>
-            <li><strong>Middleware:</strong> Functions that run before your routes to process requests.</li>
-            <li><strong>Static Files:</strong> Serve images, CSS, JS files easily.</li>
-            <li><strong>Template Engines:</strong> Use Pug, EJS, or Handlebars to render dynamic HTML.</li>
-        </ul>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">19. What are some cool features of Express.js?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation:</strong> Express.js has many features that make building web apps easier:</p>
+                <ul>
+                    <li><strong>Routing:</strong> Handle different URLs with different code.</li>
+                    <li><strong>Middleware:</strong> Functions that run before your routes to process requests.</li>
+                    <li><strong>Static Files:</strong> Serve images, CSS, JS files easily.</li>
+                    <li><strong>Template Engines:</strong> Use Pug, EJS, or Handlebars to render dynamic HTML.</li>
+                </ul>
 
-        <p class="pro-tip"><strong>Pro Tip:</strong> Express works seamlessly with <code>async/await</code> and can integrate easily with databases like MongoDB.</p>
-    </div>
-</div>
+                <p class="pro-tip"><strong>Pro Tip:</strong> Express works seamlessly with <code>async/await</code> and
+                    can integrate easily with databases like MongoDB.</p>
+            </div>
+        </div>
 
 
         <div class="section">
@@ -974,30 +1019,37 @@ app.listen(process.env.PORT || 3000); // Start server on PORT from .env or defau
             </div>
         </div>
 
-       <div class="section">
-    <h2 onclick="toggleContent(this)">21. What are JWTs?</h2>
-    <div class="toggle-content">
-        <p><strong>Explanation:</strong> JWTs (JSON Web Tokens) are secure tokens used to authenticate and authorize users in web applications. They are <strong>stateless</strong>, meaning you don’t need to store sessions on the server.</p>
-        
-        <p><strong>Structure of a JWT:</strong></p>
-        <ul>
-            <li><strong>Header:</strong> Contains metadata like token type and algorithm (e.g., HMAC SHA256).</li>
-            <li><strong>Payload:</strong> Contains user data or claims (e.g., userId, role).</li>
-            <li><strong>Signature:</strong> Encodes the header and payload with a secret key to prevent tampering.</li>
-        </ul>
+        <div class="section">
+            <h2 onclick="toggleContent(this)">21. What are JWTs?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation:</strong> JWTs (JSON Web Tokens) are secure tokens used to authenticate and
+                    authorize users in web applications. They are <strong>stateless</strong>, meaning you don’t need to
+                    store sessions on the server.</p>
 
-        <p><strong>Flow from Backend to Frontend:</strong></p>
-        <ol>
-            <li>User logs in and provides credentials (username/password).</li>
-            <li>Backend verifies credentials and generates a JWT using <code>jwt.sign()</code>.</li>
-            <li>Backend sends the JWT to the frontend (usually in the response body or as a cookie).</li>
-            <li>Frontend stores the token (in <code>localStorage</code> or <code>cookies</code>).</li>
-            <li>Frontend sends the JWT in the <code>Authorization</code> header for protected routes: <code>Authorization: Bearer &lt;token&gt;</code>.</li>
-            <li>Backend verifies the token using <code>jwt.verify()</code> before granting access.</li>
-        </ol>
+                <p><strong>Structure of a JWT:</strong></p>
+                <ul>
+                    <li><strong>Install</strong>: <code>npm install jsonwebtoken</code></li>
+                    <li><strong>Header:</strong> Contains metadata like token type and algorithm (e.g., HMAC SHA256).
+                    </li>
+                    <li><strong>Payload:</strong> Contains user data or claims (e.g., userId, role).</li>
+                    <li><strong>Signature:</strong> Encodes the header and payload with a secret key to prevent
+                        tampering.</li>
+                </ul>
 
-        <p><strong>Code Example (Backend):</strong></p>
-        <pre><code>
+                <p><strong>Flow from Backend to Frontend:</strong></p>
+                <ol>
+                    <li>User logs in and provides credentials (username/password).</li>
+                    <li>Backend verifies credentials and generates a JWT using <code>jwt.sign()</code>.</li>
+                    <li>Backend sends the JWT to the frontend (usually in the response body or as a cookie).</li>
+                    <li>Frontend stores the token (in <code>localStorage</code> or <code>cookies</code>).</li>
+                    <li>Frontend sends the JWT in the <code>Authorization</code> header for protected routes:
+                        <code>Authorization: Bearer &lt;token&gt;</code>.
+                    </li>
+                    <li>Backend verifies the token using <code>jwt.verify()</code> before granting access.</li>
+                </ol>
+
+                <p><strong>Code Example (Backend):</strong></p>
+                <pre><code>
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const app = express();
@@ -1036,137 +1088,591 @@ app.get('/dashboard', (req, res) => {
 app.listen(3000, () => console.log('Server running on port 3000'));
         </code></pre>
 
-        <p><strong>How to Explain Code:</strong></p>
-        <ul>
-            <li><code>jwt.sign(payload, secret, options)</code> → Creates a token with user info and expiration.</li>
-            <li><code>jwt.verify(token, secret)</code> → Validates the token and extracts user info.</li>
-            <li>Frontend sends the token in the <code>Authorization</code> header for protected routes.</li>
-        </ul>
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>jwt.sign(payload, secret, options)</code> → Creates a token with user info and expiration.
+                    </li>
+                    <li><code>jwt.verify(token, secret)</code> → Validates the token and extracts user info.</li>
+                    <li>Frontend sends the token in the <code>Authorization</code> header for protected routes.</li>
+                </ul>
 
-        <p class="pro-tip"><strong>Pro Tips:</strong></p>
-        <ul>
-            <li>Always keep your secret key safe.</li>
-            <li>Use HTTPS to prevent token theft.</li>
-            <li>Set token expiration to reduce risks.</li>
-            <li>Use <code>express-jwt</code> or middleware to protect routes efficiently.</li>
-        </ul>
-    </div>
-</div>
-
-
-        <div class="section">
-            <h2 onclick="toggleContent(this)">22. What’s Bcrypt for?</h2>
-            <div class="toggle-content">
-                <p><strong>Explanation</strong>: Hashes passwords securely with salt.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
-                <pre><code>
-const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
-bcrypt.hash('myPassword', 10, (err, hash) => { /* save hash */ }); // Hash password with 10 salt rounds
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `bcrypt.hash()` creates a secure password hash with 10 rounds
-                    of salting, stored for later verification.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Higher rounds are safer but slower.</p>
+                <p class="pro-tip"><strong>Pro Tips:</strong></p>
+                <ul>
+                    <li>Always keep your secret key safe.</li>
+                    <li>Use HTTPS to prevent token theft.</li>
+                    <li>Set token expiration to reduce risks.</li>
+                    <li>Use <code>express-jwt</code> or middleware to protect routes efficiently.</li>
+                </ul>
             </div>
         </div>
 
-        <div class="section">
-            <h2 onclick="toggleContent(this)">23. Why separate the Express app and server?</h2>
-            <div class="toggle-content">
-                <p><strong>Explanation</strong>: Keep app (routes, middleware) and server (`app.listen`) separate.</p>
-                <p><strong>Code Example</strong> (if asked): (app.js)</p>
-                <pre><code>
-const express = require('express'); // Import Express framework
-const app = express(); // Create Express app instance
-app.get('/', (req, res) => res.send('Hello!')); // Define root route
-module.exports = app; // Export app for use in other files
-                </code></pre>
-                <p>(server.js):</p>
-                <pre><code>
-const app = require('./app'); // Import the Express app
-app.listen(3000); // Start server on port 3000
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `app.js` defines the app and routes, exported via
-                    `module.exports`. `server.js` imports and starts the server with `app.listen()`.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Helps testing and scaling.</p>
-            </div>
-        </div>
 
         <div class="section">
-            <h2 onclick="toggleContent(this)">24. What’s ESLint?</h2>
+            <h2 onclick="toggleContent(this)">23. How to Use Bcrypt in Login System?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Checks code for mistakes and consistency.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use with `eslint-plugin-node` for Express rules.</p>
-            </div>
-        </div>
+                <p><strong>Explanation</strong>:</p>
+                <p>
+                    <code>bcrypt</code> is used to securely hash passwords before saving them in the database and to
+                    verify them
+                    during login. It ensures that even if someone gains access to your database, they cannot see users’
+                    real passwords.
+                </p>
 
-        <div class="section">
-            <h2 onclick="toggleContent(this)">25. What’s the difference between `res.send()` and `res.json()`?</h2>
-            <div class="toggle-content">
-                <p><strong>Explanation</strong>: `res.send()` sends anything; `res.json()` sends JSON.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: `res.json()` is better for APIs, handles edge cases.</p>
-            </div>
-        </div>
+                <p><strong>Installation:</strong></p>
+                <pre><code>npm install bcrypt</code></pre>
 
-        <div class="section">
-            <h2 onclick="toggleContent(this)">26. What’s scaffolding in Express?</h2>
-            <div class="toggle-content">
-                <p><strong>Explanation</strong>: Creates starter project with `express-generator`.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Step-by-Step Example:</strong></p>
+
                 <pre><code>
-npm install -g express-generator // Install express-generator globally
-express my-cool-app // Generate a new Express project structure
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: Installs `express-generator` and creates a project with folders
-                    and files for quick setup.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Customize for your needs.</p>
-            </div>
-        </div>
+// Import bcrypt
+const bcrypt = require('bcrypt');
 
-        <div class="section">
-            <h2 onclick="toggleContent(this)">27. What’s CORS in Express?</h2>
-            <div class="toggle-content">
-                <p><strong>Explanation</strong>: Allows cross-origin data sharing.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
-                <pre><code>
-const cors = require('cors'); // Import CORS middleware
-app.use(cors({ origin: 'http://mywebsite.com' })); // Enable CORS for specified origin
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `cors` middleware allows requests from `mywebsite.com`,
-                    enabling cross-origin API calls.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Configure origins for security. Handle preflight requests.
+// Simulating a database (in real use, this would be MongoDB, MySQL, etc.)
+let database = {};
+
+// 🔹 Step 1: Signup (Hash and Store Password)
+async function signup(username, password) {
+    try {
+        // Generate hash with 10 salt rounds
+        const hashedPassword = await bcrypt.hash(password, 10);
+        database[username] = hashedPassword; // Save hashed password in DB
+        console.log(`✅ User ${username} registered with hashed password:`);
+        console.log(hashedPassword);
+    } catch (err) {
+        console.error("Error hashing password:", err);
+    }
+}
+
+// 🔹 Step 2: Login (Compare Passwords)
+async function login(username, enteredPassword) {
+    try {
+        const storedHash = database[username];
+        if (!storedHash) {
+            console.log("❌ User not found!");
+            return;
+        }
+
+        // Compare entered password with stored hash
+        const match = await bcrypt.compare(enteredPassword, storedHash);
+        if (match) {
+            console.log("✅ Login successful! Password matched.");
+        } else {
+            console.log("❌ Incorrect password!");
+        }
+    } catch (err) {
+        console.error("Error during login:", err);
+    }
+}
+
+// Example usage
+(async () => {
+    await signup("deepak", "mySecret123");   // Register user
+    await login("deepak", "mySecret123");    // Correct password → ✅
+    await login("deepak", "wrongPassword");  // Wrong password → ❌
+})();
+        </code></pre>
+
+                <p><strong>How It Works:</strong></p>
+                <ul>
+                    <li><code>bcrypt.hash(password, saltRounds)</code> → Converts plain password into a secure hash
+                        using random salt.</li>
+                    <li>Salt ensures every hash is unique, even for the same password.</li>
+                    <li><code>bcrypt.compare(plain, hash)</code> → Checks if a user-entered password matches the stored
+                        hash.</li>
+                </ul>
+
+                <p><strong>Login Flow Explained:</strong></p>
+                <ol>
+                    <li><strong>Signup:</strong> When the user creates an account, bcrypt hashes their password.</li>
+                    <li><strong>Store:</strong> The hashed password (not the real one) is saved in the database.</li>
+                    <li><strong>Login:</strong> User enters password → bcrypt.compare() checks if it matches the stored
+                        hash.</li>
+                    <li>If matched → ✅ Login successful; else → ❌ Invalid password.</li>
+                </ol>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Always use asynchronous bcrypt functions (<code>await</code> or callbacks) to avoid blocking your
+                    Node.js server.
                 </p>
             </div>
         </div>
 
+
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">23. Why separate the Express app and server?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>:
+                    In Express.js projects, it’s a best practice to separate the core app setup (routes, middleware)
+                    from the server startup (<code>app.listen</code>). This keeps your code modular, testable, and
+                    scalable.
+                </p>
+
+                <p><strong>app.js</strong> – defines routes and middleware:</p>
+                <pre><code>
+const express = require('express');
+const app = express();
+
+app.use(express.json()); // Parse JSON bodies
+app.get('/', (req, res) => res.send('Hello from Express App!'));
+
+module.exports = app; // Export app for use in server.js
+        </code></pre>
+
+                <p><strong>server.js</strong> – starts the server:</p>
+                <pre><code>
+const app = require('./app');
+const PORT = 3000;
+
+app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+});
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>app.js</code> handles logic (routes, middleware).</li>
+                    <li><code>server.js</code> handles execution (<code>app.listen</code>).</li>
+                    <li>Separating them makes testing and scaling easier.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    During testing, you can import <code>app.js</code> directly into a test file
+                    without starting the actual server — this is why separation is so helpful.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="section">
+            <h2 onclick="toggleContent(this)">24. What’s ESLint?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>:
+                    <code>ESLint</code> is a popular tool used to find and fix problems in your JavaScript code.
+                    It helps you follow consistent coding styles, catch bugs early, and enforce best practices
+                    automatically.
+                </p>
+
+                <p><strong>Why Use ESLint?</strong></p>
+                <ul>
+                    <li>Prevents common errors (like missing semicolons or unused variables).</li>
+                    <li>Ensures consistent code style across your project.</li>
+                    <li>Improves code readability and maintainability.</li>
+                    <li>Integrates easily with VS Code and most IDEs for real-time linting.</li>
+                </ul>
+
+                <p><strong>Installation</strong>:</p>
+                <pre><code>
+npm install eslint --save-dev
+npx eslint --init
+        </code></pre>
+
+                <p><strong>Setup Example (.eslintrc.json)</strong>:</p>
+                <pre><code>
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules": {
+        "semi": ["error", "always"],        // Require semicolons
+        "quotes": ["warn", "double"],       // Prefer double quotes
+        "no-unused-vars": "warn"            // Warn about unused variables
+    }
+}
+        </code></pre>
+
+                <p><strong>How to Run ESLint:</strong></p>
+                <pre><code>
+npx eslint yourFile.js           // Check one file
+npx eslint .                     // Check entire project
+npx eslint . --fix               // Automatically fix issues
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>"env"</code> specifies where your code runs (Node.js, browser, etc.).</li>
+                    <li><code>"extends"</code> loads base configurations like <code>eslint:recommended</code>.</li>
+                    <li><code>"rules"</code> defines custom project-specific linting rules.</li>
+                    <li><code>--fix</code> automatically corrects simple issues like spacing or quotes.</li>
+                </ul>
+
+                <p><strong>Example Use in Express Project:</strong></p>
+                <pre><code>
+// Example: Common ESLint error fixed
+// ❌ Before:
+const express = require('express')
+const app = express()
+
+// ✅ After (following ESLint rules):
+const express = require("express");
+const app = express();
+        </code></pre>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    Use <code>eslint-plugin-node</code> for Node.js and Express-specific linting rules.
+                    Example:
+                <pre><code>npm install eslint-plugin-node --save-dev</code></pre>
+                Then add <code>"plugin:node/recommended"</code> under <code>"extends"</code> in your config.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- 25 -->
+        <div class="section">
+            <h2 onclick="toggleContent(this)">25. What’s the difference between <code>res.send()</code> and
+                <code>res.json()</code>?
+            </h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>:
+                    Both methods send responses to the client, but they behave slightly differently:
+                </p>
+                <ul>
+                    <li><code>res.send()</code> → Sends a response of any type (string, object, buffer, HTML, etc.).
+                    </li>
+                    <li><code>res.json()</code> → Specifically formats and sends a JSON response.</li>
+                </ul>
+
+                <p><strong>Code Example:</strong></p>
+                <pre><code>
+// Example 1: res.send()
+app.get('/text', (req, res) => {
+    res.send('Hello World!'); // Sends plain text
+});
+
+// Example 2: res.json()
+app.get('/data', (req, res) => {
+    res.json({ message: 'Hello JSON!' }); // Sends JSON object
+});
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>res.send()</code> automatically detects the type of response (HTML, string, etc.).</li>
+                    <li><code>res.json()</code> ensures data is sent in valid JSON format, ideal for APIs.</li>
+                    <li>Internally, <code>res.json()</code> uses <code>JSON.stringify()</code> before sending the
+                        response.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    Always use <code>res.json()</code> in REST APIs — it automatically sets the
+                    <code>Content-Type: application/json</code> header and avoids common formatting issues.
+                </p>
+            </div>
+        </div>
+
+        <!-- 26 -->
+        <div class="section">
+            <h2 onclick="toggleContent(this)">26. What’s scaffolding in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>:
+                    Scaffolding means automatically generating the folder and file structure of a new Express project
+                    using
+                    <code>express-generator</code>. It helps you quickly start with a ready-made template.
+                </p>
+
+                <p><strong>Installation and Usage:</strong></p>
+                <pre><code>
+npm install -g express-generator   // Install express-generator globally
+express my-cool-app                // Create a new project
+cd my-cool-app
+npm install                        // Install dependencies
+npm start                          // Run the app
+        </code></pre>
+
+                <p><strong>Generated Folder Structure:</strong></p>
+                <pre><code>
+my-cool-app/
+├── app.js
+├── bin/
+│   └── www
+├── routes/
+│   ├── index.js
+│   └── users.js
+├── views/
+│   └── index.pug
+├── public/
+│   ├── images/
+│   ├── javascripts/
+│   └── stylesheets/
+└── package.json
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>express-generator</code> creates a complete Express app structure with routes, views, and
+                        public folders.</li>
+                    <li>The <code>bin/www</code> file is the default server entry point.</li>
+                    <li>Speeds up project initialization and encourages standard structure.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    After scaffolding, customize folders and middlewares based on your project needs instead of starting
+                    from scratch.
+                </p>
+            </div>
+        </div>
+
+        <!-- 27 -->
+        <div class="section">
+            <h2 onclick="toggleContent(this)">27. What’s CORS in Express?</h2>
+            <div class="toggle-content">
+                <p><strong>Explanation</strong>:
+                    CORS (Cross-Origin Resource Sharing) is a security mechanism that allows web apps from one domain to
+                    access resources from another domain.
+                </p>
+
+                <p><strong>Why Use It?</strong></p>
+                <ul>
+                    <li>By default, browsers block requests from different origins for security.</li>
+                    <li>CORS enables APIs to be shared across domains safely.</li>
+                </ul>
+
+                <p><strong>Code Example:</strong></p>
+                <pre><code>
+const cors = require('cors');
+const express = require('express');
+const app = express();
+
+app.use(cors({ origin: 'http://mywebsite.com' })); // Allow only specific domain
+app.get('/data', (req, res) => {
+    res.json({ msg: 'CORS enabled!' });
+});
+
+app.listen(3000, () => console.log('Server running...'));
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>app.use(cors())</code> enables cross-origin access.</li>
+                    <li><code>origin</code> specifies which websites are allowed.</li>
+                    <li>You can also handle preflight requests using <code>OPTIONS</code> method.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    Avoid using <code>app.use(cors())</code> with no restrictions in production.
+                    Always whitelist trusted domains for better security.
+                </p>
+            </div>
+        </div>
+
+        <!-- 28 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">28. What are built-in middlewares in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Tools like `express.json()`, `express.urlencoded()`,
-                    `express.static()`.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Replaced `body-parser` in Express 4+.</p>
+                <p><strong>Explanation</strong>:
+                    Express provides several built-in middleware functions to handle common tasks like parsing, serving
+                    static files, and reading form data.
+                </p>
+
+                <p><strong>Common Built-in Middlewares:</strong></p>
+                <ul>
+                    <li><code>express.json()</code> → Parses incoming JSON request bodies.</li>
+                    <li><code>express.urlencoded({ extended: true })</code> → Parses URL-encoded form data.</li>
+                    <li><code>express.static('public')</code> → Serves static files like CSS, JS, or images.</li>
+                </ul>
+
+                <p><strong>Code Example:</strong></p>
+                <pre><code>
+app.use(express.json()); // For JSON payloads
+app.use(express.urlencoded({ extended: true })); // For HTML form data
+app.use(express.static('public')); // For static assets
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li>Each middleware modifies <code>req</code> and <code>res</code> before reaching the route
+                        handler.</li>
+                    <li><code>express.json()</code> replaced the old <code>body-parser</code> in Express 4+.</li>
+                    <li>They must be added before your routes to function properly.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    Use only the middlewares you need — too many can slow down requests.
+                </p>
             </div>
         </div>
 
+        <!-- 29 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">29. How do you set app settings in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Use `app.set(name, value)` for settings.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation</strong>:
+                    Express applications use <code>app.set(name, value)</code> to define configuration settings such as
+                    template engines, view folders, or custom app-level settings.
+                </p>
+
+                <p><strong>Code Example:</strong></p>
                 <pre><code>
-app.set('view engine', 'pug'); // Set Pug as the template engine
-app.set('views', './views'); // Set the folder for template files
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `app.set()` configures the app to use Pug for templates and
-                    look for them in the `views` folder.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use `app.get(name)` to check settings.</p>
+app.set('view engine', 'pug'); // Use Pug as the template engine
+app.set('views', './views');   // Folder path for templates
+        </code></pre>
+
+                <p><strong>How to Explain Code</strong>:</p>
+                <ul>
+                    <li><code>app.set()</code> defines settings for the Express app.</li>
+                    <li><code>app.get(setting)</code> retrieves the current value of that setting.</li>
+                    <li>Common settings: <code>view engine</code>, <code>views</code>, <code>trust proxy</code>, etc.
+                    </li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    You can check all current settings using <code>console.log(app.settings)</code>.
+                </p>
             </div>
         </div>
 
+        <!-- 30 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">30. Which template engines work with Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Supports Pug, EJS, Handlebars.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Pug is clean; templates help SEO.</p>
+                <p><strong>Explanation</strong>:
+                    Template engines let you generate <strong>dynamic HTML pages</strong> using data from the server.
+                    Instead of writing static HTML, you use placeholders like <code>{{name}}</code> or
+                    <code>&lt;%= name %&gt;</code>,
+                    and Express fills them with real data before sending the page to the browser.
+                </p>
+
+                <p><strong>Why Use Template Engines?</strong></p>
+                <ul>
+                    <li>Helps create dynamic pages (e.g., profile pages, product listings).</li>
+                    <li>Keeps HTML separate from backend logic.</li>
+                    <li>Supports loops, conditionals, and reusability (layouts, partials).</li>
+                </ul>
+
+                <p><strong>Popular Template Engines:</strong></p>
+                <ul>
+                    <li><strong>Pug</strong> → Uses indentation-based syntax, minimal and clean.</li>
+                    <li><strong>EJS</strong> → Uses embedded JavaScript (<code>&lt;%= %&gt;</code>), looks like regular
+                        HTML.</li>
+                    <li><strong>Handlebars (HBS)</strong> → Uses <code>{{}}</code> syntax, great for large-scale apps.
+                    </li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Example 1 — Using Pug:</strong></p>
+                <pre><code>
+// app.js
+const express = require('express');
+const app = express();
+
+app.set('view engine', 'pug'); // Tell Express to use Pug
+
+app.get('/', (req, res) => {
+    res.render('index', { title: 'Home', message: 'Welcome to Express!' });
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+        </code></pre>
+
+                <p><strong>Pug Template (views/index.pug):</strong></p>
+                <pre><code>
+html
+  head
+    title= title
+  body
+    h1 #{message}
+    p This page is rendered using Pug Template Engine!
+        </code></pre>
+
+                <p><strong>How to Explain:</strong></p>
+                <ul>
+                    <li><code>app.set('view engine', 'pug')</code> → Configures Express to use Pug.</li>
+                    <li><code>res.render('index', {...})</code> → Loads <code>views/index.pug</code> and injects data.
+                    </li>
+                    <li>Dynamic values like <code>title</code> and <code>message</code> are inserted into the HTML
+                        before sending to the browser.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Example 2 — Using EJS:</strong></p>
+                <pre><code>
+// app.js
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+    res.render('index', { name: 'Deepak' });
+});
+        </code></pre>
+
+                <p><strong>EJS Template (views/index.ejs):</strong></p>
+                <pre><code>
+&lt;h1&gt;Hello &lt;%= name %&gt;&lt;/h1&gt;
+&lt;p&gt;Welcome to EJS Template Engine!&lt;/p&gt;
+        </code></pre>
+
+                <p><strong>How to Explain:</strong></p>
+                <ul>
+                    <li><code>&lt;%= %&gt;</code> inserts dynamic JavaScript values inside HTML.</li>
+                    <li>EJS looks and feels like normal HTML, making it beginner-friendly.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Example 3 — Using Handlebars (HBS):</strong></p>
+                <pre><code>
+const express = require('express');
+const { engine } = require('express-handlebars');
+const app = express();
+
+app.engine('hbs', engine());
+app.set('view engine', 'hbs');
+
+app.get('/', (req, res) => {
+    res.render('index', { title: 'HBS Example', name: 'Deepak' });
+});
+        </code></pre>
+
+                <p><strong>Handlebars Template (views/index.hbs):</strong></p>
+                <pre><code>
+&lt;h1&gt;{{title}}&lt;/h1&gt;
+&lt;p&gt;Hello {{name}}, welcome to Handlebars!&lt;/p&gt;
+        </code></pre>
+
+                <p><strong>How to Explain:</strong></p>
+                <ul>
+                    <li><code>{{}}</code> syntax is used to bind data values.</li>
+                    <li>Great for large apps — supports partials, layouts, and helpers.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Comparison:</strong></p>
+                <table border="1" cellspacing="0" cellpadding="5">
+                    <tr>
+                        <th>Engine</th>
+                        <th>Syntax</th>
+                        <th>Best For</th>
+                    </tr>
+                    <tr>
+                        <td>Pug</td>
+                        <td>Indentation-based</td>
+                        <td>Clean and minimal syntax</td>
+                    </tr>
+                    <tr>
+                        <td>EJS</td>
+                        <td>&lt;%= name %&gt;</td>
+                        <td>Simple HTML-like templates</td>
+                    </tr>
+                    <tr>
+                        <td>Handlebars</td>
+                        <td>{{name}}</td>
+                        <td>Large apps with reusable parts</td>
+                    </tr>
+                </table>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    - Store templates in a <code>views/</code> folder.<br>
+                    - Use <code>res.render()</code> to send pages to the client.<br>
+                    - Pug is SEO-friendly, EJS is beginner-friendly, and Handlebars is powerful for complex apps.
+                </p>
             </div>
         </div>
 
@@ -1185,16 +1691,165 @@ app.get('/', (req, res) => res.send('&lt;h1&gt;Hello World!&lt;/h1&gt;')); // Se
         </div>
 
         <div class="section">
-            <h2 onclick="toggleContent(this)">32. What’s `res.cookie()` for?</h2>
+            <h2 onclick="toggleContent(this)">32. What’s <code>res.cookie()</code> for?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Sets cookies in the browser.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation</strong>:
+                    The <code>res.cookie()</code> function in Express is used to
+                    <strong>set cookies</strong> in the user's browser.
+                    Cookies are small pieces of data stored on the client-side and sent automatically with every HTTP
+                    request.
+                    They’re mainly used for <strong>sessions, authentication, tracking, and personalization</strong>.
+                </p>
+
+                <p><strong>Why Use Cookies?</strong></p>
+                <ul>
+                    <li>To keep users logged in across multiple requests (session management).</li>
+                    <li>To store small user preferences (e.g., language, theme).</li>
+                    <li>To track users for analytics or shopping carts.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Basic Code Example:</strong></p>
                 <pre><code>
-res.cookie('username', 'John', { maxAge: 900000, httpOnly: true }); // Set a cookie with name, value, and options
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `res.cookie()` sets a cookie named `username` with value
-                    `John`, expiring in 900000ms, and `httpOnly` for security.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use `httpOnly`, `secure` for safety.</p>
+// Example: Setting a cookie
+app.get('/setcookie', (req, res) => {
+    res.cookie('username', 'John', { maxAge: 900000, httpOnly: true });
+    res.send('Cookie has been set!');
+});
+        </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>'username'</code> → The name of the cookie.</li>
+                    <li><code>'John'</code> → The value stored inside the cookie.</li>
+                    <li><code>maxAge: 900000</code> → The cookie expires after 900,000 ms (15 minutes).</li>
+                    <li><code>httpOnly: true</code> → Prevents JavaScript access (protection from XSS attacks).</li>
+                </ul>
+
+                <p><strong>Output:</strong></p>
+                <p>
+                    When you visit <code>http://localhost:3000/setcookie</code>, a cookie named
+                    <strong>username=John</strong> will appear in your browser’s Application → Cookies section.
+                </p>
+
+                <hr>
+
+                <p><strong>Reading Cookies:</strong></p>
+                <pre><code>
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const app = express();
+
+// Middleware to read cookies
+app.use(cookieParser());
+
+// Route to read cookies
+app.get('/getcookie', (req, res) => {
+    const user = req.cookies.username;
+    res.send(`Hello ${user}, welcome back!`);
+});
+        </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>cookie-parser</code> is a middleware used to read cookies from the request header.</li>
+                    <li><code>req.cookies.username</code> retrieves the cookie set previously.</li>
+                    <li>This allows personalized responses for logged-in users.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Real-World Example (Login Session):</strong></p>
+                <pre><code>
+// Step 1: User logs in and cookie is created
+app.post('/login', (req, res) => {
+    const username = req.body.username;
+    // Normally, you'd verify credentials here...
+    res.cookie('authUser', username, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res.json({ message: 'Login successful!' });
+});
+
+// Step 2: Protected route - only available if cookie exists
+app.get('/dashboard', (req, res) => {
+    const user = req.cookies.authUser;
+    if (!user) {
+        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
+    }
+    res.send(`Welcome to your dashboard, ${user}!`);
+});
+        </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li>When a user logs in, a cookie named <code>authUser</code> is created with their username.</li>
+                    <li>The browser stores it and sends it automatically with every new request.</li>
+                    <li>Protected routes like <code>/dashboard</code> can check if this cookie exists to identify the
+                        user.</li>
+                    <li>This is a lightweight form of session-based authentication.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Common Cookie Options:</strong></p>
+                <table border="1" cellspacing="0" cellpadding="6">
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td><code>maxAge</code></td>
+                        <td>Cookie lifetime in ms</td>
+                        <td>{ maxAge: 3600000 }</td>
+                    </tr>
+                    <tr>
+                        <td><code>expires</code></td>
+                        <td>Exact expiry date</td>
+                        <td>{ expires: new Date(Date.now() + 3600000) }</td>
+                    </tr>
+                    <tr>
+                        <td><code>httpOnly</code></td>
+                        <td>Prevents JS access to cookies (security)</td>
+                        <td>{ httpOnly: true }</td>
+                    </tr>
+                    <tr>
+                        <td><code>secure</code></td>
+                        <td>Send only over HTTPS</td>
+                        <td>{ secure: true }</td>
+                    </tr>
+                    <tr>
+                        <td><code>sameSite</code></td>
+                        <td>Restrict cross-site cookie sending</td>
+                        <td>{ sameSite: 'strict' }</td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <p><strong>Deleting a Cookie:</strong></p>
+                <pre><code>
+// To delete a cookie
+res.clearCookie('username');
+res.send('Cookie deleted successfully!');
+        </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>res.clearCookie('cookieName')</code> removes a previously set cookie from the browser.
+                    </li>
+                    <li>Useful during logout or session expiry.</li>
+                </ul>
+
+                <hr>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    - Always use <code>httpOnly</code> and <code>secure</code> for sensitive cookies (like auth
+                    tokens).<br>
+                    - Use <code>cookie-parser</code> to easily read cookies from requests.<br>
+                    - Avoid storing sensitive data (like passwords) directly inside cookies.<br>
+                    - Use cookies with JWT or sessions to manage authentication securely.
+                </p>
             </div>
         </div>
 
@@ -1227,7 +1882,7 @@ html
             <div class="toggle-content">
                 <p><strong>Explanation</strong>: Use middleware with four arguments (`err, req, res, next`). Here’s an
                     error handling flowchart:</p>
-                <img src="https://www.google.com/images?q=express.js+error+handling+flowchart"
+                <img src="https://miro.medium.com/v2/resize:fit:702/1*6IB_IFTLFtYPqarWIEV_3g.png"
                     alt="Express.js Error Handling Flowchart">
                 <p><strong>Code Example</strong> (if asked):</p>
                 <pre><code>
@@ -1291,17 +1946,70 @@ app.use('/secure', jwt({ secret: 'mykey', algorithms: ['HS256'] })); // Protect 
         <div class="section">
             <h2 onclick="toggleContent(this)">38. What’s Helmet in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Adds security headers to protect against attacks.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation</strong>:
+                    <code>Helmet</code> is a security middleware for Express that automatically adds
+                    important <strong>HTTP security headers</strong> to protect your app from
+                    common attacks like XSS, clickjacking, and MIME-type sniffing.
+                </p>
+
+                <p><strong>Why Use Helmet?</strong></p>
+                <ul>
+                    <li>Protects against <strong>Cross-Site Scripting (XSS)</strong> attacks.</li>
+                    <li>Prevents <strong>Clickjacking</strong> by controlling iframes.</li>
+                    <li>Forces secure connections via HTTPS headers.</li>
+                    <li>Hides sensitive implementation details in responses.</li>
+                </ul>
+
+                <p><strong>Basic Code Example:</strong></p>
                 <pre><code>
-const helmet = require('helmet'); // Import Helmet for security headers
-app.use(helmet()); // Apply security headers to all responses
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `helmet()` adds headers like XSS protection to all responses
-                    for security.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Customize headers for specific needs.</p>
+const express = require('express');
+const helmet = require('helmet');
+const app = express();
+
+app.use(helmet()); // Apply Helmet globally
+
+app.get('/', (req, res) => {
+  res.send('Secure Express App using Helmet 🛡️');
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>helmet()</code> adds multiple security headers to all HTTP responses.</li>
+                    <li>Protects users by enforcing security policies in browsers.</li>
+                    <li>Helps avoid vulnerabilities like XSS and data leakage.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Real-World Example:</strong></p>
+                <pre><code>
+// Example: Secure Banking App
+const express = require('express');
+const helmet = require('helmet');
+const app = express();
+
+app.use(helmet()); // Secure all endpoints
+
+app.get('/dashboard', (req, res) => {
+  res.send('Welcome to your secure dashboard 🏦');
+});
+
+app.listen(3000, () => console.log('Banking app secured with Helmet!'));
+    </code></pre>
+
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    Always use <code>helmet()</code> in production.
+                    You can disable specific protections if needed, but never skip it entirely.
+                    Combine Helmet with <code>cors()</code> and <code>express-rate-limit</code> for complete API
+                    security.
+                </p>
             </div>
         </div>
+
 
         <div class="section">
             <h2 onclick="toggleContent(this)">39. How do you use environment variables in Express?</h2>
@@ -1321,141 +2029,451 @@ const dbUrl = process.env.DB_URL; // Access DB_URL from environment
         <div class="section">
             <h2 onclick="toggleContent(this)">40. What’s Morgan in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Logs HTTP requests for debugging.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation</strong>:
+                    <code>Morgan</code> is a popular logging middleware for Express that automatically
+                    logs details about each HTTP request, such as the method, URL, status code,
+                    and response time. It’s extremely useful for debugging and monitoring.
+                </p>
+
+                <p><strong>Why Use Morgan?</strong></p>
+                <ul>
+                    <li>Tracks every request coming into your server.</li>
+                    <li>Helps debug routes, status codes, and response times.</li>
+                    <li>Useful for monitoring traffic and detecting slow endpoints.</li>
+                    <li>Can log data to console or save into a file for later analysis.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Basic Code Example:</strong></p>
                 <pre><code>
-const morgan = require('morgan'); // Import Morgan for request logging
-app.use(morgan('tiny')); // Log requests in 'tiny' format (method, URL, status)
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `morgan('tiny')` logs request details like method and URL for
-                    debugging.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use `tiny` for dev, `combined` for prod. Pair with Winston.
+const express = require('express');
+const morgan = require('morgan');
+const app = express();
+
+app.use(morgan('tiny')); // Log requests in 'tiny' format
+
+app.get('/', (req, res) => {
+  res.send('Morgan is logging your requests!');
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    </code></pre>
+
+                <p><strong>Example Output (Terminal):</strong></p>
+                <pre><code>
+GET / 200 3.456 ms - 32
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>morgan('tiny')</code> prints basic info: method, URL, status, time.</li>
+                    <li>Automatically logs every request that hits the server.</li>
+                    <li>Helps quickly detect issues while developing.</li>
+                </ul>
+
+                <hr>
+
+                <p><strong>Common Formats:</strong></p>
+                <table border="1" cellspacing="0" cellpadding="6">
+                    <tr>
+                        <th>Format</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td><code>tiny</code></td>
+                        <td>Minimal logs — best for quick debugging</td>
+                    </tr>
+                    <tr>
+                        <td><code>dev</code></td>
+                        <td>Color-coded logs with method, status, and time</td>
+                    </tr>
+                    <tr>
+                        <td><code>combined</code></td>
+                        <td>Full Apache-style logs — best for production</td>
+                    </tr>
+                    <tr>
+                        <td><code>common</code></td>
+                        <td>Standard log without response time</td>
+                    </tr>
+                    <tr>
+                        <td><code>short</code></td>
+                        <td>Compact log format with essential details</td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <p><strong>Real-World Example (Production Logging):</strong></p>
+                <pre><code>
+const fs = require('fs');
+const path = require('path');
+const express = require('express');
+const morgan = require('morgan');
+const app = express();
+
+// Write logs to a file
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+
+// Use 'combined' format for detailed production logs
+app.use(morgan('combined', { stream: accessLogStream }));
+
+app.get('/user', (req, res) => {
+  res.json({ user: 'Deepak', role: 'Admin' });
+});
+
+app.listen(3000, () => console.log('Morgan logging to access.log file'));
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>fs.createWriteStream()</code> creates a log file to store access logs.</li>
+                    <li><code>morgan('combined')</code> logs detailed request info for production.</li>
+                    <li>Helps monitor API usage and performance issues over time.</li>
+                </ul>
+
+                <hr>
+
+                <p class="pro-tip"><strong>Pro Tip</strong>:
+                    - Use <code>'dev'</code> or <code>'tiny'</code> in development for readable output.<br>
+                    - Use <code>'combined'</code> in production to record logs in files.<br>
+                    - Combine with <code>Winston</code> for advanced log management (error levels, timestamps, etc.).
                 </p>
             </div>
         </div>
+
 
         <h1>MongoDB Integration with Express.js</h1>
         <p>Added 5 questions on MongoDB for deeper understanding.</p>
 
+        <!-- 41 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">41. How do you connect MongoDB to Express.js?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Use `mongoose` to connect to MongoDB. Here’s a connection flow diagram:
+                <p><strong>Explanation</strong>:
+                    Express can connect to MongoDB using <code>mongoose</code>, a powerful ODM library.
+                    The connection acts as a bridge between your <strong>Express server (backend)</strong> and
+                    the <strong>MongoDB database</strong>, allowing you to store and fetch data easily.
                 </p>
-                <img src="https://www.google.com/images?q=express.js+mongodb+connection+diagram"
-                    alt="Express.js MongoDB Connection Diagram">
-                <p><strong>Code Example</strong> (if asked):</p>
+
+                <p><strong>Connection Flow Diagram (explained):</strong><br>
+                    Express.js → Mongoose → MongoDB Database.<br>
+                    Express handles routes → Mongoose handles data logic → MongoDB stores it.
+                </p>
+
+                <p><strong>Code Example (Database Connection File):</strong></p>
                 <pre><code>
-const mongoose = require('mongoose'); // Import Mongoose for MongoDB interaction
-mongoose.connect('mongodb://localhost:27017/mydb', { useNewUrlParser: true }) // Connect to MongoDB database 'mydb'
-  .then(() => console.log('Connected to MongoDB')) // Log success
-  .catch(err => console.error('Connection error', err)); // Log connection errors
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `mongoose.connect()` establishes a connection to the MongoDB
-                    database at the specified URL. Promises handle success or failure. The diagram shows the flow from
-                    Express to MongoDB.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use environment variables for DB URL. Handle reconnection
-                    in production.</p>
+// 📁 db.js
+require('dotenv').config(); // Load .env variables
+const mongoose = require('mongoose'); // Import Mongoose
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ Connected to MongoDB successfully');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    process.exit(1); // Exit process if connection fails
+  }
+};
+
+module.exports = connectDB; // Export connection function
+    </code></pre>
+
+                <p><strong>How to Use This in <code>index.js</code>:</strong></p>
+                <pre><code>
+// 📁 index.js
+const express = require('express');
+const connectDB = require('./db'); // Import the DB connection function
+const app = express();
+require('dotenv').config();
+
+// Middleware
+app.use(express.json());
+
+// Connect to MongoDB
+connectDB(); // Call the database connection
+
+// Test route
+app.get('/', (req, res) => {
+  res.send('Server and MongoDB connection are working ✅');
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+    </code></pre>
+
+                <p><strong>Project Structure Example:</strong></p>
+                <pre><code>
+📂 Backend/
+├── 📁 models/
+│   └── User.js
+├── 📁 routes/
+│   └── userRoutes.js
+├── db.js
+├── index.js
+├── .env
+└── package.json
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>db.js</code> handles all database logic — keeps <code>index.js</code> clean.</li>
+                    <li><code>connectDB()</code> is imported and executed once when the server starts.</li>
+                    <li>If MongoDB is not running or URI is wrong, <code>process.exit(1)</code> stops the server safely.
+                    </li>
+                    <li>Ensures modular and maintainable code for production-level apps.</li>
+                </ul>
+
+                <p><strong>Example <code>.env</code> file:</strong></p>
+                <pre><code>
+MONGO_URI=mongodb://127.0.0.1:27017/myExpressDB
+PORT=3000
+    </code></pre>
+
+                <p><strong>Expected Output (Terminal):</strong></p>
+                <pre><code>
+✅ Connected to MongoDB successfully
+🚀 Server running on http://localhost:3000
+    </code></pre>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    ✅ Keep database logic in a separate file (like <code>db.js</code>).<br>
+                    ✅ Use <code>dotenv</code> for environment management.<br>
+                    ✅ Always handle connection errors with <code>try-catch</code>.<br>
+                    ✅ For cloud deployment, replace local Mongo URI with MongoDB Atlas URI.
+                </p>
             </div>
         </div>
 
+
+        <!-- 42 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">42. What is Mongoose?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Mongoose is an ODM for MongoDB, providing schema-based data modeling.
+                <p><strong>Explanation</strong>:
+                    <code>Mongoose</code> is an <strong>ODM (Object Data Modeling)</strong> library for MongoDB and
+                    Node.js.
+                    It lets you define schemas and models to structure your NoSQL data, giving MongoDB a schema-like
+                    behavior.
                 </p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Translates JS objects to MongoDB documents, simplifies
-                    NoSQL.</p>
+
+                <p><strong>Why Use Mongoose?</strong></p>
+                <ul>
+                    <li>Provides structure (schemas) to unstructured MongoDB documents.</li>
+                    <li>Offers built-in validation and data type enforcement.</li>
+                    <li>Supports relationships between collections using <code>ref</code> and <code>populate()</code>.
+                    </li>
+                    <li>Makes CRUD operations simpler and consistent.</li>
+                </ul>
+
+                <p><strong>Example:</strong></p>
+                <pre><code>
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, required: true, unique: true },
+  age: Number,
+});
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>Schema</code> defines the structure of a document (like a blueprint).</li>
+                    <li><code>Model</code> gives you methods like <code>find()</code>, <code>save()</code>,
+                        <code>update()</code>.</li>
+                    <li>Mongoose converts your JavaScript objects into MongoDB documents automatically.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Mongoose = Schema + Model + Validation.
+                    Think of it as the “translator” between your JavaScript app and the MongoDB database.
+                </p>
             </div>
         </div>
 
+        <!-- 43 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">43. How to define a schema in Mongoose?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Schemas define document structure. Here’s a schema diagram:</p>
-                <img src="https://www.google.com/images?q=mongoose+schema+in+express.js+diagram"
-                    alt="Mongoose Schema Diagram">
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation:</strong>
+                    A <strong>schema</strong> in Mongoose defines the shape and data types of your MongoDB documents.
+                    It acts like a blueprint for a collection, ensuring that all documents follow a specific format.
+                </p>
+
+                <p><strong>Example Schema:</strong></p>
                 <pre><code>
-const mongoose = require('mongoose'); // Import Mongoose
-const userSchema = new mongoose.Schema({ // Define schema for User
-  name: { type: String, required: true }, // Name field, required string
-  age: Number // Age field, optional number
+const mongoose = require('mongoose');
+
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },   // Required string
+  email: { type: String, required: true, unique: true }, // Unique email
+  age: { type: Number, min: 0 },            // Number with validation
+  createdAt: { type: Date, default: Date.now }, // Default date
 });
-const User = mongoose.model('User', userSchema); // Create User model from schema
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: `mongoose.Schema` defines the structure of User documents with
-                    fields and types. `mongoose.model()` creates a model for database operations. The diagram shows
-                    Mongoose’s role in structuring data.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Add validators for data integrity.</p>
+
+const User = mongoose.model('User', userSchema);
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>mongoose.Schema()</code> defines fields and their types.</li>
+                    <li><code>mongoose.model()</code> turns schema into a model for performing database operations.</li>
+                    <li>Validation rules (e.g., <code>required</code>, <code>min</code>, <code>unique</code>) ensure
+                        data integrity.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Add timestamps (<code>{ timestamps: true }</code>) to automatically track creation and update times.
+                </p>
             </div>
         </div>
 
+        <!-- 44 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">44. How to perform CRUD operations with Mongoose in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Use model methods for Create, Read, Update, Delete.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
-                <pre><code>
-// Create
-app.post('/users', async (req, res) => { // Handle POST to create user
-  const user = new User(req.body); // Create new User instance from request body
-  await user.save(); // Save to database
-  res.send(user); // Send saved user as response
-});
-// Read: await User.find(); // Find all users
-// Update: await User.updateOne({ _id: id }, { $set: { name: 'New' } }); // Update user by ID
-// Delete: await User.deleteOne({ _id: id }); // Delete user by ID
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: The POST route creates a user with `User` model, saves it, and
-                    responds. Other operations use `find()`, `updateOne()`, and `deleteOne()` for CRUD functionality.
+                <p><strong>Explanation:</strong>
+                    CRUD stands for <strong>Create, Read, Update, Delete</strong>. Mongoose provides easy methods to
+                    perform these operations on MongoDB collections.
                 </p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Use try-catch, populate() for relationships.</p>
+
+                <p><strong>Code Example (All CRUD):</strong></p>
+                <pre><code>
+const express = require('express');
+const User = require('./models/User'); // Import Mongoose model
+const app = express();
+app.use(express.json());
+
+// CREATE
+app.post('/users', async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).send(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+// READ
+app.get('/users', async (req, res) => {
+  const users = await User.find();
+  res.send(users);
+});
+
+// UPDATE
+app.put('/users/:id', async (req, res) => {
+  const updated = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.send(updated);
+});
+
+// DELETE
+app.delete('/users/:id', async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.send({ message: 'User deleted successfully' });
+});
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li><code>User.save()</code> creates a new document.</li>
+                    <li><code>User.find()</code> retrieves all documents.</li>
+                    <li><code>User.findByIdAndUpdate()</code> modifies a document by ID.</li>
+                    <li><code>User.findByIdAndDelete()</code> removes a document by ID.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Always wrap CRUD logic in <code>try-catch</code> to handle async errors.
+                    Use <code>populate()</code> for referencing related data.
+                </p>
             </div>
         </div>
 
+        <!-- 45 -->
         <div class="section">
             <h2 onclick="toggleContent(this)">45. How to handle MongoDB errors in Express?</h2>
             <div class="toggle-content">
-                <p><strong>Explanation</strong>: Catch MongoDB errors with Express error middleware.</p>
-                <p><strong>Code Example</strong> (if asked):</p>
+                <p><strong>Explanation:</strong>
+                    MongoDB errors can occur due to validation issues, duplicate keys, or failed connections.
+                    In Express, we use <strong>error-handling middleware</strong> or <strong>try-catch</strong> blocks
+                    to manage these errors gracefully.
+                </p>
+
+                <p><strong>Example:</strong></p>
                 <pre><code>
-app.post('/users', async (req, res, next) => { // Handle POST to create user
-  try { // Try block for error handling
-    const user = new User(req.body); // Create new User from request body
-    await user.save(); // Save to database
-    res.send(user); // Send saved user
-  } catch (err) { // Catch any errors
+app.post('/users', async (req, res, next) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.send(user);
+  } catch (err) {
     next(err); // Pass error to error middleware
   }
 });
-                </code></pre>
-                <p><strong>How to Explain Code</strong>: The POST route tries to save a user. If an error occurs (e.g.,
-                    validation), `catch` passes it to `next()` for the error middleware to handle.</p>
-                <p class="pro-tip"><strong>Pro Tip</strong>: Log specific errors (e.g., DuplicateKey) with Winston.</p>
+
+// Centralized Error Middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err.message);
+  
+  if (err.code === 11000) { // Duplicate key error
+    return res.status(400).json({ message: 'Email already exists!' });
+  }
+
+  res.status(500).json({ message: 'Server error', error: err.message });
+});
+    </code></pre>
+
+                <p><strong>How to Explain Code:</strong></p>
+                <ul>
+                    <li>The <code>try-catch</code> block handles async operation errors.</li>
+                    <li><code>next(err)</code> passes the error to a centralized error handler.</li>
+                    <li>Different error codes (like 11000) represent specific MongoDB issues.</li>
+                </ul>
+
+                <p class="pro-tip"><strong>Pro Tip:</strong>
+                    Log all MongoDB errors using <code>Winston</code> or <code>Morgan</code> for better debugging.
+                    Always sanitize and validate incoming data to prevent malformed documents.
+                </p>
             </div>
         </div>
 
         <h1>How to Impress in Your Interview</h1>
         <ul>
-            <li><strong>Use analogies and diagrams</strong>: Explain with food truck analogy, point to diagrams.</li>
-            <li><strong>Handle code questions</strong>: Write code, explain line-by-line, tie to diagrams.</li>
-            <li><strong>Show practical knowledge</strong>: Mention security (Helmet, HTTPS), performance (caching,
-                async).</li>
-            <li><strong>Talk tools</strong>: Reference Passport, Morgan, dotenv, Mongoose.</li>
-            <li><strong>Keep it simple</strong>: Explain like to a friend.</li>
-            <li><strong>Ask questions</strong>: Ask how they use tools in their stack.</li>
+            <li><strong>Use analogies and diagrams:</strong> Explain how Express is the waiter, Mongoose is the
+                translator, and MongoDB is the kitchen storing data.</li>
+            <li><strong>Handle code questions:</strong> Write CRUD routes confidently and describe what each function
+                does.</li>
+            <li><strong>Show practical knowledge:</strong> Mention using Helmet, dotenv, error handling, and logging
+                tools.</li>
+            <li><strong>Highlight security:</strong> Use HTTPS, JWT, Helmet, and input validation.</li>
+            <li><strong>Performance tips:</strong> Use async/await, caching, indexes in MongoDB, and pagination for
+                large datasets.</li>
+            <li><strong>Keep it simple:</strong> Explain like you’re teaching a friend.</li>
+            <li><strong>Ask smart questions:</strong> “How does your team handle DB errors or schema design?”</li>
         </ul>
 
-        <p>With these notes, code, and visuals, you’re ready to shine! Practice explaining in your own words.</p>
-    </div>
+        <p>With these notes, examples, and structured explanations, you’ll confidently explain how Express and MongoDB
+            work together using Mongoose — from connection to CRUD to error handling. 🚀</p>
 
-    <script>
-        function toggleContent(element) {
-            const content = element.nextElementSibling;
-            content.classList.toggle('active');
-        }
-    </script>
+
+        <script>
+            function toggleContent(element) {
+                const content = element.nextElementSibling;
+                content.classList.toggle('active');
+            }
+        </script>
 </body>
 
 </html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OS Interview Guide - Java</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            border-left: 4px solid #667eea;
+            padding-left: 30px;
+        }
+
+        .section h2 {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: #2a5298;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .concept {
+            background: #f8f9ff;
+            border-left: 3px solid #667eea;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .concept h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        pre::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background: #2d2d30;
+            border-radius: 8px 8px 0 0;
+        }
+
+        pre code {
+            display: block;
+            padding-top: 35px;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .explanation {
+            background: #fff8e1;
+            border-left: 3px solid #ffa726;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .explanation h4 {
+            color: #f57c00;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .explanation ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .explanation li {
+            margin: 8px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        table tr:hover {
+            background: #f5f5f5;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .badge-concept {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-code {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-tip {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 40px;
+        }
+
+        .summary h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding-left: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Operating Systems Interview Guide</h1>
+            <p>Complete Java Implementation with Concepts & Explanations</p>
+        </header>
+
+        <div class="content">
+            <!-- Section 1: Process Management -->
+            <div class="section">
+                <h2>🧠 1. Process Management</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>In Java, we can simulate process creation by starting external programs using <code>Runtime.exec()</code> or <code>ProcessBuilder</code>.</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Example: Launching a Process</h3>
+
+<pre><code><span class="keyword">public class</span> <span class="function">ProcessDemo</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="keyword">try</span> {
+            <span class="comment">// Runtime.getRuntime().exec() → creates a new process</span>
+            <span class="comment">// Open Notepad (Windows) or another app</span>
+            <span class="comment">// You can replace "notepad" with "calc" or any command</span>
+            <span class="comment">// Linux: "gedit", "ls"</span>
+            Process process = Runtime.<span class="function">getRuntime</span>().<span class="function">exec</span>(<span class="string">"notepad"</span>);
+            
+            <span class="comment">// The Process object gives control (wait, exit value, etc.)</span>
+            System.out.<span class="function">println</span>(<span class="string">"Process started: "</span> + process);
+        } <span class="keyword">catch</span> (Exception e) {
+            e.<span class="function">printStackTrace</span>();
+        }
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li><code>Runtime.getRuntime().exec()</code> → creates a new process.</li>
+                        <li>You can replace "notepad" with "calc" or any command (Linux: "gedit", "ls").</li>
+                        <li>The Process object gives control (wait, exit value, etc.).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 2: Threading and Synchronization -->
+            <div class="section">
+                <h2>🔄 2. Threading and Synchronization</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>Two threads (Odd & Even) share one variable. Synchronization ensures no interleaving errors.</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Code: Odd–Even Number Printing</h3>
+
+<pre><code><span class="keyword">class</span> <span class="function">NumberPrinter</span> {
+    <span class="keyword">private int</span> number = <span class="number">1</span>;
+    <span class="keyword">private final int</span> MAX = <span class="number">10</span>;
+
+    <span class="comment">// synchronized ensures only one thread can execute this method at a time</span>
+    <span class="keyword">public synchronized void</span> <span class="function">printOdd</span>() {
+        <span class="keyword">while</span> (number < MAX) {
+            <span class="comment">// If number is even, wait() releases the lock temporarily</span>
+            <span class="keyword">while</span> (number % <span class="number">2</span> == <span class="number">0</span>) {
+                <span class="keyword">try</span> { <span class="function">wait</span>(); } <span class="keyword">catch</span> (InterruptedException e) {}
+            }
+            <span class="comment">// Print odd number and increment</span>
+            System.out.<span class="function">println</span>(<span class="string">"Odd: "</span> + number++);
+            
+            <span class="comment">// notify() wakes up the waiting even thread</span>
+            <span class="function">notify</span>();
+        }
+    }
+
+    <span class="keyword">public synchronized void</span> <span class="function">printEven</span>() {
+        <span class="keyword">while</span> (number <= MAX) {
+            <span class="comment">// If number is odd, wait for odd thread to finish</span>
+            <span class="keyword">while</span> (number % <span class="number">2</span> != <span class="number">0</span>) {
+                <span class="keyword">try</span> { <span class="function">wait</span>(); } <span class="keyword">catch</span> (InterruptedException e) {}
+            }
+            <span class="comment">// Print even number and increment</span>
+            System.out.<span class="function">println</span>(<span class="string">"Even: "</span> + number++);
+            
+            <span class="comment">// notify() wakes up the waiting odd thread</span>
+            <span class="function">notify</span>();
+        }
+    }
+}
+
+<span class="keyword">public class</span> <span class="function">OddEvenThreads</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="comment">// Shared object between threads</span>
+        NumberPrinter printer = <span class="keyword">new</span> <span class="function">NumberPrinter</span>();
+        
+        <span class="comment">// Create two threads using method references</span>
+        Thread t1 = <span class="keyword">new</span> <span class="function">Thread</span>(printer::printOdd);
+        Thread t2 = <span class="keyword">new</span> <span class="function">Thread</span>(printer::printEven);
+        
+        <span class="comment">// Start both threads - they will alternate properly</span>
+        t1.<span class="function">start</span>();
+        t2.<span class="function">start</span>();
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li><code>wait()</code> releases the lock temporarily.</li>
+                        <li><code>notify()</code> wakes the waiting thread.</li>
+                        <li>Ensures Odd and Even threads alternate properly.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 3: Producer-Consumer Problem -->
+            <div class="section">
+                <h2>🧵 3. Producer–Consumer Problem</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>Producer adds items into a shared buffer; Consumer removes them. Must avoid overflow (buffer full) and underflow (buffer empty).</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Code</h3>
+
+<pre><code><span class="keyword">import</span> java.util.LinkedList;
+<span class="keyword">import</span> java.util.Queue;
+
+<span class="keyword">class</span> <span class="function">SharedBuffer</span> {
+    <span class="comment">// Queue acts as the shared buffer between producer and consumer</span>
+    <span class="keyword">private final</span> Queue&lt;Integer&gt; buffer = <span class="keyword">new</span> <span class="function">LinkedList</span>&lt;&gt;();
+    <span class="keyword">private final int</span> CAPACITY = <span class="number">5</span>;
+
+    <span class="comment">// Producer adds items to buffer</span>
+    <span class="keyword">public synchronized void</span> <span class="function">produce</span>(<span class="keyword">int</span> value) <span class="keyword">throws</span> InterruptedException {
+        <span class="comment">// If buffer is full, wait for consumer to consume</span>
+        <span class="keyword">while</span> (buffer.<span class="function">size</span>() == CAPACITY) {
+            <span class="function">wait</span>(); <span class="comment">// wait for consumer</span>
+        }
+        <span class="comment">// Add item to buffer</span>
+        buffer.<span class="function">add</span>(value);
+        System.out.<span class="function">println</span>(<span class="string">"Produced: "</span> + value);
+        
+        <span class="comment">// notifyAll() wakes up consumer threads</span>
+        <span class="function">notifyAll</span>(); <span class="comment">// notify consumer</span>
+    }
+
+    <span class="comment">// Consumer removes items from buffer</span>
+    <span class="keyword">public synchronized void</span> <span class="function">consume</span>() <span class="keyword">throws</span> InterruptedException {
+        <span class="comment">// If buffer is empty, wait for producer to produce</span>
+        <span class="keyword">while</span> (buffer.<span class="function">isEmpty</span>()) {
+            <span class="function">wait</span>(); <span class="comment">// wait for producer</span>
+        }
+        <span class="comment">// Remove item from buffer</span>
+        <span class="keyword">int</span> value = buffer.<span class="function">poll</span>();
+        System.out.<span class="function">println</span>(<span class="string">"Consumed: "</span> + value);
+        
+        <span class="comment">// notifyAll() wakes up producer threads</span>
+        <span class="function">notifyAll</span>(); <span class="comment">// notify producer</span>
+    }
+}
+
+<span class="keyword">public class</span> <span class="function">ProducerConsumer</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="comment">// Create shared buffer object</span>
+        SharedBuffer buffer = <span class="keyword">new</span> <span class="function">SharedBuffer</span>();
+
+        <span class="comment">// Producer thread - produces 10 items</span>
+        Thread producer = <span class="keyword">new</span> <span class="function">Thread</span>(() -> {
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= <span class="number">10</span>; i++) {
+                <span class="keyword">try</span> {
+                    buffer.<span class="function">produce</span>(i);
+                    <span class="comment">// Sleep to simulate production time</span>
+                    Thread.<span class="function">sleep</span>(<span class="number">200</span>);
+                } <span class="keyword">catch</span> (InterruptedException e) {}
+            }
+        });
+
+        <span class="comment">// Consumer thread - consumes 10 items</span>
+        Thread consumer = <span class="keyword">new</span> <span class="function">Thread</span>(() -> {
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= <span class="number">10</span>; i++) {
+                <span class="keyword">try</span> {
+                    buffer.<span class="function">consume</span>();
+                    <span class="comment">// Sleep to simulate consumption time (slower than producer)</span>
+                    Thread.<span class="function">sleep</span>(<span class="number">300</span>);
+                } <span class="keyword">catch</span> (InterruptedException e) {}
+            }
+        });
+
+        <span class="comment">// Start both threads</span>
+        producer.<span class="function">start</span>();
+        consumer.<span class="function">start</span>();
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li>Uses <code>wait()</code> and <code>notifyAll()</code> to coordinate.</li>
+                        <li>Prevents producer from adding when buffer is full.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 4: Deadlock Example -->
+            <div class="section">
+                <h2>🔒 4. Deadlock Example</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>Two threads hold different resources and wait for each other → deadlock.</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Code</h3>
+
+<pre><code><span class="keyword">public class</span> <span class="function">DeadlockExample</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="comment">// Two resources that threads will compete for</span>
+        String pen = <span class="string">"Pen"</span>;
+        String paper = <span class="string">"Paper"</span>;
+
+        <span class="comment">// Thread 1: locks Pen first, then tries to lock Paper</span>
+        Thread t1 = <span class="keyword">new</span> <span class="function">Thread</span>(() -> {
+            <span class="keyword">synchronized</span> (pen) {
+                System.out.<span class="function">println</span>(<span class="string">"Thread 1 locked Pen"</span>);
+                <span class="keyword">try</span> { Thread.<span class="function">sleep</span>(<span class="number">100</span>); } <span class="keyword">catch</span> (InterruptedException e) {}
+                
+                <span class="comment">// Now trying to lock Paper - but Thread 2 has it!</span>
+                <span class="keyword">synchronized</span> (paper) {
+                    System.out.<span class="function">println</span>(<span class="string">"Thread 1 locked Paper"</span>);
+                }
+            }
+        });
+
+        <span class="comment">// Thread 2: locks Paper first, then tries to lock Pen</span>
+        Thread t2 = <span class="keyword">new</span> <span class="function">Thread</span>(() -> {
+            <span class="keyword">synchronized</span> (paper) {
+                System.out.<span class="function">println</span>(<span class="string">"Thread 2 locked Paper"</span>);
+                <span class="keyword">try</span> { Thread.<span class="function">sleep</span>(<span class="number">100</span>); } <span class="keyword">catch</span> (InterruptedException e) {}
+                
+                <span class="comment">// Now trying to lock Pen - but Thread 1 has it!</span>
+                <span class="comment">// Both threads wait forever → DEADLOCK!</span>
+                <span class="keyword">synchronized</span> (pen) {
+                    System.out.<span class="function">println</span>(<span class="string">"Thread 2 locked Pen"</span>);
+                }
+            }
+        });
+
+        <span class="comment">// Start both threads - they will deadlock</span>
+        t1.<span class="function">start</span>();
+        t2.<span class="function">start</span>();
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li>Thread 1: locks Pen, waits for Paper.</li>
+                        <li>Thread 2: locks Paper, waits for Pen.</li>
+                        <li>→ Both wait forever → deadlock.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 5: Dining Philosophers -->
+            <div class="section">
+                <h2>🍽️ 5. Dining Philosophers Problem</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>Five philosophers share five chopsticks; each must pick two to eat. Goal: prevent deadlock.</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Code</h3>
+
+<pre><code><span class="keyword">import</span> java.util.concurrent.locks.ReentrantLock;
+
+<span class="keyword">class</span> <span class="function">Philosopher</span> <span class="keyword">implements</span> Runnable {
+    <span class="comment">// Each philosopher needs two chopsticks (left and right)</span>
+    <span class="keyword">private final</span> ReentrantLock leftChopstick;
+    <span class="keyword">private final</span> ReentrantLock rightChopstick;
+    <span class="keyword">private final int</span> id;
+
+    <span class="keyword">public</span> <span class="function">Philosopher</span>(<span class="keyword">int</span> id, ReentrantLock left, ReentrantLock right) {
+        <span class="keyword">this</span>.id = id;
+        <span class="keyword">this</span>.leftChopstick = left;
+        <span class="keyword">this</span>.rightChopstick = right;
+    }
+
+    <span class="keyword">public void</span> <span class="function">run</span>() {
+        <span class="keyword">try</span> {
+            <span class="comment">// Infinite loop: philosopher alternates between thinking and eating</span>
+            <span class="keyword">while</span> (<span class="keyword">true</span>) {
+                <span class="function">think</span>();
+                <span class="function">eat</span>();
+            }
+        } <span class="keyword">catch</span> (InterruptedException e) {}
+    }
+
+    <span class="comment">// Philosopher is thinking (not using chopsticks)</span>
+    <span class="keyword">private void</span> <span class="function">think</span>() <span class="keyword">throws</span> InterruptedException {
+        System.out.<span class="function">println</span>(<span class="string">"Philosopher "</span> + id + <span class="string">" is thinking"</span>);
+        Thread.<span class="function">sleep</span>(<span class="number">500</span>);
+    }
+
+    <span class="comment">// Philosopher picks up both chopsticks, eats, then puts them down</span>
+    <span class="keyword">private void</span> <span class="function">eat</span>() <span class="keyword">throws</span> InterruptedException {
+        <span class="comment">// Lock both chopsticks (ReentrantLock avoids busy waiting)</span>
+        leftChopstick.<span class="function">lock</span>();
+        rightChopstick.<span class="function">lock</span>();
+        
+        <span class="comment">// Now eating with both chopsticks</span>
+        System.out.<span class="function">println</span>(<span class="string">"Philosopher "</span> + id + <span class="string">" is eating"</span>);
+        Thread.<span class="function">sleep</span>(<span class="number">500</span>);
+        
+        <span class="comment">// Release both chopsticks after eating</span>
+        leftChopstick.<span class="function">unlock</span>();
+        rightChopstick.<span class="function">unlock</span>();
+    }
+}
+
+<span class="keyword">public class</span> <span class="function">DiningPhilosophers</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="comment">// Create 5 chopsticks (one between each pair of philosophers)</span>
+        ReentrantLock[] chopsticks = <span class="keyword">new</span> ReentrantLock[<span class="number">5</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++)
+            chopsticks[i] = <span class="keyword">new</span> <span class="function">ReentrantLock</span>();
+
+        <span class="comment">// Create 5 philosophers, each with left and right chopstick</span>
+        <span class="comment">// Philosopher i has chopstick i (left) and (i+1)%5 (right)</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {
+            Philosopher p = <span class="keyword">new</span> <span class="function">Philosopher</span>(i, chopsticks[i], chopsticks[(i + <span class="number">1</span>) % <span class="number">5</span>]);
+            <span class="keyword">new</span> <span class="function">Thread</span>(p).<span class="function">start</span>();
+        }
+        
+        <span class="comment">// Note: This can still deadlock. Solution: odd-even reversal trick</span>
+        <span class="comment">// or use tryLock() with timeout</span>
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li>Each philosopher tries to lock two chopsticks.</li>
+                        <li><code>ReentrantLock</code> avoids busy waiting.</li>
+                        <li>Can use odd-even reversal trick to avoid deadlock.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 6: Reader-Writer Problem -->
+            <div class="section">
+                <h2>📖 6. Reader–Writer Problem</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>Multiple readers can read simultaneously. Only one writer can write, and no readers during writing.</p>
+                </div>
+
+                <h3><span class="badge badge-code">✅</span>Code</h3>
+
+<pre><code><span class="keyword">class</span> <span class="function">ReadWrite</span> {
+    <span class="comment">// Counter to track how many readers are currently reading</span>
+    <span class="keyword">private int</span> readers = <span class="number">0</span>;
+
+    <span class="comment">// Reader starts reading - multiple readers can read simultaneously</span>
+    <span class="keyword">public synchronized void</span> <span class="function">startRead</span>() <span class="keyword">throws</span> InterruptedException {
+        readers++;
+        System.out.<span class="function">println</span>(<span class="string">"Reader started. Readers: "</span> + readers);
+    }
+
+    <span class="comment">// Reader finishes reading</span>
+    <span class="keyword">public synchronized void</span> <span class="function">endRead</span>() {
+        readers--;
+        System.out.<span class="function">println</span>(<span class="string">"Reader ended. Readers: "</span> + readers);
+        <span class="comment">// Notify waiting writer that a reader has finished</span>
+        <span class="function">notifyAll</span>();
+    }
+
+    <span class="comment">// Writer wants to write - must wait until no readers are active</span>
+    <span class="keyword">public synchronized void</span> <span class="function">startWrite</span>() <span class="keyword">throws</span> InterruptedException {
+        <span class="comment">// Wait until all readers finish (readers > 0 means someone is reading)</span>
+        <span class="keyword">while</span> (readers > <span class="number">0</span>) <span class="function">wait</span>();
+        System.out.<span class="function">println</span>(<span class="string">"Writer started writing..."</span>);
+    }
+
+    <span class="comment">// Writer finishes writing</span>
+    <span class="keyword">public synchronized void</span> <span class="function">endWrite</span>() {
+        System.out.<span class="function">println</span>(<span class="string">"Writer ended writing."</span>);
+        <span class="comment">// Notify all waiting readers/writers</span>
+        <span class="function">notifyAll</span>();
+    }
+}
+
+<span class="keyword">public class</span> <span class="function">ReaderWriter</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        <span class="comment">// Shared ReadWrite object</span>
+        ReadWrite rw = <span class="keyword">new</span> <span class="function">ReadWrite</span>();
+
+        <span class="comment">// Reader task</span>
+        Runnable reader = () -> {
+            <span class="keyword">try</span> {
+                rw.<span class="function">startRead</span>();
+                <span class="comment">// Simulate reading time</span>
+                Thread.<span class="function">sleep</span>(<span class="number">500</span>);
+                rw.<span class="function">endRead</span>();
+            } <span class="keyword">catch</span> (InterruptedException e) {}
+        };
+
+        <span class="comment">// Writer task</span>
+        Runnable writer = () -> {
+            <span class="keyword">try</span> {
+                rw.<span class="function">startWrite</span>();
+                <span class="comment">// Simulate writing time</span>
+                Thread.<span class="function">sleep</span>(<span class="number">500</span>);
+                rw.<span class="function">endWrite</span>();
+            } <span class="keyword">catch</span> (InterruptedException e) {}
+        };
+
+        <span class="comment">// Create 3 reader threads - they can all read simultaneously</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">3</span>; i++) <span class="keyword">new</span> <span class="function">Thread</span>(reader).<span class="function">start</span>();
+        
+        <span class="comment">// Create 1 writer thread - it must wait for all readers to finish</span>
+        <span class="keyword">new</span> <span class="function">Thread</span>(writer).<span class="function">start</span>();
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li><code>readers</code> count tracks active readers.</li>
+                        <li>Writer waits until no readers are active.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 7: CPU Scheduling -->
+            <div class="section">
+                <h2>⚙️ 7. CPU Scheduling Simulation</h2>
+                
+                <h3><span class="badge badge-code">✅</span>FCFS (First Come First Serve)</h3>
+
+<pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="function">FCFS</span> {
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        Scanner sc = <span class="keyword">new</span> <span class="function">Scanner</span>(System.in);
+        System.out.<span class="function">print</span>(<span class="string">"Enter number of processes: "</span>);
+        <span class="keyword">int</span> n = sc.<span class="function">nextInt</span>();
+
+        <span class="comment">// bt = Burst Time, wt = Waiting Time, tat = Turn Around Time</span>
+        <span class="keyword">int</span>[] bt = <span class="keyword">new int</span>[n], wt = <span class="keyword">new int</span>[n], tat = <span class="keyword">new int</span>[n];
+
+        <span class="comment">// Input burst times for each process</span>
+        System.out.<span class="function">println</span>(<span class="string">"Enter burst times:"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) bt[i] = sc.<span class="function">nextInt</span>();
+
+        <span class="comment">// Calculate waiting time for each process</span>
+        <span class="comment">// First process has 0 waiting time</span>
+        wt[<span class="number">0</span>] = <span class="number">0</span>;
+        <span class="comment">// Waiting time = previous waiting time + previous burst time</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < n; i++)
+            wt[i] = wt[i - <span class="number">1</span>] + bt[i - <span class="number">1</span>];
+
+        <span class="comment">// Calculate turnaround time for each process</span>
+        <span class="comment">// Turnaround time = Waiting time + Burst time</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++)
+            tat[i] = wt[i] + bt[i];
+
+        <span class="comment">// Display results in tabular format</span>
+        System.out.<span class="function">println</span>(<span class="string">"P\tBT\tWT\tTAT"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++)
+            System.out.<span class="function">println</span>((i + <span class="number">1</span>) + <span class="string">"\t"</span> + bt[i] + <span class="string">"\t"</span> + wt[i] + <span class="string">"\t"</span> + tat[i]);
+    }
+}</code></pre>
+            </div>
+
+            <!-- Section 8: LRU Cache -->
+            <div class="section">
+                <h2>🧠 8. LRU Cache Implementation</h2>
+                
+                <div class="concept">
+                    <h4>💡 Concept</h4>
+                    <p>LRU Cache removes the least recently used item when the cache is full. To achieve O(1) operations for get() and put(), we use HashMap to store key-node pairs and Doubly Linked List to maintain access order.</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Operation</th>
+                            <th>Description</th>
+                            <th>Time Complexity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>get(key)</td>
+                            <td>Return value if key exists; else return -1</td>
+                            <td>O(1)</td>
+                        </tr>
+                        <tr>
+                            <td>put(key, value)</td>
+                            <td>Insert or update; if full, remove least recently used</td>
+                            <td>O(1)</td>
+                        </tr>
+                        <tr>
+                            <td>moveToHead(node)</td>
+                            <td>When accessed, move node to head</td>
+                            <td>O(1)</td>
+                        </tr>
+                        <tr>
+                            <td>removeTail()</td>
+                            <td>Remove least recently used (tail) node</td>
+                            <td>O(1)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3><span class="badge badge-code">✅</span>LRU Cache Code</h3>
+
+<pre><code><span class="keyword">import</span> java.util.*;
+
+<span class="keyword">class</span> <span class="function">LRUCache</span> {
+    <span class="comment">// Node for doubly linked list</span>
+    <span class="keyword">class</span> <span class="function">Node</span> {
+        <span class="keyword">int</span> key, value;
+        Node prev, next;
+
+        <span class="function">Node</span>(<span class="keyword">int</span> key, <span class="keyword">int</span> value) {
+            <span class="keyword">this</span>.key = key;
+            <span class="keyword">this</span>.value = value;
+        }
+    }
+
+    <span class="keyword">private final int</span> capacity;
+    <span class="keyword">private</span> Map&lt;Integer, Node&gt; cache;
+    <span class="keyword">private</span> Node head, tail; <span class="comment">// dummy nodes for easy operations</span>
+
+    <span class="keyword">public</span> <span class="function">LRUCache</span>(<span class="keyword">int</span> capacity) {
+        <span class="keyword">this</span>.capacity = capacity;
+        cache = <span class="keyword">new</span> <span class="function">HashMap</span>&lt;&gt;();
+        head = <span class="keyword">new</span> <span class="function">Node</span>(<span class="number">0</span>, <span class="number">0</span>);
+        tail = <span class="keyword">new</span> <span class="function">Node</span>(<span class="number">0</span>, <span class="number">0</span>);
+        head.next = tail;
+        tail.prev = head;
+    }
+
+    <span class="comment">// Get value by key</span>
+    <span class="keyword">public int</span> <span class="function">get</span>(<span class="keyword">int</span> key) {
+        <span class="keyword">if</span> (!cache.<span class="function">containsKey</span>(key)) {
+            <span class="keyword">return</span> -<span class="number">1</span>;
+        }
+        Node node = cache.<span class="function">get</span>(key);
+        <span class="function">moveToHead</span>(node);
+        <span class="keyword">return</span> node.value;
+    }
+
+    <span class="comment">// Put new key-value pair</span>
+    <span class="keyword">public void</span> <span class="function">put</span>(<span class="keyword">int</span> key, <span class="keyword">int</span> value) {
+        <span class="keyword">if</span> (cache.<span class="function">containsKey</span>(key)) {
+            Node node = cache.<span class="function">get</span>(key);
+            node.value = value;
+            <span class="function">moveToHead</span>(node);
+        } <span class="keyword">else</span> {
+            Node newNode = <span class="keyword">new</span> <span class="function">Node</span>(key, value);
+            cache.<span class="function">put</span>(key, newNode);
+            <span class="function">addToHead</span>(newNode);
+
+            <span class="keyword">if</span> (cache.<span class="function">size</span>() > capacity) {
+                Node tailNode = <span class="function">removeTail</span>();
+                cache.<span class="function">remove</span>(tailNode.key);
+            }
+        }
+    }
+
+    <span class="comment">// Add node right after head</span>
+    <span class="keyword">private void</span> <span class="function">addToHead</span>(Node node) {
+        node.prev = head;
+        node.next = head.next;
+        head.next.prev = node;
+        head.next = node;
+    }
+
+    <span class="comment">// Remove a node from its position</span>
+    <span class="keyword">private void</span> <span class="function">removeNode</span>(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+
+    <span class="comment">// Move existing node to head</span>
+    <span class="keyword">private void</span> <span class="function">moveToHead</span>(Node node) {
+        <span class="function">removeNode</span>(node);
+        <span class="function">addToHead</span>(node);
+    }
+
+    <span class="comment">// Remove the least recently used node</span>
+    <span class="keyword">private</span> Node <span class="function">removeTail</span>() {
+        Node res = tail.prev;
+        <span class="function">removeNode</span>(res);
+        <span class="keyword">return</span> res;
+    }
+
+    <span class="comment">// For debugging</span>
+    <span class="keyword">public void</span> <span class="function">printCache</span>() {
+        Node cur = head.next;
+        System.out.<span class="function">print</span>(<span class="string">"Cache: "</span>);
+        <span class="keyword">while</span> (cur != tail) {
+            System.out.<span class="function">print</span>(<span class="string">"["</span> + cur.key + <span class="string">"="</span> + cur.value + <span class="string">"] "</span>);
+            cur = cur.next;
+        }
+        System.out.<span class="function">println</span>();
+    }
+
+    <span class="comment">// Main to test</span>
+    <span class="keyword">public static void</span> <span class="function">main</span>(String[] args) {
+        LRUCache lru = <span class="keyword">new</span> <span class="function">LRUCache</span>(<span class="number">3</span>);
+        lru.<span class="function">put</span>(<span class="number">1</span>, <span class="number">10</span>);
+        lru.<span class="function">put</span>(<span class="number">2</span>, <span class="number">20</span>);
+        lru.<span class="function">put</span>(<span class="number">3</span>, <span class="number">30</span>);
+        lru.<span class="function">printCache</span>();  <span class="comment">// [3=30] [2=20] [1=10]</span>
+        lru.<span class="function">get</span>(<span class="number">1</span>);
+        lru.<span class="function">printCache</span>();  <span class="comment">// [1=10] [3=30] [2=20]</span>
+        lru.<span class="function">put</span>(<span class="number">4</span>, <span class="number">40</span>);    <span class="comment">// removes least recently used (key 2)</span>
+        lru.<span class="function">printCache</span>();  <span class="comment">// [4=40] [1=10] [3=30]</span>
+    }
+}</code></pre>
+
+                <div class="explanation">
+                    <h4>🧩 Explanation:</h4>
+                    <ul>
+                        <li><code>Node</code> class → stores key, value, and pointers (prev, next).</li>
+                        <li><code>HashMap</code> → gives O(1) lookup by key.</li>
+                        <li><code>addToHead()</code> → insert a node right after dummy head.</li>
+                        <li><code>removeNode()</code> → unlink a node from the list.</li>
+                        <li><code>moveToHead()</code> → when accessed, move node to front.</li>
+                        <li><code>removeTail()</code> → removes least recently used (the node before tail).</li>
+                        <li><code>put()</code> → inserts or updates key-value, evicts least used if capacity exceeded.</li>
+                        <li><code>get()</code> → returns value and updates position to most recent.</li>
+                    </ul>
+                </div>
+
+                <div class="concept">
+                    <h4><span class="badge badge-tip">🧠</span>Interview Tip</h4>
+                    <p>LRU Cache is a perfect example of OS + Data Structures:</p>
+                    <ul>
+                        <li>Conceptually represents <strong>page replacement algorithm</strong> in OS.</li>
+                        <li>Tests your <strong>Java OOP + Map + Linked List</strong> skills.</li>
+                        <li>Can be extended to <strong>thread-safe</strong> version using <code>synchronized</code> blocks or <code>ReentrantLock</code>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="summary">
+                <h2>🧾 Summary: Most Important OS Coding Topics</h2>
+                <table style="margin-top: 20px; background: white; color: #333;">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Key Program</th>
+                            <th>Core Concept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Process Management</td>
+                            <td><code>Runtime.exec()</code></td>
+                            <td>Create a process</td>
+                        </tr>
+                        <tr>
+                            <td>Thread Synchronization</td>
+                            <td>Odd–Even Printer</td>
+                            <td><code>wait()</code> / <code>notify()</code></td>
+                        </tr>
+                        <tr>
+                            <td>Producer–Consumer</td>
+                            <td>Shared Buffer</td>
+                            <td>Synchronization</td>
+                        </tr>
+                        <tr>
+                            <td>Deadlock</td>
+                            <td>2 locks, 2 threads</td>
+                            <td>Circular wait</td>
+                        </tr>
+                        <tr>
+                            <td>Dining Philosophers</td>
+                            <td>5 threads + locks</td>
+                            <td>Deadlock avoidance</td>
+                        </tr>
+                        <tr>
+                            <td>Reader–Writer</td>
+                            <td>Shared resource</td>
+                            <td>Read–Write coordination</td>
+                        </tr>
+                        <tr>
+                            <td>CPU Scheduling</td>
+                            <td>FCFS, RR</td>
+                            <td>CPU time calculation</td>
+                        </tr>
+                        <tr>
+                            <td>Paging</td>
+                            <td>LRU replacement</td>
+                            <td>Memory management</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

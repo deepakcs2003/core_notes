@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot REST API Development Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: #6366f1;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #6366f1;
+        }
+
+        h3 {
+            color: #8b5cf6;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 5px solid #6366f1;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #6366f1;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        pre code {
+            color: #e2e8f0;
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .interview-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border: 2px solid #f59e0b;
+        }
+
+        .interview-section h2 {
+            color: #d97706;
+            border-bottom-color: #f59e0b;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .question h4 {
+            color: #d97706;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .answer {
+            color: #374151;
+            margin-top: 10px;
+            padding-left: 15px;
+        }
+
+        .practice-box {
+            background: #dcfce7;
+            border: 2px solid #22c55e;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .practice-box h3 {
+            color: #16a34a;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: #6366f1;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+
+        ul {
+            margin: 15px 0;
+            padding-left: 30px;
+        }
+
+        li {
+            margin: 8px 0;
+        }
+
+        .note {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Spring Boot REST API Development</h1>
+            <p>Complete Guide with Examples & Interview Questions</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>🌱 1. What is a REST API?</h2>
+                <div class="info-box">
+                    <p><strong>REST API (Representational State Transfer)</strong> is a way for applications to communicate using <span class="highlight">HTTP</span> but exchanging <span class="highlight">data (usually JSON)</span> instead of web pages.</p>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>HTTP Method</th>
+                                <th>Action</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="badge">GET</span></td>
+                                <td>Read data</td>
+                                <td>Get all students</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge">POST</span></td>
+                                <td>Create data</td>
+                                <td>Add a new student</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge">PUT</span></td>
+                                <td>Update data</td>
+                                <td>Update student info</td>
+                            </tr>
+                            <tr>
+                                <td><span class="badge">DELETE</span></td>
+                                <td>Delete data</td>
+                                <td>Remove a student</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🚀 2. Common Annotations in Spring Boot</h2>
+
+                <h3>✅ @SpringBootApplication</h3>
+                <p>Marks the main class of the Spring Boot application. It combines:</p>
+                <ul>
+                    <li><code>@Configuration</code> - defines beans</li>
+                    <li><code>@EnableAutoConfiguration</code> - starts Spring Boot automatically</li>
+                    <li><code>@ComponentScan</code> - scans for components, controllers, etc.</li>
+                </ul>
+                <pre><code>@SpringBootApplication
+public class MyApp {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApp.class, args);
+    }
+}</code></pre>
+
+                <h3>✅ @RestController</h3>
+                <ul>
+                    <li>Used on a class to make it a REST API controller</li>
+                    <li>Automatically converts return values to JSON</li>
+                    <li>Combination of <code>@Controller</code> + <code>@ResponseBody</code></li>
+                </ul>
+                <pre><code>@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String sayHello() {
+        return "Hello Spring Boot!";
+    }
+}</code></pre>
+
+                <h3>✅ @RequestMapping</h3>
+                <p>Used at class or method level to map URLs to controllers.</p>
+                <pre><code>@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome to Student API!";
+    }
+}</code></pre>
+
+                <h3>✅ HTTP Method Annotations</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Annotation</th>
+                                <th>HTTP Method</th>
+                                <th>Use</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@GetMapping</td>
+                                <td>GET</td>
+                                <td>Retrieve data</td>
+                            </tr>
+                            <tr>
+                                <td>@PostMapping</td>
+                                <td>POST</td>
+                                <td>Create new data</td>
+                            </tr>
+                            <tr>
+                                <td>@PutMapping</td>
+                                <td>PUT</td>
+                                <td>Update existing data</td>
+                            </tr>
+                            <tr>
+                                <td>@DeleteMapping</td>
+                                <td>DELETE</td>
+                                <td>Remove data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🗃️ 3. In-Memory CRUD API Example</h2>
+
+                <h3>Step 1: Create the Model</h3>
+                <pre><code>public class Student {
+    private int id;
+    private String name;
+    private int age;
+
+    public Student(int id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters & Setters
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public void setId(int id) { this.id = id; }
+    public void setName(String name) { this.name = name; }
+    public void setAge(int age) { this.age = age; }
+}</code></pre>
+
+                <h3>Step 2: Create the Controller (Complete CRUD)</h3>
+                <pre><code>@RestController
+@RequestMapping("/api/students")
+public class StudentController {
+
+    private List&lt;Student&gt; students = new ArrayList&lt;&gt;(
+        List.of(
+            new Student(1, "Deepak", 20),
+            new Student(2, "Shreeram", 21)
+        )
+    );
+
+    // GET: Fetch all students
+    @GetMapping
+    public List&lt;Student&gt; getAllStudents() {
+        return students;
+    }
+
+    // GET: Fetch student by ID
+    @GetMapping("/{id}")
+    public Student getStudentById(@PathVariable int id) {
+        return students.stream()
+                       .filter(s -> s.getId() == id)
+                       .findFirst()
+                       .orElseThrow(() -> new RuntimeException("Student not found"));
+    }
+
+    // POST: Add new student
+    @PostMapping
+    public Student addStudent(@RequestBody Student student) {
+        students.add(student);
+        return student;
+    }
+
+    // PUT: Update student
+    @PutMapping("/{id}")
+    public Student updateStudent(@PathVariable int id, @RequestBody Student updated) {
+        for (Student s : students) {
+            if (s.getId() == id) {
+                s.setName(updated.getName());
+                s.setAge(updated.getAge());
+                return s;
+            }
+        }
+        throw new RuntimeException("Student not found");
+    }
+
+    // DELETE: Remove student
+    @DeleteMapping("/{id}")
+    public String deleteStudent(@PathVariable int id) {
+        students.removeIf(s -> s.getId() == id);
+        return "Student removed successfully!";
+    }
+}</code></pre>
+            </div>
+
+            <div class="section">
+                <h2>💡 4. Additional Important Concepts</h2>
+
+                <h3>🧭 @PathVariable</h3>
+                <p>Extracts data from URL path</p>
+                <pre><code>@GetMapping("/students/{id}")
+public Student getStudent(@PathVariable int id) { 
+    // Extract id from URL
+    return studentService.findById(id);
+}</code></pre>
+
+                <h3>📩 @RequestBody</h3>
+                <p>Gets JSON data from the request body</p>
+                <pre><code>@PostMapping("/students")
+public Student createStudent(@RequestBody Student student) {
+    // student object is automatically created from JSON
+    return studentService.save(student);
+}</code></pre>
+
+                <h3>💬 @ResponseStatus</h3>
+                <p>Sets custom HTTP response status</p>
+                <pre><code>@PostMapping
+@ResponseStatus(HttpStatus.CREATED)
+public Student createStudent(@RequestBody Student student) {
+    return studentService.save(student);
+}</code></pre>
+
+                <h3>⚠️ Exception Handling</h3>
+                <pre><code>@ControllerAdvice
+public class GlobalExceptionHandler {
+    
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity&lt;String&gt; handleException(RuntimeException ex) {
+        return new ResponseEntity&lt;&gt;(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}</code></pre>
+            </div>
+
+            <div class="practice-box">
+                <h3>🧠 Practice Exercise</h3>
+                <p>Build CRUD APIs for a <code>Product</code> entity with:</p>
+                <ul>
+                    <li>int id</li>
+                    <li>String name</li>
+                    <li>double price</li>
+                </ul>
+                <p><strong>Endpoints to create:</strong></p>
+                <ul>
+                    <li>GET /api/products</li>
+                    <li>GET /api/products/{id}</li>
+                    <li>POST /api/products</li>
+                    <li>PUT /api/products/{id}</li>
+                    <li>DELETE /api/products/{id}</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>🗝️ Quick Reference Cheat Sheet</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Annotation</th>
+                                <th>Purpose</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@SpringBootApplication</td>
+                                <td>Marks main Spring Boot class</td>
+                            </tr>
+                            <tr>
+                                <td>@RestController</td>
+                                <td>Defines REST API controller</td>
+                            </tr>
+                            <tr>
+                                <td>@RequestMapping</td>
+                                <td>Base path for APIs</td>
+                            </tr>
+                            <tr>
+                                <td>@GetMapping</td>
+                                <td>Fetch data</td>
+                            </tr>
+                            <tr>
+                                <td>@PostMapping</td>
+                                <td>Create data</td>
+                            </tr>
+                            <tr>
+                                <td>@PutMapping</td>
+                                <td>Update data</td>
+                            </tr>
+                            <tr>
+                                <td>@DeleteMapping</td>
+                                <td>Delete data</td>
+                            </tr>
+                            <tr>
+                                <td>@PathVariable</td>
+                                <td>Extract value from URL</td>
+                            </tr>
+                            <tr>
+                                <td>@RequestBody</td>
+                                <td>Read JSON request body</td>
+                            </tr>
+                            <tr>
+                                <td>@ResponseStatus</td>
+                                <td>Set response status code</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="interview-section">
+                <h2>🎯 Important Interview Questions</h2>
+
+                <div class="question">
+                    <h4>Q1: What is the difference between @Controller and @RestController?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> @RestController is a combination of @Controller and @ResponseBody. @Controller is used for traditional MVC applications that return views, while @RestController is specifically for RESTful web services that return data (usually JSON/XML). With @RestController, you don't need to annotate every method with @ResponseBody.
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q2: What is the difference between @PathVariable and @RequestParam?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong><br>
+                        • <strong>@PathVariable</strong>: Extracts values from the URI path (e.g., /users/{id})<br>
+                        • <strong>@RequestParam</strong>: Extracts query parameters from the URL (e.g., /users?id=123)<br>
+                        Example: <code>@GetMapping("/users/{id}")</code> uses @PathVariable, while <code>@GetMapping("/users")</code> with <code>?name=John</code> uses @RequestParam
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q3: What are the HTTP status codes commonly used in REST APIs?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong><br>
+                        • <strong>200 OK</strong>: Successful GET, PUT, or DELETE<br>
+                        • <strong>201 Created</strong>: Successful POST request<br>
+                        • <strong>204 No Content</strong>: Successful request with no response body<br>
+                        • <strong>400 Bad Request</strong>: Invalid request from client<br>
+                        • <strong>404 Not Found</strong>: Resource not found<br>
+                        • <strong>500 Internal Server Error</strong>: Server-side error
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q4: What is @RequestBody and when do you use it?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> @RequestBody is used to bind the HTTP request body to a domain object. It's commonly used with POST and PUT requests where you're sending data to the server. Spring automatically deserializes the JSON/XML from the request body into a Java object.
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q5: How do you handle exceptions in Spring Boot REST APIs?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> There are several ways:<br>
+                        • <strong>@ExceptionHandler</strong>: Handle exceptions at controller level<br>
+                        • <strong>@ControllerAdvice</strong>: Global exception handling across all controllers<br>
+                        • <strong>@ResponseStatus</strong>: Map exceptions to HTTP status codes<br>
+                        • <strong>ResponseEntityExceptionHandler</strong>: Extend this class for customized exception handling
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q6: What is the difference between PUT and PATCH methods?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong><br>
+                        • <strong>PUT</strong>: Updates the entire resource. You send the complete updated object.<br>
+                        • <strong>PATCH</strong>: Partially updates the resource. You send only the fields that need to be updated.<br>
+                        Example: PUT requires all fields, PATCH allows updating just the name without sending other fields.
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q7: What is @SpringBootApplication annotation and what does it include?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> @SpringBootApplication is a combination of three annotations:<br>
+                        • <strong>@Configuration</strong>: Tags the class as a source of bean definitions<br>
+                        • <strong>@EnableAutoConfiguration</strong>: Enables Spring Boot's auto-configuration mechanism<br>
+                        • <strong>@ComponentScan</strong>: Scans for components in the current package and sub-packages
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q8: How do you validate request data in Spring Boot?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> Use <strong>@Valid</strong> or <strong>@Validated</strong> with validation annotations:<br>
+                        • @NotNull, @NotEmpty, @NotBlank<br>
+                        • @Size(min, max)<br>
+                        • @Min, @Max<br>
+                        • @Email, @Pattern<br>
+                        Example: <code>public Student create(@Valid @RequestBody Student student)</code>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q9: What is the purpose of @ResponseStatus annotation?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> @ResponseStatus is used to set the HTTP status code for a response. It can be applied to exception classes or controller methods to return appropriate status codes like 201 (Created), 204 (No Content), 404 (Not Found), etc., instead of the default 200 (OK).
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q10: What is REST and what are its principles?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> REST (Representational State Transfer) principles include:<br>
+                        • <strong>Client-Server</strong>: Separation of concerns<br>
+                        • <strong>Stateless</strong>: Each request contains all necessary information<br>
+                        • <strong>Cacheable</strong>: Responses can be cached<br>
+                        • <strong>Uniform Interface</strong>: Standard HTTP methods<br>
+                        • <strong>Layered System</strong>: Client doesn't know if connected directly to end server<br>
+                        • <strong>Code on Demand</strong> (optional): Server can send executable code
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q11: How would you implement pagination in a REST API?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> Use @RequestParam to accept page number and size:<br><br>
+                        <pre><code>@GetMapping("/students")
+public Page&lt;Student&gt; getStudents(
+    @RequestParam(defaultValue = "0") int page, 
+    @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    return studentRepository.findAll(pageable);
+}</code></pre>
+                        Use Spring Data's Pageable interface and return Page object containing results and pagination metadata.
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h4>Q12: What is Content Negotiation in REST APIs?</h4>
+                    <div class="answer">
+                        <strong>Answer:</strong> Content Negotiation allows the same URI to serve different representations (JSON, XML, etc.) based on the Accept header in the request. Spring Boot supports this through the <strong>produces</strong> attribute in mapping annotations:<br><br>
+                        <code>@GetMapping(value = "/student", produces = {"application/json", "application/xml"})</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>💡 Pro Tip:</strong> Always use proper HTTP status codes, implement global exception handling, validate input data, and follow RESTful naming conventions (plural nouns for resources, HTTP methods for actions).
+            </div>
+        </div>
+    </div>
+</body>
+</html>

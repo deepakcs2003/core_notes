@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Shopping App Tutorial</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #121212 0%, #1e1e2e 100%);
+            color: #e2e8f0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #1f1f2f;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            color: #60a5fa;
+            margin-bottom: 50px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: #a5b4fc;
+            font-size: 2em;
+            border-bottom: 3px solid #4f46e5;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            color: #f9a8d4;
+            font-size: 1.5em;
+            margin-top: 30px;
+        }
+
+        p,
+        li {
+            color: #d1d5db;
+            font-size: 1.1em;
+        }
+
+        pre {
+            background: #282a36;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95em;
+            border: 1px solid #44475a;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        pre code {
+            color: inherit;
+        }
+
+        pre .keyword {
+            color: #ff79c6;
+        }
+
+        pre .string {
+            color: #f1fa8c;
+        }
+
+        pre .comment {
+            color: #6272a4;
+        }
+
+        pre .annotation {
+            color: #8be9fd;
+        }
+
+        pre .type {
+            color: #50fa7b;
+        }
+
+        pre .method {
+            color: #bd93f9;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #2a2a3a;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        ul,
+        ol {
+            padding-left: 30px;
+        }
+
+        a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .note {
+            background: #3b3b4f;
+            border-left: 6px solid #f9a8d4;
+            margin: 25px 0;
+            padding: 20px;
+            border-radius: 8px;
+            color: #d1d5db;
+            font-style: italic;
+        }
+
+        .code-header {
+            background: linear-gradient(90deg, #4f46e5, #9333ea);
+            color: #ffffff;
+            padding: 10px 15px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
+            font-size: 1.15em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .highlight {
+            background: #4c1d95;
+            color: #f0abfc;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .container>hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, #4f46e5, #f9a8d4);
+            margin: 40px 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #2a2a3a;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #7c3aed;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚀 <span class="highlight">Spring Boot Shopping App Tutorial</span> 🚀</h1>
+
+        <p>Welcome, beginner! Let's build a <span class="highlight">simple shopping app backend</span> with Spring Boot.
+            This tutorial guides you to create a system where users can <span class="highlight">sign up</span>, <span
+                class="highlight">log in</span>, browse <span class="highlight">products</span>, manage a <span
+                class="highlight">cart</span>, and place <span class="highlight">orders</span>. Admins can add or remove
+            products. We'll keep it <span class="highlight">clear and fun</span>!</p>
+
+        <p>For each step, we'll:</p>
+        <ul>
+            <li>Explain <span class="highlight">what</span> and <span class="highlight">why</span>.</li>
+            <li>Provide clean, <span class="highlight">short code</span>.</li>
+            <li>Break down the code <span class="highlight">line by line</span> with logic and working.</li>
+            <li>Show how to add it to your project.</li>
+        </ul>
+
+        <div class="note">
+            <strong>Note:</strong> We're skipping complex features like payments or JWT to focus on <span
+                class="highlight">core Spring Boot</span> concepts: APIs, databases, and security. Want more? Ask!
+        </div>
+
+        <p><strong>Prerequisites</strong>:</p>
+        <ul>
+            <li><span class="highlight">Java</span> (version 17+).</li>
+            <li>IDE like <span class="highlight">IntelliJ Community</span> or Eclipse (free).</li>
+            <li><span class="highlight">MySQL</span> (free community edition) running.</li>
+            <li><span class="highlight">Postman</span> to test APIs.</li>
+        </ul>
+
+        <p>Ready? Let's dive in! 🎉</p>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 1: Project Setup</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Spring Boot</span> simplifies Java web app development by
+                handling boilerplate. <span class="highlight">Spring Initializr</span> creates the project, and <span
+                    class="highlight">Maven</span> manages libraries.</p>
+
+            <p><strong>Steps</strong>:</p>
+            <ol>
+                <li>Visit <a href="https://start.spring.io/">start.spring.io</a>.</li>
+                <li>Configure:
+                    <ul>
+                        <li><span class="highlight">Project</span>: Maven</li>
+                        <li><span class="highlight">Language</span>: Java</li>
+                        <li><span class="highlight">Spring Boot</span>: Latest (e.g., 3.x)</li>
+                        <li><span class="highlight">Group</span>: com.example</li>
+                        <li><span class="highlight">Artifact</span>: shoppingapp</li>
+                        <li><span class="highlight">Java</span>: 17</li>
+                        <li><span class="highlight">Dependencies</span>:
+                            <ul>
+                                <li>Spring Web (<span class="highlight">APIs</span>)</li>
+                                <li>Spring Data JPA (<span class="highlight">database</span>)</li>
+                                <li>MySQL Driver (<span class="highlight">MySQL</span>)</li>
+                                <li>Spring Security (<span class="highlight">login</span>)</li>
+                                <li>Lombok (<span class="highlight">less code</span>)</li>
+                                <li>Spring Boot DevTools (<span class="highlight">auto-reload</span>)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Click <span class="highlight">Generate</span>, unzip, and open in IDE.</li>
+            </ol>
+
+            <div class="note">
+                <strong>What’s Happening?</strong> You get folders: <code>src/main/java</code> (code),
+                <code>src/main/resources</code> (config). Run in IDE; it starts at <span
+                    class="highlight">http://localhost:8080</span>.
+            </div>
+
+            <p><strong>Logic & Working</strong>: Spring Initializr sets up a project with Maven to download
+                dependencies. Running the app starts a Tomcat server, ready for APIs.</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 2: Configure MySQL Database</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">MySQL</span> stores data like users and products. <span
+                    class="highlight">Spring Data JPA</span> maps Java objects to database tables.</p>
+
+            <p><strong>Steps</strong>:</p>
+            <ol>
+                <li>Open MySQL (command line or MySQL Workbench).</li>
+                <li>Create database:</li>
+            </ol>
+
+            <div class="code-header">SQL</div>
+            <pre><code>
+<span class="keyword">CREATE</span> <span class="keyword">DATABASE</span> shopping_app;
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">CREATE DATABASE</code>: Creates a MySQL database named
+                    <code>shopping_app</code>.
+                </li>
+                <li><strong>Logic</strong>: This sets up an empty database for storing tables created by Spring Boot.
+                </li>
+                <li><strong>Working</strong>: MySQL allocates space for the database, ready for tables to be defined by
+                    our Java entities.</li>
+            </ul>
+
+            <ol start="3">
+                <li>Add config to <code>src/main/resources/<span class="highlight">application.properties</span></code>:
+                </li>
+            </ol>
+
+            <div class="code-header">application.properties</div>
+            <pre><code>
+spring.datasource.url=jdbc:mysql://localhost:3306/shopping_app?useSSL=false&amp;serverTimezone=UTC
+spring.datasource.username=root  <span class="comment"># Your MySQL username</span>
+spring.datasource.password=your_password  <span class="comment"># Your MySQL password</span>
+
+spring.jpa.hibernate.ddl-auto=update  <span class="comment"># Auto-creates tables</span>
+spring.jpa.show-sql=true  <span class="comment"># Shows SQL for learning</span>
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">spring.datasource.url</code>: Connects to MySQL at
+                    <code>localhost:3306/shopping_app</code>.
+                </li>
+                <li><code class="highlight">username/password</code>: Authenticates with MySQL.</li>
+                <li><code class="highlight">ddl-auto=update</code>: Hibernate creates/updates tables based on Java
+                    entities.</li>
+                <li><code class="highlight">show-sql=true</code>: Logs SQL queries for debugging.</li>
+                <li><code class="highlight">dialect</code>: Ensures MySQL-compatible SQL.</li>
+                <li><strong>Logic</strong>: Configures Spring to connect to MySQL and manage tables automatically.</li>
+                <li><strong>Working</strong>: On app start, Spring uses these settings to establish a connection and
+                    prepare the database.</li>
+            </ul>
+
+            <div class="note">
+                <strong>Test It:</strong> Restart app. No errors? Database is connected! 🎉
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 3: Plan Data Models (Entities)</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Entities</span> define database tables as Java classes. Our
+                app needs:</p>
+            <ul>
+                <li><span class="highlight">User</span>: Stores customers or admins.</li>
+                <li><span class="highlight">Role</span>: Defines "USER" or "ADMIN".</li>
+                <li><span class="highlight">Product</span>: Items for sale.</li>
+                <li><span class="highlight">Cart</span>: User’s shopping basket.</li>
+                <li><span class="highlight">Order</span>: Placed purchases.</li>
+            </ul>
+
+            <p><strong>Relationships</strong>:</p>
+            <ul>
+                <li>User ↔ Roles: Many-to-many (users can have multiple roles).</li>
+                <li>Cart ↔ User: One-to-one (each user has one cart).</li>
+                <li>Cart ↔ Products: Many-to-many (cart holds multiple products).</li>
+                <li>Order ↔ User: Many-to-one (user can have multiple orders).</li>
+                <li>Order ↔ Products: Many-to-many (order includes multiple products).</li>
+            </ul>
+
+            <p><strong>Logic & Working</strong>: Entities map to database tables via JPA annotations. Relationships
+                ensure data is linked correctly (e.g., a cart belongs to one user).</p>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 4: Create Entities</h2>
+
+            <p>Create in <code>src/main/java/com/example/shoppingapp/<span class="highlight">entities</span></code>.</p>
+
+            <h3>4.1: Role.java</h3>
+
+            <div class="code-header">Role.java</div>
+            <pre><code>
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.Data;
+
+<span class="annotation">@Entity</span>  <span class="comment">// Database table</span>
+<span class="annotation">@Data</span>    <span class="comment">// Auto-getters/setters</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">Role</span> {
+    <span class="annotation">@Id</span>  <span class="comment">// Primary key</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)  <span class="comment">// Auto-increment</span>
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="keyword">private</span> <span class="type">String</span> name;  <span class="comment">// e.g., "USER" or "ADMIN"</span>
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@Entity</code>: Marks class as a database table.</li>
+                <li><code class="highlight">@Data</code>: Lombok generates getters/setters.</li>
+                <li><code class="highlight">@Id</code>: Primary key for the table.</li>
+                <li><code class="highlight">@GeneratedValue</code>: Auto-increments <code>id</code>.</li>
+                <li><code class="highlight">name</code>: Stores role name (e.g., "USER").</li>
+                <li><strong>Logic</strong>: Defines a role (e.g., USER or ADMIN) for security permissions.</li>
+                <li><strong>Working</strong>: Hibernate creates a <code>role</code> table with <code>id</code> and
+                    <code>name</code> columns.
+                </li>
+            </ul>
+
+            <h3>4.2: User.java</h3>
+
+            <div class="code-header">User.java</div>
+            <pre><code>
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.Data;
+<span class="keyword">import</span> java.util.HashSet;
+<span class="keyword">import</span> java.util.Set;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Data</span>
+<span class="annotation">@Table</span>(name = <span class="string">"users"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">User</span> {
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="type">String</span> email;
+    <span class="keyword">private</span> <span class="type">String</span> password;
+
+    <span class="annotation">@ManyToMany</span>(fetch = FetchType.EAGER)
+    <span class="annotation">@JoinTable</span>(name = <span class="string">"user_roles"</span>,
+               joinColumns = <span class="annotation">@JoinColumn</span>(name = <span class="string">"user_id"</span>),
+               inverseJoinColumns = <span class="annotation">@JoinColumn</span>(name = <span class="string">"role_id"</span>))
+    <span class="keyword">private</span> <span class="type">Set</span>&lt;<span class="type">Role</span>&gt; roles = <span class="keyword">new</span> HashSet&lt;&gt;();
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@Table(name="users")</code>: Names table <code>users</code>.</li>
+                <li><code class="highlight">@ManyToMany</code>: Links users to multiple roles.</li>
+                <li><code class="highlight">@JoinTable</code>: Creates <code>user_roles</code> table for relationships.
+                </li>
+                <li><code class="highlight">fetch = FetchType.EAGER</code>: Loads roles when user is fetched.</li>
+                <li><strong>Logic</strong>: Stores user data and their roles for authentication/authorization.</li>
+                <li><strong>Working</strong>: Hibernate creates <code>users</code> and <code>user_roles</code> tables,
+                    linking users to roles.</li>
+            </ul>
+
+            <h3>4.3: Product.java</h3>
+
+            <div class="code-header">Product.java</div>
+            <pre><code>
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.Data;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Data</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">Product</span> {
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="type">String</span> description;
+    <span class="keyword">private</span> <span class="type">double</span> price;
+    <span class="keyword">private</span> <span class="type">int</span> stock;
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">name, description, price, stock</code>: Product details.</li>
+                <li><strong>Logic</strong>: Represents items for sale with stock tracking.</li>
+                <li><strong>Working</strong>: Creates a <code>product</code> table with columns for each field.</li>
+            </ul>
+
+            <h3>4.4: Cart.java</h3>
+
+            <div class="code-header">Cart.java</div>
+            <pre><code>
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.Data;
+<span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Data</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">Cart</span> {
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="annotation">@OneToOne</span>
+    <span class="keyword">private</span> <span class="type">User</span> user;
+
+    <span class="annotation">@ManyToMany</span>
+    <span class="keyword">private</span> <span class="type">List</span>&lt;<span class="type">Product</span>&gt; products = <span class="keyword">new</span> ArrayList&lt;&gt;();
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@OneToOne</code>: One cart per user.</li>
+                <li><code class="highlight">@ManyToMany</code>: Cart holds multiple products.</li>
+                <li><strong>Logic</strong>: Manages a user’s shopping cart.</li>
+                <li><strong>Working</strong>: Creates <code>cart</code> and <code>cart_products</code> tables for
+                    product associations.</li>
+            </ul>
+
+            <h3>4.5: Order.java</h3>
+
+            <div class="code-header">Order.java</div>
+            <pre><code>
+<span class="keyword">import</span> jakarta.persistence.*;
+<span class="keyword">import</span> lombok.Data;
+<span class="keyword">import</span> java.time.LocalDateTime;
+<span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@Entity</span>
+<span class="annotation">@Data</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">Order</span> {
+    <span class="annotation">@Id</span>
+    <span class="annotation">@GeneratedValue</span>(strategy = GenerationType.IDENTITY)
+    <span class="keyword">private</span> <span class="type">Long</span> id;
+
+    <span class="annotation">@ManyToOne</span>
+    <span class="keyword">private</span> <span class="type">User</span> user;
+
+    <span class="annotation">@ManyToMany</span>
+    <span class="keyword">private</span> <span class="type">List</span>&lt;<span class="type">Product</span>&gt; products = <span class="keyword">new</span> ArrayList&lt;&gt;();
+
+    <span class="keyword">private</span> <span class="type">LocalDateTime</span> orderDate;
+    <span class="keyword">private</span> <span class="type">String</span> status;
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@ManyToOne</code>: Many orders per user.</li>
+                <li><code class="highlight">@ManyToMany</code>: Order contains multiple products.</li>
+                <li><code class="highlight">orderDate, status</code>: Tracks when and status (e.g., "PLACED").</li>
+                <li><strong>Logic</strong>: Represents a completed purchase.</li>
+                <li><strong>Working</strong>: Creates <code>order</code> and <code>order_products</code> tables.</li>
+            </ul>
+
+            <div class="note">
+                <strong>After Adding:</strong> Restart app. Spring creates tables in MySQL. Check DB! ✅
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 5: Create Repositories</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Repositories</span> provide CRUD operations via <span
+                    class="highlight">Spring Data JPA</span>.</p>
+
+            <p>Create in <code>src/main/java/com/example/shoppingapp/<span class="highlight">repositories</span></code>.
+            </p>
+
+            <h3>5.1: RoleRepository.java</h3>
+
+            <div class="code-header">RoleRepository.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">RoleRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Role</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Role</span> <span class="method">findByName</span>(<span class="type">String</span> name);
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">JpaRepository</code>: Provides CRUD methods (save, findAll, etc.).</li>
+                <li><code class="highlight">findByName</code>: Custom query to find role by name.</li>
+                <li><strong>Logic</strong>: Enables role lookup for user assignment.</li>
+                <li><strong>Working</strong>: Spring generates SQL queries automatically.</li>
+            </ul>
+
+            <h3>5.2: UserRepository.java</h3>
+
+            <div class="code-header">UserRepository.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="keyword">import</span> java.util.Optional;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">UserRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">User</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Optional</span>&lt;<span class="type">User</span>&gt; <span class="method">findByEmail</span>(<span class="type">String</span> email);
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">Optional</code>: Handles cases where no user is found.</li>
+                <li><code class="highlight">findByEmail</code>: Finds user for login.</li>
+                <li><strong>Logic</strong>: Supports authentication by email.</li>
+                <li><strong>Working</strong>: Queries <code>users</code> table by email.</li>
+            </ul>
+
+            <h3>5.3: ProductRepository.java</h3>
+
+            <div class="code-header">ProductRepository.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">ProductRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Product</span>, <span class="type">Long</span>&gt; {
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li>Basic CRUD for products.</li>
+                <li><strong>Logic</strong>: Manages product data (add, delete, list).</li>
+                <li><strong>Working</strong>: Provides methods like <code>save</code>, <code>findAll</code>.</li>
+            </ul>
+
+            <h3>5.4: CartRepository.java</h3>
+
+            <div class="code-header">CartRepository.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">CartRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Cart</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Cart</span> <span class="method">findByUserId</span>(<span class="type">Long</span> userId);
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">findByUserId</code>: Retrieves user’s cart.</li>
+                <li><strong>Logic</strong>: Links cart to user for shopping.</li>
+                <li><strong>Working</strong>: Queries <code>cart</code> table by <code>user_id</code>.</li>
+            </ul>
+
+            <h3>5.5: OrderRepository.java</h3>
+
+            <div class="code-header">OrderRepository.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="keyword">import</span> java.util.List;
+
+<span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">OrderRepository</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Order</span>, <span class="type">Long</span>&gt; {
+    <span class="type">List</span>&lt;<span class="type">Order</span>&gt; <span class="method">findByUserId</span>(<span class="type">Long</span> userId);
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">findByUserId</code>: Gets user’s order history.</li>
+                <li><strong>Logic</strong>: Retrieves orders for user.</li>
+                <li><strong>Working</strong>: Queries <code>order</code> table by <code>user_id</code>.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 6: Service Layer</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Services</span> contain business logic, keeping controllers
+                focused on HTTP requests.</p>
+
+            <p>Create in <code>src/main/java/com/example/shoppingapp/<span class="highlight">services</span></code>.</p>
+
+            <h3>6.1: RoleService.java</h3>
+
+            <div class="code-header">RoleService.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">RoleService</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">RoleRepository</span> roleRepository;
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">initRoles</span>() {
+        <span class="keyword">if</span> (roleRepository.<span class="method">findByName</span>(<span class="string">"USER"</span>) == <span class="keyword">null</span>) {
+            <span class="type">Role</span> userRole = <span class="keyword">new</span> <span class="type">Role</span>();
+            userRole.<span class="method">setName</span>(<span class="string">"USER"</span>);
+            roleRepository.<span class="method">save</span>(userRole);
+        }
+        <span class="keyword">if</span> (roleRepository.<span class="method">findByName</span>(<span class="string">"ADMIN"</span>) == <span class="keyword">null</span>) {
+            <span class="type">Role</span> adminRole = <span class="keyword">new</span> <span class="type">Role</span>();
+            adminRole.<span class="method">setName</span>(<span class="string">"ADMIN"</span>);
+            roleRepository.<span class="method">save</span>(adminRole);
+        }
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@Service</code>: Marks as a service bean.</li>
+                <li><code class="highlight">@Autowired</code>: Injects <code>RoleRepository</code>.</li>
+                <li><code class="highlight">initRoles</code>: Creates default roles if they don’t exist.</li>
+                <li><strong>Logic</strong>: Ensures "USER" and "ADMIN" roles are in DB for security.</li>
+                <li><strong>Working</strong>: Checks DB, creates roles if missing, and saves them.</li>
+            </ul>
+
+            <h3>6.2: UserService.java</h3>
+
+            <div class="code-header">UserService.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+<span class="keyword">import</span> java.util.Optional;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public class</span> <span class="type">UserService</span> {
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">UserRepository</span> userRepository;
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">RoleRepository</span> roleRepository;
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">BCryptPasswordEncoder</span> passwordEncoder;
+
+    <span class="comment">// Register a new user</span>
+    <span class="keyword">public</span> <span class="type">User</span> <span class="method">registerUser</span>(<span class="type">String</span> name, <span class="type">String</span> email, <span class="type">String</span> password, <span class="type">String</span> roleName) {
+        <span class="type">User</span> user = <span class="keyword">new</span> <span class="type">User</span>();
+        user.<span class="method">setName</span>(name);
+        user.<span class="method">setEmail</span>(email);
+        user.<span class="method">setPassword</span>(passwordEncoder.<span class="method">encode</span>(password)); <span class="comment">// Encrypt password</span>
+
+        <span class="type">Role</span> role = roleRepository.<span class="method">findByName</span>(roleName); <span class="comment">// Fetch role from DB</span>
+        user.<span class="method">getRoles</span>().<span class="method">add</span>(role); <span class="comment">// Assign role to user</span>
+
+        <span class="keyword">return</span> userRepository.<span class="method">save</span>(user); <span class="comment">// Save user in DB</span>
+    }
+
+    <span class="comment">// Find user by email (used for login)</span>
+    <span class="keyword">public</span> <span class="type">Optional</span>&lt;<span class="type">User</span>&gt; <span class="method">findByEmail</span>(<span class="type">String</span> email) {
+        <span class="keyword">return</span> userRepository.<span class="method">findByEmail</span>(email);
+    }
+}
+</code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@Service</code>: Marks this as a service layer in Spring Boot where business
+                    logic is written.</li>
+                <li><code class="highlight">@Autowired</code>: Lets Spring automatically inject the required
+                    dependencies.</li>
+                <li><code class="highlight">BCryptPasswordEncoder</code>: Encrypts (hashes) the password before saving
+                    it to the database for security.</li>
+                <li><code class="highlight">registerUser()</code>:
+                    Creates a new user, encrypts their password, assigns a role, and saves the user in the database.
+                </li>
+                <li><code class="highlight">findByEmail()</code>:
+                    Looks up a user by email and returns it inside an <code>Optional</code> to safely handle null
+                    values.
+                </li>
+                <li><strong>Logic</strong>: Handles user registration and secure password management, ensuring each user
+                    gets a role and encrypted credentials.</li>
+                <li><strong>What is Optional?</strong>:
+                    <ul>
+                        <li><code>Optional&lt;User&gt;</code> is a wrapper object that may or may not contain a user
+                            value.</li>
+                        <li>It helps avoid <code>NullPointerException</code> by forcing you to check if data exists
+                            before using it.</li>
+                        <li>Example:
+                            <pre><code>
+Optional&lt;User&gt; userOpt = userService.findByEmail("abc@gmail.com");
+if (userOpt.isPresent()) {
+    User user = userOpt.get(); // Safe access
+} else {
+    // User not found
+}
+                </code></pre>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Working</strong>:
+                    <ul>
+                        <li>User details are received from frontend.</li>
+                        <li>Password is encrypted with <code>BCryptPasswordEncoder</code>.</li>
+                        <li>Role is fetched and assigned.</li>
+                        <li>User is saved securely into the database.</li>
+                    </ul>
+                </li>
+            </ul>
+
+
+            <h3>6.3: ProductService.java</h3>
+
+            <div class="code-header">ProductService.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+<span class="keyword">import</span> java.util.List;
+<span class="keyword">import</span> java.util.Optional;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">ProductService</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">ProductRepository</span> productRepository;
+
+    <span class="keyword">public</span> <span class="type">Product</span> <span class="method">addProduct</span>(<span class="type">Product</span> product) {
+        <span class="keyword">return</span> productRepository.<span class="method">save</span>(product);
+    }
+
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">deleteProduct</span>(<span class="type">Long</span> id) {
+        productRepository.<span class="method">deleteById</span>(id);
+    }
+
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Product</span>&gt; <span class="method">getAllProducts</span>() {
+        <span class="keyword">return</span> productRepository.<span class="method">findAll</span>();
+    }
+
+    <span class="keyword">public</span> <span class="type">Optional</span>&lt;<span class="type">Product</span>&gt; <span class="method">getProductById</span>(<span class="type">Long</span> id) {
+        <span class="keyword">return</span> productRepository.<span class="method">findById</span>(id);
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">addProduct, deleteProduct, getAllProducts, getProductById</code>: CRUD
+                    operations.</li>
+                <li><strong>Logic</strong>: Manages product inventory.</li>
+                <li><strong>Working</strong>: Interacts with <code>ProductRepository</code> to update DB.</li>
+            </ul>
+
+            <h3>6.4: CartService.java</h3>
+
+            <div class="code-header">CartService.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">CartService</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">CartRepository</span> cartRepository;
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">ProductService</span> productService;
+
+    <span class="keyword">public</span> <span class="type">Cart</span> <span class="method">addToCart</span>(<span class="type">Long</span> userId, <span class="type">Long</span> productId) {
+        <span class="type">Cart</span> cart = cartRepository.<span class="method">findByUserId</span>(userId);
+        <span class="keyword">if</span> (cart == <span class="keyword">null</span>) {
+            cart = <span class="keyword">new</span> <span class="type">Cart</span>();
+        }
+        <span class="type">Product</span> product = productService.<span class="method">getProductById</span>(productId).<span class="method">orElseThrow</span>();
+        cart.<span class="method">getProducts</span>().<span class="method">add</span>(product);
+        <span class="keyword">return</span> cartRepository.<span class="method">save</span>(cart);
+    }
+
+    <span class="keyword">public</span> <span class="type">Cart</span> <span class="method">getCart</span>(<span class="type">Long</span> userId) {
+        <span class="keyword">return</span> cartRepository.<span class="method">findByUserId</span>(userId);
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">addToCart</code>: Adds product to user’s cart; creates cart if none exists.
+                </li>
+                <li><code class="highlight">getCart</code>: Retrieves user’s cart.</li>
+                <li><strong>Logic</strong>: Manages cart contents, ensuring products are linked.</li>
+                <li><strong>Working</strong>: Updates <code>cart_products</code> table with product associations.</li>
+            </ul>
+
+            <h3>6.5: OrderService.java</h3>
+
+            <div class="code-header">OrderService.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+<span class="keyword">import</span> java.time.LocalDateTime;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@Service</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">OrderService</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">OrderRepository</span> orderRepository;
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">CartService</span> cartService;
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">ProductService</span> productService;
+
+    <span class="keyword">public</span> <span class="type">Order</span> <span class="method">placeOrder</span>(<span class="type">Long</span> userId) {
+        <span class="type">Cart</span> cart = cartService.<span class="method">getCart</span>(userId);
+        <span class="keyword">if</span> (cart == <span class="keyword">null</span> || cart.<span class="method">getProducts</span>().<span class="method">isEmpty</span>()) {
+            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">RuntimeException</span>(<span class="string">"Cart is empty"</span>);
+        }
+
+        <span class="type">Order</span> order = <span class="keyword">new</span> <span class="type">Order</span>();
+        order.<span class="method">setUser</span>(cart.<span class="method">getUser</span>());
+        order.<span class="method">setProducts</span>(<span class="keyword">new</span> ArrayList&lt;&gt;(cart.<span class="method">getProducts</span>()));
+        order.<span class="method">setOrderDate</span>(LocalDateTime.<span class="method">now</span>());
+        order.<span class="method">setStatus</span>(<span class="string">"PLACED"</span>);
+
+        <span class="keyword">for</span> (<span class="type">Product</span> p : cart.<span class="method">getProducts</span>()) {
+            p.<span class="method">setStock</span>(p.<span class="method">getStock</span>() - 1);
+            productService.<span class="method">addProduct</span>(p);
+        }
+
+        cart.<span class="method">getProducts</span>().<span class="method">clear</span>();
+        cartService.<span class="method">addToCart</span>(userId, <span class="keyword">null</span>);
+
+        <span class="keyword">return</span> orderRepository.<span class="method">save</span>(order);
+    }
+
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Order</span>&gt; <span class="method">getUserOrders</span>(<span class="type">Long</span> userId) {
+        <span class="keyword">return</span> orderRepository.<span class="method">findByUserId</span>(userId);
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">placeOrder</code>: Converts cart to order, reduces stock, clears cart.</li>
+                <li><code class="highlight">getUserOrders</code>: Retrieves order history.</li>
+                <li><strong>Logic</strong>: Ensures cart isn’t empty, updates stock, and saves order.</li>
+                <li><strong>Working</strong>: Copies cart products to order, updates DB, and clears cart.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 7: Spring Security Setup</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Spring Security</span> is used to protect your REST APIs by
+                verifying user identity and restricting access based on roles (like ADMIN or USER).</p>
+
+            <p>Create
+                <code>src/main/java/com/example/shoppingapp/config/<span class="highlight">SecurityConfig.java</span></code>.
+            </p>
+
+            <div class="code-header">SecurityConfig.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="keyword">import</span> org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+<span class="keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.User;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetailsService;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UsernameNotFoundException;
+<span class="keyword">import</span> org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+<span class="keyword">import</span> org.springframework.security.web.SecurityFilterChain;
+<span class="keyword">import</span> org.springframework.security.core.authority.SimpleGrantedAuthority;
+<span class="keyword">import</span> java.util.stream.Collectors;
+
+<span class="annotation">@Configuration</span>
+<span class="annotation">@EnableWebSecurity</span>
+<span class="keyword">public class</span> <span class="type">SecurityConfig</span> {
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">UserService</span> userService;
+
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> <span class="type">BCryptPasswordEncoder</span> <span class="method">passwordEncoder</span>() {
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">BCryptPasswordEncoder</span>(); <span class="comment">// Encrypts passwords</span>
+    }
+
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> <span class="type">SecurityFilterChain</span> <span class="method">securityFilterChain</span>(<span class="type">HttpSecurity</span> http) <span class="keyword">throws</span> Exception {
+        http
+            .<span class="method">csrf</span>().<span class="method">disable</span>() <span class="comment">// Disable CSRF for REST APIs</span>
+            .<span class="method">authorizeHttpRequests</span>() <span class="comment">// Define URL access rules</span>
+                .<span class="method">requestMatchers</span>(<span class="string">"/api/auth/**"</span>).<span class="method">permitAll</span>() <span class="comment">// Open endpoints</span>
+                .<span class="method">requestMatchers</span>(<span class="string">"/api/admin/**"</span>).<span class="method">hasRole</span>(<span class="string">"ADMIN"</span>) <span class="comment">// Only ADMIN can access</span>
+                .<span class="method">requestMatchers</span>(<span class="string">"/api/user/**"</span>).<span class="method">hasRole</span>(<span class="string">"USER"</span>) <span class="comment">// Only USER can access</span>
+                .<span class="method">anyRequest</span>().<span class="method">authenticated</span>() <span class="comment">// All other routes require login</span>
+            .<span class="keyword">and</span>()
+            .<span class="method">httpBasic</span>(); <span class="comment">// Enable HTTP Basic authentication</span>
+
+        <span class="keyword">return</span> http.<span class="method">build</span>();
+    }
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="method">configureGlobal</span>(<span class="type">AuthenticationManagerBuilder</span> auth) <span class="keyword">throws</span> Exception {
+        auth.<span class="method">userDetailsService</span>(<span class="keyword">new</span> <span class="type">UserDetailsService</span>() {
+            <span class="annotation">@Override</span>
+            <span class="keyword">public</span> <span class="type">UserDetails</span> <span class="method">loadUserByUsername</span>(<span class="type">String</span> email) <span class="keyword">throws</span> UsernameNotFoundException {
+                <span class="type">User</span> user = userService.<span class="method">findByEmail</span>(email)
+                    .<span class="method">orElseThrow</span>(() -> <span class="keyword">new</span> <span class="type">UsernameNotFoundException</span>(<span class="string">"User not found"</span>));
+                
+                <span class="keyword">return</span> <span class="keyword">new</span> org.springframework.security.core.userdetails.<span class="type">User</span>(
+                    user.<span class="method">getEmail</span>(),
+                    user.<span class="method">getPassword</span>(),
+                    user.<span class="method">getRoles</span>()
+                        .<span class="method">stream</span>()
+                        .<span class="method">map</span>(role -> <span class="keyword">new</span> <span class="type">SimpleGrantedAuthority</span>(<span class="string">"ROLE_"</span> + role.<span class="method">getName</span>()))
+                        .<span class="method">collect</span>(Collectors.<span class="method">toList</span>())
+                );
+            }
+        }).<span class="method">passwordEncoder</span>(<span class="method">passwordEncoder</span>());
+    }
+}
+    </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@EnableWebSecurity</code>: Enables Spring Security for the entire project.
+                </li>
+                <li><code class="highlight">passwordEncoder()</code>: Creates a <code>BCryptPasswordEncoder</code> bean
+                    to encrypt user passwords before storing them.</li>
+                <li><code class="highlight">securityFilterChain()</code>: Defines security rules for HTTP requests.
+                    <ul>
+                        <li><code>/api/auth/**</code> → Open for everyone (e.g., signup, login).</li>
+                        <li><code>/api/admin/**</code> → Accessible only to users with ADMIN role.</li>
+                        <li><code>/api/user/**</code> → Accessible only to users with USER role.</li>
+                        <li>All other URLs → Require authentication.</li>
+                    </ul>
+                </li>
+                <li><code class="highlight">configureGlobal()</code>: Sets up how Spring should load user details from
+                    your database for authentication.
+                    <ul>
+                        <li>Uses <code>UserService.findByEmail()</code> to find the user from DB.</li>
+                        <li>The <code>Optional</code> returned from <code>findByEmail</code> ensures null safety — if no
+                            user exists, it throws <code>UsernameNotFoundException</code>.</li>
+                        <li>Maps each role to <code>SimpleGrantedAuthority("ROLE_" + roleName)</code> to tell Spring
+                            Security which roles the user has.</li>
+                    </ul>
+                </li>
+                <li><strong>Logic:</strong>
+                    <ul>
+                        <li>Every incoming request passes through Spring Security.</li>
+                        <li>It checks if the user is authenticated and authorized (has correct role).</li>
+                        <li>If valid → request proceeds. If not → access denied.</li>
+                    </ul>
+                </li>
+                <li><strong>Working:</strong>
+                    <ul>
+                        <li>User logs in using email and password.</li>
+                        <li>Password is verified using <code>BCryptPasswordEncoder</code>.</li>
+                        <li>Roles are checked (ADMIN/USER) before allowing access to APIs.</li>
+                    </ul>
+                </li>
+                <li><strong>What is <code>Optional</code> and Why Used?</strong>
+                    <ul>
+                        <li><code>Optional&lt;User&gt;</code> is a container object introduced in Java 8 to handle
+                            values that might be <code>null</code>.</li>
+                        <li>In <code>findByEmail()</code>, if a user is not found, it prevents
+                            <code>NullPointerException</code> and allows you to handle it gracefully using
+                            <code>orElseThrow()</code>.</li>
+                        <li><strong>Example:</strong>
+                            <pre><code>
+Optional&lt;User&gt; userOpt = userService.findByEmail("abc@gmail.com");
+User user = userOpt.orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                    </code></pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 8: Controllers (APIs)</h2>
+
+            <p><strong>Why?</strong> <span class="highlight">Controllers</span> handle HTTP requests and delegate to
+                services.</p>
+
+            <p>Create in <code>src/main/java/com/example/shoppingapp/<span class="highlight">controllers</span></code>.
+            </p>
+
+            <h3>8.1: AuthController.java</h3>
+
+            <div class="code-header">AuthController.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.PostMapping;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RequestBody;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/auth"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">AuthController</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">UserService</span> userService;
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">RoleService</span> roleService;
+
+    <span class="annotation">@PostMapping</span>(<span class="string">"/register"</span>)
+    <span class="keyword">public</span> <span class="type">User</span> <span class="method">register</span>(<span class="annotation">@RequestBody</span> <span class="type">UserRegistrationDto</span> dto) {
+        <span class="keyword">return</span> userService.<span class="method">registerUser</span>(dto.<span class="method">getName</span>(), dto.<span class="method">getEmail</span>(), dto.<span class="method">getPassword</span>(), dto.<span class="method">getRole</span>());
+    }
+}
+
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">UserRegistrationDto</span> {
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private</span> <span class="type">String</span> email;
+    <span class="keyword">private</span> <span class="type">String</span> password;
+    <span class="keyword">private</span> <span class="type">String</span> role;
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">@RestController</code>: Handles JSON APIs.</li>
+                <li><code class="highlight">@PostMapping("/register")</code>: Registers new user via JSON.</li>
+                <li><strong>Logic</strong>: Takes user data, calls <code>UserService</code> to save.</li>
+                <li><strong>Working</strong>: Accepts POST request, creates user in DB.</li>
+            </ul>
+
+            <h3>8.2: ProductController.java</h3>
+
+            <div class="code-header">ProductController.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/admin/products"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">ProductController</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">ProductService</span> productService;
+
+    <span class="annotation">@PostMapping</span>
+    <span class="keyword">public</span> <span class="type">Product</span> <span class="method">addProduct</span>(<span class="annotation">@RequestBody</span> <span class="type">Product</span> product) {
+        <span class="keyword">return</span> productService.<span class="method">addProduct</span>(product);
+    }
+
+    <span class="annotation">@DeleteMapping</span>(<span class="string">"/{id}"</span>)
+    <span class="keyword">public</span> <span class="type">String</span> <span class="method">deleteProduct</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> id) {
+        productService.<span class="method">deleteProduct</span>(id);
+        <span class="keyword">return</span> <span class="string">"Deleted"</span>;
+    }
+
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Product</span>&gt; <span class="method">getAllProducts</span>() {
+        <span class="keyword">return</span> productService.<span class="method">getAllProducts</span>();
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">/api/admin/products</code>: Admin-only endpoints.</li>
+                <li><code class="highlight">addProduct, deleteProduct, getAllProducts</code>: Manage products.</li>
+                <li><strong>Logic</strong>: Restricts product management to admins.</li>
+                <li><strong>Working</strong>: Handles HTTP requests, calls <code>ProductService</code>.</li>
+            </ul>
+
+            <h3>8.3: UserProductController.java</h3>
+
+            <div class="code-header">UserProductController.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/user/products"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">UserProductController</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">ProductService</span> productService;
+
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Product</span>&gt; <span class="method">getAllProducts</span>() {
+        <span class="keyword">return</span> productService.<span class="method">getAllProducts</span>();
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">/api/user/products</code>: User can view products.</li>
+                <li><strong>Logic</strong>: Allows users to browse products.</li>
+                <li><strong>Working</strong>: Returns product list via <code>ProductService</code>.</li>
+            </ul>
+
+            <h3>8.4: CartController.java</h3>
+
+            <div class="code-header">CartController.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+<span class="keyword">import</span> org.springframework.security.core.Authentication;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/user/cart"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">CartController</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">CartService</span> cartService;
+
+    <span class="annotation">@PostMapping</span>(<span class="string">"/add/{productId}"</span>)
+    <span class="keyword">public</span> <span class="type">Cart</span> <span class="method">addToCart</span>(<span class="annotation">@PathVariable</span> <span class="type">Long</span> productId, <span class="type">Authentication</span> auth) {
+        <span class="type">Long</span> userId = ((<span class="type">User</span>) auth.<span class="method">getPrincipal</span>()).<span class="method">getId</span>();
+        <span class="keyword">return</span> cartService.<span class="method">addToCart</span>(userId, productId);
+    }
+
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">Cart</span> <span class="method">getCart</span>(<span class="type">Authentication</span> auth) {
+        <span class="type">Long</span> userId = ((<span class="type">User</span>) auth.<span class="method">getPrincipal</span>()).<span class="method">getId</span>();
+        <span class="keyword">return</span> cartService.<span class="method">getCart</span>(userId);
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">Authentication</code>: Gets logged-in user’s ID.</li>
+                <li><code class="highlight">addToCart, getCart</code>: Manages cart operations.</li>
+                <li><strong>Logic</strong>: Ensures only authenticated users modify their cart.</li>
+                <li><strong>Working</strong>: Uses <code>CartService</code> to update cart in DB.</li>
+            </ul>
+
+            <h3>8.5: OrderController.java</h3>
+
+            <div class="code-header">OrderController.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.*;
+<span class="keyword">import</span> org.springframework.security.core.Authentication;
+<span class="keyword">import</span> java.util.List;
+
+<span class="annotation">@RestController</span>
+<span class="annotation">@RequestMapping</span>(<span class="string">"/api/user/orders"</span>)
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">OrderController</span> {
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">OrderService</span> orderService;
+
+    <span class="annotation">@PostMapping</span>(<span class="string">"/place"</span>)
+    <span class="keyword">public</span> <span class="type">Order</span> <span class="method">placeOrder</span>(<span class="type">Authentication</span> auth) {
+        <span class="type">Long</span> userId = ((<span class="type">User</span>) auth.<span class="method">getPrincipal</span>()).<span class="method">getId</span>();
+        <span class="keyword">return</span> orderService.<span class="method">placeOrder</span>(userId);
+    }
+
+    <span class="annotation">@GetMapping</span>
+    <span class="keyword">public</span> <span class="type">List</span>&lt;<span class="type">Order</span>&gt; <span class="method">getOrders</span>(<span class="type">Authentication</span> auth) {
+        <span class="type">Long</span> userId = ((<span class="type">User</span>) auth.<span class="method">getPrincipal</span>()).<span class="method">getId</span>();
+        <span class="keyword">return</span> orderService.<span class="method">getUserOrders</span>(userId);
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">placeOrder, getOrders</code>: Handles order creation and history.</li>
+                <li><strong>Logic</strong>: Ensures only authenticated users place orders.</li>
+                <li><strong>Working</strong>: Calls <code>OrderService</code> to process orders.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 9: Initialize Data</h2>
+
+            <p><strong>Why?</strong> Adds default roles on app start.</p>
+
+            <p>Edit
+                <code>src/main/java/com/example/shoppingapp/<span class="highlight">ShoppingappApplication.java</span></code>.
+            </p>
+
+            <div class="code-header">ShoppingappApplication.java</div>
+            <pre><code>
+<span class="keyword">import</span> org.springframework.boot.CommandLineRunner;
+<span class="keyword">import</span> org.springframework.boot.SpringApplication;
+<span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;
+<span class="keyword">import</span> org.springframework.context.annotation.Bean;
+
+<span class="annotation">@SpringBootApplication</span>
+<span class="keyword">public</span> <span class="keyword">class</span> <span class="type">ShoppingappApplication</span> {
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="method">main</span>(<span class="type">String</span>[] args) {
+        SpringApplication.<span class="method">run</span>(ShoppingappApplication.<span class="keyword">class</span>, args);
+    }
+
+    <span class="annotation">@Bean</span>
+    <span class="keyword">public</span> <span class="type">CommandLineRunner</span> <span class="method">initData</span>(<span class="type">RoleService</span> roleService) {
+        <span class="keyword">return</span> args -> {
+            roleService.<span class="method">initRoles</span>();
+        };
+    }
+}
+            </code></pre>
+
+            <p><strong>Code Explanation & Logic</strong>:</p>
+            <ul>
+                <li><code class="highlight">CommandLineRunner</code>: Runs code after app start.</li>
+                <li><code class="highlight">initData</code>: Calls <code>RoleService.initRoles</code>.</li>
+                <li><strong>Logic</strong>: Ensures roles are ready for authentication.</li>
+                <li><strong>Working</strong>: Adds "USER" and "ADMIN" roles to DB on startup.</li>
+            </ul>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Step 10: Test the App</h2>
+
+            <p><strong>How?</strong> Use <span class="highlight">Postman</span> to test APIs.</p>
+
+            <ol>
+                <li>Start app in IDE.</li>
+                <li>In Postman:
+                    <ul>
+                        <li>POST <code>http://localhost:8080/api/auth/register</code></li>
+                        <li>JSON:
+                            <code>{"name":"Test User", "email":"user@email.com", "password":"pass", "role":"USER"}</code>
+                        </li>
+                        <li>For secure APIs: Use <span class="highlight">Basic Auth</span> (email, password).</li>
+                    </ul>
+                </li>
+                <li>Test admin: Register ADMIN, POST to <code>/api/admin/products</code>
+                    (<code>{"name":"Shirt", "description":"Cool", "price":10.0, "stock":100}</code>).</li>
+                <li>Test user: Add to cart (<code>/api/user/cart/add/1</code>), place order
+                    (<code>/api/user/orders/place</code>).</li>
+            </ol>
+
+            <div class="note">
+                <strong>Errors?</strong> 401 (wrong password), 403 (wrong role). Check <span
+                    class="highlight">SecurityConfig.java</span>.
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="section">
+            <h2>Summary & Next Steps</h2>
+
+            <p>Congrats! 🎉 You built a <span class="highlight">Spring Boot shopping backend</span>! You learned:</p>
+            <ul>
+                <li><span class="highlight">Setup</span>: Spring Boot, MySQL.</li>
+                <li><span class="highlight">Entities</span>: Data models.</li>
+                <li><span class="highlight">Repositories</span>: DB access.</li>
+                <li><span class="highlight">Services</span>: Logic.</li>
+                <li><span class="highlight">Security</span>: Roles, auth.</li>
+                <li><span class="highlight">Controllers</span>: APIs.</li>
+            </ul>
+
+            <p>Test in Postman! Want <span class="highlight">JWT</span>, <span class="highlight">product images</span>,
+                or other features? Ask! 🚀</p>
+        </div>
+    </div>
+</body>
+
+</html>

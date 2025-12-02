@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Guide to Spring Security in Spring Boot - Notes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #1e1e2e;
+            color: #d0d0d0;
+        }
+        h1 {
+            text-align: center;
+            color: #66d9ef;
+            border-bottom: 3px solid #66d9ef;
+            padding-bottom: 12px;
+            font-size: 2.5em;
+            text-shadow: 0 0 5px rgba(102, 217, 239, 0.5);
+        }
+        h2 {
+            color: #a6e22e;
+            border-left: 6px solid #66d9ef;
+            padding-left: 12px;
+            margin-top: 30px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #fd971f;
+            margin-top: 20px;
+            font-size: 1.4em;
+        }
+        section {
+            background-color: #272822;
+            border: 1px solid #3e3d32;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        pre {
+            background-color: #1e1e1e;
+            border: 1px solid #3e3d32;
+            border-radius: 8px;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: 'Fira Code', Consolas, monospace;
+            font-size: 14px;
+            color: #f8f8f2;
+        }
+        pre code {
+            color: #f8f8f2;
+        }
+        code {
+            background-color: #1e1e1e;
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: #f8f8f2;
+        }
+        /* VS Code Monokai-like syntax highlighting */
+        pre code .keyword { color: #f92672; } /* Keywords like public, class, return */
+        pre code .string { color: #e6db74; } /* Strings */
+        pre code .comment { color: #75715e; font-style: italic; } /* Comments */
+        pre code .annotation { color: #66d9ef; } /* Annotations like @Bean */
+        pre code .tag { color: #f92672; } /* XML/HTML tags */
+        pre code .attribute { color: #a6e22e; } /* XML attributes */
+        pre code .function { color: #a6e22e; } /* Method names */
+        pre code .type { color: #66d9ef; } /* Types like String, Integer */
+        pre code .variable { color: #f8f8f2; } /* Variables */
+        ul, ol {
+            margin-left: 20px;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .note {
+            background-color: #2e2e38;
+            border-left: 4px solid #66d9ef;
+            padding: 12px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #a0b4d4;
+        }
+        .important {
+            font-weight: bold;
+            color: #f92672;
+        }
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #272822;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #66d9ef;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a6e22e;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Comprehensive Guide to Spring Security in Spring Boot - Notes</h1>
+
+<section id="introduction">
+    <h2>Introduction to Spring Security in Spring Boot</h2>
+    <p>Spring Security is a powerful framework within the Spring ecosystem that provides comprehensive security services for Java-based applications, particularly web applications built with Spring Boot. It handles authentication (who you are), authorization (what you can do), and protection against common vulnerabilities like CSRF, XSS, and session fixation. Spring Security integrates seamlessly with Spring Boot, making it easy to secure REST APIs, web pages, and more.</p>
+    
+    <h3>Key Principles</h3>
+    <ul>
+        <li><strong>Filters</strong>: Spring Security uses a chain of filters to intercept requests and apply security rules.</li>
+        <li><strong>Authentication and Authorization</strong>: Supports multiple providers (e.g., database, LDAP, OAuth2).</li>
+        <li><strong>Default Behavior</strong>: Adding the dependency enables basic security (e.g., login form with generated credentials).</li>
+        <li><strong>Customization</strong>: Override defaults via configuration classes.</li>
+        <li><strong>OWASP Compliance</strong>: Aligns with OWASP Top 10 security risks (e.g., injection, broken authentication).</li>
+    </ul>
+    <p class="note">We'll cover all the listed topics step-by-step, with explanations, examples, and code snippets. Assume a basic Spring Boot setup (Maven/Gradle, Java 17+). Code examples are in Java.</p>
+</section>
+
+<section id="section1">
+    <h2>1. Spring Security Getting Started</h2>
+    <h3>Concept</h3>
+    <p>- Spring Security protects resources (e.g., endpoints) by requiring authentication.</p>
+    <p>- By default, it provides a login form, session management, and a generated password.</p>
+    <p>- It uses a filter chain (e.g., <code>UsernamePasswordAuthenticationFilter</code>) to intercept requests before they reach controllers.</p>
+    <p>- Behind the scenes: Requests pass through a dispatcher servlet, then security filters, before hitting your code.</p>
+    
+    <h3>Example Setup</h3>
+    <ol>
+        <li>Add dependency in <code>pom.xml</code>:</li>
+        <pre><code class="xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+&lt;/dependency&gt;
+        </code></pre>
+        <li>Create a simple controller:</li>
+        <pre><code class="java">
+<span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;
+<span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;
+
+@RestController
+<span class="keyword">public class</span> <span class="type">HelloController</span> {
+    @GetMapping(<span class="string">"/homepage"</span>)
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">greet</span>() {
+        <span class="keyword">return</span> <span class="string">"Welcome to Telescope!"</span>;
+    }
+}
+        </code></pre>
+        <li>Run the app (<code>http://localhost:8080/homepage</code>). You'll see a login form.</li>
+        <ul>
+            <li>Default username: <code>user</code></li>
+            <li>Password: Printed in console (e.g., "Using generated security password: abc123...").</li>
+        </ul>
+    </ol>
+    
+    <h3>Explanation</h3>
+    <p class="note">- Adding the dependency auto-configures security.</p>
+    <p class="note">- Filters like <code>SecurityContextPersistenceFilter</code> and <code>UsernamePasswordAuthenticationFilter</code> handle login and sessions.</p>
+    <p class="note">- Sessions use cookies (e.g., JSESSIONID) to maintain state.</p>
+    
+    <p class="important">Important Addition: Why Start Here?</p>
+    <p class="note">- Understand the filter chain: Requests go through <code>DispatcherServlet</code> → Security Filters → Controller.</p>
+    <p class="note">- Key Filters: <code>BasicAuthenticationFilter</code>, <code>DefaultLoginPageGeneratingFilter</code>.</p>
+</section>
+
+<section id="section2">
+    <h2>2. Setting Our Own Username and Password</h2>
+    <h3>Concept</h3>
+    <p>- Default credentials are for development only.</p>
+    <p>- Override in <code>application.properties</code> for a single user (not recommended for production; use database instead).</p>
+    <p>- For multiple users, use in-memory configuration or database.</p>
+    
+    <h3>Example</h3>
+    <p>In <code>application.properties</code>:</p>
+    <pre><code class="properties">
+spring.security.user.name=navin
+spring.security.user.password=telescope
+    </code></pre>
+    <p>Controller remains the same. Now login with <code>navin</code> / <code>telescope</code>.</p>
+    
+    <h3>Code Explanation</h3>
+    <p>- Spring Security's <code>InMemoryUserDetailsManager</code> uses these properties.</p>
+    <p>- For in-memory multiple users (in <code>SecurityConfig.java</code>):</p>
+    <pre><code class="java">
+<span class="keyword">import</span> org.springframework.context.annotation.Bean;
+<span class="keyword">import</span> org.springframework.context.annotation.Configuration;
+<span class="keyword">import</span> org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.User;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetailsService;
+<span class="keyword">import</span> org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+@Configuration
+@EnableWebSecurity
+<span class="keyword">public class</span> <span class="type">SecurityConfig</span> {
+    @Bean
+    <span class="keyword">public</span> <span class="type">UserDetailsService</span> <span class="function">userDetailsService</span>() {
+        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">InMemoryUserDetailsManager</span>(
+            User.<span class="function">withDefaultPasswordEncoder</span>().<span class="function">username</span>(<span class="string">"navin"</span>).<span class="function">password</span>(<span class="string">"telescope"</span>).<span class="function">roles</span>(<span class="string">"USER"</span>).<span class="function">build</span>(),
+            User.<span class="function">withDefaultPasswordEncoder</span>().<span class="function">username</span>(<span class="string">"admin"</span>).<span class="function">password</span>(<span class="string">"admin123"</span>).<span class="function">roles</span>(<span class="string">"ADMIN"</span>).<span class="function">build</span>()
+        );
+    }
+}
+    </code></pre>
+    <p class="note">- Explanation: <code>InMemoryUserDetailsManager</code> implements <code>UserDetailsService</code> to load users. <code>User.withDefaultPasswordEncoder()</code> creates users with plain-text passwords (use BCrypt in production).</p>
+    
+    <p class="important">Important Addition: In-Memory with Roles</p>
+    <p class="note">- Introduce roles early for authorization preview.</p>
+    <p class="note">- Example: Add <code>.roles("ADMIN")</code> in in-memory users.</p>
+</section>
+
+<section id="section3">
+    <h2>3. CSRF Token</h2>
+    <h3>Concept</h3>
+    <p>- CSRF (Cross-Site Request Forgery): An attack where a malicious site tricks a user into performing actions on your site (e.g., via forged requests).</p>
+    <p>- Spring Security enables CSRF protection by default for POST/PUT/DELETE (state-changing) requests.</p>
+    <p>- It generates a token stored in session; clients must include it in requests.</p>
+    <p>- For GET requests, CSRF is usually disabled (read-only).</p>
+    <p>- Disable for stateless APIs (e.g., with JWT), but use other protections.</p>
+    
+    <h3>Example</h3>
+    <p>- Enable CSRF (default). In a controller:</p>
+    <pre><code class="java">
+@PostMapping(<span class="string">"/students"</span>)
+<span class="keyword">public</span> <span class="type">Student</span> <span class="function">addStudent</span>(@RequestBody <span class="type">Student</span> <span class="variable">student</span>) {
+    <span class="comment">// Add logic</span>
+    <span class="keyword">return</span> <span class="variable">student</span>;
+}
+    </code></pre>
+    <p>- To POST via Postman: First GET a CSRF token (e.g., from <code>/csrf-token</code> endpoint), then add header <code>X-CSRF-TOKEN: &lt;token&gt;</code>.</p>
+    
+    <p>Custom endpoint for CSRF token:</p>
+    <pre><code class="java">
+@GetMapping(<span class="string">"/csrf-token"</span>)
+<span class="keyword">public</span> <span class="type">CsrfToken</span> <span class="function">getCsrfToken</span>(<span class="type">HttpServletRequest</span> <span class="variable">request</span>) {
+    <span class="keyword">return</span> (<span class="type">CsrfToken</span>) <span class="variable">request</span>.<span class="function">getAttribute</span>(<span class="string">"_csrf"</span>);
+}
+    </code></pre>
+    
+    <p>- Disable CSRF (in <code>SecurityConfig.java</code>):</p>
+    <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">SecurityFilterChain</span> <span class="function">securityFilterChain</span>(<span class="type">HttpSecurity</span> <span class="variable">http</span>) <span class="keyword">throws</span> <span class="type">Exception</span> {
+    <span class="keyword">return</span> <span class="variable">http</span>
+        .<span class="function">csrf</span>(<span class="variable">csrf</span> -> <span class="variable">csrf</span>.<span class="function">disable</span>())  <span class="comment">// Lambda style</span>
+        .<span class="function">authorizeHttpRequests</span>(<span class="variable">auth</span> -> <span class="variable">auth</span>.<span class="function">anyRequest</span>().<span class="function">authenticated</span>())
+        .<span class="function">formLogin</span>(<span class="type">Customizer</span>.<span class="function">withDefaults</span>())
+        .<span class="function">httpBasic</span>(<span class="type">Customizer</span>.<span class="function">withDefaults</span>())
+        .<span class="function">sessionManagement</span>(<span class="variable">session</span> -> <span class="variable">session</span>.<span class="function">sessionCreationPolicy</span>(<span class="type">SessionCreationPolicy</span>.<span class="variable">STATELESS</span>))
+        .<span class="function">build</span>();
+}
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- CSRF filter (<code>CsrfFilter</code>) checks for <code>_csrf</code> token in requests.</p>
+    <p class="note">- For REST clients (Postman), fetch token first or disable for stateless apps.</p>
+    <p class="note">- Making sessions stateless (as above) avoids CSRF need, but use JWT for auth.</p>
+    
+    <p class="important">Important Addition: CSRF in Forms</p>
+    <p class="note">- For Thymeleaf/HTML forms: Use <code>&lt;input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/&gt;</code>.</p>
+    <p class="note">- Why Important: Prevents forged requests; always enable unless stateless (e.g., JWT APIs).</p>
+</section>
+
+<section id="section4">
+    <h2>4. Spring Security Configuration</h2>
+    <h3>Concept</h3>
+    <p>- Use <code>@Configuration</code> and <code>@EnableWebSecurity</code> to override defaults.</p>
+    <p>- <code>SecurityFilterChain</code> bean defines the filter chain.</p>
+    <p>- Customize: Disable CSRF, enable form/HTTP Basic login, session management, etc.</p>
+    <p>- Builder pattern for readability.</p>
+    
+    <h3>Example (<code>SecurityConfig.java</code>)</h3>
+    <pre><code class="java">
+@Configuration
+@EnableWebSecurity
+<span class="keyword">public class</span> <span class="type">SecurityConfig</span> {
+    @Bean
+    <span class="keyword">public</span> <span class="type">SecurityFilterChain</span> <span class="function">securityFilterChain</span>(<span class="type">HttpSecurity</span> <span class="variable">http</span>) <span class="keyword">throws</span> <span class="type">Exception</span> {
+        <span class="keyword">return</span> <span class="variable">http</span>
+            .<span class="function">csrf</span>(<span class="variable">csrf</span> -> <span class="variable">csrf</span>.<span class="function">disable</span>())
+            .<span class="function">authorizeHttpRequests</span>(<span class="variable">auth</span> -> <span class="variable">auth</span>
+                .<span class="function">requestMatchers</span>(<span class="string">"/login"</span>, <span class="string">"/register"</span>).<span class="function">permitAll</span>()
+                .<span class="function">anyRequest</span>().<span class="function">authenticated</span>())
+            .<span class="function">formLogin</span>(<span class="type">Customizer</span>.<span class="function">withDefaults</span>())
+            .<span class="function">httpBasic</span>(<span class="type">Customizer</span>.<span class="function">withDefaults</span>())
+            .<span class="function">build</span>();
+    }
+}
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>HttpSecurity</code> configures filters.</p>
+    <p class="note">- <code>authorizeHttpRequests</code>: Permits public endpoints, authenticates others.</p>
+    <p class="note">- <code>formLogin</code>: Enables default login form.</p>
+    <p class="note">- <code>httpBasic</code>: For REST clients (Postman).</p>
+    <p class="note">- Imperative style (non-lambda): Use <code>http.csrf().disable()</code> etc.</p>
+    
+    <h3>Additional Customizations</h3>
+    <p>- <strong>Logout Configuration</strong>:</p>
+    <pre><code class="java">
+<span class="variable">http</span>.<span class="function">logout</span>(<span class="variable">logout</span> -> <span class="variable">logout</span>
+    .<span class="function">logoutUrl</span>(<span class="string">"/logout"</span>)
+    .<span class="function">logoutSuccessUrl</span>(<span class="string">"/login?logout"</span>)
+    .<span class="function">invalidateHttpSession</span>(<span class="keyword">true</span>)
+    .<span class="function">deleteCookies</span>(<span class="string">"JSESSIONID"</span>));
+    </code></pre>
+    <p class="note">- Explanation: Custom logout URL, redirects after logout, clears session/cookies.</p>
+    
+    <p>- <strong>Remember-Me</strong>:</p>
+    <pre><code class="java">
+<span class="variable">http</span>.<span class="function">rememberMe</span>(<span class="variable">remember</span> -> <span class="variable">remember</span>
+    .<span class="function">key</span>(<span class="string">"uniqueAndSecret"</span>)  <span class="comment">// Secure key</span>
+    .<span class="function">tokenValiditySeconds</span>(86400));  <span class="comment">// 1 day</span>
+    </code></pre>
+    <p class="note">- Explanation: Persistent login via cookie. Add <code>&lt;input type="checkbox" name="remember-me"/&gt;</code> in form.</p>
+    
+    <p>- <strong>HTTPS Enforcement</strong>:</p>
+    <pre><code class="java">
+<span class="variable">http</span>.<span class="function">requiresChannel</span>(<span class="variable">channel</span> -> <span class="variable">channel</span>
+    .<span class="function">anyRequest</span>().<span class="function">requiresSecure</span>());  <span class="comment">// Force HTTPS</span>
+    </code></pre>
+    <p class="note">- Explanation: Redirects HTTP to HTTPS. Configure SSL in <code>application.properties</code> (e.g., keystore).</p>
+    
+    <p>- <strong>CORS for APIs</strong>:</p>
+    <pre><code class="java">
+<span class="variable">http</span>.<span class="function">cors</span>(<span class="variable">cors</span> -> <span class="variable">cors</span>.<span class="function">configurationSource</span>(<span class="variable">request</span> -> {
+    <span class="type">CorsConfiguration</span> <span class="variable">config</span> = <span class="keyword">new</span> <span class="type">CorsConfiguration</span>();
+    <span class="variable">config</span>.<span class="function">setAllowedOrigins</span>(<span class="type">List</span>.<span class="function">of</span>(<span class="string">"http://localhost:3000"</span>));
+    <span class="variable">config</span>.<span class="function">setAllowedMethods</span>(<span class="type">List</span>.<span class="function">of</span>(<span class="string">"GET"</span>, <span class="string">"POST"</span>));
+    <span class="keyword">return</span> <span class="variable">config</span>;
+}));
+    </code></pre>
+    <p class="note">- Explanation: Allows cross-origin requests (e.g., from React frontend).</p>
+</section>
+
+<section id="section5">
+    <h2>5. Spring Security User from Database</h2>
+    <h3>Concept</h3>
+    <p>- Use <code>UserDetailsService</code> to load users from DB.</p>
+    <p>- Implement with JDBC or JPA.</p>
+    <p>- Layers: Controller → Service → Repository → DB.</p>
+    <p>- Use <code>@Entity</code> for user model, JPA repo for queries.</p>
+    
+    <h3>Example</h3>
+    <ol>
+        <li>Dependencies: Add <code>spring-boot-starter-data-jpa</code> and DB driver (e.g., PostgreSQL).</li>
+        <li><code>application.properties</code>:</li>
+        <pre><code class="properties">
+spring.datasource.url=jdbc:postgresql://localhost:5432/telescope
+spring.datasource.username=postgres
+spring.datasource.password=
+spring.jpa.hibernate.ddl-auto=update
+        </code></pre>
+        <li>User Entity (<code>Users.java</code>):</li>
+        <pre><code class="java">
+<span class="keyword">import</span> jakarta.persistence.Entity;
+<span class="keyword">import</span> jakarta.persistence.Id;
+<span class="keyword">import</span> lombok.Data;
+
+@Entity
+@Data
+<span class="keyword">public class</span> <span class="type">Users</span> {
+    @Id
+    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">id</span>;
+    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">username</span>;
+    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">password</span>;
+}
+        </code></pre>
+        <li>Repository (<code>UserRepo.java</code>):</li>
+        <pre><code class="java">
+<span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;
+
+<span class="keyword">public interface</span> <span class="type">UserRepo</span> <span class="keyword">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Users</span>, <span class="type">Integer</span>&gt; {
+    <span class="type">Users</span> <span class="function">findByUsername</span>(<span class="type">String</span> <span class="variable">username</span>);
+}
+        </code></pre>
+        <li>Custom <code>UserDetailsService</code> (<code>MyUserDetailsService.java</code>):</li>
+        <pre><code class="java">
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetailsService;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UsernameNotFoundException;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+
+@Service
+<span class="keyword">public class</span> <span class="type">MyUserDetailsService</span> <span class="keyword">implements</span> <span class="type">UserDetailsService</span> {
+    @Autowired
+    <span class="keyword">private</span> <span class="type">UserRepo</span> <span class="variable">repo</span>;
+
+    @Override
+    <span class="keyword">public</span> <span class="type">UserDetails</span> <span class="function">loadUserByUsername</span>(<span class="type">String</span> <span class="variable">username</span>) <span class="keyword">throws</span> <span class="type">UsernameNotFoundException</span> {
+        <span class="type">Users</span> <span class="variable">user</span> = <span class="variable">repo</span>.<span class="function">findByUsername</span>(<span class="variable">username</span>);
+        <span class="keyword">if</span> (<span class="variable">user</span> == <span class="keyword">null</span>) {
+            <span class="keyword">throw new</span> <span class="type">UsernameNotFoundException</span>(<span class="string">"User not found"</span>);
+        }
+        <span class="keyword">return new</span> <span class="type">UserPrincipal</span>(<span class="variable">user</span>);  <span class="comment">// Custom UserDetails impl</span>
+    }
+}
+        </code></pre>
+        <li>Custom <code>UserDetails</code> (<code>UserPrincipal.java</code>):</li>
+        <pre><code class="java">
+<span class="keyword">import</span> org.springframework.security.core.GrantedAuthority;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="keyword">import</span> java.util.Collection;
+<span class="keyword">import</span> java.util.Collections;
+
+<span class="keyword">public class</span> <span class="type">UserPrincipal</span> <span class="keyword">implements</span> <span class="type">UserDetails</span> {
+    <span class="keyword">private</span> <span class="type">Users</span> <span class="variable">user</span>;
+
+    <span class="keyword">public</span> <span class="function">UserPrincipal</span>(<span class="type">Users</span> <span class="variable">user</span>) {
+        <span class="keyword">this</span>.<span class="variable">user</span> = <span class="variable">user</span>;
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="type">Collection</span>&lt;<span class="keyword">? extends</span> <span class="type">GrantedAuthority</span>&gt; <span class="function">getAuthorities</span>() {
+        <span class="keyword">return</span> <span class="type">Collections</span>.<span class="function">singleton</span>(() -> <span class="string">"USER"</span>);  <span class="comment">// Simple role</span>
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getPassword</span>() {
+        <span class="keyword">return</span> <span class="variable">user</span>.<span class="function">getPassword</span>();
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">getUsername</span>() {
+        <span class="keyword">return</span> <span class="variable">user</span>.<span class="function">getUsername</span>();
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="type">boolean</span> <span class="function">isAccountNonExpired</span>() { <span class="keyword">return</span> <span class="keyword">true</span>; }
+    @Override
+    <span class="keyword">public</span> <span class="type">boolean</span> <span class="function">isAccountNonLocked</span>() { <span class="keyword">return</span> <span class="keyword">true</span>; }
+    @Override
+    <span class="keyword">public</span> <span class="type">boolean</span> <span class="function">isCredentialsNonExpired</span>() { <span class="keyword">return</span> <span class="keyword">true</span>; }
+    @Override
+    <span class="keyword">public</span> <span class="type">boolean</span> <span class="function">isEnabled</span>() { <span class="keyword">return</span> <span class="keyword">true</span>; }
+}
+        </code></pre>
+        <li>Config (<code>SecurityConfig.java</code>):</li>
+        <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">AuthenticationProvider</span> <span class="function">authenticationProvider</span>() {
+    <span class="type">DaoAuthenticationProvider</span> <span class="variable">provider</span> = <span class="keyword">new</span> <span class="type">DaoAuthenticationProvider</span>();
+    <span class="variable">provider</span>.<span class="function">setUserDetailsService</span>(<span class="function">userDetailsService</span>());
+    <span class="variable">provider</span>.<span class="function">setPasswordEncoder</span>(<span class="type">NoOpPasswordEncoder</span>.<span class="function">getInstance</span>());  <span class="comment">// Change to BCrypt later</span>
+    <span class="keyword">return</span> <span class="variable">provider</span>;
+}
+
+@Bean
+<span class="keyword">public</span> <span class="type">UserDetailsService</span> <span class="function">userDetailsService</span>() {
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">MyUserDetailsService</span>();
+}
+        </code></pre>
+    </ol>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>loadUserByUsername</code>: Queries DB via repo.</p>
+    <p class="note">- <code>DaoAuthenticationProvider</code>: Uses DB for auth.</p>
+    <p class="note">- <code>UserPrincipal</code>: Implements <code>UserDetails</code> for Spring Security.</p>
+    
+    <p class="important">Important Addition: Full Integration with JPA</p>
+    <p class="note">- Add auditing: Use <code>@EnableJpaAuditing</code> and <code>@CreatedDate</code>/<code>@LastModifiedDate</code> in entity for security logs.</p>
+    <p class="note">- Handle exceptions: Custom <code>AuthenticationFailureHandler</code>.</p>
+</section>
+
+<section id="section6">
+    <h2>6. Spring Security Bcrypt Password Encoder</h2>
+    <h3>Concept</h3>
+    <p>- Store passwords as hashes (one-way) to prevent breaches.</p>
+    <p>- BCrypt: Salts and hashes passwords with multiple rounds (e.g., 12) for security.</p>
+    <p>- Use for registration (hash before save) and login (hash input and compare).</p>
+    
+    <h3>Example</h3>
+    <ol>
+        <li>In <code>SecurityConfig</code>:</li>
+        <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">PasswordEncoder</span> <span class="function">passwordEncoder</span>() {
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">BCryptPasswordEncoder</span>(12);  <span class="comment">// 12 rounds</span>
+}
+        </code></pre>
+        <li>Update provider:</li>
+        <pre><code class="java">
+<span class="variable">provider</span>.<span class="function">setPasswordEncoder</span>(<span class="function">passwordEncoder</span>());
+        </code></pre>
+        <li>In User Service (for registration):</li>
+        <pre><code class="java">
+@Service
+<span class="keyword">public class</span> <span class="type">UserService</span> {
+    @Autowired
+    <span class="keyword">private</span> <span class="type">UserRepo</span> <span class="variable">repo</span>;
+    @Autowired
+    <span class="keyword">private</span> <span class="type">PasswordEncoder</span> <span class="variable">encoder</span>;
+
+    <span class="keyword">public</span> <span class="type">Users</span> <span class="function">register</span>(<span class="type">Users</span> <span class="variable">user</span>) {
+        <span class="variable">user</span>.<span class="function">setPassword</span>(<span class="variable">encoder</span>.<span class="function">encode</span>(<span class="variable">user</span>.<span class="function">getPassword</span>()));
+        <span class="keyword">return</span> <span class="variable">repo</span>.<span class="function">save</span>(<span class="variable">user</span>);
+    }
+}
+        </code></pre>
+    </ol>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>encode</code>: Hashes plain text.</p>
+    <p class="note">- During login, Spring compares hashed input with stored hash.</p>
+    <p class="note">- Avoid plain text or weak encoders (e.g., NoOp).</p>
+    
+    <p class="important">Important Addition: Password Policies</p>
+    <p class="note">- Enforce strong passwords in registration (e.g., regex validation).</p>
+    <p class="note">- Rotate keys periodically for BCrypt.</p>
+</section>
+
+<section id="section7">
+    <h2>7. What is JWT and Why</h2>
+    <h3>Concept</h3>
+    <p>- JWT (JSON Web Token): Compact, self-contained token for secure info exchange.</p>
+    <p>- Structure: Header (algorithm), Payload (claims like username, exp), Signature.</p>
+    <p>- Why: Stateless auth (no sessions), scalable for microservices, avoids DB lookups per request.</p>
+    <p>- Use cases: APIs, single sign-on.</p>
+    
+    <h3>Explanation</h3>
+    <p class="note">- Signed with secret key (HMAC) or public/private keys (RSA).</p>
+    <p class="note">- Claims: iss (issuer), sub (subject), exp (expiration), iat (issued at).</p>
+    <p class="note">- Why over sessions: No server-side storage, portable across services.</p>
+    
+    <p>Expanded: JWT vs Sessions – JWT is stateless, scalable; sessions stateful, server-dependent.</p>
+</section>
+
+<section id="section8">
+    <h2>8. Spring Security Project Setup for JWT</h2>
+    <h3>Concept</h3>
+    <p>- Add JWT dependencies.</p>
+    <p>- Generate/validate tokens.</p>
+    <p>- Use custom filter for JWT auth.</p>
+    
+    <h3>Example Dependencies (<code>pom.xml</code>)</h3>
+    <pre><code class="xml">
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-impl&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+    &lt;artifactId&gt;jjwt-jackson&lt;/artifactId&gt;
+    &lt;version&gt;0.12.5&lt;/version&gt;
+&lt;/dependency&gt;
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>jjwt-api</code>: Core API.</p>
+    <p class="note">- <code>jjwt-impl</code>: Implementation.</p>
+    <p class="note">- <code>jjwt-jackson</code>: JSON parsing.</p>
+</section>
+
+<section id="section9">
+    <h2>9. Generating JWT Token</h2>
+    <h3>Concept</h3>
+    <p>- On successful login, generate token with claims, sign it.</p>
+    <p>- Use <code>JwtBuilder</code> to build.</p>
+    
+    <h3>Example (in <code>JwtService.java</code>)</h3>
+    <pre><code class="java">
+<span class="keyword">import</span> io.jsonwebtoken.Jwts;
+<span class="keyword">import</span> io.jsonwebtoken.security.Keys;
+<span class="keyword">import</span> org.springframework.stereotype.Service;
+
+<span class="keyword">import</span> javax.crypto.SecretKey;
+<span class="keyword">import</span> java.util.Date;
+<span class="keyword">import</span> java.util.HashMap;
+<span class="keyword">import</span> java.util.Map;
+
+@Service
+<span class="keyword">public class</span> <span class="type">JwtService</span> {
+    <span class="keyword">private</span> <span class="type">SecretKey</span> <span class="function">getKey</span>() {
+        <span class="comment">// Generate secure key (use secure random in prod)</span>
+        <span class="keyword">return</span> <span class="type">Keys</span>.<span class="function">hmacShaKeyFor</span>(<span class="string">"your-secure-key-here"</span>.<span class="function">getBytes</span>());
+    }
+
+    <span class="keyword">public</span> <span class="type">String</span> <span class="function">generateToken</span>(<span class="type">String</span> <span class="variable">username</span>) {
+        <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">Object</span>&gt; <span class="variable">claims</span> = <span class="keyword">new</span> <span class="type">HashMap</span>&lt;&gt;();
+        <span class="keyword">return</span> <span class="type">Jwts</span>.<span class="function">builder</span>()
+            .<span class="function">claims</span>(<span class="variable">claims</span>)
+            .<span class="function">subject</span>(<span class="variable">username</span>)
+            .<span class="function">issuedAt</span>(<span class="keyword">new</span> <span class="type">Date</span>(<span class="type">System</span>.<span class="function">currentTimeMillis</span>()))
+            .<span class="function">expiration</span>(<span class="keyword">new</span> <span class="type">Date</span>(<span class="type">System</span>.<span class="function">currentTimeMillis</span>() + 1000 * 60 * 30))  <span class="comment">// 30 min</span>
+            .<span class="function">signWith</span>(<span class="function">getKey</span>())
+            .<span class="function">compact</span>();
+    }
+}
+    </code></pre>
+    
+    <p>In Login Controller:</p>
+    <pre><code class="java">
+@PostMapping(<span class="string">"/login"</span>)
+<span class="keyword">public</span> <span class="type">String</span> <span class="function">login</span>(@RequestBody <span class="type">Users</span> <span class="variable">user</span>) {
+    <span class="comment">// Authenticate user...</span>
+    <span class="keyword">if</span> (authenticated) {
+        <span class="keyword">return</span> <span class="variable">jwtService</span>.<span class="function">generateToken</span>(<span class="variable">user</span>.<span class="function">getUsername</span>());
+    }
+    <span class="keyword">return</span> <span class="string">"Failure"</span>;
+}
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- Build token with subject (username), iat, exp.</p>
+    <p class="note">- Sign with HMAC key.</p>
+    
+    <p class="important">Addition: Refresh Tokens</p>
+    <p class="note">- Generate refresh token (long-lived) alongside access token (short-lived).</p>
+    <p class="note">- Example: In <code>JwtService</code>, add <code>generateRefreshToken()</code> with longer exp.</p>
+    <p class="note">- Validate and issue new access token on refresh request.</p>
+</section>
+
+<section id="section10">
+    <h2>10. Validating Token</h2>
+    <h3>Concept</h3>
+    <p>- Extract token from "Authorization: Bearer &lt;token&gt;".</p>
+    <p>- Verify signature, claims, expiration.</p>
+    <p>- Use custom filter before username/password filter.</p>
+    
+    <h3>Example Filter (<code>JwtFilter.java</code> extends <code>OncePerRequestFilter</code>)</h3>
+    <pre><code class="java">
+<span class="keyword">import</span> jakarta.servlet.FilterChain;
+<span class="keyword">import</span> jakarta.servlet.ServletException;
+<span class="keyword">import</span> jakarta.servlet.http.HttpServletRequest;
+<span class="keyword">import</span> jakarta.servlet.http.HttpServletResponse;
+<span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;
+<span class="keyword">import</span> org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+<span class="keyword">import</span> org.springframework.security.core.context.SecurityContextHolder;
+<span class="keyword">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="keyword">import</span> org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+<span class="keyword">import</span> org.springframework.stereotype.Component;
+<span class="keyword">import</span> org.springframework.web.filter.OncePerRequestFilter;
+
+<span class="keyword">import</span> java.io.IOException;
+
+@Component
+<span class="keyword">public class</span> <span class="type">JwtFilter</span> <span class="keyword">extends</span> <span class="type">OncePerRequestFilter</span> {
+    @Autowired
+    <span class="keyword">private</span> <span class="type">JwtService</span> <span class="variable">jwtService</span>;
+    @Autowired
+    <span class="keyword">private</span> <span class="type">MyUserDetailsService</span> <span class="variable">userDetailsService</span>;
+
+    @Override
+    <span class="keyword">protected void</span> <span class="function">doFilterInternal</span>(<span class="type">HttpServletRequest</span> <span class="variable">request</span>, <span class="type">HttpServletResponse</span> <span class="variable">response</span>, <span class="type">FilterChain</span> <span class="variable">filterChain</span>) <span class="keyword">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span> {
+        <span class="type">String</span> <span class="variable">authHeader</span> = <span class="variable">request</span>.<span class="function">getHeader</span>(<span class="string">"Authorization"</span>);
+        <span class="type">String</span> <span class="variable">token</span> = <span class="keyword">null</span>;
+        <span class="type">String</span> <span class="variable">username</span> = <span class="keyword">null</span>;
+
+        <span class="keyword">if</span> (<span class="variable">authHeader</span> != <span class="keyword">null</span> && <span class="variable">authHeader</span>.<span class="function">startsWith</span>(<span class="string">"Bearer "</span>)) {
+            <span class="variable">token</span> = <span class="variable">authHeader</span>.<span class="function">substring</span>(7);
+            <span class="variable">username</span> = <span class="variable">jwtService</span>.<span class="function">extractUsername</span>(<span class="variable">token</span>);
+        }
+
+        <span class="keyword">if</span> (<span class="variable">username</span> != <span class="keyword">null</span> && <span class="type">SecurityContextHolder</span>.<span class="function">getContext</span>().<span class="function">getAuthentication</span>() == <span class="keyword">null</span>) {
+            <span class="type">UserDetails</span> <span class="variable">userDetails</span> = <span class="variable">userDetailsService</span>.<span class="function">loadUserByUsername</span>(<span class="variable">username</span>);
+            <span class="keyword">if</span> (<span class="variable">jwtService</span>.<span class="function">validateToken</span>(<span class="variable">token</span>, <span class="variable">userDetails</span>)) {
+                <span class="type">UsernamePasswordAuthenticationToken</span> <span class="variable">authToken</span> = <span class="keyword">new</span> <span class="type">UsernamePasswordAuthenticationToken</span>(<span class="variable">userDetails</span>, <span class="keyword">null</span>, <span class="variable">userDetails</span>.<span class="function">getAuthorities</span>());
+                <span class="variable">authToken</span>.<span class="function">setDetails</span>(<span class="keyword">new</span> <span class="type">WebAuthenticationDetailsSource</span>().<span class="function">buildDetails</span>(<span class="variable">request</span>));
+                <span class="type">SecurityContextHolder</span>.<span class="function">getContext</span>().<span class="function">setAuthentication</span>(<span class="variable">authToken</span>);
+            }
+        }
+        <span class="variable">filterChain</span>.<span class="function">doFilter</span>(<span class="variable">request</span>, <span class="variable">response</span>);
+    }
+}
+    </code></pre>
+    
+    <p>In <code>SecurityConfig</code>:</p>
+    <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">SecurityFilterChain</span> <span class="function">securityFilterChain</span>(<span class="type">HttpSecurity</span> <span class="variable">http</span>) <span class="keyword">throws</span> <span class="type">Exception</span> {
+    <span class="keyword">return</span> <span class="variable">http</span>
+        .<span class="function">csrf</span>(<span class="variable">csrf</span> -> <span class="variable">csrf</span>.<span class="function">disable</span>())
+        .<span class="function">authorizeHttpRequests</span>(<span class="variable">auth</span> -> <span class="variable">auth</span>
+            .<span class="function">requestMatchers</span>(<span class="string">"/login"</span>).<span class="function">permitAll</span>()
+            .<span class="function">anyRequest</span>().<span class="function">authenticated</span>())
+        .<span class="function">addFilterBefore</span>(<span class="variable">jwtFilter</span>, <span class="type">UsernamePasswordAuthenticationFilter</span>.<span class="keyword">class</span>)
+        .<span class="function">sessionManagement</span>(<span class="variable">session</span> -> <span class="variable">session</span>.<span class="function">sessionCreationPolicy</span>(<span class="type">SessionCreationPolicy</span>.<span class="variable">STATELESS</span>))
+        .<span class="function">build</span>();
+}
+    </code></pre>
+    
+    <p>In <code>JwtService</code> (add):</p>
+    <pre><code class="java">
+<span class="keyword">public</span> <span class="type">String</span> <span class="function">extractUsername</span>(<span class="type">String</span> <span class="variable">token</span>) {
+    <span class="keyword">return</span> <span class="function">extractClaim</span>(<span class="variable">token</span>, <span class="type">Claims</span>::<span class="function">getSubject</span>);
+}
+
+<span class="keyword">public</span> <span class="type">boolean</span> <span class="function">validateToken</span>(<span class="type">String</span> <span class="variable">token</span>, <span class="type">UserDetails</span> <span class="variable">userDetails</span>) {
+    <span class="keyword">final</span> <span class="type">String</span> <span class="variable">username</span> = <span class="function">extractUsername</span>(<span class="variable">token</span>);
+    <span class="keyword">return</span> (<span class="variable">username</span>.<span class="function">equals</span>(<span class="variable">userDetails</span>.<span class="function">getUsername</span>()) && !<span class="function">isTokenExpired</span>(<span class="variable">token</span>));
+}
+
+<span class="keyword">private</span> <span class="type">boolean</span> <span class="function">isTokenExpired</span>(<span class="type">String</span> <span class="variable">token</span>) {
+    <span class="keyword">return</span> <span class="function">extractClaim</span>(<span class="variable">token</span>, <span class="type">Claims</span>::<span class="function">getExpiration</span>).<span class="function">before</span>(<span class="keyword">new</span> <span class="type">Date</span>());
+}
+
+<span class="keyword">private</span> &lt;<span class="type">T</span>&gt; <span class="type">T</span> <span class="function">extractClaim</span>(<span class="type">String</span> <span class="variable">token</span>, <span class="type">Function</span>&lt;<span class="type">Claims</span>, <span class="type">T</span>&gt; <span class="variable">claimsResolver</span>) {
+    <span class="keyword">final</span> <span class="type">Claims</span> <span class="variable">claims</span> = <span class="function">extractAllClaims</span>(<span class="variable">token</span>);
+    <span class="keyword">return</span> <span class="variable">claimsResolver</span>.<span class="function">apply</span>(<span class="variable">claims</span>);
+}
+
+<span class="keyword">private</span> <span class="type">Claims</span> <span class="function">extractAllClaims</span>(<span class="type">String</span> <span class="variable">token</span>) {
+    <span class="keyword">return</span> <span class="type">Jwts</span>.<span class="function">parser</span>().<span class="function">verifyWith</span>(<span class="function">getKey</span>()).<span class="function">build</span>().<span class="function">parseSignedClaims</span>(<span class="variable">token</span>).<span class="function">getPayload</span>();
+}
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- Filter extracts token, validates signature/claims.</p>
+    <p class="note">- Sets authenticated context if valid.</p>
+    <p class="note">- Stateless: No sessions.</p>
+</section>
+
+<section id="section11">
+    <h2>11. Spring Security Google and Github Login (OAuth2)</h2>
+    <h3>Concept</h3>
+    <p>- OAuth2: Delegate auth to providers (Google, GitHub).</p>
+    <p>- Client registers with provider for client ID/secret.</p>
+    <p>- Flow: User redirects to provider, logs in, provider redirects back with token.</p>
+    
+    <h3>Example</h3>
+    <ol>
+        <li>Dependency: <code>spring-boot-starter-oauth2-client</code>.</li>
+        <li><code>application.properties</code> (for Google):</li>
+        <pre><code class="properties">
+spring.security.oauth2.client.registration.google.client-id=your-client-id
+spring.security.oauth2.client.registration.google.client-secret=your-secret
+        </code></pre>
+        <p>For GitHub:</p>
+        <pre><code class="properties">
+spring.security.oauth2.client.registration.github.client-id=your-github-id
+spring.security.oauth2.client.registration.github.client-secret=your-github-secret
+        </code></pre>
+        <li>Config (<code>SecurityConfig.java</code>):</li>
+        <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">SecurityFilterChain</span> <span class="function">securityFilterChain</span>(<span class="type">HttpSecurity</span> <span class="variable">http</span>) <span class="keyword">throws</span> <span class="type">Exception</span> {
+    <span class="keyword">return</span> <span class="variable">http</span>
+        .<span class="function">authorizeHttpRequests</span>(<span class="variable">auth</span> -> <span class="variable">auth</span>.<span class="function">anyRequest</span>().<span class="function">authenticated</span>())
+        .<span class="function">oauth2Login</span>(<span class="type">Customizer</span>.<span class="function">withDefaults</span>())
+        .<span class="function">build</span>();
+}
+        </code></pre>
+        <li>Get credentials:</li>
+        <ul>
+            <li>Google: Cloud Console > APIs > Credentials > OAuth Client ID (web app, redirect URI: <code>http://localhost:8080/login/oauth2/code/google</code>).</li>
+            <li>GitHub: Settings > Developer Settings > OAuth Apps.</li>
+        </ul>
+    </ol>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>oauth2Login</code>: Enables provider buttons/login.</p>
+    <p class="note">- Redirect URI handles callback.</p>
+    <p class="note">- Provider verifies user; Spring gets token for session.</p>
+    
+    <p class="important">Addition: Custom OAuth2 Handling</p>
+    <p class="note">- Handle user info: Implement <code>OAuth2UserService</code>.</p>
+    <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">OAuth2UserService</span>&lt;<span class="type">OAuth2UserRequest</span>, <span class="type">OAuth2User</span>&gt; <span class="function">oauth2UserService</span>() {
+    <span class="keyword">return</span> <span class="variable">request</span> -> {
+        <span class="type">OAuth2User</span> <span class="variable">user</span> = <span class="variable">defaultOAuth2UserService</span>.<span class="function">loadUser</span>(<span class="variable">request</span>);
+        <span class="comment">// Custom processing: Save to DB if new user</span>
+        <span class="keyword">return</span> <span class="variable">user</span>;
+    };
+}
+    </code></pre>
+</section>
+
+<section id="section12">
+    <h2>12. Proper Authentication Mechanisms</h2>
+    <h3>Concept</h3>
+    <p>- Authentication: Verifying identity (e.g., username/password, tokens).</p>
+    <p>- Types: Form-based, Basic, Digest, OAuth2, JWT.</p>
+    <p>- Custom: Implement <code>AuthenticationProvider</code> for multi-factor (MFA) or custom logic.</p>
+    
+    <h3>Example: Custom Authentication Provider</h3>
+    <pre><code class="java">
+<span class="keyword">public class</span> <span class="type">CustomAuthProvider</span> <span class="keyword">implements</span> <span class="type">AuthenticationProvider</span> {
+    @Override
+    <span class="keyword">public</span> <span class="type">Authentication</span> <span class="function">authenticate</span>(<span class="type">Authentication</span> <span class="variable">authentication</span>) <span class="keyword">throws</span> <span class="type">AuthenticationException</span> {
+        <span class="type">String</span> <span class="variable">username</span> = <span class="variable">authentication</span>.<span class="function">getName</span>();
+        <span class="type">String</span> <span class="variable">password</span> = <span class="variable">authentication</span>.<span class="function">getCredentials</span>().<span class="function">toString</span>();
+        <span class="comment">// Custom logic: Check DB, add MFA check</span>
+        <span class="keyword">if</span> (<span class="comment">/* valid */</span>) {
+            <span class="keyword">return new</span> <span class="type">UsernamePasswordAuthenticationToken</span>(<span class="variable">username</span>, <span class="variable">password</span>, <span class="variable">authorities</span>);
+        }
+        <span class="keyword">throw new</span> <span class="type">BadCredentialsException</span>(<span class="string">"Invalid credentials"</span>);
+    }
+
+    @Override
+    <span class="keyword">public</span> <span class="type">boolean</span> <span class="function">supports</span>(<span class="type">Class</span>&lt;<span class="type">?</span>&gt; <span class="variable">authentication</span>) {
+        <span class="keyword">return</span> <span class="type">UsernamePasswordAuthenticationToken</span>.<span class="keyword">class</span>.<span class="function">isAssignableFrom</span>(<span class="variable">authentication</span>);
+    }
+}
+    </code></pre>
+    
+    <p>In Config:</p>
+    <pre><code class="java">
+@Bean
+<span class="keyword">public</span> <span class="type">AuthenticationProvider</span> <span class="function">customAuthProvider</span>() {
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">CustomAuthProvider</span>();
+}
+    </code></pre>
+    
+    <h3>Explanation</h3>
+    <p class="note">- Extends default for custom rules (e.g., IP checks, OTP).</p>
+    <p class="note">- Why: Default is sufficient, but custom for advanced needs like biometrics.</p>
+</section>
+
+<section id="section13">
+    <h2>13. Authorization and Access Control</h2>
+    <h3>Concept</h3>
+    <p>- Authorization: What authenticated users can do (post-authentication).</p>
+    <p>- Access Control: RBAC (roles), ABAC (attributes), ACL (object-level).</p>
+    <p>- Spring: URL-based, method-level (@PreAuthorize), voter-based.</p>
+    
+    <h3>Example: Role-Based Access Control (RBAC)</h3>
+    <p>- Add roles to User Entity: <code>private String role;</code> (e.g., "ROLE_USER", "ROLE_ADMIN").</p>
+    <p>- In <code>UserPrincipal</code>: Return <code>new SimpleGrantedAuthority(user.getRole())</code>.</p>
+    
+    <p>URL-Based (in Config):</p>
+    <pre><code class="java">
+<span class="function">authorizeHttpRequests</span>(<span class="variable">auth</span> -> <span class="variable">auth</span>
+    .<span class="function">requestMatchers</span>(<span class="string">"/admin/**"</span>).<span class="function">hasRole</span>(<span class="string">"ADMIN"</span>)
+    .<span class="function">requestMatchers</span>(<span class="string">"/user/**"</span>).<span class="function">hasAnyRole</span>(<span class="string">"USER"</span>, <span class="string">"ADMIN"</span>)
+    .<span class="function">anyRequest</span>().<span class="function">authenticated</span>());
+    </code></pre>
+    
+    <p>Method-Level Security:</p>
+    <p>- Enable: <code>@EnableMethodSecurity</code> on config.</p>
+    <p>- Example Controller:</p>
+    <pre><code class="java">
+@GetMapping(<span class="string">"/admin"</span>)
+@PreAuthorize(<span class="string">"hasRole('ADMIN')"</span>)
+<span class="keyword">public</span> <span class="type">String</span> <span class="function">adminPage</span>() {
+    <span class="keyword">return</span> <span class="string">"Admin access"</span>;
+}
+
+@GetMapping(<span class="string">"/user"</span>)
+@PreAuthorize(<span class="string">"hasAnyRole('USER', 'ADMIN')"</span>)
+<span class="keyword">public</span> <span class="type">String</span> <span class="function">userPage</span>() {
+    <span class="keyword">return</span> <span class="string">"User access"</span>;
+}
+    </code></pre>
+    
+    <p>ACL (Advanced Access Control Lists):</p>
+    <p>- Dependency: <code>spring-security-acl</code>.</p>
+    <p>- Use for fine-grained permissions (e.g., user owns object).</p>
+    <p>- Example: <code>AclService</code> to grant/read permissions on entities.</p>
+    
+    <h3>Explanation</h3>
+    <p class="note">- <code>@PreAuthorize</code>: SpEL expressions (e.g., <code>@PreAuthorize("#id == authentication.principal.id")</code> for ownership).</p>
+    <p class="note">- Why: Prevents unauthorized actions; RBAC is simple, ACL for complex scenarios.</p>
+</section>
+
+<section id="additional-topics">
+    <h2>Additional Important Topics for Learning</h2>
+    
+    <h3>Error Handling in Security</h3>
+    <p>- Custom handlers:</p>
+    <pre><code class="java">
+<span class="variable">http</span>.<span class="function">exceptionHandling</span>(<span class="variable">ex</span> -> <span class="variable">ex</span>
+    .<span class="function">authenticationEntryPoint</span>((<span class="variable">req</span>, <span class="variable">res</span>, <span class="variable">ex</span>) -> <span class="variable">res</span>.<span class="function">sendError</span>(<span class="type">HttpServletResponse</span>.<span class="variable">SC_UNAUTHORIZED</span>))
+    .<span class="function">accessDeniedHandler</span>((<span class="variable">req</span>, <span class="variable">res</span>, <span class="variable">ex</span>) -> <span class="variable">res</span>.<span class="function">sendError</span>(<span class="type">HttpServletResponse</span>.<span class="variable">SC_FORBIDDEN</span>)));
+    </code></pre>
+    <p class="note">- Explanation: Custom 401/403 responses.</p>
+    
+    <h3>Auditing and Logging</h3>
+    <p class="note">- Use Spring Security events: <code>@EventListener(AuthenticationSuccessEvent.class)</code>.</p>
+    <p class="note">- Log4j/SLF4J for logs.</p>
+    
+    <h3>Testing Security</h3>
+    <p class="note">- Use <code>@WithMockUser(roles = "ADMIN")</code> in tests.</p>
+    <pre><code class="java">
+@Test
+@WithMockUser(<span class="variable">roles</span> = <span class="string">"ADMIN"</span>)
+<span class="keyword">void</span> <span class="function">testAdminAccess</span>() {
+    <span class="comment">// Assert access</span>
+}
+    </code></pre>
+    
+    <h3>Best Practices</h3>
+    <p class="note">- Always use HTTPS.</p>
+    <p class="note">- Rate limiting (e.g., via Spring Cloud Gateway).</p>
+    <p class="note">- Secure cookies: <code>http.sessionManagement().sessionCookie().secure(true)</code>.</p>
+    <p class="note">- Update dependencies regularly (e.g., via Dependabot).</p>
+    <p class="note">- OWASP: Follow Top 10; use <code>HttpSecurity.headers()</code> for XSS/CSRF.</p>
+</section>
+
+<section id="conclusion">
+    <h2>Conclusion</h2>
+    <p>This completes a thorough learning guide. Practice by building a full app with roles, JWT, and OAuth2. For full code, refer to GitHub repos or experiment step-by-step. If needed, use tools like web_search for updates (as of Oct 22, 2025).</p>
+</section>
+
+</body>
+</html>

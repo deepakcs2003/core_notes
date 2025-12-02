@@ -285,17 +285,36 @@ class WarningExample {
         <ul>
             <li><strong>Pattern:</strong> The rule you want to search (e.g., <code>"\\d+"</code> → numbers).</li>
             <li><strong>Matcher:</strong> Applies the pattern to a string.</li>
-            <li><strong>Common Symbols:</strong>
-                <ul>
-                    <li><code>.</code> → any one character</li>
-                    <li><code>*</code> → zero or more</li>
-                    <li><code>+</code> → one or more</li>
-                    <li><code>\\d</code> → digit (0-9)</li>
-                    <li><code>\\w</code> → word (letters, digits, _)</li>
-                    <li><code>^</code> → start of text</li>
-                    <li><code>$</code> → end of text</li>
-                </ul>
-            </li>
+           <li><strong>Common Symbols:</strong>
+    <ul>
+        <li><code>.</code> → matches <strong>any one character</strong> except newline</li>
+        <li><code>*</code> → matches <strong>zero or more</strong> occurrences</li>
+        <li><code>+</code> → matches <strong>one or more</strong> occurrences</li>
+        <li><code>?</code> → matches <strong>zero or one</strong> occurrence (makes it optional)</li>
+        <li><code>\\d</code> → any <strong>digit</strong> (0–9)</li>
+        <li><code>\\D</code> → any <strong>non-digit</strong></li>
+        <li><code>\\w</code> → any <strong>word character</strong> (letters, digits, underscore)</li>
+        <li><code>\\W</code> → any <strong>non-word character</strong></li>
+        <li><code>\\s</code> → any <strong>whitespace</strong> (space, tab, newline)</li>
+        <li><code>\\S</code> → any <strong>non-whitespace</strong> character</li>
+        <li><code>^</code> → matches <strong>start of text</strong> or line</li>
+        <li><code>$</code> → matches <strong>end of text</strong> or line</li>
+        <li><code>[abc]</code> → matches <strong>any one character</strong> from a, b, or c</li>
+        <li><code>[^abc]</code> → matches <strong>any character except</strong> a, b, or c</li>
+        <li><code>[a-z]</code> → matches <strong>any lowercase letter</strong> a to z</li>
+        <li><code>[A-Z]</code> → matches <strong>any uppercase letter</strong> A to Z</li>
+        <li><code>[0-9]</code> → matches <strong>any digit</strong> from 0 to 9</li>
+        <li><code>{n}</code> → matches <strong>exactly n times</strong></li>
+        <li><code>{n,}</code> → matches <strong>n or more times</strong></li>
+        <li><code>{n,m}</code> → matches <strong>between n and m times</strong></li>
+        <li><code>( )</code> → <strong>groups</strong> expressions (used for capturing)</li>
+        <li><code>(?: )</code> → <strong>non-capturing group</strong> (used for grouping without capturing)</li>
+        <li><code>|</code> → <strong>OR</strong> (e.g., <code>cat|dog</code> → matches "cat" or "dog")</li>
+        <li><code>\\b</code> → <strong>word boundary</strong> (useful for exact word matches)</li>
+        <li><code>\\</code> → <strong>escape character</strong> (treats special characters literally)</li>
+    </ul>
+</li>
+
         </ul>
 
         <div class="highlight">

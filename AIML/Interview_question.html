@@ -1,0 +1,1910 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>50 Most Important AI/ML Interview Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        .question-header:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a3f8f 100%);
+        }
+
+        .question-number {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .question-title {
+            flex: 1;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.active {
+            transform: rotate(180deg);
+        }
+
+        .answer-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .answer-section.active {
+            max-height: 5000px;
+        }
+
+        .answer-content {
+            padding: 25px;
+            background: white;
+        }
+
+        .answer-text {
+            margin-bottom: 20px;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            border: 1px solid #333;
+        }
+
+        code {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        }
+
+        /* VS Code-like syntax highlighting */
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        .variable {
+            color: #9cdcfe;
+        }
+
+        .expand-all-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+
+        .expand-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .footer h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .footer ul {
+            list-style: none;
+            color: #555;
+        }
+
+        .footer li {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .toggle-icon {
+                align-self: flex-end;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 50 Most Important AI/ML Interview Questions</h1>
+            <p>With Python Code Examples & Detailed Explanations</p>
+        </div>
+
+        <div class="content">
+            <button class="expand-all-btn" onclick="toggleAll()">Expand All Solutions</button>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q1</span>
+                    <span class="question-title">What's the difference between supervised and unsupervised
+                        learning?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Supervised: Learns from labeled data (features + target)
+                            Examples: Classification, Regression
+                            - Unsupervised: Finds patterns in unlabeled data
+                            Examples: Clustering, Dimensionality Reduction</div>
+                        <pre><code><span class="comment"># Supervised Example: Linear Regression</span>
+<span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LinearRegression
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+
+X_train = np.array([[<span class="number">1</span>], [<span class="number">2</span>], [<span class="number">3</span>], [<span class="number">4</span>], [<span class="number">5</span>]])
+y_train = np.array([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>])
+model = LinearRegression()
+model.fit(X_train, y_train)
+<span class="function">print</span>(<span class="string">f"Q1 Supervised - Prediction for X=6: {model.predict([[6]])[0]:.2f}"</span>)
+
+<span class="comment"># Unsupervised Example: K-Means Clustering</span>
+<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
+
+X_unsupervised = np.array([[<span class="number">1, 2</span>], [<span class="number">1.5, 1.8</span>], [<span class="number">5, 8</span>], [<span class="number">8, 8</span>], [<span class="number">1, 0.6</span>], [<span class="number">9, 11</span>]])
+kmeans = KMeans(n_clusters=<span class="number">2</span>, random_state=<span class="number">42</span>)
+labels = kmeans.fit_predict(X_unsupervised)
+<span class="function">print</span>(<span class="string">f"Q1 Unsupervised - Cluster labels: {labels}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q2</span>
+                    <span class="question-title">Explain the bias-variance tradeoff.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Bias: Error from wrong assumptions (underfitting)
+                            - Variance: Error from sensitivity to training data (overfitting)
+                            - Goal: Balance both for optimal generalization
+                            - High Bias: Model too simple
+                            - High Variance: Model too complex</div>
+                        <pre><code><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeRegressor
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> make_regression
+
+<span class="keyword">def</span> <span class="function">demonstrate_bias_variance</span>():
+    X, y = make_regression(n_samples=<span class="number">100</span>, n_features=<span class="number">1</span>, noise=<span class="number">10</span>, random_state=<span class="number">42</span>)
+    
+    <span class="comment"># High bias (underfitting)</span>
+    model_bias = DecisionTreeRegressor(max_depth=<span class="number">1</span>)
+    model_bias.fit(X, y)
+    
+    <span class="comment"># High variance (overfitting)</span>
+    model_variance = DecisionTreeRegressor(max_depth=<span class="number">20</span>)
+    model_variance.fit(X, y)
+    
+    <span class="comment"># Balanced</span>
+    model_balanced = DecisionTreeRegressor(max_depth=<span class="number">5</span>)
+    model_balanced.fit(X, y)
+    
+    <span class="function">print</span>(<span class="string">"Q2 Bias-Variance: Models trained with different complexities"</span>)
+
+demonstrate_bias_variance()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q3</span>
+                    <span class="question-title">How do you prevent overfitting?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            1. Regularization (L1/L2)
+                            2. Cross-validation
+                            3. More training data
+                            4. Dropout (neural networks)
+                            5. Early stopping
+                            6. Feature selection</div>
+                        <pre><code><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> Ridge, Lasso
+
+<span class="comment"># L2 Regularization (Ridge)</span>
+X = np.random.randn(<span class="number">100</span>, <span class="number">10</span>)
+y = np.random.randn(<span class="number">100</span>)
+ridge = Ridge(alpha=<span class="number">1.0</span>)  <span class="comment"># alpha controls regularization strength</span>
+ridge.fit(X, y)
+
+<span class="comment"># L1 Regularization (Lasso) - also does feature selection</span>
+lasso = Lasso(alpha=<span class="number">0.1</span>)
+lasso.fit(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q3 Ridge coefficients: {ridge.coef_[:3]}"</span>)
+<span class="function">print</span>(<span class="string">f"Q3 Lasso coefficients (some become 0): {lasso.coef_[:3]}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q4</span>
+                    <span class="question-title">What is cross-validation and why use it?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Technique to assess model performance on unseen data
+                            - Splits data into k folds, trains on k-1, validates on 1
+                            - Repeats k times, averages results
+                            - Prevents overfitting to single train/test split</div>
+                        <pre><code><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score
+<span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris
+<span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+
+iris = load_iris()
+X, y = iris.data, iris.target
+rf = RandomForestClassifier(n_estimators=<span class="number">100</span>, random_state=<span class="number">42</span>)
+scores = cross_val_score(rf, X, y, cv=<span class="number">5</span>)  <span class="comment"># 5-fold CV</span>
+
+<span class="function">print</span>(<span class="string">f"Q4 Cross-validation scores: {scores}"</span>)
+<span class="function">print</span>(<span class="string">f"Q4 Mean accuracy: {scores.mean():.3f} (+/- {scores.std():.3f})"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q5</span>
+                    <span class="question-title">Explain precision, recall, and F1-score.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Precision: TP / (TP + FP) - "Of predicted positives, how many correct?"
+                            - Recall: TP / (TP + FN) - "Of actual positives, how many found?"
+                            - F1-Score: 2 * (Precision * Recall) / (Precision + Recall)
+                            - Use Case:
+                            * High Precision: Spam detection (avoid false alarms)
+                            * High Recall: Cancer detection (find all cases)</div>
+                        <pre><code><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> classification_report, confusion_matrix
+
+y_true = [<span class="number">0, 1, 1, 0, 1, 1, 0, 0, 1, 0</span>]
+y_pred = [<span class="number">0, 1, 1, 0, 0, 1, 0, 1, 1, 0</span>]
+
+<span class="function">print</span>(<span class="string">"Q5 Classification Metrics:"</span>)
+<span class="function">print</span>(classification_report(y_true, y_pred))
+<span class="function">print</span>(<span class="string">"Confusion Matrix:"</span>)
+<span class="function">print</span>(confusion_matrix(y_true, y_pred))</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q6</span>
+                    <span class="question-title">What is ROC-AUC?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - ROC: Receiver Operating Characteristic curve
+                            - Plots True Positive Rate vs False Positive Rate
+                            - AUC: Area Under Curve (0.5 = random, 1.0 = perfect)
+                            - Used to evaluate binary classifiers</div>
+                        <pre><code><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> roc_auc_score, roc_curve
+
+y_true = np.array([<span class="number">0, 0, 1, 1, 1, 0, 1, 0</span>])
+y_scores = np.array([<span class="number">0.1, 0.4, 0.35, 0.8, 0.7, 0.3, 0.9, 0.2</span>])
+
+auc = roc_auc_score(y_true, y_scores)
+fpr, tpr, thresholds = roc_curve(y_true, y_scores)
+
+<span class="function">print</span>(<span class="string">f"Q6 ROC-AUC Score: {auc:.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q7</span>
+                    <span class="question-title">Explain gradient descent and its variants.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Optimization algorithm to minimize loss function
+                            - Updates weights: w = w - learning_rate * gradient
+                            - Variants:
+                            * Batch GD: Uses all data
+                            * Stochastic GD (SGD): Uses one sample
+                            * Mini-batch GD: Uses batch of samples</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">gradient_descent_demo</span>():
+    <span class="comment"># Minimize f(x) = x^2</span>
+    x = <span class="number">10.0</span>  <span class="comment"># Starting point</span>
+    learning_rate = <span class="number">0.1</span>
+    iterations = <span class="number">20</span>
+    
+    history = [x]
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(iterations):
+        gradient = <span class="number">2</span> * x  <span class="comment"># Derivative of x^2</span>
+        x = x - learning_rate * gradient
+        history.append(x)
+    
+    <span class="function">print</span>(<span class="string">f"Q7 Gradient Descent: Start=10, End={x:.6f}, Iterations={iterations}"</span>)
+    <span class="keyword">return</span> history
+
+gradient_descent_demo()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q8</span>
+                    <span class="question-title">What is batch normalization?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Normalizes layer inputs during training
+                            - Reduces internal covariate shift
+                            - Benefits:
+                            * Faster training
+                            * Higher learning rates
+                            * Less sensitive to initialization
+                            * Acts as regularization</div>
+                        <pre><code><span class="comment"># Conceptual implementation</span>
+<span class="keyword">def</span> <span class="function">batch_norm_concept</span>(X, epsilon=<span class="number">1e-5</span>):
+    mean = np.mean(X, axis=<span class="number">0</span>)
+    var = np.var(X, axis=<span class="number">0</span>)
+    X_norm = (X - mean) / np.sqrt(var + epsilon)
+    <span class="keyword">return</span> X_norm
+
+X_sample = np.random.randn(<span class="number">100</span>, <span class="number">5</span>)
+X_normalized = batch_norm_concept(X_sample)
+
+<span class="function">print</span>(<span class="string">f"Q8 After batch norm - Mean: {X_normalized.mean():.6f}, Std: {X_normalized.std():.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q9</span>
+                    <span class="question-title">What is dropout?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Regularization technique for neural networks
+                            - Randomly drops neurons during training
+                            - Prevents co-adaptation of neurons
+                            - Typical rate: 0.2-0.5
+                            - Only applied during training, not inference</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">dropout_demo</span>(X, dropout_rate=<span class="number">0.5</span>):
+    <span class="comment"># During training</span>
+    mask = np.random.binomial(<span class="number">1</span>, <span class="number">1</span>-dropout_rate, size=X.shape)
+    X_dropped = X * mask / (<span class="number">1</span> - dropout_rate)  <span class="comment"># Scale to maintain expected value</span>
+    <span class="keyword">return</span> X_dropped
+
+X = np.ones((<span class="number">5</span>, <span class="number">10</span>))
+X_after_dropout = dropout_demo(X, dropout_rate=<span class="number">0.5</span>)
+
+<span class="function">print</span>(<span class="string">f"Q9 Dropout applied - Active neurons: {np.sum(X_after_dropout > 0)} out of {X.size}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q10</span>
+                    <span class="question-title">Compare different activation functions.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Sigmoid: σ(x) = 1/(1+e^-x), outputs [0,1], suffers from vanishing gradients
+                            - Tanh: tanh(x), outputs [-1,1], zero-centered
+                            - ReLU: max(0,x), solves vanishing gradient, can have dying neurons
+                            - Leaky ReLU: max(αx, x), fixes dying ReLU
+                            - Softmax: Used for multi-class classification output</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">activation_functions</span>(x):
+    sigmoid = <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))
+    tanh = np.tanh(x)
+    relu = np.maximum(<span class="number">0</span>, x)
+    leaky_relu = np.where(x > <span class="number">0</span>, x, <span class="number">0.01</span> * x)
+    
+    <span class="keyword">return</span> {
+        <span class="string">'sigmoid'</span>: sigmoid,
+        <span class="string">'tanh'</span>: tanh,
+        <span class="string">'relu'</span>: relu,
+        <span class="string">'leaky_relu'</span>: leaky_relu
+    }
+
+x = np.array([<span class="number">-2, -1, 0, 1, 2</span>])
+activations = activation_functions(x)
+
+<span class="function">print</span>(<span class="string">f"Q10 Activation for x={x}:"</span>)
+<span class="keyword">for</span> name, values <span class="keyword">in</span> activations.items():
+    <span class="function">print</span>(<span class="string">f" {name}: {values}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 11-50 continue with the same pattern... Due to length, I'll include a few more key ones -->
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q11</span>
+                    <span class="question-title">What are common loss functions?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - MSE (Mean Squared Error): Regression, penalizes large errors
+                            - MAE (Mean Absolute Error): Regression, robust to outliers
+                            - Cross-Entropy: Classification, measures probability distribution difference
+                            - Hinge Loss: SVM, margin-based</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">loss_functions_demo</span>():
+    y_true = np.array([<span class="number">3.0, -0.5, 2.0, 7.0</span>])
+    y_pred = np.array([<span class="number">2.5, 0.0, 2.0, 8.0</span>])
+    
+    mse = np.mean((y_true - y_pred) ** <span class="number">2</span>)
+    mae = np.mean(np.abs(y_true - y_pred))
+    
+    <span class="function">print</span>(<span class="string">f"Q11 Loss Functions:"</span>)
+    <span class="function">print</span>(<span class="string">f" MSE: {mse:.4f}"</span>)
+    <span class="function">print</span>(<span class="string">f" MAE: {mae:.4f}"</span>)
+    
+    <span class="comment"># Binary cross-entropy</span>
+    y_true_binary = np.array([<span class="number">1, 0, 1, 1</span>])
+    y_pred_proba = np.array([<span class="number">0.9, 0.1, 0.8, 0.7</span>])
+    
+    bce = -np.mean(y_true_binary * np.log(y_pred_proba + <span class="number">1e-7</span>) +
+                   (<span class="number">1</span> - y_true_binary) * np.log(<span class="number">1</span> - y_pred_proba + <span class="number">1e-7</span>))
+    <span class="function">print</span>(<span class="string">f" Binary Cross-Entropy: {bce:.4f}"</span>)
+
+loss_functions_demo()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q12</span>
+                    <span class="question-title">How do decision trees work?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Splits data based on feature values
+                            - Uses metrics like Gini impurity or entropy
+                            - Gini: measures impurity (0 = pure, 0.5 = max impurity)
+                            - Entropy: measures information gain
+                            - Prone to overfitting without pruning</div>
+                        <pre><code><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier
+
+X = iris.data
+y = iris.target
+dt = DecisionTreeClassifier(max_depth=<span class="number">3</span>, random_state=<span class="number">42</span>)
+dt.fit(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q12 Decision Tree - Feature importances:"</span>)
+<span class="keyword">for</span> i, importance <span class="keyword">in</span> <span class="function">enumerate</span>(dt.feature_importances_):
+    <span class="function">print</span>(<span class="string">f" Feature {i}: {importance:.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q13</span>
+                    <span class="question-title">What is Random Forest and why is it effective?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Ensemble of decision trees
+                            - Uses bagging (bootstrap aggregating)
+                            - Each tree trained on random subset of data and features
+                            - Reduces variance, prevents overfitting
+                            - Handles missing values and outliers well</div>
+                        <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+
+rf = RandomForestClassifier(n_estimators=<span class="number">100</span>, max_depth=<span class="number">5</span>, random_state=<span class="number">42</span>)
+rf.fit(X, y)
+accuracy = rf.score(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q13 Random Forest - Accuracy: {accuracy:.3f}"</span>)
+<span class="function">print</span>(<span class="string">f" Number of trees: {rf.n_estimators}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q14</span>
+                    <span class="question-title">Explain Gradient Boosting.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Builds trees sequentially
+                            - Each tree corrects errors of previous trees
+                            - Combines weak learners into strong learner
+                            - Popular implementations: XGBoost, LightGBM, CatBoost
+                            - Key hyperparameters: learning_rate, n_estimators, max_depth</div>
+                        <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> GradientBoostingClassifier
+
+gb = GradientBoostingClassifier(n_estimators=<span class="number">100</span>, learning_rate=<span class="number">0.1</span>,
+                                max_depth=<span class="number">3</span>, random_state=<span class="number">42</span>)
+gb.fit(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q14 Gradient Boosting - Accuracy: {gb.score(X, y):.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q15</span>
+                    <span class="question-title">How does SVM work?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Finds optimal hyperplane to separate classes
+                            - Maximizes margin between classes
+                            - Uses kernel trick for non-linear boundaries
+                            - Kernels: Linear, RBF, Polynomial
+                            - Effective in high-dimensional spaces</div>
+                        <pre><code><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC
+
+svm_linear = SVC(kernel=<span class="string">'linear'</span>, C=<span class="number">1.0</span>, random_state=<span class="number">42</span>)
+svm_rbf = SVC(kernel=<span class="string">'rbf'</span>, C=<span class="number">1.0</span>, gamma=<span class="string">'auto'</span>, random_state=<span class="number">42</span>)
+
+svm_linear.fit(X, y)
+svm_rbf.fit(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q15 SVM - Linear kernel accuracy: {svm_linear.score(X, y):.3f}"</span>)
+<span class="function">print</span>(<span class="string">f" RBF kernel accuracy: {svm_rbf.score(X, y):.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q16</span>
+                    <span class="question-title">Explain K-Means algorithm.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Unsupervised learning algorithm
+                            - Steps:
+                            1. Initialize k centroids randomly
+                            2. Assign points to nearest centroid
+                            3. Update centroids as mean of assigned points
+                            4. Repeat until convergence
+                            - Choose k using elbow method</div>
+                        <pre><code><span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
+
+X_cluster = iris.data
+kmeans = KMeans(n_clusters=<span class="number">3</span>, random_state=<span class="number">42</span>)
+clusters = kmeans.fit_predict(X_cluster)
+centers = kmeans.cluster_centers_
+
+<span class="function">print</span>(<span class="string">f"Q16 K-Means - Inertia: {kmeans.inertia_:.2f}"</span>)
+<span class="function">print</span>(<span class="string">f" Cluster centers shape: {centers.shape}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q17</span>
+                    <span class="question-title">What is PCA and when to use it?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Dimensionality reduction technique
+                            - Finds directions of maximum variance
+                            - Projects data onto principal components
+                            - Uses:
+                            * Reduce features while preserving variance
+                            * Visualization (reduce to 2D/3D)
+                            * Remove correlated features
+                            * Speed up algorithms</div>
+                        <pre><code><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA
+
+pca = PCA(n_components=<span class="number">2</span>)
+X_pca = pca.fit_transform(X)
+
+<span class="function">print</span>(<span class="string">f"Q17 PCA - Explained variance ratio: {pca.explained_variance_ratio_}"</span>)
+<span class="function">print</span>(<span class="string">f" Total variance explained: {sum(pca.explained_variance_ratio_):.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q18</span>
+                    <span class="question-title">Why split data into train/test sets?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Training set: Learn model parameters
+                            - Test set: Evaluate generalization
+                            - Common splits: 80-20, 70-30, 60-40
+                            - Stratify for imbalanced datasets
+                            - Never train on test data!</div>
+                        <pre><code><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=<span class="number">0.2</span>, random_state=<span class="number">42</span>, stratify=y
+)
+
+<span class="function">print</span>(<span class="string">f"Q18 Data split - Train: {len(X_train)}, Test: {len(X_test)}"</span>)
+<span class="function">print</span>(<span class="string">f" Train distribution: {np.bincount(y_train)}"</span>)
+<span class="function">print</span>(<span class="string">f" Test distribution: {np.bincount(y_test)}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q19</span>
+                    <span class="question-title">Why and when to scale features?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Standardization: (x - mean) / std, centers around 0
+                            - Normalization: (x - min) / (max - min), scales to [0,1]
+                            - When needed:
+                            * Distance-based algorithms (KNN, SVM, K-Means)
+                            * Gradient descent optimization
+                            * Neural networks
+                            - Not needed: Tree-based models</div>
+                        <pre><code><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler, MinMaxScaler
+
+<span class="comment"># Standardization</span>
+scaler_standard = StandardScaler()
+X_standardized = scaler_standard.fit_transform(X)
+
+<span class="comment"># Normalization</span>
+scaler_minmax = MinMaxScaler()
+X_normalized = scaler_minmax.fit_transform(X)
+
+<span class="function">print</span>(<span class="string">f"Q19 Feature Scaling:"</span>)
+<span class="function">print</span>(<span class="string">f" Original - Mean: {X[:, 0].mean():.2f}, Std: {X[:, 0].std():.2f}"</span>)
+<span class="function">print</span>(<span class="string">f" Standardized - Mean: {X_standardized[:, 0].mean():.2f}, Std: {X_standardized[:, 0].std():.2f}"</span>)
+<span class="function">print</span>(<span class="string">f" Normalized - Min: {X_normalized[:, 0].min():.2f}, Max: {X_normalized[:, 0].max():.2f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q20</span>
+                    <span class="question-title">How to handle imbalanced datasets?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            1. Resampling:
+                            - Oversampling minority (SMOTE)
+                            - Undersampling majority
+                            2. Class weights: Penalize mistakes on minority class
+                            3. Evaluation metrics: Use F1, precision-recall, ROC-AUC
+                            4. Ensemble methods: Easy ensemble, balanced random forest</div>
+                        <pre><code><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> resample
+
+<span class="comment"># Create imbalanced data</span>
+X_maj = np.random.randn(<span class="number">100</span>, <span class="number">2</span>)
+X_min = np.random.randn(<span class="number">10</span>, <span class="number">2</span>)
+y_maj = np.zeros(<span class="number">100</span>)
+y_min = np.ones(<span class="number">10</span>)
+
+<span class="comment"># Oversample minority class</span>
+X_min_upsampled, y_min_upsampled = resample(
+    X_min, y_min, n_samples=<span class="number">100</span>, random_state=<span class="number">42</span>
+)
+
+<span class="function">print</span>(<span class="string">f"Q20 Imbalanced Data:"</span>)
+<span class="function">print</span>(<span class="string">f" Original - Majority: 100, Minority: 10"</span>)
+<span class="function">print</span>(<span class="string">f" After oversampling - Minority: {len(y_min_upsampled)}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q21</span>
+                    <span class="question-title">Interpret a confusion matrix.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            Predicted
+                            0 1
+                            Actual 0 TN FP
+                            1 FN TP
+
+                            - TN (True Negative): Correctly predicted negative
+                            - FP (False Positive): Type I error
+                            - FN (False Negative): Type II error
+                            - TP (True Positive): Correctly predicted positive</div>
+                        <pre><code><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> confusion_matrix
+
+y_true = [<span class="number">0, 1, 0, 1, 0, 1, 0, 1, 1, 0</span>]
+y_pred = [<span class="number">0, 1, 0, 0, 0, 1, 1, 1, 1, 0</span>]
+
+cm = confusion_matrix(y_true, y_pred)
+
+<span class="function">print</span>(<span class="string">f"Q21 Confusion Matrix:"</span>)
+<span class="function">print</span>(cm)
+<span class="function">print</span>(<span class="string">f" TN={cm[0,0]}, FP={cm[0,1]}, FN={cm[1,0]}, TP={cm[1,1]}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q22</span>
+                    <span class="question-title">How does KNN work?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Non-parametric, instance-based learning
+                            - Predicts based on k nearest neighbors
+                            - Distance metrics: Euclidean, Manhattan, Minkowski
+                            - Choose k using cross-validation
+                            - Pros: Simple, no training
+                            - Cons: Slow for large datasets, sensitive to scaling</div>
+                        <pre><code><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors=<span class="number">5</span>)
+knn.fit(X_train, y_train)
+accuracy = knn.score(X_test, y_test)
+
+<span class="function">print</span>(<span class="string">f"Q22 KNN (k=5) - Test accuracy: {accuracy:.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q23</span>
+                    <span class="question-title">Explain Naive Bayes classifier.</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Based on Bayes' theorem
+                            - Assumes feature independence (naive assumption)
+                            - P(y|X) = P(X|y) * P(y) / P(X)
+                            - Types: Gaussian, Multinomial, Bernoulli
+                            - Fast, works well with high dimensions
+                            - Good for text classification</div>
+                        <pre><code><span class="keyword">from</span> sklearn.naive_bayes <span class="keyword">import</span> GaussianNB
+
+nb = GaussianNB()
+nb.fit(X_train, y_train)
+accuracy = nb.score(X_test, y_test)
+
+<span class="function">print</span>(<span class="string">f"Q23 Naive Bayes - Test accuracy: {accuracy:.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q24</span>
+                    <span class="question-title">How does logistic regression work?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Despite name, it's for classification
+                            - Uses sigmoid function: σ(z) = 1/(1+e^-z)
+                            - Outputs probability between 0 and 1
+                            - Decision boundary: threshold at 0.5
+                            - Linear decision boundary
+                            - Can use for multi-class (one-vs-rest)</div>
+                        <pre><code><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression
+
+lr = LogisticRegression(max_iter=<span class="number">200</span>, random_state=<span class="number">42</span>)
+lr.fit(X_train, y_train)
+accuracy = lr.score(X_test, y_test)
+probabilities = lr.predict_proba(X_test[:<span class="number">3</span>])
+
+<span class="function">print</span>(<span class="string">f"Q24 Logistic Regression - Accuracy: {accuracy:.3f}"</span>)
+<span class="function">print</span>(<span class="string">f" Sample probabilities:\n{probabilities}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q25</span>
+                    <span class="question-title">What are ensemble methods?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Combines multiple models for better performance
+                            - Types:
+                            1. Bagging: Parallel, reduces variance (Random Forest)
+                            2. Boosting: Sequential, reduces bias (XGBoost, AdaBoost)
+                            3. Stacking: Combines different model types
+                            - Wisdom of crowds principle</div>
+                        <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> VotingClassifier
+<span class="keyword">from</span> sklearn.tree <span class="keyword">import</span> DecisionTreeClassifier
+
+dt = DecisionTreeClassifier(max_depth=<span class="number">3</span>, random_state=<span class="number">42</span>)
+rf = RandomForestClassifier(n_estimators=<span class="number">50</span>, random_state=<span class="number">42</span>)
+lr = LogisticRegression(max_iter=<span class="number">200</span>, random_state=<span class="number">42</span>)
+
+voting = VotingClassifier(
+    estimators=[(<span class="string">'dt'</span>, dt), (<span class="string">'rf'</span>, rf), (<span class="string">'lr'</span>, lr)],
+    voting=<span class="string">'soft'</span>
+)
+voting.fit(X_train, y_train)
+
+<span class="function">print</span>(<span class="string">f"Q25 Ensemble (Voting) - Accuracy: {voting.score(X_test, y_test):.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q26</span>
+                    <span class="question-title">What is feature engineering?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Creating new features from existing ones
+                            - Techniques:
+                            * Polynomial features
+                            * Interaction terms
+                            * Binning/discretization
+                            * Log/sqrt transformations
+                            * Date/time features (day, month, hour)
+                            * Text features (TF-IDF, word embeddings)</div>
+                        <pre><code><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> PolynomialFeatures
+
+X_sample = np.array([[<span class="number">2, 3</span>], [<span class="number">3, 4</span>]])
+poly = PolynomialFeatures(degree=<span class="number">2</span>, include_bias=<span class="keyword">False</span>)
+X_poly = poly.fit_transform(X_sample)
+
+<span class="function">print</span>(<span class="string">f"Q26 Feature Engineering:"</span>)
+<span class="function">print</span>(<span class="string">f" Original shape: {X_sample.shape}"</span>)
+<span class="function">print</span>(<span class="string">f" After polynomial features: {X_poly.shape}"</span>)
+<span class="function">print</span>(<span class="string">f" Feature names: {poly.get_feature_names_out(['x1', 'x2'])}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q27</span>
+                    <span class="question-title">How to tune hyperparameters?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Grid Search: Tests all combinations
+                            - Random Search: Samples randomly
+                            - Bayesian Optimization: Smart search
+                            - Cross-validation for each combination
+                            - Important parameters vary by algorithm</div>
+                        <pre><code><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> GridSearchCV
+
+param_grid = {
+    <span class="string">'n_estimators'</span>: [<span class="number">50, 100</span>],
+    <span class="string">'max_depth'</span>: [<span class="number">3, 5, 7</span>]
+}
+
+grid_search = GridSearchCV(
+    RandomForestClassifier(random_state=<span class="number">42</span>),
+    param_grid,
+    cv=<span class="number">3</span>,
+    scoring=<span class="string">'accuracy'</span>
+)
+grid_search.fit(X_train, y_train)
+
+<span class="function">print</span>(<span class="string">f"Q27 Hyperparameter Tuning:"</span>)
+<span class="function">print</span>(<span class="string">f" Best parameters: {grid_search.best_params_}"</span>)
+<span class="function">print</span>(<span class="string">f" Best score: {grid_search.best_score_:.3f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q28</span>
+                    <span class="question-title">Why and how to select features?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Reduces overfitting and training time
+                            - Improves interpretability
+                            - Methods:
+                            1. Filter: Statistical tests (chi-square, ANOVA)
+                            2. Wrapper: Forward/backward selection
+                            3. Embedded: Lasso, tree importance</div>
+                        <pre><code><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest, f_classif
+
+selector = SelectKBest(score_func=f_classif, k=<span class="number">2</span>)
+X_selected = selector.fit_transform(X, y)
+
+<span class="function">print</span>(<span class="string">f"Q28 Feature Selection:"</span>)
+<span class="function">print</span>(<span class="string">f" Original features: {X.shape[1]}"</span>)
+<span class="function">print</span>(<span class="string">f" Selected features: {X_selected.shape[1]}"</span>)
+<span class="function">print</span>(<span class="string">f" Selected indices: {selector.get_support(indices=True)}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q29</span>
+                    <span class="question-title">What is learning rate and how to choose it?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Controls step size in gradient descent
+                            - Too high: Overshoots, diverges
+                            - Too low: Slow convergence
+                            - Typical range: 0.001 to 0.1
+                            - Adaptive methods: Adam, RMSprop
+                            - Learning rate scheduling: Decay over time</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">learning_rate_demo</span>():
+    <span class="comment"># Minimize f(x) = x^2</span>
+    x = <span class="number">10.0</span>
+    
+    <span class="comment"># Too high learning rate</span>
+    x_high = x
+    lr_high = <span class="number">1.5</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+        x_high = x_high - lr_high * (<span class="number">2</span> * x_high)
+    
+    <span class="comment"># Good learning rate</span>
+    x_good = x
+    lr_good = <span class="number">0.1</span>
+    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>):
+        x_good = x_good - lr_good * (<span class="number">2</span> * x_good)
+    
+    <span class="function">print</span>(<span class="string">f"Q29 Learning Rate Impact:"</span>)
+    <span class="function">print</span>(<span class="string">f" High LR (1.5): x = {x_high:.6f} (may diverge)"</span>)
+    <span class="function">print</span>(<span class="string">f" Good LR (0.1): x = {x_good:.6f}"</span>)
+
+learning_rate_demo()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q30</span>
+                    <span class="question-title">What are CNNs and when to use them?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+                            - Designed for image/spatial data
+                            - Layers:
+                            * Convolutional: Feature extraction
+                            * Pooling: Dimensionality reduction
+                            * Fully connected: Classification
+                            - Translation invariant
+                            - Reduces parameters vs fully connected
+                            - Applications: Image classification, object detection
+                            - Applications: Image classification, object detection</div>
+                        <pre><code><span class="comment"># Conceptual CNN operation</span>
+<span class="keyword">def</span> <span class="function">conv2d_simple</span>(image, kernel):
+    <span class="string">"""Simple 2D convolution"""</span>
+    h, w = image.shape
+    kh, kw = kernel.shape
+    output = np.zeros((h - kh + <span class="number">1</span>, w - kw + <span class="number">1</span>))
+    
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(output.shape[<span class="number">0</span>]):
+        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="function">range</span>(output.shape[<span class="number">1</span>]):
+            output[i, j] = np.sum(image[i:i+kh, j:j+kw] * kernel)
+    
+    <span class="keyword">return</span> output
+
+image = np.random.randn(<span class="number">5</span>, <span class="number">5</span>)
+kernel = np.array([[<span class="number">1, 0, -1</span>], [<span class="number">1, 0, -1</span>], [<span class="number">1, 0, -1</span>]])  <span class="comment"># Edge detection</span>
+result = conv2d_simple(image, kernel)
+
+<span class="function">print</span>(<span class="string">f"Q30 CNN Convolution:"</span>)
+<span class="function">print</span>(<span class="string">f" Input shape: {image.shape}"</span>)
+<span class="function">print</span>(<span class="string">f" Kernel shape: {kernel.shape}"</span>)
+<span class="function">print</span>(<span class="string">f" Output shape: {result.shape}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q31</span>
+                    <span class="question-title">What are RNNs and their applications?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Processes sequential data (time series, text)
+- Has memory of previous inputs
+- Hidden state: h_t = f(h_{t-1}, x_t)
+- Problems:
+  * Vanishing/exploding gradients
+  * Solved by LSTM and GRU
+- Applications: NLP, speech recognition, time series</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">simple_rnn_step</span>(x, h_prev, Wx, Wh, b):
+    <span class="string">"""Single RNN step"""</span>
+    h = np.tanh(np.dot(Wx, x) + np.dot(Wh, h_prev) + b)
+    <span class="keyword">return</span> h
+
+<span class="comment"># Demo</span>
+hidden_size = <span class="number">3</span>
+input_size = <span class="number">2</span>
+Wx = np.random.randn(hidden_size, input_size) * <span class="number">0.01</span>
+Wh = np.random.randn(hidden_size, hidden_size) * <span class="number">0.01</span>
+b = np.zeros(hidden_size)
+
+x = np.array([<span class="number">1.0, 0.5</span>])
+h = np.zeros(hidden_size)
+h = simple_rnn_step(x, h, Wx, Wh, b)
+
+<span class="function">print</span>(<span class="string">f"Q31 RNN - Hidden state after one step: {h}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q32</span>
+                    <span class="question-title">How does LSTM solve vanishing gradient problem?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Special RNN architecture
+- Components:
+  * Forget gate: What to forget from memory
+  * Input gate: What new info to store
+  * Output gate: What to output
+- Cell state: Long-term memory
+- Better at capturing long-range dependencies</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">lstm_gates_demo</span>():
+    <span class="string">"""Conceptual LSTM gate operations"""</span>
+    <span class="comment"># Sigmoid for gates (0 to 1)</span>
+    sigmoid = <span class="keyword">lambda</span> x: <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))
+    
+    <span class="comment"># Example values</span>
+    forget_gate = sigmoid(<span class="number">0.5</span>)  <span class="comment"># How much to remember</span>
+    input_gate = sigmoid(<span class="number">0.7</span>)   <span class="comment"># How much new info to add</span>
+    output_gate = sigmoid(<span class="number">0.6</span>)  <span class="comment"># How much to output</span>
+    
+    <span class="function">print</span>(<span class="string">f"Q32 LSTM Gates:"</span>)
+    <span class="function">print</span>(<span class="string">f" Forget gate: {forget_gate:.3f}"</span>)
+    <span class="function">print</span>(<span class="string">f" Input gate: {input_gate:.3f}"</span>)
+    <span class="function">print</span>(<span class="string">f" Output gate: {output_gate:.3f}"</span>)
+
+lstm_gates_demo()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q33</span>
+                    <span class="question-title">What are word embeddings?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Dense vector representations of words
+- Captures semantic meaning
+- Similar words have similar vectors
+- Techniques:
+  * Word2Vec (CBOW, Skip-gram)
+  * GloVe
+  * FastText
+- Dimensionality: typically 50-300</div>
+                        <pre><code><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> TfidfVectorizer
+
+<span class="comment"># Simple embedding demonstration with TF-IDF</span>
+texts = [
+    <span class="string">"machine learning is great"</span>,
+    <span class="string">"deep learning is amazing"</span>,
+    <span class="string">"machine learning and deep learning"</span>
+]
+
+vectorizer = TfidfVectorizer()
+embeddings = vectorizer.fit_transform(texts)
+
+<span class="function">print</span>(<span class="string">f"Q33 Word Embeddings (TF-IDF):"</span>)
+<span class="function">print</span>(<span class="string">f" Vocabulary: {vectorizer.get_feature_names_out()}"</span>)
+<span class="function">print</span>(<span class="string">f" Shape: {embeddings.shape}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q34</span>
+                    <span class="question-title">What is attention mechanism?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Allows model to focus on relevant parts of input
+- Computes weighted sum of input values
+- Attention score = similarity(query, key)
+- Used in Transformers
+- Types: Self-attention, Multi-head attention
+- Formula: Attention(Q,K,V) = softmax(QK^T/√d_k)V</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">simple_attention</span>(query, keys, values):
+    <span class="string">"""Simple attention mechanism"""</span>
+    <span class="comment"># Compute attention scores</span>
+    scores = np.dot(keys, query)
+    
+    <span class="comment"># Softmax</span>
+    attention_weights = np.exp(scores) / np.sum(np.exp(scores))
+    
+    <span class="comment"># Weighted sum of values</span>
+    output = np.dot(attention_weights, values)
+    
+    <span class="keyword">return</span> output, attention_weights
+
+<span class="comment"># Demo</span>
+query = np.array([<span class="number">1.0, 0.5</span>])
+keys = np.array([[<span class="number">1.0, 0.5</span>], [<span class="number">0.5, 1.0</span>], [<span class="number">1.0, 1.0</span>]])
+values = np.array([[<span class="number">2.0, 1.0</span>], [<span class="number">1.0, 2.0</span>], [<span class="number">1.5, 1.5</span>]])
+
+output, weights = simple_attention(query, keys, values)
+
+<span class="function">print</span>(<span class="string">f"Q34 Attention Mechanism:"</span>)
+<span class="function">print</span>(<span class="string">f" Attention weights: {weights}"</span>)
+<span class="function">print</span>(<span class="string">f" Output: {output}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q35</span>
+                    <span class="question-title">What are Transformers?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Architecture based entirely on attention
+- No recurrence (parallel processing)
+- Components:
+  * Multi-head self-attention
+  * Position encoding
+  * Feed-forward networks
+  * Layer normalization
+- Examples: BERT, GPT, T5
+- Advantages: Parallelizable, captures long-range dependencies</div>
+                        <pre><code><span class="function">print</span>(<span class="string">f"Q35 Transformer Architecture:"</span>)
+<span class="function">print</span>(<span class="string">" Encoder: Multi-head attention + FFN"</span>)
+<span class="function">print</span>(<span class="string">" Decoder: Masked attention + Cross attention + FFN"</span>)
+<span class="function">print</span>(<span class="string">" Position encoding: Adds positional information"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q36</span>
+                    <span class="question-title">What is transfer learning?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Uses pre-trained model on new task
+- Strategies:
+  1. Feature extraction: Freeze early layers
+  2. Fine-tuning: Update all/some layers
+- Benefits:
+  * Less data needed
+  * Faster training
+  * Better performance
+- Common: ImageNet for vision, BERT for NLP</div>
+                        <pre><code><span class="function">print</span>(<span class="string">f"Q36 Transfer Learning Steps:"</span>)
+<span class="function">print</span>(<span class="string">" 1. Load pre-trained model"</span>)
+<span class="function">print</span>(<span class="string">" 2. Remove/replace final layers"</span>)
+<span class="function">print</span>(<span class="string">" 3. Freeze early layers (optional)"</span>)
+<span class="function">print</span>(<span class="string">" 4. Train on new dataset"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q37</span>
+                    <span class="question-title">How does batch size affect training?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Small batch (1-32):
+  * More noise in gradients
+  * Better generalization
+  * Slower training
+- Large batch (256-1024):
+  * Stable gradients
+  * Faster training (parallel)
+  * May overfit
+- Typical: 32, 64, 128</div>
+                        <pre><code><span class="function">print</span>(<span class="string">f"Q37 Batch Size Trade-offs:"</span>)
+<span class="function">print</span>(<span class="string">" Small: Noisy gradients, better generalization"</span>)
+<span class="function">print</span>(<span class="string">" Large: Stable gradients, faster computation"</span>)
+<span class="function">print</span>(<span class="string">" Sweet spot: Usually 32-128"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q38</span>
+                    <span class="question-title">How to interpret learning curves?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Plots training/validation loss vs epochs
+- Diagnoses:
+  * Both high: Underfitting (increase model complexity)
+  * Train low, val high: Overfitting (regularize)
+  * Gap closing: Good fit
+  * Val below train: Data issues</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">generate_learning_curve</span>():
+    epochs = np.arange(<span class="number">1</span>, <span class="number">21</span>)
+    train_loss = <span class="number">1.0</span> / (<span class="number">1</span> + <span class="number">0.3</span> * epochs) + np.random.randn(<span class="number">20</span>) * <span class="number">0.02</span>
+    val_loss = <span class="number">1.0</span> / (<span class="number">1</span> + <span class="number">0.2</span> * epochs) + <span class="number">0.1</span> + np.random.randn(<span class="number">20</span>) * <span class="number">0.03</span>
+    
+    <span class="function">print</span>(<span class="string">f"Q38 Learning Curves:"</span>)
+    <span class="function">print</span>(<span class="string">f" Epoch 1 - Train: {train_loss[0]:.3f}, Val: {val_loss[0]:.3f}"</span>)
+    <span class="function">print</span>(<span class="string">f" Epoch 10 - Train: {train_loss[9]:.3f}, Val: {val_loss[9]:.3f}"</span>)
+    <span class="function">print</span>(<span class="string">f" Epoch 20 - Train: {train_loss[19]:.3f}, Val: {val_loss[19]:.3f}"</span>)
+
+generate_learning_curve()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q39</span>
+                    <span class="question-title">What is data augmentation?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Artificially increases training data
+- Image augmentation:
+  * Rotation, flipping, scaling
+  * Color jittering
+  * Cropping
+- Text augmentation:
+  * Synonym replacement
+  * Back-translation
+- Prevents overfitting, improves robustness</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">augment_image_concept</span>(image):
+    <span class="string">"""Conceptual image augmentation"""</span>
+    <span class="comment"># Horizontal flip</span>
+    flipped = np.fliplr(image)
+    
+    <span class="comment"># Rotation (90 degrees)</span>
+    rotated = np.rot90(image)
+    
+    <span class="comment"># Add noise</span>
+    noisy = image + np.random.randn(*image.shape) * <span class="number">0.1</span>
+    
+    <span class="keyword">return</span> flipped, rotated, noisy
+
+image = np.random.randn(<span class="number">4</span>, <span class="number">4</span>)
+flip, rot, noise = augment_image_concept(image)
+
+<span class="function">print</span>(<span class="string">f"Q39 Data Augmentation:"</span>)
+<span class="function">print</span>(<span class="string">f" Original shape: {image.shape}"</span>)
+<span class="function">print</span>(<span class="string">f" Generated 3 augmented versions"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q40</span>
+                    <span class="question-title">What is early stopping?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Regularization technique
+- Stops training when validation loss stops improving
+- Prevents overfitting
+- Parameters:
+  * Patience: Epochs to wait
+  * Min_delta: Minimum improvement threshold
+- Saves best model checkpoint</div>
+                        <pre><code><span class="keyword">def</span> <span class="function">early_stopping_demo</span>():
+    <span class="string">"""Simulate early stopping"""</span>
+    val_losses = [<span class="number">0.8, 0.6, 0.5, 0.45, 0.44, 0.44, 0.45, 0.46</span>]
+    patience = <span class="number">3</span>
+    best_loss = <span class="function">float</span>(<span class="string">'inf'</span>)
+    patience_counter = <span class="number">0</span>
+    
+    <span class="keyword">for</span> epoch, loss <span class="keyword">in</span> <span class="function">enumerate</span>(val_losses):
+        <span class="keyword">if</span> loss < best_loss:
+            best_loss = loss
+            patience_counter = <span class="number">0</span>
+        <span class="keyword">else</span>:
+            patience_counter += <span class="number">1</span>
+        
+        <span class="keyword">if</span> patience_counter >= patience:
+            <span class="function">print</span>(<span class="string">f"Q40 Early Stopping:"</span>)
+            <span class="function">print</span>(<span class="string">f" Stopped at epoch {epoch + 1}"</span>)
+            <span class="function">print</span>(<span class="string">f" Best validation loss: {best_loss:.3f}"</span>)
+            <span class="keyword">break</span>
+
+early_stopping_demo()</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q41</span>
+                    <span class="question-title">Difference between normalization and standardization?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+Normalization (Min-Max):
+- Scales to [0, 1]: (x - min) / (max - min)
+- Preserves relationships
+- Sensitive to outliers
+
+Standardization (Z-score):
+- Centers around 0: (x - μ) / σ
+- Not bounded
+- Robust to outliers
+- Better for Gaussian distributions</div>
+                        <pre><code>X_sample = np.array([[<span class="number">1, 2</span>], [<span class="number">3, 4</span>], [<span class="number">5, 6</span>], [<span class="number">100, 8</span>]])
+
+<span class="comment"># Normalization</span>
+X_norm = (X_sample - X_sample.min(axis=<span class="number">0</span>)) / (X_sample.max(axis=<span class="number">0</span>) - X_sample.min(axis=<span class="number">0</span>))
+
+<span class="comment"># Standardization</span>
+X_std = (X_sample - X_sample.mean(axis=<span class="number">0</span>)) / X_sample.std(axis=<span class="number">0</span>)
+
+<span class="function">print</span>(<span class="string">f"Q41 Normalization vs Standardization:"</span>)
+<span class="function">print</span>(<span class="string">f" Normalized range: [{X_norm.min():.2f}, {X_norm.max():.2f}]"</span>)
+<span class="function">print</span>(<span class="string">f" Standardized mean: {X_std.mean():.2f}, std: {X_std.std():.2f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q42</span>
+                    <span class="question-title">How to handle missing data?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+1. Remove:
+   - Drop rows/columns
+   - Only if small percentage missing
+2. Impute:
+   - Mean/median/mode
+   - Forward/backward fill (time series)
+   - KNN imputation
+   - Model-based (MICE)
+3. Indicator variable: Add "is_missing" column</div>
+                        <pre><code><span class="keyword">from</span> sklearn.impute <span class="keyword">import</span> SimpleImputer
+
+X_missing = np.array([[<span class="number">1, 2</span>], [np.nan, <span class="number">3</span>], [<span class="number">7, 6</span>], [<span class="number">4</span>, np.nan]])
+
+<span class="comment"># Mean imputation</span>
+imputer_mean = SimpleImputer(strategy=<span class="string">'mean'</span>)
+X_imputed_mean = imputer_mean.fit_transform(X_missing)
+
+<span class="comment"># Median imputation</span>
+imputer_median = SimpleImputer(strategy=<span class="string">'median'</span>)
+X_imputed_median = imputer_median.fit_transform(X_missing)
+
+<span class="function">print</span>(<span class="string">f"Q42 Missing Data Handling:"</span>)
+<span class="function">print</span>(<span class="string">f" Original:\n{X_missing}"</span>)
+<span class="function">print</span>(<span class="string">f" Mean imputed:\n{X_imputed_mean}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q43</span>
+                    <span class="question-title">How to detect and handle outliers?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+Detection methods:
+1. Z-score: |z| > 3 (assumes normal distribution)
+2. IQR: Below Q1-1.5*IQR or above Q3+1.5*IQR
+3. Isolation Forest: Tree-based anomaly detection
+4. DBSCAN: Density-based clustering
+
+Handling:
+- Remove outliers
+- Cap/floor (winsorization)
+- Transform (log, sqrt)</div>
+                        <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> IsolationForest
+
+X_outliers = np.concatenate([np.random.randn(<span class="number">100</span>, <span class="number">2</span>), np.random.randn(<span class="number">5</span>, <span class="number">2</span>) * <span class="number">5</span>])
+
+iso_forest = IsolationForest(contamination=<span class="number">0.05</span>, random_state=<span class="number">42</span>)
+outlier_labels = iso_forest.fit_predict(X_outliers)
+
+<span class="function">print</span>(<span class="string">f"Q43 Outlier Detection:"</span>)
+<span class="function">print</span>(<span class="string">f" Total samples: {len(X_outliers)}"</span>)
+<span class="function">print</span>(<span class="string">f" Detected outliers: {(outlier_labels == -1).sum()}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q44</span>
+                    <span class="question-title">Difference between multi-class and multi-label?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+Multi-class:
+- One label per sample
+- Mutually exclusive classes
+- Example: Animal species (dog, cat, bird)
+- Loss: Categorical cross-entropy
+
+Multi-label:
+- Multiple labels per sample
+- Non-exclusive classes
+- Example: Movie genres (action, comedy, drama)
+- Loss: Binary cross-entropy per label</div>
+                        <pre><code><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MultiLabelBinarizer
+
+<span class="comment"># Multi-label example</span>
+y_multilabel = [[<span class="string">'action'</span>, <span class="string">'comedy'</span>], [<span class="string">'drama'</span>], [<span class="string">'action'</span>, <span class="string">'thriller'</span>]]
+
+mlb = MultiLabelBinarizer()
+y_multilabel_encoded = mlb.fit_transform(y_multilabel)
+
+<span class="function">print</span>(<span class="string">f"Q44 Multi-label Classification:"</span>)
+<span class="function">print</span>(<span class="string">f" Classes: {mlb.classes_}"</span>)
+<span class="function">print</span>(<span class="string">f" Encoded:\n{y_multilabel_encoded}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q45</span>
+                    <span class="question-title">What is collaborative filtering?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Recommendation system technique
+- Types:
+  1. User-based: Find similar users
+  2. Item-based: Find similar items
+  3. Matrix factorization: SVD, ALS
+- Measures: Cosine similarity, Pearson correlation
+- Cold start problem: New users/items</div>
+                        <pre><code><span class="keyword">from</span> sklearn.metrics.pairwise <span class="keyword">import</span> cosine_similarity
+
+<span class="comment"># User-item rating matrix</span>
+ratings = np.array([
+    [<span class="number">5, 3, 0, 1</span>],
+    [<span class="number">4, 0, 0, 1</span>],
+    [<span class="number">1, 1, 0, 5</span>],
+    [<span class="number">1, 0, 0, 4</span>],
+])
+
+<span class="comment"># Item-item similarity</span>
+item_similarity = cosine_similarity(ratings.T)
+
+<span class="function">print</span>(<span class="string">f"Q45 Collaborative Filtering:"</span>)
+<span class="function">print</span>(<span class="string">f" Item similarity matrix:\n{item_similarity}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q46</span>
+                    <span class="question-title">What is A/B testing in ML?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Compares two model versions
+- Statistical hypothesis testing
+- Steps:
+  1. Split traffic randomly
+  2. Measure metrics
+  3. Test significance (t-test, chi-square)
+  4. Choose winner
+- Metrics: CTR, conversion, revenue
+- Need sufficient sample size</div>
+                        <pre><code><span class="keyword">from</span> scipy <span class="keyword">import</span> stats
+
+<span class="comment"># Simulate A/B test results</span>
+conversions_A = np.random.binomial(<span class="number">1</span>, <span class="number">0.10</span>, <span class="number">1000</span>)  <span class="comment"># 10% conversion</span>
+conversions_B = np.random.binomial(<span class="number">1</span>, <span class="number">0.12</span>, <span class="number">1000</span>)  <span class="comment"># 12% conversion</span>
+
+<span class="comment"># Chi-square test</span>
+contingency_table = np.array([
+    [conversions_A.sum(), <span class="function">len</span>(conversions_A) - conversions_A.sum()],
+    [conversions_B.sum(), <span class="function">len</span>(conversions_B) - conversions_B.sum()]
+])
+
+chi2, p_value, dof, expected = stats.chi2_contingency(contingency_table)
+
+<span class="function">print</span>(<span class="string">f"Q46 A/B Testing:"</span>)
+<span class="function">print</span>(<span class="string">f" Model A conversion: {conversions_A.mean():.3f}"</span>)
+<span class="function">print</span>(<span class="string">f" Model B conversion: {conversions_B.mean():.3f}"</span>)
+<span class="function">print</span>(<span class="string">f" P-value: {p_value:.4f}"</span>)
+<span class="function">print</span>(<span class="string">f" Significant: {p_value < 0.05}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q47</span>
+                    <span class="question-title">Key concepts in time series forecasting?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Components:
+  * Trend: Long-term direction
+  * Seasonality: Periodic patterns
+  * Noise: Random variation
+- Stationarity: Constant mean/variance
+- Models:
+  * ARIMA: Auto-regressive integrated moving average
+  * Prophet: Facebook's forecasting tool
+  * LSTM: For complex patterns</div>
+                        <pre><code><span class="comment"># Simple moving average</span>
+<span class="keyword">def</span> <span class="function">moving_average</span>(data, window):
+    <span class="keyword">return</span> np.convolve(data, np.ones(window), <span class="string">'valid'</span>) / window
+
+time_series = np.cumsum(np.random.randn(<span class="number">100</span>)) + np.sin(np.linspace(<span class="number">0</span>, <span class="number">8</span>*np.pi, <span class="number">100</span>))
+ma = moving_average(time_series, window=<span class="number">5</span>)
+
+<span class="function">print</span>(<span class="string">f"Q47 Time Series:"</span>)
+<span class="function">print</span>(<span class="string">f" Original length: {len(time_series)}"</span>)
+<span class="function">print</span>(<span class="string">f" Moving average (window=5): {len(ma)}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q48</span>
+                    <span class="question-title">How to interpret ML models?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+- Techniques:
+  1. Feature importance (tree-based)
+  2. SHAP values: Shapley additive explanations
+  3. LIME: Local interpretable model-agnostic
+  4. Partial dependence plots
+  5. Attention weights (deep learning)
+- Trade-off: Accuracy vs interpretability</div>
+                        <pre><code><span class="keyword">from</span> sklearn.inspection <span class="keyword">import</span> permutation_importance
+
+rf = RandomForestClassifier(n_estimators=<span class="number">50</span>, random_state=<span class="number">42</span>)
+rf.fit(X_train, y_train)
+
+<span class="comment"># Feature importance</span>
+importance = rf.feature_importances_
+
+<span class="function">print</span>(<span class="string">f"Q48 Model Interpretability:"</span>)
+<span class="function">print</span>(<span class="string">f" Feature importances: {importance}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q49</span>
+                    <span class="question-title">Challenges in deploying ML models?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+1. Model drift: Performance degradation over time
+2. Data drift: Input distribution changes
+3. Scalability: Handle high traffic
+4. Latency: Real-time predictions
+5. Monitoring: Track metrics continuously
+6. Versioning: Model and data versioning
+7. A/B testing: Gradual rollout
+8. Retraining: When and how often</div>
+                        <pre><code><span class="function">print</span>(<span class="string">f"Q49 Production ML Checklist:"</span>)
+<span class="function">print</span>(<span class="string">" ✓ Model serialization (pickle, ONNX)"</span>)
+<span class="function">print</span>(<span class="string">" ✓ API endpoint (Flask, FastAPI)"</span>)
+<span class="function">print</span>(<span class="string">" ✓ Monitoring & logging"</span>)
+<span class="function">print</span>(<span class="string">" ✓ A/B testing framework"</span>)
+<span class="function">print</span>(<span class="string">" ✓ Automated retraining pipeline"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header" onclick="toggleAnswer(this)">
+                    <span class="question-number">Q50</span>
+                    <span class="question-title">How to choose the right evaluation metric?</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="answer-section">
+                    <div class="answer-content">
+                        <div class="answer-text"><strong>ANSWER:</strong>
+Classification:
+- Balanced data: Accuracy
+- Imbalanced: F1-score, Precision, Recall, ROC-AUC
+- Cost-sensitive: Weighted metrics
+- Multi-class: Macro/Micro F1
+
+Regression:
+- General: MSE, RMSE
+- Outliers present: MAE, Huber loss
+- Percentage errors: MAPE
+- Business metric: Custom metric
+
+Ranking/Recommendation:
+- Precision@K, Recall@K
+- MAP (Mean Average Precision)
+- NDCG (Normalized Discounted Cumulative Gain)</div>
+                        <pre><code><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> mean_squared_error, mean_absolute_error, r2_score
+
+y_true_reg = np.array([<span class="number">3, -0.5, 2, 7</span>])
+y_pred_reg = np.array([<span class="number">2.5, 0.0, 2, 8</span>])
+
+mse = mean_squared_error(y_true_reg, y_pred_reg)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_true_reg, y_pred_reg)
+r2 = r2_score(y_true_reg, y_pred_reg)
+
+<span class="function">print</span>(<span class="string">f"Q50 Regression Metrics:"</span>)
+<span class="function">print</span>(<span class="string">f" MSE: {mse:.4f}"</span>)
+<span class="function">print</span>(<span class="string">f" RMSE: {rmse:.4f}"</span>)
+<span class="function">print</span>(<span class="string">f" MAE: {mae:.4f}"</span>)
+<span class="function">print</span>(<span class="string">f" R² Score: {r2:.4f}"</span>)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+     
+    </div>
+
+    <script>
+        let allExpanded = false;
+
+        function toggleAnswer(header) {
+            const answerSection = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            answerSection.classList.toggle('active');
+            icon.classList.toggle('active');
+        }
+
+        function toggleAll() {
+            const btn = document.querySelector('.expand-all-btn');
+            const allSections = document.querySelectorAll('.answer-section');
+            const allIcons = document.querySelectorAll('.toggle-icon');
+            
+            allExpanded = !allExpanded;
+            
+            allSections.forEach(section => {
+                if (allExpanded) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+            
+            allIcons.forEach(icon => {
+                if (allExpanded) {
+                    icon.classList.add('active');
+                } else {
+                    icon.classList.remove('active');
+                }
+            });
+            
+            btn.textContent = allExpanded ? 'Collapse All Solutions' : 'Expand All Solutions';
+        }
+    </script>
+</body>
+</html>

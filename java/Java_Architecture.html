@@ -1,355 +1,673 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java Architecture - Complete Notes</title>
+    <title>Java Architecture - Complete Interview-Ready Notes</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            line-height: 1.7;
             margin: 0;
             padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #f4f4f4;
             min-height: 100vh;
         }
-        
+
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 30, 50, 0.95);
+            padding: 45px;
+            border-radius: 18px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
+
         h1 {
-            color: #2c3e50;
+            color: #00d2ff;
             text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 2.8em;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+            letter-spacing: 1px;
         }
-        
-        h2 {
-            color: #3498db;
-            border-left: 5px solid #3498db;
-            padding-left: 15px;
-            margin-top: 30px;
-            font-size: 1.5em;
-        }
-        
-        h3 {
-            color: #e74c3c;
-            margin-top: 25px;
-            font-size: 1.3em;
-        }
-        
-        h4 {
-            color: #8e44ad;
-            margin-top: 20px;
-            font-size: 1.1em;
-        }
-        
-        pre {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 1.4;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-            border-left: 4px solid #3498db;
-        }
-        
-        .example {
-            background: #f8f9fa;
-            border-left: 4px solid #28a745;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-        
-        .interview-point {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-        
-        .interview-tip {
-            background: #d1ecf1;
-            border-left: 4px solid #17a2b8;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-        
-        .emoji {
+
+        .subtitle {
+            text-align: center;
+            color: #a0e7ff;
+            font-style: italic;
+            margin-bottom: 35px;
             font-size: 1.2em;
+        }
+
+        h2 {
+            color: #3caea3;
+            border-left: 6px solid #3caea3;
+            padding-left: 18px;
+            margin-top: 40px;
+            font-size: 1.7em;
+            position: relative;
+        }
+
+        h2::before {
+            content: "🎯";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        h3 {
+            color: #f39c12;
+            margin-top: 28px;
+            font-size: 1.4em;
+            border-bottom: 1px dashed #f39c12;
+            padding-bottom: 5px;
+        }
+
+        h4 {
+            color: #9b59b6;
+            margin-top: 22px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        pre {
+            background: #2c2c54;
+            color: #55efc4;
+            padding: 22px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 14.5px;
+            line-height: 1.5;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid #55efc4;
+            margin: 18px 0;
+        }
+
+        code {
+            background: #3a3a5c;
+            color: #ff9ff3;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        .example {
+            background: linear-gradient(145deg, #2d3436, #636e72);
+            border-left: 5px solid #00b894;
+            padding: 18px;
+            margin: 18px 0;
+            border-radius: 8px;
+            color: #dfe6e9;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .interview-point {
+            background: linear-gradient(145deg, #2d1b3a, #4a235a);
+            border-left: 5px solid #e056fd;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #f8c8dc;
+            box-shadow: 0 4px 12px rgba(224, 86, 253, 0.2);
+        }
+
+        .interview-tip {
+            background: linear-gradient(145deg, #0c2461, #1e3a8a);
+            border-left: 5px solid #1e90ff;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #a3d8ff;
+            box-shadow: 0 4px 12px rgba(30, 144, 255, 0.2);
+        }
+
+        .advanced {
+            background: linear-gradient(145deg, #3c1d1d, #6d1d1d);
+            border-left: 5px solid #e74c3c;
+            padding: 18px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #fab1a0;
+            font-weight: 500;
+        }
+
+        .emoji {
+            font-size: 1.3em;
             margin-right: 8px;
         }
-        
-        ul, ol {
-            padding-left: 25px;
+
+        ul,
+        ol {
+            padding-left: 28px;
+            margin: 12px 0;
         }
-        
+
         li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
-        
+
         strong {
-            color: #2c3e50;
+            color: #feca57;
+            font-weight: bold;
         }
-        
+
         .flow-diagram {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
+            background: #1a1a2e;
+            border: 2px solid #16213e;
+            border-radius: 12px;
+            padding: 25px;
             text-align: center;
-            font-family: monospace;
-            font-size: 14px;
-            margin: 20px 0;
+            font-family: 'Courier New' monospace;
+            font-size: 15px;
+            margin: 25px 0;
+            color: #00ff88;
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.1);
         }
-        
+
+        .diagram-title {
+            font-weight: bold;
+            color: #00ff88;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
         .section-divider {
             border: none;
-            height: 3px;
-            background: linear-gradient(90deg, #3498db, #9b59b6, #e74c3c);
-            margin: 40px 0;
-            border-radius: 2px;
+            height: 4px;
+            background: linear-gradient(90deg, #3caea3, #00d2ff, #f39c12, #e056fd);
+            margin: 50px 0;
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .img-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .img-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid #3caea3;
+        }
+
+        .note {
+            font-size: 0.9em;
+            color: #74b9ff;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        .tricky {
+            background: #2d1b1b;
+            border-left: 5px solid #c0392b;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            color: #ff6b6b;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #2c2c54;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .table th {
+            background: #3caea3;
+            color: #fff;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #444;
+            color: #dfe6e9;
+        }
+
+        .table tr:hover {
+            background: #3a3a5c;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .badge-hot {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .badge-advanced {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .badge-tricky {
+            background: #f39c12;
+            color: white;
+        }
+
+        .question {
+            background: #1e1e3f;
+            border-left: 4px solid #00d2ff;
+            padding: 16px;
+            margin: 18px 0;
+            border-radius: 8px;
+            color: #a0e7ff;
+        }
+
+        .answer {
+            background: #16213e;
+            padding: 16px;
+            margin: 8px 0 25px 20px;
+            border-radius: 8px;
+            color: #81ecec;
+            border-left: 3px solid #81ecec;
+        }
+
+        .memory-diagram {
+            background: #0f0f23;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px dashed #3caea3;
+            margin: 20px 0;
+            font-family: monospace;
+            color: #55efc4;
+            text-align: center;
         }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
-        <h1>🚀 Java Architecture (Step-by-Step)</h1>
-        <img src="https://1.bp.blogspot.com/-yqkVWGVwiMI/XfO3fi5FMLI/AAAAAAAAJv8/gJ0jGsABAvINH0ZmVeW7pZJWomp-5yriwCLcBGAsYHQ/s1600/Screenshot%2B%25281%2529.png" alt="jvm Architecture" style="width:1000px; height: auto; ">
-        <hr class="section-divider">
-        
-        <h2>1. What is Java?</h2>
-        <ul>
-            <li>Java is a <strong>high-level, object-oriented, platform-independent</strong> programming language.</li>
-            <li>Its biggest feature = <strong>Write Once, Run Anywhere (WORA)</strong>.</li>
-        </ul>
-        
-        <div class="example">
-            <strong><span class="emoji">👉</span>Example:</strong><br>
-            If you write a Java program on Windows, the same program can run on Linux or Mac <strong>without changes</strong>.
+        <h1>Java Architecture - Complete Interview Mastery</h1>
+        <p class="subtitle">From Source Code to Execution: Every Detail You Need to Crack Any Java Interview</p>
+
+        <div class="img-container">
+            <img src="https://1.bp.blogspot.com/-yqkVWGVwiMI/XfO3fi5FMLI/AAAAAAAAJv8/gJ0jGsABAvINH0ZmVeW7pZJWomp-5yriwCLcBGAsYHQ/s1600/Screenshot%2B%25281%2529.png"
+                alt="JVM Architecture Overview">
+            <p class="note">High-level JVM Architecture</p>
         </div>
-        
+
         <hr class="section-divider">
-        
-        <h2>2. Java Program Execution Flow</h2>
-        <p>Java works in these main steps:</p>
-        
-        <ol>
-            <li><strong>Write code</strong> in <code>.java</code> file (human-readable).<br>
-                Example:
-                <pre>class Hello {
-    public static void main(String[] args) {
-        System.out.println("Hello World");
-    }
-}</pre>
-            </li>
-            
-            <li><strong>Compile code</strong> with <code>javac</code> (Java Compiler).
-                <ul>
-                    <li>Converts <code>.java</code> → <code>.class</code> (bytecode).</li>
-                    <li>Bytecode is <strong>platform-independent</strong>.</li>
-                </ul>
-            </li>
-            
-            <li><strong>Run code</strong> with <code>java</code> command.
-                <ul>
-                    <li>JVM loads <code>.class</code> file.</li>
-                    <li>JVM executes bytecode using <strong>Execution Engine + JIT</strong>.</li>
-                </ul>
-            </li>
-        </ol>
-        
-        <hr class="section-divider">
-        
-        <h2>3. Main Components of Java Architecture</h2>
-        <p>Java Architecture has <strong>3 core parts</strong>:</p>
-        
-        <h3>(A) JVM (Java Virtual Machine)</h3>
+
+        <!-- SECTION 1 -->
+        <h2>1. Java Platform Independence: The Core Philosophy</h2>
         <ul>
-            <li>Acts as a <strong>virtual computer</strong> inside your machine.</li>
-            <li>Executes bytecode and converts it into <strong>machine code</strong>.</li>
-            <li>Provides <strong>Memory Management + Security + Garbage Collection</strong>.</li>
+            <li><strong>Write Once, Run Anywhere (WORA)</strong> – Java's golden promise.</li>
+            <li>Achieved via <strong>bytecode</strong> + <strong>platform-specific JVM</strong>.</li>
+            <li>Java source (<code>.java</code>) → compiled to <strong>bytecode</strong> (<code>.class</code>) → same
+                bytecode runs on any OS with JVM.</li>
         </ul>
-        
+
         <div class="interview-point">
-            <strong><span class="emoji">👉</span>Interview Point:</strong><br>
-            <ul>
-                <li>JVM is <strong>platform dependent</strong> (Windows JVM ≠ Linux JVM).</li>
-                <li>But bytecode is the same → Java is <strong>platform independent</strong>.</li>
-            </ul>
+            <strong><span class="emoji">Target</span>Interview Question:</strong><br>
+            <strong>Q: "Is Java 100% platform independent?"</strong><br>
+            <strong>A:</strong> <em>Only the <strong>bytecode</strong> is platform independent. <strong>JVM is platform
+                    dependent</strong> — each OS has its own JVM implementation.</em>
         </div>
-        
-        <h3>(B) JRE (Java Runtime Environment)</h3>
-        <ul>
-            <li>Provides the environment to <strong>run Java applications</strong>.</li>
-            <li>Includes:
-                <ul>
-                    <li>JVM</li>
-                    <li>Libraries (API)</li>
-                    <li>Supporting files</li>
-                </ul>
-            </li>
-        </ul>
-        
-        <div class="interview-tip">
-            <strong><span class="emoji">👉</span>Interview Tip:</strong><br>
-            If you only need to <strong>run</strong> Java programs (not write/compile), you just need <strong>JRE</strong>.
+
+        <div class="tricky">
+            <strong><span class="emoji">Warning</span>Tricky Point:</strong> Native methods (JNI) break platform
+            independence. If your code uses JNI, it becomes OS-specific.
         </div>
-        
-        <h3>(C) JDK (Java Development Kit)</h3>
-        <ul>
-            <li>Complete package for <strong>developers</strong>.</li>
-            <li>Includes:
-                <ul>
-                    <li>JRE (to run programs)</li>
-                    <li>Compiler (<code>javac</code>) to compile code</li>
-                    <li>Debugger + Development tools</li>
-                </ul>
-            </li>
-        </ul>
-        
-        <div class="interview-tip">
-            <strong><span class="emoji">👉</span>Interview Tip:</strong><br>
-            <ul>
-                <li><strong>JDK = JRE + Development Tools</strong></li>
-                <li>Developers install JDK, normal users can use JRE.</li>
-            </ul>
-        </div>
-        
+
         <hr class="section-divider">
-        
-        <h2>4. Detailed JVM Architecture</h2>
-        <p>JVM itself has sub-components:</p>
-        <img src="https://miro.medium.com/v2/resize:fit:1358/0*xITgHDd1hw3MQ_pJ.jpg" alt="jvm Architecture" style="width: 1000px; height: auto;">
-        <h3>1. ClassLoader</h3>
-        <ul>
-            <li>Loads <code>.class</code> files into memory.</li>
-            <li>3 types:
-                <ul>
-                    <li><strong>Bootstrap ClassLoader</strong> → loads core classes (<code>java.lang.*</code>).</li>
-                    <li><strong>Extension ClassLoader</strong> → loads classes from <code>ext</code> libraries.</li>
-                    <li><strong>Application ClassLoader</strong> → loads user-defined classes.</li>
-                </ul>
-            </li>
-        </ul>
-        
-        <div class="example">
-            <strong><span class="emoji">👉</span>Example:</strong><br>
-            When you write <code>System.out.println</code>,
-            <code>java.lang.System</code> is loaded by <strong>Bootstrap ClassLoader</strong>.
-        </div>
-        
-        <h3>2. Memory Areas in JVM</h3>
-        <p>JVM divides memory into parts when running a program:</p>
-        <ul>
-            <li><strong>Method Area:</strong> Stores class-level info (fields, methods, constants).</li>
-            <li><strong>Heap:</strong> Stores objects (created with <code>new</code>).</li>
-            <li><strong>Stack:</strong> Stores method calls, local variables.</li>
-            <li><strong>PC Register:</strong> Keeps track of current instruction.</li>
-            <li><strong>Native Method Stack:</strong> Stores non-Java methods (like C/C++).</li>
-        </ul>
-        
-        <div class="example">
-            <strong><span class="emoji">👉</span>Example Flow:</strong>
-            <pre>Student s = new Student();</pre>
-            <ul>
-                <li><code>s</code> (reference) stored in <strong>Stack</strong>.</li>
-                <li><code>new Student()</code> object stored in <strong>Heap</strong>.</li>
-            </ul>
-        </div>
-        
-        <h3>3. Execution Engine</h3>
-        <ul>
-            <li>Runs bytecode with two parts:
-                <ul>
-                    <li><strong>Interpreter</strong> → executes bytecode line by line (slower).</li>
-                    <li><strong>JIT Compiler (Just-In-Time)</strong> → compiles frequently used code into machine code (faster).</li>
-                </ul>
-            </li>
-        </ul>
-        
-        <div class="example">
-            <strong><span class="emoji">👉</span>Example:</strong><br>
-            If a method is called 1000 times, JIT compiles it into <strong>native code</strong> so JVM doesn't re-interpret every time.
-        </div>
-        
-        <h3>4. Garbage Collector (GC)</h3>
-        <ul>
-            <li>Frees memory by removing <strong>unused objects</strong> from Heap.</li>
-            <li>Runs automatically.</li>
-            <li>Uses algorithms like <strong>Mark and Sweep</strong>.</li>
-        </ul>
-        
-        <div class="example">
-            <strong><span class="emoji">👉</span>Example:</strong>
-            <pre>Student s1 = new Student();
-s1 = null; // old object becomes unreachable → Garbage Collector cleans it</pre>
-        </div>
-        
-        <hr class="section-divider">
-        
-        <h2>5. Step-by-Step Flow of Program Execution</h2>
+
+        <!-- SECTION 2 -->
+        <h2>2. Java Program Execution Flow (Step-by-Step)</h2>
+
+
         <ol>
-            <li><strong>Source Code (<code>.java</code>)</strong> → written by developer.</li>
-            <li><strong>Compiler (<code>javac</code>)</strong> → converts to Bytecode (<code>.class</code>).</li>
-            <li><strong>ClassLoader</strong> → loads <code>.class</code> file into JVM.</li>
-            <li><strong>Bytecode Verifier</strong> → checks security (no illegal code).</li>
-            <li><strong>Execution Engine</strong> (Interpreter + JIT) → executes code.</li>
-            <li><strong>Garbage Collector</strong> → cleans unused objects.</li>
+            <li><strong>Write</strong>: <code>Hello.java</code> (human-readable)</li>
+            <li><strong>Compile</strong>: <code>javac Hello.java</code> → <code>Hello.class</code> (bytecode)</li>
+            <li><strong>Load</strong>: JVM starts → <code>java Hello</code> → ClassLoader loads <code>.class</code></li>
+            <li><strong>Link</strong>: Verify → Prepare → Resolve</li>
+            <li><strong>Initialize</strong>: Static blocks/variables</li>
+            <li><strong>Execute</strong>: Execution Engine runs bytecode</li>
         </ol>
-        
+
         <hr class="section-divider">
-        
+
+        <!-- SECTION 3 -->
+        <h2>3. JDK vs JRE vs JVM – The Holy Trinity</h2>
+
+        <table class="table">
+            <tr>
+                <th>Component</th>
+                <th>Purpose</th>
+                <th>Contains</th>
+                <th>Needed For</th>
+            </tr>
+            <tr>
+                <td><strong>JVM</strong></td>
+                <td>Executes bytecode</td>
+                <td>Execution Engine, Memory, GC</td>
+                <td>Running Java apps</td>
+            </tr>
+            <tr>
+                <td><strong>JRE</strong></td>
+                <td>Runtime environment</td>
+                <td>JVM + Core Libraries + Files</td>
+                <td>Running (not developing)</td>
+            </tr>
+            <tr>
+                <td><strong>JDK</strong></td>
+                <td>Development kit</td>
+                <td>JRE + javac, javadoc, debugger</td>
+                <td>Developing Java apps</td>
+            </tr>
+        </table>
+
+        <div class="interview-tip">
+            <strong><span class="emoji">Lightbulb</span>Pro Tip:</strong><br>
+            <code>JDK = JRE + Development Tools</code><br>
+            <code>JRE = JVM + Core Libraries</code>
+        </div>
+
+        <div class="advanced">
+            <strong><span class="emoji">Gear</span>Advanced:</strong> OpenJDK vs Oracle JDK? Both are same now (post
+            Java 11). Oracle JDK has commercial support.
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- SECTION 4 -->
+        <h2>4. Deep Dive: JVM Internal Architecture</h2>
+
+        <div class="img-container">
+            <img src="https://miro.medium.com/v2/resize:fit:1358/0*xITgHDd1hw3MQ_pJ.jpg"
+                alt="Detailed JVM Architecture">
+            <p class="note">Detailed JVM Internal Structure</p>
+        </div>
+
+        <h3>1. Class Loader Subsystem <span class="badge badge-hot">HOT</span></h3>
+        <ul>
+            <li>Responsible for <strong>Loading, Linking, Initialization</strong></li>
+            <li>Follows <strong>Delegation Model</strong> (Parent-first)</li>
+            <li>3 Built-in Class Loaders:</li>
+        </ul>
+
+        <div class="memory-diagram">
+            Bootstrap (null) → Extension → Application
+        </div>
+
+        <ul>
+            <li><strong>Bootstrap ClassLoader</strong>:
+                Loads core Java classes (like <code>java.lang</code>, <code>java.util</code>) from <code>rt.jar</code>.
+                Written in native code (C/C++). It has no parent (parent = <code>null</code>).
+            </li>
+            <li><strong>Extension ClassLoader</strong>:
+                Loads classes from the <code>jre/lib/ext</code> folder (Java extensions).
+            </li>
+            <li><strong>Application ClassLoader</strong>:
+                Loads user-defined classes from the <code>CLASSPATH</code> (your project’s classes and JARs).
+            </li>
+        </ul>
+
+
+        <div class="interview-point">
+            <strong><span class="emoji">Target</span>Q: Who loads the <code>String</code> class?</strong><br>
+            <strong>A:</strong> Bootstrap ClassLoader (it's in <code>rt.jar</code>)
+        </div>
+
+        <h3>2. Runtime Data Areas (Memory Layout) <span class="badge badge-hot">MOST ASKED</span></h3>
+
+
+
+        <ul>
+            <li><strong>Method Area</strong>: Class metadata, static variables, method bytecode, constant pool</li>
+            <li><strong>Heap</strong>: All objects, instance variables, arrays</li>
+            <li><strong>Stack</strong>: One per thread – stores method frames (local vars, operand stack, return
+                address)</li>
+            <li><strong>PC Register</strong>: Current executing instruction (per thread)</li>
+            <li><strong>Native Method Stack</strong>: For native (C/C++) methods</li>
+        </ul>
+
+        <div class="example">
+            <strong><span class="emoji">Code</span>Example:</strong>
+            <pre>String name = new String("Alice");</pre>
+            <ul>
+                <li><code>name</code> → Stack (reference)</li>
+                <li><code>"Alice"</code> → String Pool (Heap)</li>
+                <li><code>new String(...)</code> → new object in Heap</li>
+            </ul>
+        </div>
+
+        <div class="tricky">
+            <strong><span class="emoji">Warning</span>Tricky:</strong> <code>String s = "hello";</code> → goes to
+            <strong>String Pool</strong> (in Heap, not Method Area post-Java 7)
+        </div>
+
+        <h3>3. Execution Engine – The Real Executor</h3>
+        <ul>
+            <li><strong>Interpreter:</strong> Executes code line by line — easy to start, but slower.</li>
+            <li><strong>JIT (Just-In-Time) Compiler:</strong> Speeds things up by converting frequently used code into
+                native machine code.</li>
+            <li><strong>Types of JIT:</strong>
+                <ul>
+                    <li><strong>C1 (Client JIT):</strong> Quick compilation, basic optimizations — used for desktop
+                        apps.</li>
+                    <li><strong>C2 (Server JIT):</strong> Slower to compile, but much faster at runtime — used for
+                        long-running server apps.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="advanced">
+            <strong>⚙️ How JIT Works (Simplified):</strong>
+            <ol>
+                <li>Interpreter starts running your code.</li>
+                <li>JVM keeps track of frequently used (“hot”) methods.</li>
+                <li>Hot methods are compiled by <strong>C1</strong> for quick speed-up.</li>
+                <li>If they’re used a lot, <strong>C2</strong> recompiles them with deeper optimizations
+                    (like removing unnecessary checks or locks).</li>
+            </ol>
+        </div>
+
+        <h3>4. Garbage Collection (GC) <span class="badge badge-advanced">ADVANCED</span></h3>
+
+        <ul>
+            <li><strong>Garbage Collection</strong> = Automatic memory cleanup in Java.</li>
+            <li>Removes objects that are no longer used by any part of the program.</li>
+            <li>Process: <strong>Mark</strong> unreachable objects → <strong>Sweep</strong> and free memory.</li>
+            <li><strong>Young Generation:</strong>
+                New objects are created here (Eden + Survivor S0/S1).
+                → Cleaned by <strong>Minor GC</strong>.
+            </li>
+            <li><strong>Old Generation:</strong>
+                Long-lived objects are moved here.
+                → Cleaned by <strong>Major (Full) GC</strong>.
+            </li>
+            <li><strong>Metaspace:</strong> Stores class metadata (replaced <code>PermGen</code> in Java 8).</li>
+        </ul>
+
+        <h4>🧠 Types of Garbage Collectors</h4>
+        <ul>
+            <li><strong>Serial GC:</strong> Simple, single-threaded — best for small applications.</li>
+            <li><strong>Parallel GC:</strong> Uses multiple threads — faster for multi-core CPUs.</li>
+            <li><strong>CMS (Concurrent Mark Sweep):</strong> Reduces pause time — works alongside the app.</li>
+            <li><strong>G1 (Garbage First):</strong> Modern, region-based — balances speed and low pauses (default in
+                Java 9+).</li>
+
+        </ul>
+
+        <div class="interview-point">
+            <strong>🎯 Q:</strong> When does an object become eligible for GC?<br>
+            <strong>A:</strong> When no live thread or variable can access it (no active references).
+        </div>
+
+        <hr class="section-divider">
+
+
+        <!-- SECTION 5 -->
+        <h2>5. Class Loading & Linking Process</h2>
+
+        <ol>
+            <li><strong>Loading</strong>: Read <code>.class</code> file → create <code>Class</code> object</li>
+            <li><strong>Linking</strong>:
+                <ul>
+                    <li><strong>Verify</strong>: Check bytecode safety (no stack overflow, valid ops)</li>
+                    <li><strong>Prepare</strong>: Allocate memory for static variables, set defaults</li>
+                    <li><strong>Resolve</strong>: Replace symbolic references with direct pointers</li>
+                </ul>
+            </li>
+            <li><strong>Initialization</strong>: Execute <code>static</code> blocks, assign static vars</li>
+        </ol>
+
+        <div class="example">
+            <pre>static int x = 10;
+static { System.out.println("Static block"); }</pre>
+            → Executed during <strong>Initialization</strong> phase
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- SECTION 6 -->
+        <h2>6. 25 Must-Know Interview Questions & Answers (Simplified)</h2>
+
+        <div class="question">
+            <strong>1. Why is Java platform-independent but JVM platform-dependent?</strong>
+        </div>
+        <div class="answer">
+            Java code is compiled into <strong>bytecode</strong>, which runs on any JVM.
+            But each JVM is written in native code (C/C++) and made separately for each OS (Windows, Linux, etc.).
+        </div>
+
+        <div class="question">
+            <strong>2. What does a ClassLoader do?</strong>
+        </div>
+        <div class="answer">
+            Loads <code>.class</code> files into JVM memory when needed.
+            It follows a parent-first rule, provides security, and allows dynamic loading of classes.
+        </div>
+
+        <div class="question">
+            <strong>3. Can you make your own ClassLoader?</strong>
+        </div>
+        <div class="answer">
+            Yes! You can extend <code>ClassLoader</code> and override <code>findClass()</code>.
+            Used in frameworks, servers, and plugin-based systems.
+        </div>
+
+        <div class="question">
+            <strong>4. Difference between Stack and Heap memory?</strong>
+        </div>
+        <div class="answer">
+            <table class="table">
+                <tr>
+                    <th>Stack</th>
+                    <th>Heap</th>
+                </tr>
+                <tr>
+                    <td>Used by each thread separately</td>
+                    <td>Shared by all threads</td>
+                </tr>
+                <tr>
+                    <td>Stores local variables and references</td>
+                    <td>Stores objects</td>
+                </tr>
+                <tr>
+                    <td>Fast and automatically cleaned</td>
+                    <td>Managed by Garbage Collector</td>
+                </tr>
+                <tr>
+                    <td>Follows LIFO order</td>
+                    <td>Slower but larger memory area</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="question">
+            <strong>5. What is JIT Compiler and how does it help?</strong>
+        </div>
+        <div class="answer">
+            JIT (Just-In-Time) compiler converts bytecode into machine code during runtime.
+            It speeds up performance by avoiding repeated interpretation.
+        </div>
+
+        <div class="question">
+            <strong>6. When does Full GC happen?</strong>
+        </div>
+        <div class="answer">
+            When the <strong>Old Generation</strong> memory is full or when <code>System.gc()</code> is suggested.
+            (Note: It’s only a suggestion, not a command.)
+        </div>
+
+        <div class="question">
+            <strong>7. What is Metaspace?</strong>
+        </div>
+        <div class="answer">
+            It replaced PermGen in Java 8.
+            Stores class-related metadata and uses native memory (not heap).
+            Expands automatically when needed.
+        </div>
+
+        <div class="question">
+            <strong>8. Can <code>finalize()</code> stop Garbage Collection?</strong>
+        </div>
+        <div class="answer">
+            Not really. It runs only once before GC.
+            If an object becomes reachable again inside <code>finalize()</code>, it gets a temporary “second life”, but
+            only once.
+        </div>
+
+        <div class="question">
+            <strong>9. What is the String Pool?</strong>
+        </div>
+        <div class="answer">
+            A special area in the Heap where Java stores string literals to save memory.
+            Identical strings share the same memory location.
+        </div>
+
+        <div class="question">
+            <strong>10. Why is String immutable in Java?</strong>
+        </div>
+        <div class="answer">
+            To ensure <strong>security</strong>, <strong>thread-safety</strong>, and efficient <strong>caching</strong>.
+            It also helps in safe class loading and prevents accidental changes.
+        </div>
+
+        <hr class="section-divider">
+
+        <h2>Bonus: Pro Tips for Interview</h2>
+        <ul>
+            <li>Draw JVM diagram on paper – interviewers love it!</li>
+            <li>Explain <code>new Student()</code> → where reference and object go</li>
+            <li>Know difference: <code>StackOverflowError</code> vs <code>OutOfMemoryError</code></li>
+            <li>Mention Java 8+ changes: Metaspace, String deduplication</li>
+            <li>Be ready for <code>System.gc()</code> vs actual GC trigger</li>
+        </ul>
+
+        <div class="interview-tip">
+            <strong><span class="emoji">Trophy</span>Golden Answer Structure:</strong><br>
+            1. <strong>Define</strong> → 2. <strong>Explain with example</strong> → 3. <strong>Draw diagram</strong> →
+            4. <strong>Mention edge case</strong>
+        </div>
+
+        <hr class="section-divider">
+
      
-        
-        <hr class="section-divider">
-        
-        <h2>7. Key Interview Questions</h2>
-        
-        <h4>1. Why is Java platform independent?</h4>
-        <ul>
-            <li>Because of bytecode + JVM for each OS.</li>
-        </ul>
-        
-        <h4>2. Why is JVM platform dependent?</h4>
-        <ul>
-            <li>Each OS has its own implementation of JVM.</li>
-        </ul>
-        
-        <h4>3. What is the role of JIT?</h4>
-        <ul>
-            <li>Improves performance by compiling frequently used bytecode into native machine code.</li>
-        </ul>
-        
-        <h4>4. Difference between JVM, JRE, JDK?</h4>
-        <ul>
-            <li>JVM → Executes bytecode.</li>
-            <li>JRE → JVM + Libraries (runtime environment).</li>
-            <li>JDK → JRE + Development tools (for developers).</li>
-        </ul>
-        
-        <h4>5. What happens when you run a Java program?</h4>
-        <ul>
-            <li>Code → Compiled into Bytecode → Loaded by ClassLoader → Verified → Executed by Execution Engine.</li>
-        </ul>
-        
-        <hr class="section-divider">
-      
     </div>
 </body>
+
 </html>

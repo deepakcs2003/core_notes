@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Spring Boot Features</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            border-left: 4px solid #667eea;
+            padding-left: 25px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section h2::before {
+            content: "📌";
+            margin-right: 10px;
+        }
+
+        .subsection {
+            margin: 25px 0;
+        }
+
+        .subsection h3 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .info-box.why {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .info-box.tip {
+            border-left-color: #17a2b8;
+            background: #f0f9ff;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            color: #f8f8f2;
+        }
+
+        .annotations {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+
+        .annotations h4 {
+            color: #0066cc;
+            margin-bottom: 10px;
+        }
+
+        .annotations ul {
+            margin-left: 20px;
+        }
+
+        .annotations li {
+            margin: 8px 0;
+        }
+
+        .practice-section {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .practice-section h2 {
+            color: white;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .practice-section h2::before {
+            content: "💻";
+        }
+
+        .practice-steps {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .practice-steps h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        ol {
+            margin-left: 20px;
+        }
+
+        ol li {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+
+        footer {
+            background: #2d2d2d;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section h2 {
+                font-size: 1.4em;
+            }
+
+            pre {
+                font-size: 0.8em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Advanced Spring Boot Features</h1>
+            <p>A comprehensive guide to mastering Spring Boot development</p>
+        </header>
+
+        <div class="content">
+            <!-- Validation Section -->
+            <div class="section">
+                <h2>Validation (@Valid, @NotNull, @Size)</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>Validation ensures that data coming into your application (e.g., from user input) meets certain rules. This prevents errors like saving empty names or invalid emails. Spring Boot uses the Jakarta Bean Validation API (part of Hibernate Validator) for this.</p>
+                </div>
+
+                <div class="annotations">
+                    <h4>Key Annotations:</h4>
+                    <ul>
+                        <li><code>@Valid</code>: Placed on a method parameter (e.g., in a controller) to trigger validation on an object.</li>
+                        <li><code>@NotNull</code>: Ensures a field cannot be null (empty).</li>
+                        <li><code>@Size</code>: Checks the length of a string or collection (e.g., min and max size).</li>
+                    </ul>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    It catches bad data early, improves security, and provides user-friendly error messages.
+                </div>
+
+                <div class="subsection">
+                    <h3>Example Implementation:</h3>
+                    
+                    <p><strong>Step 1:</strong> Add dependency in pom.xml (Maven):</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+
+                    <p><strong>Step 2:</strong> Create User class (DTO - Data Transfer Object):</p>
+<pre><code>import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+public class User {
+    @NotNull(message = "Name cannot be null")
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
+    private String name;
+
+    @NotNull(message = "Email cannot be null")
+    @Size(min = 5, message = "Email must be at least 5 characters")
+    private String email;
+
+    // Getters and setters
+}</code></pre>
+
+                    <p><strong>Step 3:</strong> Use in Controller:</p>
+<pre><code>import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
+
+@RestController
+public class UserController {
+    @PostMapping("/users")
+    public String createUser(@Valid @RequestBody User user) {
+        return "User created successfully!";
+    }
+}</code></pre>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    <ul>
+                        <li>Validation happens automatically with @Valid</li>
+                        <li>Use other annotations like @Email for email format or @Min for numbers</li>
+                        <li>If validation fails, Spring throws MethodArgumentNotValidException</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Exception Handling Section -->
+            <div class="section">
+                <h2>Exception Handling (@ControllerAdvice, @ExceptionHandler)</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>Exceptions are errors that occur during runtime (e.g., invalid input or database issues). Spring Boot lets you handle them globally instead of in every method.</p>
+                </div>
+
+                <div class="annotations">
+                    <h4>Key Annotations:</h4>
+                    <ul>
+                        <li><code>@ControllerAdvice</code>: A class that handles exceptions across all controllers.</li>
+                        <li><code>@ExceptionHandler</code>: A method in @ControllerAdvice that catches a specific exception and returns a response.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    It keeps your code clean and provides consistent error responses (e.g., JSON with error details) instead of ugly stack traces.
+                </div>
+
+                <div class="subsection">
+                    <h3>Example: Global Exception Handler</h3>
+<pre><code>import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity&lt;String&gt; handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult()
+                                .getFieldErrors()
+                                .get(0)
+                                .getDefaultMessage();
+        return new ResponseEntity&lt;&gt;("Error: " + errorMessage, 
+                                     HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String&gt; handleGeneralExceptions(Exception ex) {
+        return new ResponseEntity&lt;&gt;("An error occurred: " + ex.getMessage(), 
+                                     HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}</code></pre>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    <ul>
+                        <li>Use specific handlers for different exceptions (e.g., NoSuchElementException for "not found")</li>
+                        <li>This is global, so no need to repeat try-catch in every method</li>
+                        <li>Returns custom error messages instead of default Spring error pages</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div class="section">
+                <h2>Configuration (application.properties / application.yml)</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>These are files where you configure your app's settings, like database URL, server port, or custom properties. Spring Boot loads them automatically.</p>
+                    <ul style="margin: 15px 0 15px 25px;">
+                        <li><code>application.properties</code>: Key-value format</li>
+                        <li><code>application.yml</code>: YAML format (more readable with indentation)</li>
+                    </ul>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    It separates config from code, making it easy to change settings without rebuilding the app (e.g., switch databases).
+                </div>
+
+                <div class="subsection">
+                    <h3>Example: application.properties</h3>
+<pre><code>server.port=8081
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+my.custom.property=Hello World</code></pre>
+
+                    <h3>Example: application.yml (equivalent)</h3>
+<pre><code>server:
+  port: 8081
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/mydb
+my:
+  custom:
+    property: Hello World</code></pre>
+
+                    <h3>Accessing in Code:</h3>
+<pre><code>import org.springframework.beans.factory.annotation.Value;
+
+@Value("${my.custom.property}")
+private String customProp;  // Injects "Hello World"</code></pre>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    <ul>
+                        <li>YAML is preferred for nested configs</li>
+                        <li>Override with environment variables for production</li>
+                        <li>Use different files for different environments</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profiles Section -->
+            <div class="section">
+                <h2>Profiles (@Profile)</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>Profiles let you run different configs for environments like "dev" (development), "prod" (production), or "test". Use @Profile on classes or methods to activate them only in specific profiles.</p>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    Apps behave differently in dev (e.g., fake data) vs. prod (real database).
+                </div>
+
+                <div class="subsection">
+                    <h3>Example Implementation:</h3>
+                    
+                    <p><strong>Step 1:</strong> Create profile-specific configs:</p>
+                    <ul style="margin: 10px 0 10px 25px;">
+                        <li><code>application-dev.properties</code>: For development environment</li>
+                        <li><code>application-prod.properties</code>: For production environment</li>
+                    </ul>
+
+<pre><code>import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    @Profile("dev")
+    public DataSource devDataSource() {
+        // Return in-memory DB for development
+    }
+
+    @Bean
+    @Profile("prod")
+    public DataSource prodDataSource() {
+        // Return real DB for production
+    }
+}</code></pre>
+
+                    <h3>How to Activate:</h3>
+<pre><code>// In application.properties
+spring.profiles.active=dev
+
+// Or run with command line
+--spring.profiles.active=dev</code></pre>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    Great for testing without affecting production data and configurations.
+                </div>
+            </div>
+
+            <!-- Swagger Section -->
+            <div class="section">
+                <h2>Swagger/OpenAPI for API Documentation</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>Swagger (now OpenAPI) auto-generates interactive docs for your REST APIs. Users can browse endpoints, try requests, and see responses.</p>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    Makes APIs self-documenting, easier for teams or clients to use.
+                </div>
+
+                <div class="subsection">
+                    <h3>Example Setup:</h3>
+                    
+                    <p><strong>Step 1:</strong> Add dependency:</p>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.0.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+                    <p><strong>Step 2:</strong> Access docs at:</p>
+                    <p style="background: #f4f4f4; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                        <code>http://localhost:8080/swagger-ui.html</code>
+                    </p>
+
+                    <p><strong>Step 3:</strong> Customize in application.properties:</p>
+<pre><code>springdoc.swagger-ui.path=/api-docs</code></pre>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    <ul>
+                        <li>Annotate controllers with @Operation for better descriptions</li>
+                        <li>Use @Schema on models for field descriptions</li>
+                        <li>It scans your @RestController classes automatically</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DevTools Section -->
+            <div class="section">
+                <h2>Spring Boot DevTools (Hot Reload)</h2>
+                
+                <div class="subsection">
+                    <h3>What is it?</h3>
+                    <p>DevTools is a module for faster development. It enables "hot reload" – automatically restarts the app when you change code, without manual rebuilds.</p>
+                </div>
+
+                <div class="info-box why">
+                    <strong>Why use it?</strong>
+                    Saves time during coding; changes appear instantly.
+                </div>
+
+                <div class="subsection">
+                    <h3>Example Setup:</h3>
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
+                </div>
+
+                <div class="info-box">
+                    <strong>How it works:</strong>
+                    <ul>
+                        <li>Run your app via IDE</li>
+                        <li>Edit a class or template</li>
+                        <li>App restarts automatically in seconds</li>
+                        <li>Also caches less for quick refreshes</li>
+                    </ul>
+                </div>
+
+                <div class="info-box tip">
+                    <strong>💡 Tips:</strong>
+                    <ul>
+                        <li>Disable in production (dev-only)</li>
+                        <li>Works best with IDEs like IntelliJ or Eclipse</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Practice Section -->
+            <div class="practice-section">
+                <h2>Practice: Add Validation and Exception Handling to Your CRUD Project</h2>
+                
+                <p style="margin-bottom: 20px;">Assume you have a basic CRUD project for "Books" (e.g., a Book entity, repository, service, controller).</p>
+
+                <div class="practice-steps">
+                    <h3>Step 1: Add Validation</h3>
+                    <p>In your Book DTO:</p>
+<pre><code>public class Book {
+    @NotNull(message = "Title cannot be null")
+    @Size(min = 1, max = 100, message = "Title must be between 1 and 100 characters")
+    private String title;
+
+    @NotNull(message = "Author cannot be null")
+    private String author;
+    
+    // Getters and setters
+}</code></pre>
+
+                    <p>In Controller (for create operation):</p>
+<pre><code>@PostMapping("/books")
+public Book createBook(@Valid @RequestBody Book book) {
+    return bookService.save(book);
+}</code></pre>
+                </div>
+
+                <div class="practice-steps">
+                    <h3>Step 2: Add Exception Handling</h3>
+                    <p>Create GlobalExceptionHandler with a handler for NoSuchElementException:</p>
+<pre><code>@ExceptionHandler(NoSuchElementException.class)
+public ResponseEntity&lt;String&gt; handleNotFound(NoSuchElementException ex) {
+    return new ResponseEntity&lt;&gt;("Resource not found", HttpStatus.NOT_FOUND);
+}</code></pre>
+
+                    <p>In service, throw exceptions when a book isn't found:</p>
+<pre><code>throw new NoSuchElementException();</code></pre>
+                </div>
+
+                <div class="practice-steps">
+                    <h3>Step 3: Test It</h3>
+                    <ol>
+                        <li>Run the application</li>
+                        <li>Use Postman to send invalid data (e.g., empty title) → should get "Error: Title cannot be null"</li>
+                        <li>Try getting a non-existent book → should get "Resource not found"</li>
+                    </ol>
+                </div>
+
+                <p style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                    <strong>This practice integrates:</strong><br>
+                    ✓ Validation (checks input)<br>
+                    ✓ Exception handling (manages errors gracefully)<br>
+                    <br>
+                    Start small, test endpoints, and expand your project!
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <p>Happy Learning! 🚀 Master Spring Boot one feature at a time.</p>
+        </footer>
+    </div>
+</body>
+</html>

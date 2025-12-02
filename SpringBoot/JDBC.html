@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDBC Complete Notes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2a5298;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: "📚";
+            font-size: 1.2em;
+        }
+
+        .subsection {
+            margin: 30px 0;
+        }
+
+        .subsection h3 {
+            font-size: 1.5em;
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box.tip {
+            background: #f0fff4;
+            border-left-color: #48bb78;
+        }
+
+        .info-box.warning {
+            background: #fffaf0;
+            border-left-color: #ed8936;
+        }
+
+        .info-box strong {
+            color: #2a5298;
+            font-size: 1.1em;
+        }
+
+        /* VS Code Style Code Block */
+        .code-container {
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .code-header {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 10px 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-header::before {
+            content: "●●●";
+            color: #ff5f56;
+            letter-spacing: 3px;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .function {
+            color: #dcdcaa;
+        }
+
+        .class-name {
+            color: #4ec9b0;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table tr:hover {
+            background: #f7fafc;
+        }
+
+        .architecture-diagram {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .architecture-diagram .layer {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .arrow {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            margin: 20px 0;
+            padding-left: 60px;
+            position: relative;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 10px;
+            margin: 5px 0;
+            background: #f7fafc;
+            border-radius: 5px;
+            padding-left: 40px;
+            position: relative;
+        }
+
+        .checklist li::before {
+            content: "☐";
+            position: absolute;
+            left: 15px;
+            font-size: 1.3em;
+            color: #667eea;
+        }
+
+        .output-box {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 5px;
+        }
+
+        .badge.success {
+            background: #48bb78;
+        }
+
+        .badge.warning {
+            background: #ed8936;
+        }
+
+        .badge.info {
+            background: #4299e1;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 JDBC Complete Guide</h1>
+            <p>Java Database Connectivity with MySQL + IntelliJ IDEA</p>
+            <div style="margin-top: 20px;">
+                <span class="badge">Interview Ready</span>
+                <span class="badge success">Step-by-Step</span>
+                <span class="badge warning">Full Code</span>
+            </div>
+        </header>
+
+        <div class="content">
+            <!-- Section 1 -->
+            <section class="section">
+                <h2 class="section-title">What is JDBC?</h2>
+                <div class="info-box">
+                    <strong>JDBC = Java Database Connectivity</strong>
+                    <p>A Java API that enables Java programs to execute SQL statements against any relational database
+                        (MySQL, Oracle, PostgreSQL, SQL Server, etc.)</p>
+                </div>
+                <div class="info-box tip">
+                    <strong>💡 Think of JDBC as a bridge between Java code and the database.</strong>
+                </div>
+            </section>
+
+            <!-- Section 2 -->
+            <section class="section">
+                <h2 class="section-title">Core JDBC Concepts</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Description</th>
+                            <th>Interview Tip</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Driver</strong></td>
+                            <td>Java class that implements java.sql.Driver</td>
+                            <td>Know Class.forName() vs auto-loading (Java 6+)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DriverManager</strong></td>
+                            <td>Manages drivers & establishes connections</td>
+                            <td>DriverManager.getConnection(url, user, pwd)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Connection</strong></td>
+                            <td>Represents a session with the DB</td>
+                            <td>Always close in finally or try-with-resources</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Statement</strong></td>
+                            <td>Executes static SQL</td>
+                            <td>Vulnerable to SQL injection</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PreparedStatement</strong></td>
+                            <td>Pre-compiled SQL with ? placeholders</td>
+                            <td><strong>Use always</strong> – prevents injection, faster</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CallableStatement</strong></td>
+                            <td>Executes stored procedures</td>
+                            <td>Know call proc_name(?, ?)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ResultSet</strong></td>
+                            <td>Holds query results</td>
+                            <td>next(), getInt(), getString()</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Transaction Management</strong></td>
+                            <td>setAutoCommit(false), commit(), rollback()</td>
+                            <td>Critical for ACID</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Connection Pooling</strong></td>
+                            <td>Reusing connections (HikariCP, C3P0, DBCP)</td>
+                            <td><strong>High-weight interview topic</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 3 -->
+            <section class="section">
+                <h2 class="section-title">JDBC Architecture</h2>
+
+                <img src="https://usemynotes.com/wp-content/uploads/2021/07/jdbc-architecture-.png"
+                    alt="JDBC Architecture"
+                    style="width:100%; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.15); margin-top:20px;">
+
+                <div class="info-box tip">
+                    <strong>Type-4 Driver (Thin driver)</strong> → Direct TCP/IP → <strong>Recommended for
+                        MySQL</strong>
+                </div>
+
+                <p style="margin-top:20px; line-height:1.6;">
+                    The <strong>JDBC Architecture</strong> acts as a bridge between a Java application and a database.
+                    It allows Java programs to execute SQL statements, retrieve results, and perform database operations
+                    in a standardized way.
+                </p>
+
+                <h3 style="margin-top:15px;">🧩 Components of JDBC Architecture</h3>
+                <ul style="line-height:1.6; margin-left:20px;">
+                    <li><strong>1. JDBC API:</strong> Provides classes and interfaces (like <code>Connection</code>,
+                        <code>Statement</code>, <code>ResultSet</code>) that allow Java applications to interact with
+                        databases in a consistent manner.
+                    </li>
+                    <li><strong>2. JDBC Driver Manager:</strong> Manages different types of database drivers. It loads
+                        the driver classes dynamically and establishes a connection using the appropriate driver.</li>
+                    <li><strong>3. JDBC Drivers:</strong> These are implementations provided by database vendors to
+                        connect Java applications to specific databases. There are 4 types of drivers (Type 1 to Type
+                        4), and for MySQL, we commonly use the <strong>Type 4 (Thin Driver)</strong>.</li>
+                    <li><strong>4. Database:</strong> The backend system (like MySQL, Oracle, or PostgreSQL) that stores
+                        the actual data and executes SQL queries sent from the Java application.</li>
+                </ul>
+
+                <h3 style="margin-top:15px;">⚙️ Flow of JDBC Architecture</h3>
+                <ol style="line-height:1.6; margin-left:20px;">
+                    <li>The Java application uses the <code>DriverManager</code> class to load and register the JDBC
+                        driver.</li>
+                    <li>A connection is established between the Java program and the database using
+                        <code>getConnection()</code>.
+                    </li>
+                    <li>SQL statements are created and executed using <code>Statement</code> or
+                        <code>PreparedStatement</code>.
+                    </li>
+                    <li>The database processes the SQL query and sends the results back to the application via
+                        <code>ResultSet</code>.
+                    </li>
+                    <li>Finally, all resources like connections and statements are closed to free up memory.</li>
+                </ol>
+
+                <div class="info-box note" style="margin-top:15px;">
+                    <strong>Example:</strong> When connecting to MySQL, we typically use the driver class
+                    <code>com.mysql.cj.jdbc.Driver</code> and the Type-4 JDBC driver establishes a direct connection
+                    using TCP/IP — making it faster and platform-independent.
+                </div>
+            </section>
+
+
+            <!-- Section 4 -->
+            <section class="section">
+                <h2 class="section-title">Step-by-Step Setup</h2>
+
+                <div class="subsection">
+                    <h3>Step 1: Install MySQL & Create Database</h3>
+                    <div class="code-container">
+                        <div class="code-header">bash</div>
+                        <pre><span class="comment"># Ubuntu</span>
+sudo apt install mysql-server
+sudo systemctl start mysql
+sudo systemctl enable mysql
+sudo mysql_secure_installation
+
+<span class="comment"># Login to MySQL as root</span>
+mysql -u root -p
+
+<span class="comment"># Then run the following SQL commands to create database and table</span></pre>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">SQL - Create Database & Table</div>
+                        <pre><span class="keyword">CREATE DATABASE</span> school;
+<span class="keyword">USE</span> school;
+
+<span class="keyword">CREATE TABLE</span> student (
+    id <span class="keyword">INT PRIMARY KEY AUTO_INCREMENT</span>,
+    name <span class="keyword">VARCHAR</span>(<span class="number">50</span>) <span class="keyword">NOT NULL</span>,
+    age <span class="keyword">INT</span>,
+    grade <span class="keyword">CHAR</span>(<span class="number">1</span>)
+);
+
+<span class="keyword">INSERT INTO</span> student (name, age, grade) <span class="keyword">VALUES</span> 
+(<span class="string">'Alice'</span>, <span class="number">20</span>, <span class="string">'A'</span>),
+(<span class="string">'Bob'</span>, <span class="number">22</span>, <span class="string">'B'</span>);</pre>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Step 2: Add MySQL Connector/J in IntelliJ</h3>
+                    <ol class="steps">
+                        <li><strong>Download</strong> MySQL Connector/J from:
+                            <a href="https://dev.mysql.com/downloads/connector/j/" target="_blank">
+                                MySQL Connector/J
+                            </a> → Choose <em>Platform Independent</em> →
+                            <code>mysql-connector-j-x.x.xx.jar</code>
+                        </li>
+                        <li><strong>In IntelliJ:</strong> File → Project Structure → Libraries → + → Java → Select the
+                            .jar file → Apply.</li>
+                    </ol>
+
+                    <div class="info-box tip">
+                        <strong>Or use Maven (Recommended):</strong>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">pom.xml</div>
+                        <pre><span class="keyword">&lt;dependency&gt;</span>
+    <span class="keyword">&lt;groupId&gt;</span>com.mysql<span class="keyword">&lt;/groupId&gt;</span>
+    <span class="keyword">&lt;artifactId&gt;</span>mysql-connector-j<span class="keyword">&lt;/artifactId&gt;</span>
+    <span class="keyword">&lt;version&gt;</span><span class="number">8.0.33</span><span class="keyword">&lt;/version&gt;</span>
+<span class="keyword">&lt;/dependency&gt;</span></pre>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Step 3: JDBC URL Format (MySQL)</h3>
+                    <div class="code-container">
+                        <div class="code-header">JDBCConfig.java</div>
+                        <pre><span class="class-name">String</span> url = <span class="string">"jdbc:mysql://localhost:3306/school?useSSL=false&serverTimezone=UTC"</span>;
+<span class="class-name">String</span> user = <span class="string">"root"</span>;
+<span class="class-name">String</span> password = <span class="string">"your_password"</span>;</pre>
+                    </div>
+                    <div class="info-box">
+                        <strong>useSSL=false</strong> → for development<br>
+                        <strong>serverTimezone=UTC</strong> → avoids timezone errors
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Step 4: Useful JDBC Methods & Functions</h3>
+                    <button
+                        style="background-color:#007bff; color:white; border:none; border-radius:6px; padding:10px 18px; cursor:pointer;">
+                        Show Important JDBC Methods
+                    </button>
+                    <div class="info-box note" style="margin-top:15px;">
+                        <ul style="line-height:1.6;">
+                            <li><code>Connection conn = DriverManager.getConnection(url, user, password);</code> →
+                                Establish connection.</li>
+                            <li><code>Statement stmt = conn.createStatement();</code> → Used to execute SQL queries.
+                            </li>
+                            <li><code>ResultSet rs = stmt.executeQuery("SELECT * FROM student");</code> → Retrieves
+                                result from database.</li>
+                            <li><code>rs.next()</code> → Moves the cursor to the next row of the result set.</li>
+                            <li><code>rs.getInt("id")</code> → Retrieves integer value from the “id” column.</li>
+                            <li><code>rs.getString("name")</code> → Retrieves string value from the “name” column.</li>
+                            <li><code>rs.getInt("age")</code> → Retrieves the student’s age as an integer.</li>
+                            <li><code>rs.getString("grade")</code> → Retrieves grade value.</li>
+                            <li><code>stmt.executeUpdate("INSERT/UPDATE/DELETE query")</code> → Used for data
+                                modification queries.</li>
+                            <li><code>conn.close(), stmt.close(), rs.close()</code> → Closes all database resources.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Step 5: Example Program</h3>
+                    <div class="code-container">
+                        <div class="code-header">Main.java</div>
+                        <pre><span class="keyword">import java.sql.*;</span>
+
+<span class="keyword">public class</span> <span class="class-name">JDBCDemo</span> {
+    <span class="keyword">public static void</span> <span class="function-name">main</span>(String[] args) {
+        <span class="keyword">try</span> {
+            <span class="comment">// Load the MySQL driver</span>
+            Class.forName(<span class="string">"com.mysql.cj.jdbc.Driver"</span>);
+
+            <span class="comment">// Establish connection</span>
+            Connection conn = DriverManager.getConnection(
+                <span class="string">"jdbc:mysql://localhost:3306/school?useSSL=false&serverTimezone=UTC"</span>,
+                <span class="string">"root"</span>, 
+                <span class="string">"your_password"</span>
+            );
+
+            <span class="comment">// Create statement and execute query</span>
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(<span class="string">"SELECT * FROM student"</span>);
+
+            <span class="comment">// Read data</span>
+            <span class="keyword">while</span> (rs.next()) {
+                System.out.println(
+                    rs.getInt(<span class="string">"id"</span>) + <span class="string">" | "</span> +
+                    rs.getString(<span class="string">"name"</span>) + <span class="string">" | "</span> +
+                    rs.getInt(<span class="string">"age"</span>) + <span class="string">" | "</span> +
+                    rs.getString(<span class="string">"grade"</span>)
+                );
+            }
+
+            <span class="comment">// Close resources</span>
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } <span class="keyword">catch</span> (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5 -->
+            <section class="section">
+                <h2 class="section-title">Full Working Example (CRUD + Transaction)</h2>
+
+                <div class="code-container">
+                    <div class="code-header">JDBCDemo.java</div>
+                    <pre><span class="keyword">import</span> java.sql.*;
+
+<span class="keyword">public class</span> <span class="class-name">JDBCDemo</span> {
+    <span class="keyword">private static final</span> <span class="class-name">String</span> URL = <span class="string">"jdbc:mysql://localhost:3306/school?useSSL=false&serverTimezone=UTC"</span>;
+    <span class="keyword">private static final</span> <span class="class-name">String</span> USER = <span class="string">"root"</span>;
+    <span class="keyword">private static final</span> <span class="class-name">String</span> PASS = <span class="string">"your_password"</span>;
+
+    <span class="keyword">public static void</span> <span class="function">main</span>(<span class="class-name">String</span>[] args) {
+        <span class="keyword">try</span> {
+            <span class="comment">// 1. Load Driver (Optional in Java 6+)</span>
+            <span class="comment">// Class.forName("com.mysql.cj.jdbc.Driver");</span>
+
+            <span class="comment">// 2. Get Connection</span>
+            <span class="class-name">Connection</span> conn = <span class="class-name">DriverManager</span>.<span class="function">getConnection</span>(URL, USER, PASS);
+            conn.<span class="function">setAutoCommit</span>(<span class="keyword">false</span>); <span class="comment">// Start transaction</span>
+
+            <span class="comment">// CRUD Operations</span>
+            <span class="function">createStudent</span>(conn, <span class="string">"Charlie"</span>, <span class="number">21</span>, <span class="string">"A"</span>);
+            <span class="function">readStudents</span>(conn);
+            <span class="function">updateStudent</span>(conn, <span class="number">1</span>, <span class="string">"Alice Updated"</span>, <span class="number">23</span>);
+            <span class="function">readStudents</span>(conn);
+            <span class="function">deleteStudent</span>(conn, <span class="number">2</span>);
+            <span class="function">readStudents</span>(conn);
+
+            conn.<span class="function">commit</span>(); <span class="comment">// Success</span>
+            <span class="function">closeConnection</span>(conn);
+
+        } <span class="keyword">catch</span> (<span class="class-name">SQLException</span> e) {
+            e.<span class="function">printStackTrace</span>();
+            <span class="keyword">try</span> (<span class="class-name">Connection</span> conn = <span class="class-name">DriverManager</span>.<span class="function">getConnection</span>(URL, USER, PASS)) {
+                conn.<span class="function">rollback</span>();
+            } <span class="keyword">catch</span> (<span class="class-name">SQLException</span> ex) {
+                ex.<span class="function">printStackTrace</span>();
+            }
+        }
+    }
+
+    <span class="comment">// CREATE</span>
+    <span class="keyword">static void</span> <span class="function">createStudent</span>(<span class="class-name">Connection</span> conn, <span class="class-name">String</span> name, <span class="keyword">int</span> age, <span class="class-name">String</span> grade) <span class="keyword">throws</span> <span class="class-name">SQLException</span> {
+        <span class="class-name">String</span> sql = <span class="string">"INSERT INTO student (name, age, grade) VALUES (?, ?, ?)"</span>;
+        <span class="keyword">try</span> (<span class="class-name">PreparedStatement</span> ps = conn.<span class="function">prepareStatement</span>(sql)) {
+            ps.<span class="function">setString</span>(<span class="number">1</span>, name);
+            ps.<span class="function">setInt</span>(<span class="number">2</span>, age);
+            ps.<span class="function">setString</span>(<span class="number">3</span>, grade);
+            <span class="keyword">int</span> rows = ps.<span class="function">executeUpdate</span>();
+            <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"Inserted: "</span> + rows + <span class="string">" row(s)"</span>);
+        }
+    }
+
+    <span class="comment">// READ</span>
+    <span class="keyword">static void</span> <span class="function">readStudents</span>(<span class="class-name">Connection</span> conn) <span class="keyword">throws</span> <span class="class-name">SQLException</span> {
+        <span class="class-name">String</span> sql = <span class="string">"SELECT * FROM student"</span>;
+        <span class="keyword">try</span> (<span class="class-name">Statement</span> stmt = conn.<span class="function">createStatement</span>();
+             <span class="class-name">ResultSet</span> rs = stmt.<span class="function">executeQuery</span>(sql)) {
+
+            <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"\n--- Students ---"</span>);
+            <span class="keyword">while</span> (rs.<span class="function">next</span>()) {
+                <span class="keyword">int</span> id = rs.<span class="function">getInt</span>(<span class="string">"id"</span>);
+                <span class="class-name">String</span> name = rs.<span class="function">getString</span>(<span class="string">"name"</span>);
+                <span class="keyword">int</span> age = rs.<span class="function">getInt</span>(<span class="string">"age"</span>);
+                <span class="class-name">String</span> grade = rs.<span class="function">getString</span>(<span class="string">"grade"</span>);
+                <span class="class-name">System</span>.out.<span class="function">printf</span>(<span class="string">"ID: %d | Name: %s | Age: %d | Grade: %s%n"</span>, id, name, age, grade);
+            }
+        }
+    }
+
+    <span class="comment">// UPDATE</span>
+    <span class="keyword">static void</span> <span class="function">updateStudent</span>(<span class="class-name">Connection</span> conn, <span class="keyword">int</span> id, <span class="class-name">String</span> newName, <span class="keyword">int</span> newAge) <span class="keyword">throws</span> <span class="class-name">SQLException</span> {
+        <span class="class-name">String</span> sql = <span class="string">"UPDATE student SET name = ?, age = ? WHERE id = ?"</span>;
+        <span class="keyword">try</span> (<span class="class-name">PreparedStatement</span> ps = conn.<span class="function">prepareStatement</span>(sql)) {
+            ps.<span class="function">setString</span>(<span class="number">1</span>, newName);
+            ps.<span class="function">setInt</span>(<span class="number">2</span>, newAge);
+            ps.<span class="function">setInt</span>(<span class="number">3</span>, id);
+            <span class="keyword">int</span> rows = ps.<span class="function">executeUpdate</span>();
+            <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"Updated: "</span> + rows + <span class="string">" row(s)"</span>);
+        }
+    }
+
+    <span class="comment">// DELETE</span>
+    <span class="keyword">static void</span> <span class="function">deleteStudent</span>(<span class="class-name">Connection</span> conn, <span class="keyword">int</span> id) <span class="keyword">throws</span> <span class="class-name">SQLException</span> {
+        <span class="class-name">String</span> sql = <span class="string">"DELETE FROM student WHERE id = ?"</span>;
+        <span class="keyword">try</span> (<span class="class-name">PreparedStatement</span> ps = conn.<span class="function">prepareStatement</span>(sql)) {
+            ps.<span class="function">setInt</span>(<span class="number">1</span>, id);
+            <span class="keyword">int</span> rows = ps.<span class="function">executeUpdate</span>();
+            <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"Deleted: "</span> + rows + <span class="string">" row(s)"</span>);
+        }
+    }
+
+    <span class="comment">// Close Connection</span>
+    <span class="keyword">static void</span> <span class="function">closeConnection</span>(<span class="class-name">Connection</span> conn) {
+        <span class="keyword">if</span> (conn != <span class="keyword">null</span>) {
+            <span class="keyword">try</span> {
+                conn.<span class="function">close</span>();
+                <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"Connection closed."</span>);
+            } <span class="keyword">catch</span> (<span class="class-name">SQLException</span> e) {
+                e.<span class="function">printStackTrace</span>();
+            }
+        }
+    }
+}</pre>
+                </div>
+            </section>
+
+            <!-- Section 6 -->
+            <section class="section">
+                <h2 class="section-title">Expected Output</h2>
+                <div class="output-box">
+                    Inserted: 1 row(s)
+
+                    --- Students ---
+                    ID: 1 | Name: Alice | Age: 20 | Grade: A
+                    ID: 2 | Name: Bob | Age: 22 | Grade: B
+                    ID: 3 | Name: Charlie | Age: 21 | Grade: A
+                    Updated: 1 row(s)
+
+                    --- Students ---
+                    ID: 1 | Name: Alice Updated | Age: 23 | Grade: A
+                    ID: 2 | Name: Bob | Age: 22 | Grade: B
+                    ID: 3 | Name: Charlie | Age: 21 | Grade: A
+                    Deleted: 1 row(s)
+
+                    --- Students ---
+                    ID: 1 | Name: Alice Updated | Age: 23 | Grade: A
+                    ID: 3 | Name: Charlie | Age: 21 | Grade: A
+                    Connection closed.
+                </div>
+            </section>
+
+            <!-- Section 7 -->
+            <section class="section">
+                <h2 class="section-title">Best Practices</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Practice</th>
+                            <th>Why</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Use PreparedStatement</strong></td>
+                            <td>Prevents SQL injection</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Try-with-resources</strong></td>
+                            <td>Auto-closes Connection, Statement, ResultSet</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Connection Pooling</strong></td>
+                            <td>Use HikariCP in production</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Batch Processing</strong></td>
+                            <td>addBatch(), executeBatch() for bulk inserts</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Proper Exception Handling</strong></td>
+                            <td>printStackTrace() only in dev; log in prod</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Close Resources</strong></td>
+                            <td>Avoid leaks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Use ResultSet.TYPE_FORWARD_ONLY</strong></td>
+                            <td>Default & fastest</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 8 -->
+            <section class="section">
+                <h2 class="section-title">Interview Questions & Answers</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Question</th>
+                            <th>Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Difference between Statement & PreparedStatement?</strong></td>
+                            <td>Statement: static SQL, recompiled every time, vulnerable to
+                                injection.<br>PreparedStatement: pre-compiled, uses ?, safe, faster for repeated use.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>How to handle transactions in JDBC?</strong></td>
+                            <td>conn.setAutoCommit(false); → operations → conn.commit() or conn.rollback()</td>
+                        </tr>
+                        <tr>
+                            <td><strong>What is connection pooling?</strong></td>
+                            <td>Reusing DB connections instead of creating new ones. Improves performance. Use HikariCP.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Types of JDBC Drivers?</strong></td>
+                            <td>1. Type-1 (JDBC-ODBC)<br>2. Type-2 (Native)<br>3. Type-3 (Network)<br>4. Type-4 (Thin) →
+                                Best for MySQL</td>
+                        </tr>
+                        <tr>
+                            <td><strong>What is ResultSet concurrency?</strong></td>
+                            <td>CONCUR_READ_ONLY (default), CONCUR_UPDATABLE (for updateRow())</td>
+                        </tr>
+                        <tr>
+                            <td><strong>How to call stored procedure?</strong></td>
+                            <td>Use CallableStatement: call proc_name(?, ?)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Section 9 -->
+            <section class="section">
+                <h2 class="section-title">Bonus: Stored Procedure Example</h2>
+
+                <div class="subsection">
+                    <h3>Creating Stored Procedure</h3>
+                    <div class="code-container">
+                        <div class="code-header">SQL</div>
+                        <pre><span class="keyword">DELIMITER</span> //
+<span class="keyword">CREATE PROCEDURE</span> <span class="function">get_student_count</span>(<span class="keyword">OUT</span> count <span class="keyword">INT</span>)
+<span class="keyword">BEGIN</span>
+    <span class="keyword">SELECT COUNT</span>(*) <span class="keyword">INTO</span> count <span class="keyword">FROM</span> student;
+<span class="keyword">END</span> //
+<span class="keyword">DELIMITER</span> ;</pre>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>Calling from Java</h3>
+                    <div class="code-container">
+                        <div class="code-header">CallStoredProcedure.java</div>
+                        <pre><span class="keyword">try</span> (<span class="class-name">CallableStatement</span> cs = conn.<span class="function">prepareCall</span>(<span class="string">"{call get_student_count(?)}"</span>)) {
+    cs.<span class="function">registerOutParameter</span>(<span class="number">1</span>, <span class="class-name">Types</span>.INTEGER);
+    cs.<span class="function">execute</span>();
+    <span class="class-name">System</span>.out.<span class="function">println</span>(<span class="string">"Total students: "</span> + cs.<span class="function">getInt</span>(<span class="number">1</span>));
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 10 -->
+            <section class="section">
+                <h2 class="section-title">Summary Checklist</h2>
+                <ul class="checklist">
+                    <li>Install MySQL</li>
+                    <li>Add MySQL Connector/J (or Maven)</li>
+                    <li>Use try-with-resources</li>
+                    <li>Use PreparedStatement</li>
+                    <li>Handle transactions</li>
+                    <li>Close connections</li>
+                    <li>Use connection pooling in production</li>
+                    <li>Know 4 types of drivers</li>
+                    <li>Practice CRUD + Stored Proc</li>
+                </ul>
+            </section>
+
+            <!-- Section 11 -->
+            <section class="section">
+                <h2 class="section-title">Final Interview Tip</h2>
+                <div class="info-box tip">
+                    <strong>💡 Expert-Level Statement:</strong>
+                    <p style="font-size: 1.1em; margin-top: 10px; font-style: italic;">
+                        "I always use <strong>PreparedStatement</strong> with <strong>try-with-resources</strong> and
+                        <strong>connection pooling via HikariCP</strong> in production. I manage <strong>transactions
+                            explicitly</strong> for data integrity."
+                    </p>
+                    <p style="margin-top: 10px;">This single line shows expert-level understanding!</p>
+                </div>
+
+                <div class="info-box warning">
+                    <strong>🎯 Want to Learn More?</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Maven + HikariCP setup</li>
+                        <li>Spring Boot + JDBC example</li>
+                        <li>JPA vs JDBC comparison</li>
+                    </ul>
+                </div>
+            </section>
+
+       
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Functional Interface & Lambda Expressions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin: 30px 0 15px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 10px 0;
+        }
+
+        .note-box {
+            background: #f7fafc;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        .note-box strong {
+            color: #667eea;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table th {
+            background: #667eea;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        table tr:nth-child(even) {
+            background: #f7fafc;
+        }
+
+        table tr:hover {
+            background: #edf2f7;
+        }
+
+        .example-box {
+            background: #fff5f5;
+            border: 2px solid #fc8181;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .success-box {
+            background: #f0fff4;
+            border: 2px solid #68d391;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .success-box h4 {
+            color: #22543d;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            margin: 15px 0 15px 30px;
+        }
+
+        li {
+            margin: 8px 0;
+            line-height: 1.8;
+        }
+
+        .practice-section {
+            background: #fffaf0;
+            border: 3px solid #ed8936;
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px;
+        }
+
+        .practice-section h3 {
+            color: #c05621;
+            margin-top: 0;
+        }
+
+        .highlight {
+            background: #fef5e7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+            color: #d68910;
+        }
+
+        .code-inline {
+            background: #2d3748;
+            color: #68d391;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            pre {
+                font-size: 0.85em;
+                padding: 15px;
+            }
+
+            table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ Functional Interface & Lambda Expressions</h1>
+            <p>Complete Java Notes | Easy to Understand | Exam Ready</p>
+        </div>
+
+        <div class="content">
+            <h2>1. What is a Functional Interface?</h2>
+            <div class="note-box">
+                <strong>Definition:</strong> An interface with exactly ONE abstract method.
+            </div>
+
+<pre>@FunctionalInterface
+interface Calculator {
+    int calculate(int a, int b);  // Only one method → Functional Interface
+}</pre>
+
+            <h3>Rules</h3>
+            <table>
+                <tr>
+                    <th>Rule</th>
+                    <th>Explanation</th>
+                </tr>
+                <tr>
+                    <td>Only <strong>1 abstract method</strong></td>
+                    <td>If 2+ → Not functional</td>
+                </tr>
+                <tr>
+                    <td>Can have <strong>default methods</strong></td>
+                    <td>OK</td>
+                </tr>
+                <tr>
+                    <td>Can have <strong>static methods</strong></td>
+                    <td>OK</td>
+                </tr>
+                <tr>
+                    <td>Can have <strong>Object class methods</strong></td>
+                    <td>toString(), equals() → Not counted</td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">@FunctionalInterface</span></td>
+                    <td>Optional, but <strong>recommended</strong> (helps compiler check)</td>
+                </tr>
+            </table>
+
+            <h3>✅ Valid Functional Interface</h3>
+            <div class="success-box">
+                <h4>Example: Valid</h4>
+<pre>@FunctionalInterface
+interface Printer {
+    void print(String msg);  // 1 abstract method
+
+    // Default method → OK
+    default void printTwice(String msg) {
+        print(msg);
+        print(msg);
+    }
+
+    // Static method → OK
+    static void info() {
+        System.out.println("Printer Interface");
+    }
+}</pre>
+            </div>
+
+            <h3>❌ Invalid Example (Compilation Error)</h3>
+            <div class="example-box">
+                <h4>Example: Invalid</h4>
+<pre>@FunctionalInterface
+interface Bad {
+    void m1();
+    void m2();  // Error! More than 1 abstract method
+}</pre>
+            </div>
+
+            <h2>2. What is a Lambda Expression?</h2>
+            <div class="note-box">
+                <strong>Definition:</strong> Short way to write a method without a name.
+                <br><br>
+                Instead of writing a full class, just write <strong>what it does</strong>.
+            </div>
+
+            <h3>⚠️ Old Way (Before Java 8) – Too Long!</h3>
+<pre>Printer p = new Printer() {
+    public void print(String msg) {
+        System.out.println(msg);
+    }
+};
+p.print("Hello");  // Hello</pre>
+
+            <h3>✨ Lambda Way (Java 8+) – Short & Clean!</h3>
+<pre>Printer p = msg -> System.out.println(msg);
+p.print("Hello");  // Hello</pre>
+
+            <h2>3. Lambda Syntax</h2>
+            <table>
+                <tr>
+                    <th>Input</th>
+                    <th>Output</th>
+                    <th>Lambda Syntax</th>
+                    <th>Example</th>
+                </tr>
+                <tr>
+                    <td>No input</td>
+                    <td>No return</td>
+                    <td><span class="code-inline">() -> action</span></td>
+                    <td><span class="code-inline">() -> System.out.println("Hi")</span></td>
+                </tr>
+                <tr>
+                    <td>1 input</td>
+                    <td>No return</td>
+                    <td><span class="code-inline">x -> action</span></td>
+                    <td><span class="code-inline">name -> System.out.println(name)</span></td>
+                </tr>
+                <tr>
+                    <td>1 input</td>
+                    <td>Return</td>
+                    <td><span class="code-inline">x -> value</span></td>
+                    <td><span class="code-inline">x -> x * x</span></td>
+                </tr>
+                <tr>
+                    <td>2 inputs</td>
+                    <td>Return</td>
+                    <td><span class="code-inline">(a,b) -> value</span></td>
+                    <td><span class="code-inline">(a,b) -> a + b</span></td>
+                </tr>
+                <tr>
+                    <td>Multiple lines</td>
+                    <td>Use { }</td>
+                    <td><span class="code-inline">(a,b) -> { ... }</span></td>
+                    <td>See below</td>
+                </tr>
+            </table>
+
+            <h3>Lambda Examples</h3>
+<pre>// 1. No input
+Runnable r1 = () -> System.out.println("Run!");
+
+// 2. One input
+Printer p = msg -> System.out.println(">> " + msg);
+
+// 3. Two inputs
+interface Add {
+    int sum(int x, int y);
+}
+Add add = (x, y) -> x + y;
+
+// 4. Multiple lines
+Add mul = (x, y) -> {
+    System.out.println("Multiplying...");
+    return x * y;
+};</pre>
+
+            <h2>4. How to Use Lambda? (Step by Step)</h2>
+            
+            <h3>Step 1: Create Functional Interface</h3>
+<pre>@FunctionalInterface
+interface MathOp {
+    int operation(int a, int b);
+}</pre>
+
+            <h3>Step 2: Use Lambda</h3>
+<pre>public class Main {
+    public static void main(String[] args) {
+
+        // Addition
+        MathOp add = (a, b) -> a + b;
+        System.out.println(add.operation(5, 3));  // 8
+
+        // Subtraction
+        MathOp sub = (a, b) -> a - b;
+        System.out.println(sub.operation(5, 3));  // 2
+
+        // Multiply with multiple lines
+        MathOp mul = (a, b) -> {
+            System.out.println("Calculating...");
+            return a * b;
+        };
+        System.out.println(mul.operation(4, 5));  // Calculating... 20
+    }
+}</pre>
+
+            <h2>5. Built-in Functional Interfaces (Most Used)</h2>
+            <table>
+                <tr>
+                    <th>Interface</th>
+                    <th>Method</th>
+                    <th>Use Case</th>
+                    <th>Lambda Example</th>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">Runnable</span></td>
+                    <td>run()</td>
+                    <td>Threads</td>
+                    <td><span class="code-inline">() -> System.out.println("Thread")</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">Consumer&lt;T&gt;</span></td>
+                    <td>accept(T)</td>
+                    <td>Do something</td>
+                    <td><span class="code-inline">s -> System.out.println(s)</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">Supplier&lt;T&gt;</span></td>
+                    <td>get()</td>
+                    <td>Return value</td>
+                    <td><span class="code-inline">() -> "Hello"</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">Function&lt;T,R&gt;</span></td>
+                    <td>apply(T) → R</td>
+                    <td>Transform</td>
+                    <td><span class="code-inline">x -> x * 2</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">Predicate&lt;T&gt;</span></td>
+                    <td>test(T) → boolean</td>
+                    <td>Filter</td>
+                    <td><span class="code-inline">n -> n > 10</span></td>
+                </tr>
+            </table>
+
+            <h3>Example: Using Built-in Interfaces</h3>
+<pre>import java.util.function.*;
+
+public class BuiltInExample {
+    public static void main(String[] args) {
+
+        // Consumer
+        Consumer&lt;String&gt; print = s -> System.out.println(s);
+        print.accept("Java");  // Java
+
+        // Supplier
+        Supplier&lt;String&gt; hello = () -> "Hello World";
+        System.out.println(hello.get());  // Hello World
+
+        // Function
+        Function&lt;Integer, Integer&gt; square = x -> x * x;
+        System.out.println(square.apply(5));  // 25
+
+        // Predicate
+        Predicate&lt;Integer&gt; isEven = n -> n % 2 == 0;
+        System.out.println(isEven.test(4));  // true
+    }
+}</pre>
+
+            <h2>6. Lambda with Collections & Streams (Most Important!)</h2>
+<pre>import java.util.*;
+import java.util.stream.*;
+
+public class StreamExample {
+    public static void main(String[] args) {
+        List&lt;Integer&gt; nums = Arrays.asList(1, 2, 3, 4, 5, 6);
+
+        // Filter even numbers
+        List&lt;Integer&gt; evens = nums.stream()
+                                  .filter(n -> n % 2 == 0)
+                                  .toList();
+        System.out.println(evens);  // [2, 4, 6]
+
+        // Double each number
+        List&lt;Integer&gt; doubled = nums.stream()
+                                    .map(n -> n * 2)
+                                    .toList();
+        System.out.println(doubled);  // [2, 4, 6, 8, 10, 12]
+
+        // Print each
+        nums.forEach(n -> System.out.print(n + " "));
+        // 1 2 3 4 5 6
+    }
+}</pre>
+
+            <h2>7. Method Reference (::) – Shorter than Lambda</h2>
+            <table>
+                <tr>
+                    <th>Lambda</th>
+                    <th>Method Reference</th>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">x -> System.out.println(x)</span></td>
+                    <td><span class="code-inline">System.out::println</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">s -> s.toUpperCase()</span></td>
+                    <td><span class="code-inline">String::toUpperCase</span></td>
+                </tr>
+                <tr>
+                    <td><span class="code-inline">(a,b) -> Math.max(a,b)</span></td>
+                    <td><span class="code-inline">Math::max</span></td>
+                </tr>
+            </table>
+
+            <h3>Example:</h3>
+<pre>List&lt;String&gt; names = Arrays.asList("alice", "bob");
+
+// Lambda
+names.forEach(name -> System.out.println(name.toUpperCase()));
+
+// Method Reference (Better)
+names.forEach(System.out::println);  // Just print
+names.forEach(String::toUpperCase);  // Print uppercase</pre>
+
+            <h2>8. Variable Capture in Lambda (Important Rule)</h2>
+            <div class="note-box">
+                Lambda can use variables from outside, but:
+                <br><br>
+                <strong>Local variables must be <span class="highlight">final</span> or effectively final</strong> (not changed after init)
+            </div>
+
+            <h3>✅ Correct</h3>
+<pre>int value = 10;
+Runnable r = () -> System.out.println(value);  // OK
+r.run();</pre>
+
+            <h3>❌ Error (Cannot reassign)</h3>
+<pre>int count = 0;
+Runnable r = () -> System.out.println(count);
+count = 5;  // Error! Cannot modify</pre>
+
+            <h3>✅ Instance variables → OK to modify</h3>
+<pre>class Counter {
+    int count = 0;
+    Runnable r = () -> count++;  // OK
+}</pre>
+
+            <h2>9. Full Working Code (Copy-Paste & Run)</h2>
+<pre>// 1. Functional Interface
+@FunctionalInterface
+interface Operation {
+    int apply(int a, int b);
+}
+
+// 2. Main Class
+public class LambdaNotes {
+    public static void main(String[] args) {
+
+        // Lambda for addition
+        Operation add = (x, y) -> x + y;
+        System.out.println("5 + 3 = " + add.apply(5, 3));
+
+        // Lambda for multiplication
+        Operation mul = (x, y) -> {
+            System.out.println("Multiplying...");
+            return x * y;
+        };
+        System.out.println("4 * 6 = " + mul.apply(4, 6));
+
+        // Using Predicate
+        java.util.function.Predicate&lt;Integer&gt; isPositive = n -> n > 0;
+        System.out.println("10 is positive? " + isPositive.test(10));
+
+        // Stream + Lambda
+        java.util.List&lt;String&gt; cities = java.util.Arrays.asList("Delhi", "Mumbai", "Pune");
+        cities.stream()
+              .filter(city -> city.startsWith("D"))
+              .forEach(System.out::println);  // Delhi
+    }
+}</pre>
+
+            <h2>10. Quick Revision Table</h2>
+            <table>
+                <tr>
+                    <th>Topic</th>
+                    <th>Key Point</th>
+                </tr>
+                <tr>
+                    <td>Functional Interface</td>
+                    <td>1 abstract method</td>
+                </tr>
+                <tr>
+                    <td>Lambda</td>
+                    <td>(params) -> action</td>
+                </tr>
+                <tr>
+                    <td>Use with</td>
+                    <td>Functional Interface only</td>
+                </tr>
+                <tr>
+                    <td>No need</td>
+                    <td>Class name, method name</td>
+                </tr>
+                <tr>
+                    <td>Streams</td>
+                    <td>filter(), map(), forEach()</td>
+                </tr>
+                <tr>
+                    <td>Method Reference</td>
+                    <td>Class::method</td>
+                </tr>
+                <tr>
+                    <td>Variable Rule</td>
+                    <td>Local var → final</td>
+                </tr>
+            </table>
+
+            <div class="practice-section">
+                <h3>📝 Practice Questions</h3>
+                <ol>
+                    <li>Write a functional interface <span class="code-inline">Checker</span> with method <span class="code-inline">boolean check(String s)</span></li>
+                    <li>Use lambda to check if string length > 5</li>
+                    <li>Use <span class="code-inline">Function&lt;String, Integer&gt;</span> to get string length</li>
+                    <li>Filter list of names starting with "A"</li>
+                    <li>Use method reference to print list</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
