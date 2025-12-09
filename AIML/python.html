@@ -1,0 +1,1954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Basics - Complete Beginner's Guide</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --accent-color: #2c3e50;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --primary-highlight: #3498db;
+            --section-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Card Style for Sections */
+        section {
+            background: var(--section-bg);
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Typography */
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            border-bottom: 3px solid var(--primary-highlight);
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: var(--primary-highlight);
+            border-left: 5px solid var(--accent-color);
+            padding-left: 15px;
+            margin-top: 40px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: var(--accent-color);
+            margin-top: 25px;
+            font-size: 1.4em;
+        }
+
+        p,
+        ul {
+            margin-bottom: 15px;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.95em;
+            border-left: 5px solid #dcdcdc;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        code {
+            font-family: inherit;
+        }
+
+        /* Syntax Highlighting Simulation */
+        .comment {
+            color: #6a9955;
+        }
+
+        .keyword {
+            color: #569cd6;
+        }
+
+        .string {
+            color: #ce9178;
+        }
+
+        .number {
+            color: #b5cea8;
+        }
+
+        /* Tables/Lists */
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        /* Utility */
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            color: #856404;
+        }
+
+        .image-placeholder {
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Python Basics: Complete Beginner's Guide</h1>
+
+        <section>
+            <h2>1.1 Python Fundamentals</h2>
+
+            <h3>Variables</h3>
+            <p>Variables are containers that store data. In Python, you don't need to declare the type - Python
+                automatically figures it out.</p>
+
+            <pre><code><span class="comment"># Variable naming rules:</span>
+<span class="comment"># - Start with letter or underscore</span>
+<span class="comment"># - Can contain letters, numbers, underscore</span>
+<span class="comment"># - Case sensitive (age and Age are different)</span>
+
+name = <span class="string">"Rahul"</span>
+age = <span class="number">25</span>
+height = <span class="number">5.8</span>
+is_student = <span class="keyword">True</span></code></pre>
+
+            <h3>Data Types</h3>
+            <p><strong>int (Integer)</strong> - Whole numbers</p>
+            <pre><code>x = <span class="number">10</span>
+y = <span class="number">-5</span>
+z = <span class="number">0</span>
+print(type(x))  <span class="comment"># &lt;class 'int'&gt;</span></code></pre>
+
+            <p><strong>float</strong> - Decimal numbers</p>
+            <pre><code>pi = <span class="number">3.14</span>
+temperature = <span class="number">-2.5</span>
+print(type(pi))  <span class="comment"># &lt;class 'float'&gt;</span></code></pre>
+
+            <p><strong>str (String)</strong> - Text</p>
+            <pre><code>name = <span class="string">"Python"</span>
+city = <span class="string">'Mumbai'</span>
+print(type(name))  <span class="comment"># &lt;class 'str'&gt;</span></code></pre>
+
+            <p><strong>bool (Boolean)</strong> - True or False</p>
+            <pre><code>is_raining = <span class="keyword">True</span>
+has_passport = <span class="keyword">False</span>
+print(type(is_raining))  <span class="comment"># &lt;class 'bool'&gt;</span></code></pre>
+
+            <h3>Type Casting</h3>
+            <p>Converting one data type to another.</p>
+            <pre><code><span class="comment"># String to Integer</span>
+age_str = <span class="string">"25"</span>
+age_int = int(age_str)
+print(age_int + <span class="number">5</span>)  <span class="comment"># 30</span>
+
+<span class="comment"># Integer to String</span>
+marks = <span class="number">95</span>
+marks_str = str(marks)
+print(<span class="string">"Marks: "</span> + marks_str)  <span class="comment"># Marks: 95</span>
+
+<span class="comment"># String to Float</span>
+price = <span class="string">"99.99"</span>
+price_float = float(price)
+print(price_float)  <span class="comment"># 99.99</span>
+
+<span class="comment"># Integer to Float</span>
+x = <span class="number">10</span>
+y = float(x)
+print(y)  <span class="comment"># 10.0</span>
+
+<span class="comment"># Float to Integer (decimals removed)</span>
+z = <span class="number">3.99</span>
+z_int = int(z)
+print(z_int)  <span class="comment"># 3</span></code></pre>
+
+            <h3>Comments</h3>
+            <p>Comments are ignored by Python - used for explanation.</p>
+            <pre><code><span class="comment"># This is a single line comment</span>
+
+<span class="string">"""
+This is a 
+multi-line comment
+or docstring
+"""</span>
+
+x = <span class="number">10</span>  <span class="comment"># inline comment</span></code></pre>
+
+            <h3>Input / Output</h3>
+            <pre><code><span class="comment"># Output</span>
+print(<span class="string">"Hello World"</span>)
+print(<span class="string">"Name:"</span>, <span class="string">"Rahul"</span>, <span class="string">"Age:"</span>, <span class="number">25</span>)
+
+<span class="comment"># Input (always returns string)</span>
+name = input(<span class="string">"Enter your name: "</span>)
+age = input(<span class="string">"Enter your age: "</span>)
+age = int(age)  <span class="comment"># convert to integer</span>
+
+print(f<span class="string">"Hello {name}, you are {age} years old"</span>)</code></pre>
+
+            <h3>Operators</h3>
+
+            <h4>Arithmetic Operators</h4>
+            <p><strong>Theory:</strong> Arithmetic operators are used to perform basic mathematical operations such as
+                addition, subtraction, multiplication, division, modulus, floor division, and exponentiation.</p>
+
+            <pre><code>a = <span class="number">10</span>
+b = <span class="number">3</span>
+
+print(a + b)   <span class="comment"># 13 (Addition)</span>
+print(a - b)   <span class="comment"># 7  (Subtraction)</span>
+print(a * b)   <span class="comment"># 30 (Multiplication)</span>
+print(a / b)   <span class="comment"># 3.333... (Division - always float)</span>
+print(a // b)  <span class="comment"># 3  (Floor Division - integer result)</span>
+print(a % b)   <span class="comment"># 1  (Modulus - remainder)</span>
+print(a ** b)  <span class="comment"># 1000 (Exponentiation - 10^3)</span></code></pre>
+
+            <h4>Assignment Operators</h4>
+            <p><strong>Theory:</strong> Assignment operators store a value in a variable. Combined assignment operators
+                like +=, -=, *= allow updating variables in a shorter form.</p>
+
+            <pre><code>x = <span class="number">5</span>      <span class="comment"># Assign</span>
+x += <span class="number">3</span>     <span class="comment"># x = x + 3  → x = 8</span>
+x -= <span class="number">2</span>     <span class="comment"># x = x - 2  → x = 6</span>
+x *= <span class="number">4</span>     <span class="comment"># x = x * 4  → x = 24</span>
+x /= <span class="number">3</span>     <span class="comment"># x = x / 3  → x = 8.0</span>
+x //= <span class="number">2</span>    <span class="comment"># x = x // 2 → x = 4.0</span>
+x %= <span class="number">3</span>     <span class="comment"># x = x % 3  → x = 1.0</span>
+x **= <span class="number">2</span>    <span class="comment"># x = x ** 2 → x = 1.0</span></code></pre>
+
+            <h4>Comparison Operators (Return True/False)</h4>
+            <p><strong>Theory:</strong> Comparison operators compare two values and return True or False. They are
+                mainly used in conditions and decision-making.</p>
+
+            <pre><code>a = <span class="number">10</span>
+b = <span class="number">5</span>
+
+print(a == b)  <span class="comment"># False (Equal to)</span>
+print(a != b)  <span class="comment"># True  (Not equal to)</span>
+print(a > b)   <span class="comment"># True  (Greater than)</span>
+print(a < b)   <span class="comment"># False (Less than)</span>
+print(a >= b)  <span class="comment"># True  (Greater than or equal)</span>
+print(a <= b)  <span class="comment"># False (Less than or equal)</span></code></pre>
+
+            <h4>Logical Operators</h4>
+            <p><strong>Theory:</strong> Logical operators (and, or, not) are used to combine multiple conditions and
+                return a boolean value (True/False).</p>
+
+            <pre><code>x = <span class="keyword">True</span>
+y = <span class="keyword">False</span>
+
+print(x <span class="keyword">and</span> y)  <span class="comment"># False (Both must be True)</span>
+print(x <span class="keyword">or</span> y)   <span class="comment"># True  (At least one must be True)</span>
+print(<span class="keyword">not</span> x)    <span class="comment"># False (Opposite)</span>
+
+<span class="comment"># Practical example</span>
+age = <span class="number">20</span>
+has_id = <span class="keyword">True</span>
+
+can_enter = age >= <span class="number">18</span> <span class="keyword">and</span> has_id
+print(can_enter)  <span class="comment"># True</span></code></pre>
+
+            <h4>Bitwise Operators (Work on binary)</h4>
+            <p><strong>Theory:</strong> Bitwise operators work on the binary form of numbers and perform operations like
+                AND, OR, XOR, NOT, left shift, and right shift.</p>
+
+            <pre><code>a = <span class="number">5</span>   <span class="comment"># 0101 in binary</span>
+b = <span class="number">3</span>   <span class="comment"># 0011 in binary</span>
+
+print(a & b)   <span class="comment"># 1  (0001 - AND)</span>
+print(a | b)   <span class="comment"># 7  (0111 - OR)</span>
+print(a ^ b)   <span class="comment"># 6  (0110 - XOR)</span>
+print(~a)      <span class="comment"># -6 (Complement)</span>
+print(a << 1)  <span class="comment"># 10 (Left shift)</span>
+print(a >> 1)  <span class="comment"># 2  (Right shift)</span></code></pre>
+
+            <h4>Membership Operators</h4>
+            <p><strong>Theory:</strong> Membership operators (in, not in) check whether a value exists inside a sequence
+                such as a list, string, or tuple.</p>
+
+            <pre><code>fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>]
+
+print(<span class="string">"apple"</span> <span class="keyword">in</span> fruits)       <span class="comment"># True</span>
+print(<span class="string">"orange"</span> <span class="keyword">in</span> fruits)      <span class="comment"># False</span>
+print(<span class="string">"orange"</span> <span class="keyword">not in</span> fruits)  <span class="comment"># True</span>
+
+text = <span class="string">"Hello World"</span>
+print(<span class="string">"Hello"</span> <span class="keyword">in</span> text)  <span class="comment"># True</span></code></pre>
+
+            <h4>Identity Operators</h4>
+            <p><strong>Theory:</strong> Identity operators (is, is not) compare the memory location of two objects, not
+                just their values.</p>
+
+            <pre><code>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+b = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+c = a
+
+print(a <span class="keyword">is</span> c)      <span class="comment"># True  (Same object in memory)</span>
+print(a <span class="keyword">is</span> b)      <span class="comment"># False (Different objects)</span>
+print(a == b)      <span class="comment"># True  (Same values)</span>
+print(a <span class="keyword">is not</span> b)  <span class="comment"># True</span></code></pre>
+        </section>
+
+
+        <section>
+            <h2>1.2 Strings Mastery</h2>
+
+            <div class="image-placeholder">
+
+            </div>
+
+            <h3>String Indexing & Slicing</h3>
+            <p><strong>Theory:</strong> Indexing lets you access a single character by position (zero-based). Slicing
+                extracts a substring using <code>start:end:step</code>. Negative indexes count from the end. Use slicing
+                to reverse a string (<code>s[::-1]</code>), skip characters (<code>step</code>), or get substrings.</p>
+            <pre><code>text = <span class="string">"Python"</span>
+<span class="comment">#        012345  (positive indexing)</span>
+<span class="comment">#       -654321  (negative indexing)</span>
+
+<span class="comment"># Indexing</span>
+print(text[0])   <span class="comment"># P</span>
+print(text[-1])  <span class="comment"># n</span>
+print(text[2])   <span class="comment"># t</span>
+
+<span class="comment"># Slicing: string[start:end:step]</span>
+print(text[0:3])    <span class="comment"># Pyt (0 to 2)</span>
+print(text[2:])     <span class="comment"># thon (2 to end)</span>
+print(text[:4])     <span class="comment"># Pyth (start to 3)</span>
+print(text[::2])    <span class="comment"># Pto (every 2nd char)</span>
+print(text[::-1])   <span class="comment"># nohtyP (reverse)</span></code></pre>
+
+            <h3>String Methods</h3>
+            <p><strong>Theory:</strong> Strings are immutable, but methods return new strings. Common methods: case
+                conversion (<code>upper</code>/<code>lower</code>), whitespace trimming (<code>strip</code>),
+                splitting/joining, searching (<code>find</code>/<code>index</code>), replacing, counting, and checks
+                (<code>isalpha</code>, <code>isdigit</code>, <code>isalnum</code>, etc.). Use these to sanitize, parse,
+                and analyze text.</p>
+            <pre><code>text = <span class="string">"  Hello World  "</span>
+
+<span class="comment"># Case conversion</span>
+print(text.upper())      <span class="comment"># "  HELLO WORLD  "</span>
+print(text.lower())      <span class="comment"># "  hello world  "</span>
+print(text.capitalize()) <span class="comment"># "  hello world  "</span>
+print(text.title())      <span class="comment"># "  Hello World  "</span>
+
+<span class="comment"># Whitespace removal</span>
+print(text.strip())      <span class="comment"># "Hello World"</span>
+print(text.lstrip())     <span class="comment"># "Hello World  "</span>
+print(text.rstrip())     <span class="comment"># "  Hello World"</span>
+
+<span class="comment"># Splitting and joining</span>
+sentence = <span class="string">"Python is awesome"</span>
+words = sentence.split()        <span class="comment"># ['Python', 'is', 'awesome']</span>
+print(words)
+
+csv = <span class="string">"apple,banana,mango"</span>
+fruits = csv.split(<span class="string">","</span>)         <span class="comment"># ['apple', 'banana', 'mango']</span>
+print(fruits)
+
+joined = <span class="string">"-"</span>.join(words)        <span class="comment"># "Python-is-awesome"</span>
+print(joined)
+
+<span class="comment"># Replacing</span>
+text = <span class="string">"I love Java"</span>
+new_text = text.replace(<span class="string">"Java"</span>, <span class="string">"Python"</span>)
+print(new_text)  <span class="comment"># "I love Python"</span>
+
+<span class="comment"># Finding</span>
+sentence = <span class="string">"Python programming"</span>
+print(sentence.find(<span class="string">"pro"</span>))      <span class="comment"># 7 (index where found)</span>
+print(sentence.find(<span class="string">"xyz"</span>))      <span class="comment"># -1 (not found)</span>
+print(sentence.index(<span class="string">"pro"</span>))     <span class="comment"># 7 (raises error if not found)</span>
+
+<span class="comment"># Counting</span>
+text = <span class="string">"banana"</span>
+print(text.count(<span class="string">"a"</span>))  <span class="comment"># 3</span>
+
+<span class="comment"># Checking</span>
+print(<span class="string">"hello"</span>.isalpha())     <span class="comment"># True (all letters)</span>
+print(<span class="string">"123"</span>.isdigit())       <span class="comment"># True (all digits)</span>
+print(<span class="string">"hello123"</span>.isalnum())  <span class="comment"># True (letters + digits)</span>
+print(<span class="string">"HELLO"</span>.isupper())     <span class="comment"># True</span>
+print(<span class="string">"hello"</span>.islower())     <span class="comment"># True</span>
+print(<span class="string">"   "</span>.isspace())       <span class="comment"># True</span></code></pre>
+
+            <h3>Escape Characters</h3>
+            <p><strong>Theory:</strong> Escape sequences (starting with backslash) insert special characters into
+                strings: newline (<code>\n</code>), tab (<code>\t</code>), backslash (<code>\\</code>), quotes
+                (<code>\'</code>, <code>\"</code>). Use raw strings (<code>r"..."</code>) when you want to treat
+                backslashes literally (e.g., file paths, regex).</p>
+            <pre><code><span class="comment"># \n - New line</span>
+print(<span class="string">"Hello\nWorld"</span>)
+<span class="comment"># Output:</span>
+<span class="comment"># Hello</span>
+<span class="comment"># World</span>
+
+<span class="comment"># \t - Tab</span>
+print(<span class="string">"Name:\tRahul"</span>)  <span class="comment"># Name:    Rahul</span>
+
+<span class="comment"># \\ - Backslash</span>
+print(<span class="string">"C:\\Users\\Desktop"</span>)  <span class="comment"># C:\Users\Desktop</span>
+
+<span class="comment"># \' - Single quote</span>
+print(<span class="string">'It\'s a nice day'</span>)  <span class="comment"># It's a nice day</span>
+
+<span class="comment"># \" - Double quote</span>
+print(<span class="string">"He said \"Hello\""</span>)  <span class="comment"># He said "Hello"</span></code></pre>
+
+            <h3>f-strings (Formatted strings)</h3>
+            <p><strong>Theory:</strong> f-strings (Python 3.6+) offer concise, readable interpolation: prefix the string
+                with <code>f</code> and include expressions inside <code>{}</code>. They support formatting options
+                (width, precision, alignment) and expressions inside braces.</p>
+            <pre><code>name = <span class="string">"Rahul"</span>
+age = <span class="number">25</span>
+height = <span class="number">5.8</span>
+
+<span class="comment"># f-string (Python 3.6+)</span>
+print(f<span class="string">"My name is {name}, I am {age} years old"</span>)
+
+<span class="comment"># Expressions inside f-strings</span>
+print(f<span class="string">"Next year I will be {age + 1}"</span>)
+
+<span class="comment"># Formatting numbers</span>
+price = <span class="number">1234.5678</span>
+print(f<span class="string">"Price: ₹{price:.2f}"</span>)  <span class="comment"># Price: ₹1234.57</span>
+
+<span class="comment"># Alignment</span>
+print(f<span class="string">"{'Left':&lt;10}|"</span>)    <span class="comment"># Left       |</span>
+print(f<span class="string">"{'Center':^10}|"</span>)  <span class="comment">#   Center   |</span>
+print(f<span class="string">"{'Right':&gt;10}|"</span>)   <span class="comment">#       Right|</span></code></pre>
+
+            <h3>Multi-line Strings</h3>
+            <p><strong>Theory:</strong> Triple-quoted strings allow multi-line text and are often used for docstrings.
+                You can also concatenate literals across lines using parentheses for readability; this does not insert
+                newlines automatically.</p>
+            <pre><code><span class="comment"># Using triple quotes</span>
+poem = <span class="string">"""Roses are red,
+Violets are blue,
+Python is awesome,
+And so are you!"""</span>
+
+print(poem)
+
+<span class="comment"># For code readability (ignoring newlines)</span>
+text = (<span class="string">"This is a very long string "</span>
+        <span class="string">"that spans multiple lines "</span>
+        <span class="string">"for better readability"</span>)
+print(text)</code></pre>
+
+            <h3>Interview Questions (Strings)</h3>
+            <p><strong>Theory:</strong> These are common string-focused interview questions. Practice both writing code
+                and explaining time/space trade-offs (most string operations are O(n) where n = length of string).</p>
+            <ol>
+                <li>
+                    <strong>How do you reverse a string in Python?</strong>
+                    <pre><code># Using slicing
+s = "Python"
+rev = s[::-1]  # "nohtyP"</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to check if a string is a palindrome?</strong>
+                    <pre><code>s = "madam"
+is_pal = s == s[::-1]  # True if palindrome</code></pre>
+                </li>
+
+                <li>
+                    <strong>Remove duplicates from a string while preserving order?</strong>
+                    <pre><code>def remove_dup(s):
+    seen = set()
+    out = []
+    for ch in s:
+        if ch not in seen:
+            seen.add(ch)
+            out.append(ch)
+    return ''.join(out)</code></pre>
+                </li>
+
+                <li>
+                    <strong>Count occurrences of each character in a string?</strong>
+                    <pre><code>from collections import Counter
+cnt = Counter("banana")  # Counter({'a': 3, 'n': 2, 'b': 1})</code></pre>
+                </li>
+
+                <li>
+                    <strong>Find the first non-repeating character?</strong>
+                    <pre><code>from collections import OrderedDict
+s = "swiss"
+counts = OrderedDict()
+for ch in s:
+    counts[ch] = counts.get(ch, 0) + 1
+first = next((ch for ch, c in counts.items() if c == 1), None)</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to check if two strings are anagrams?</strong>
+                    <pre><code># Simple method
+sorted(s1) == sorted(s2)</code></pre>
+                    <small>Explain that sorting is O(n log n); using counts (Counter) is O(n).</small>
+                </li>
+
+                <li>
+                    <strong>How to convert a string to title case or capitalize each word?</strong>
+                    <pre><code>"hello world".title()  # "Hello World"</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to efficiently check substring existence?</strong>
+                    <pre><code># Use 'in' operator (Python uses efficient search)
+"pro" in "Python programming"  # True</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to replace all occurrences of a substring?</strong>
+                    <pre><code>s = "I love Java"
+s = s.replace("Java", "Python")  # "I love Python"</code></pre>
+                </li>
+
+                <li>
+                    <strong>Explain immutability of Python strings and its consequences.</strong>
+                    <p>Strings cannot be changed in-place. Operations that modify strings return new string objects. For
+                        many small concatenations use <code>list.append</code> + <code>''.join()</code> for performance
+                        instead of repeated <code>+=</code>.</p>
+                </li>
+            </ol>
+        </section>
+
+
+        <section>
+            <h2>1.3 Control Statements</h2>
+
+            <h3>if / elif / else</h3>
+            <p><strong>Theory:</strong> Conditional statements let your program make decisions. Use <code>if</code> to
+                run code when a condition is true, <code>elif</code> for additional checks, and <code>else</code> for
+                the default action when none of the conditions match. Conditions evaluate to boolean values and can be
+                combined with logical operators.</p>
+            <pre><code><span class="comment"># Basic if</span>
+age = <span class="number">20</span>
+if age >= <span class="number">18</span>:
+    print(<span class="string">"You can vote"</span>)
+
+<span class="comment"># if-else</span>
+temperature = <span class="number">35</span>
+if temperature > <span class="number">30</span>:
+    print(<span class="string">"It's hot!"</span>)
+else:
+    print(<span class="string">"It's pleasant"</span>)
+
+<span class="comment"># if-elif-else</span>
+marks = <span class="number">85</span>
+
+if marks >= <span class="number">90</span>:
+    grade = <span class="string">"A"</span>
+elif marks >= <span class="number">80</span>:
+    grade = <span class="string">"B"</span>
+elif marks >= <span class="number">70</span>:
+    grade = <span class="string">"C"</span>
+elif marks >= <span class="number">60</span>:
+    grade = <span class="string">"D"</span>
+else:
+    grade = <span class="string">"F"</span>
+
+print(f<span class="string">"Grade: {grade}"</span>)
+
+<span class="comment"># One-liner (ternary operator)</span>
+age = <span class="number">20</span>
+status = <span class="string">"Adult"</span> if age >= <span class="number">18</span> else <span class="string">"Minor"</span>
+print(status)</code></pre>
+
+            <h3>Nested Conditions</h3>
+            <p><strong>Theory:</strong> Nested conditions are conditionals inside other conditionals. Use them when
+                decisions depend on multiple levels of checks. Keep nesting shallow for readability; often it's better
+                to combine conditions with <code>and</code>/<code>or</code> or extract logic into functions.</p>
+            <pre><code>age = <span class="number">25</span>
+has_license = <span class="keyword">True</span>
+
+if age >= <span class="number">18</span>:
+    if has_license:
+        print(<span class="string">"You can drive"</span>)
+    else:
+        print(<span class="string">"Get a license first"</span>)
+else:
+    print(<span class="string">"You're too young to drive"</span>)
+
+<span class="comment"># Practical example</span>
+username = <span class="string">"admin"</span>
+password = <span class="string">"1234"</span>
+
+if username == <span class="string">"admin"</span>:
+    if password == <span class="string">"1234"</span>:
+        print(<span class="string">"Login successful"</span>)
+    else:
+        print(<span class="string">"Wrong password"</span>)
+else:
+    print(<span class="string">"User not found"</span>)</code></pre>
+
+            <h3>Match Case (Python 3.10+)</h3>
+            <p><strong>Theory:</strong> <code>match</code>/<code>case</code> provides pattern matching similar to
+                switch-case in other languages but more powerful. It matches values and patterns, supports OR patterns,
+                guards (using <code>if</code>), and can destructure complex data. Use it for clearer branch logic when
+                matching many discrete cases.</p>
+            <pre><code><span class="comment"># Like switch-case in other languages</span>
+day = <span class="number">3</span>
+
+match day:
+    case <span class="number">1</span>:
+        print(<span class="string">"Monday"</span>)
+    case <span class="number">2</span>:
+        print(<span class="string">"Tuesday"</span>)
+    case <span class="number">3</span>:
+        print(<span class="string">"Wednesday"</span>)
+    case <span class="number">4</span>:
+        print(<span class="string">"Thursday"</span>)
+    case <span class="number">5</span>:
+        print(<span class="string">"Friday"</span>)
+    case <span class="number">6</span> | <span class="number">7</span>:  <span class="comment"># OR condition</span>
+        print(<span class="string">"Weekend"</span>)
+    case _:  <span class="comment"># Default</span>
+        print(<span class="string">"Invalid day"</span>)
+
+<span class="comment"># Match with conditions</span>
+number = <span class="number">15</span>
+
+match number:
+    case n if n < <span class="number">0</span>:
+        print(<span class="string">"Negative"</span>)
+    case <span class="number">0</span>:
+        print(<span class="string">"Zero"</span>)
+    case n if n > <span class="number">0</span>:
+        print(<span class="string">"Positive"</span>)</code></pre>
+        </section>
+
+
+        <section>
+            <h2>1.4 Loops</h2>
+
+            <h3>for Loop</h3>
+            <p><strong>Theory:</strong> The <code>for</code> loop in Python iterates over iterable objects (like ranges,
+                lists, strings, dictionaries). It runs the loop body once for each item. Use <code>range()</code> to
+                generate numeric sequences. Prefer <code>for</code> when you know the number of iterations or when
+                iterating over a collection.</p>
+            <pre><code><span class="comment"># Loop through range</span>
+for i in range(<span class="number">5</span>):  <span class="comment"># 0 to 4</span>
+    print(i)
+
+<span class="comment"># Range with start and end</span>
+for i in range(<span class="number">2</span>, <span class="number">6</span>):  <span class="comment"># 2 to 5</span>
+    print(i)
+
+<span class="comment"># Range with step</span>
+for i in range(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>):  <span class="comment"># 0, 2, 4, 6, 8</span>
+    print(i)
+
+<span class="comment"># Loop through list</span>
+fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>]
+for fruit in fruits:
+    print(fruit)
+
+<span class="comment"># Loop with index</span>
+for index, fruit in enumerate(fruits):
+    print(f<span class="string">"{index}: {fruit}"</span>)
+
+<span class="comment"># Loop through string</span>
+for char in <span class="string">"Python"</span>:
+    print(char)
+
+<span class="comment"># Loop through dictionary</span>
+person = {<span class="string">"name"</span>: <span class="string">"Rahul"</span>, <span class="string">"age"</span>: <span class="number">25</span>, <span class="string">"city"</span>: <span class="string">"Mumbai"</span>}
+
+for key in person:
+    print(key, person[key])
+
+<span class="comment"># Better way</span>
+for key, value in person.items():
+    print(f<span class="string">"{key}: {value}"</span>)</code></pre>
+
+            <h3>while Loop</h3>
+            <p><strong>Theory:</strong> The <code>while</code> loop repeats a block as long as a condition is true. Use
+                it for unknown numbers of iterations or when looping depends on dynamic conditions (like user input).
+                Always ensure the loop condition will eventually become false (or include a <code>break</code>) to avoid
+                infinite loops.</p>
+            <pre><code><span class="comment"># Basic while loop</span>
+count = <span class="number">0</span>
+while count < <span class="number">5</span>:
+    print(count)
+    count += <span class="number">1</span>
+
+<span class="comment"># User input validation</span>
+password = <span class="string">""</span>
+while password != <span class="string">"1234"</span>:
+    password = input(<span class="string">"Enter password: "</span>)
+print(<span class="string">"Access granted!"</span>)
+
+<span class="comment"># Infinite loop (use with caution)</span>
+<span class="comment"># while True:</span>
+<span class="comment">#     print("This runs forever")</span>
+<span class="comment">#     break  # Use break to exit</span></code></pre>
+
+            <h3>break, continue, pass</h3>
+            <p><strong>Theory:</strong> Control keywords to manage loop flow:
+            <ul>
+                <li><code>break</code> — exit the loop immediately.</li>
+                <li><code>continue</code> — skip the rest of the current iteration and continue with next.</li>
+                <li><code>pass</code> — do nothing; placeholder where code is required syntactically.</li>
+            </ul>
+            Use these to control behavior inside loops, but avoid overusing them — clear loop logic is easier to read
+            and maintain.</p>
+            <pre><code><span class="comment"># break - Exit loop completely</span>
+for i in range(<span class="number">10</span>):
+    if i == <span class="number">5</span>:
+        break  <span class="comment"># Stop at 5</span>
+    print(i)  <span class="comment"># 0, 1, 2, 3, 4</span>
+
+<span class="comment"># continue - Skip current iteration</span>
+for i in range(<span class="number">5</span>):
+    if i == <span class="number">2</span>:
+        continue  <span class="comment"># Skip 2</span>
+    print(i)  <span class="comment"># 0, 1, 3, 4</span>
+
+<span class="comment"># pass - Do nothing (placeholder)</span>
+for i in range(<span class="number">5</span>):
+    if i == <span class="number">2</span>:
+        pass  <span class="comment"># Will implement later</span>
+    print(i)  <span class="comment"># 0, 1, 2, 3, 4</span>
+
+<span class="comment"># Practical example</span>
+numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>]
+for num in numbers:
+    if num % <span class="number">2</span> == <span class="number">0</span>:
+        continue  <span class="comment"># Skip even numbers</span>
+    print(num)  <span class="comment"># Prints odd numbers only</span></code></pre>
+
+            <h3>Loop else</h3>
+            <p><strong>Theory:</strong> Loops support an <code>else</code> clause that runs only if the loop completes
+                normally (i.e., no <code>break</code> executed). This is useful for search operations (run
+                <code>else</code> when item not found) and some algorithms. Remember: <code>else</code> runs when loop
+                finishes, not when condition is false for the first time.
+            </p>
+            <pre><code><span class="comment"># else runs when loop completes normally (without break)</span>
+
+<span class="comment"># Example 1: Search in list</span>
+numbers = [<span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">9</span>]
+search = <span class="number">4</span>
+
+for num in numbers:
+    if num == search:
+        print(<span class="string">"Found!"</span>)
+        break
+else:
+    print(<span class="string">"Not found"</span>)  <span class="comment"># This will run</span>
+
+<span class="comment"># Example 2: Prime number check</span>
+n = <span class="number">17</span>
+for i in range(<span class="number">2</span>, n):
+    if n % i == <span class="number">0</span>:
+        print(f<span class="string">"{n} is not prime"</span>)
+        break
+else:
+    print(f<span class="string">"{n} is prime"</span>)
+
+<span class="comment"># Works with while too</span>
+count = <span class="number">0</span>
+while count < <span class="number">3</span>:
+    count += <span class="number">1</span>
+else:
+    print(<span class="string">"Loop completed"</span>)  <span class="comment"># This runs</span></code></pre>
+
+            <h3>Interview Questions & Practice (Loops)</h3>
+            <p><strong>Theory:</strong> Interview loop questions test understanding of iteration, complexity
+                (time/space), loop control flow (<code>break</code>/<code>continue</code>), and correct use of data
+                structures with loops. Most loop operations are O(n) where n is number of iterations; nested loops often
+                make O(n²).</p>
+
+            <ol>
+                <li>
+                    <strong>Write a for-loop to compute the factorial of n.</strong>
+                    <pre><code>def factorial(n):
+    result = 1
+    for i in range(1, n+1):
+        result *= i
+    return result
+
+# Example:
+# factorial(5) -> 120</code></pre>
+                </li>
+
+                <li>
+                    <strong>Find the largest element in a list without using built-in <code>max()</code>.</strong>
+                    <pre><code>def find_max(lst):
+    if not lst:
+        return None
+    m = lst[0]
+    for x in lst[1:]:
+        if x > m:
+            m = x
+    return m</code></pre>
+                </li>
+
+                <li>
+                    <strong>Reverse a list in-place using a loop (no slicing).</strong>
+                    <pre><code>def reverse_inplace(lst):
+    i, j = 0, len(lst)-1
+    while i < j:
+        lst[i], lst[j] = lst[j], lst[i]
+        i += 1
+        j -= 1</code></pre>
+                </li>
+
+                <li>
+                    <strong>Remove duplicates from a list while preserving order.</strong>
+                    <pre><code>def remove_dup(lst):
+    seen = set()
+    out = []
+    for x in lst:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out</code></pre>
+                </li>
+
+                <li>
+                    <strong>Check if a number is prime (efficiently stop early).</strong>
+                    <pre><code>def is_prime(n):
+    if n <= 1:
+        return False
+    i = 2
+    while i * i <= n:
+        if n % i == 0:
+            return False
+        i += 1
+    return True</code></pre>
+                </li>
+
+                <li>
+                    <strong>Explain difference between <code>for</code> and <code>while</code> with an example when
+                        <code>while</code> is preferred.</strong>
+                    <p>Answer: <code>for</code> is preferred when iterating known-size sequences; <code>while</code> is
+                        preferred when number of iterations depends on runtime conditions (e.g., read user input until a
+                        sentinel value).</p>
+                </li>
+
+                <li>
+                    <strong>Use loop-else to search a value and explain when <code>else</code> will run.</strong>
+                    <pre><code>for x in data:
+    if x == target:
+        print("Found")
+        break
+else:
+    print("Not Found")  # runs when not broken (target absent)</code></pre>
+                </li>
+
+                <li>
+                    <strong>Given a list of integers, print all pairs whose sum is K — naive O(n²) approach and a better
+                        O(n) approach.</strong>
+                    <pre><code># Naive (O(n^2))
+for i in range(len(arr)):
+    for j in range(i+1, len(arr)):
+        if arr[i] + arr[j] == K:
+            print(arr[i], arr[j])
+
+# Using hash-set (O(n))
+seen = set()
+for num in arr:
+    if (K - num) in seen:
+        print(num, K - num)
+    seen.add(num)</code></pre>
+                </li>
+
+                <li>
+                    <strong>Practice problem: Print first N Fibonacci numbers (iterative).</strong>
+                    <pre><code>def fib_n(n):
+    a, b = 0, 1
+    out = []
+    for _ in range(n):
+        out.append(a)
+        a, b = b, a + b
+    return out
+
+# fib_n(6) -> [0,1,1,2,3,5]</code></pre>
+                </li>
+
+                <li>
+                    <strong>Practice problem: Detect loop (cycle) in a singly linked list — describe approach using
+                        loops.</strong>
+                    <p>Answer (theory): Use Floyd’s cycle-finding algorithm: two pointers (slow, fast). Move slow by 1
+                        and fast by 2 inside a loop; if they meet, a cycle exists. This uses loops and runs in O(n) time
+                        and O(1) space.</p>
+                </li>
+            </ol>
+
+            <h4>Extra Practice Exercises (for interviews)</h4>
+            <ol>
+                <li>Given an integer array, move all zeros to the end while preserving order (in-place).</li>
+                <li>Given a string, print all substrings (understand complexity).</li>
+                <li>Given a matrix, traverse it in spiral order.</li>
+                <li>Implement binary search using a loop (not recursion).</li>
+                <li>Given a list, rotate it by k positions to the right (in-place).</li>
+            </ol>
+
+            <h4>Short Tips for Interviews</h4>
+            <ul>
+                <li>Explain time and space complexity when writing loop solutions.</li>
+                <li>Avoid unnecessary nested loops; think of hash maps/sets to reduce complexity.</li>
+                <li>Show edge-case handling (empty list, single element, negative values).</li>
+                <li>Write clean, readable loop code and mention termination condition for <code>while</code> loops to
+                    avoid infinite loops.</li>
+            </ul>
+        </section>
+
+
+        <section>
+            <h2>1.5 Data Structures (Basics)</h2>
+
+            <div class="image-placeholder">
+
+            </div>
+
+            <h3>List</h3>
+            <p><strong>Theory:</strong> A <code>list</code> is an ordered, mutable collection that can hold
+                heterogeneous items and allows duplicates. Lists are implemented as dynamic arrays in CPython: indexing
+                and assignment are O(1), inserting/removing at the end is amortized O(1), while inserting/removing at
+                arbitrary positions and searching are O(n). Use lists when order matters and you need fast indexed
+                access.</p>
+            <pre><code><span class="comment"># Creating lists</span>
+fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>]
+numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]
+mixed = [<span class="number">1</span>, <span class="string">"hello"</span>, <span class="number">3.14</span>, <span class="keyword">True</span>]
+empty = []
+
+<span class="comment"># Accessing elements</span>
+print(fruits[0])   <span class="comment"># apple</span>
+print(fruits[-1])  <span class="comment"># mango</span>
+
+<span class="comment"># Slicing</span>
+print(fruits[0:2])  <span class="comment"># ['apple', 'banana']</span>
+
+<span class="comment"># Adding elements</span>
+fruits.append(<span class="string">"orange"</span>)        <span class="comment"># Add at end</span>
+fruits.insert(1, <span class="string">"grapes"</span>)     <span class="comment"># Add at index</span>
+fruits.extend([<span class="string">"kiwi"</span>, <span class="string">"pear"</span>])  <span class="comment"># Add multiple</span>
+
+<span class="comment"># Removing elements</span>
+fruits.remove(<span class="string">"banana"</span>)  <span class="comment"># Remove by value</span>
+popped = fruits.pop()    <span class="comment"># Remove and return last</span>
+popped = fruits.pop(0)   <span class="comment"># Remove at index</span>
+del fruits[1]            <span class="comment"># Delete at index</span>
+fruits.clear()           <span class="comment"># Remove all</span>
+
+<span class="comment"># Other operations</span>
+fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>]
+print(len(fruits))          <span class="comment"># 3</span>
+print(<span class="string">"apple"</span> <span class="keyword">in</span> fruits)    <span class="comment"># True</span>
+print(fruits.count(<span class="string">"apple"</span>)) <span class="comment"># 1</span>
+print(fruits.index(<span class="string">"banana"</span>)) <span class="comment"># 1</span>
+
+<span class="comment"># Sorting</span>
+numbers = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">1</span>, <span class="number">5</span>]
+numbers.sort()            <span class="comment"># [1, 1, 3, 4, 5] (modifies original)</span>
+sorted_nums = sorted(numbers)  <span class="comment"># Returns new sorted list</span>
+
+numbers.reverse()        <span class="comment"># Reverse in place</span>
+
+<span class="comment"># List comprehension</span>
+squares = [x**2 for x in range(<span class="number">1</span>, <span class="number">6</span>)]
+print(squares)  <span class="comment"># [1, 4, 9, 16, 25]</span></code></pre>
+
+            <h3>Tuple</h3>
+            <p><strong>Theory:</strong> A <code>tuple</code> is an ordered, immutable collection. Because tuples are
+                immutable they are often slightly faster than lists and can be used as keys in dictionaries when they
+                contain only hashable items. Use tuples to represent fixed collections of items (like coordinates) or to
+                ensure data cannot be changed accidentally.</p>
+            <pre><code><span class="comment"># Creating tuples</span>
+coordinates = (<span class="number">10</span>, <span class="number">20</span>)
+colors = (<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>)
+single = (<span class="number">5</span>,)  <span class="comment"># Note the comma</span>
+empty = ()
+
+<span class="comment"># Accessing elements</span>
+print(colors[0])   <span class="comment"># red</span>
+print(colors[-1])  <span class="comment"># blue</span>
+
+<span class="comment"># Slicing</span>
+print(colors[0:2])  <span class="comment"># ('red', 'green')</span>
+
+<span class="comment"># Tuples are immutable</span>
+<span class="comment"># colors[0] = "yellow"  # Error!</span>
+
+<span class="comment"># But you can create new tuples</span>
+new_colors = colors + (<span class="string">"yellow"</span>,)
+
+<span class="comment"># Unpacking</span>
+x, y = coordinates
+print(x, y)  <span class="comment"># 10 20</span>
+
+<span class="comment"># Methods</span>
+print(colors.count(<span class="string">"red"</span>))  <span class="comment"># 1</span>
+print(colors.index(<span class="string">"green"</span>))  <span class="comment"># 1</span>
+
+<span class="comment"># Why use tuples?</span>
+<span class="comment"># - Faster than lists</span>
+<span class="comment"># - Protect data from modification</span>
+<span class="comment"># - Can be dictionary keys</span></code></pre>
+
+            <h3>Set</h3>
+            <p><strong>Theory:</strong> A <code>set</code> is an unordered, mutable collection of unique elements (no
+                duplicates). Sets are implemented as hash tables—membership tests and insertion/removal are average
+                O(1). Sets are great for membership testing, removing duplicates, and performing mathematical set
+                operations (union, intersection, difference).</p>
+            <pre><code><span class="comment"># Creating sets</span>
+fruits = {<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>}
+numbers = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}
+empty = set()  <span class="comment"># Note: {} creates empty dict</span>
+
+<span class="comment"># Adding elements</span>
+fruits.add(<span class="string">"orange"</span>)
+fruits.update([<span class="string">"kiwi"</span>, <span class="string">"pear"</span>])
+
+<span class="comment"># Removing elements</span>
+fruits.remove(<span class="string">"banana"</span>)   <span class="comment"># Error if not found</span>
+fruits.discard(<span class="string">"banana"</span>)  <span class="comment"># No error if not found</span>
+popped = fruits.pop()      <span class="comment"># Remove random element</span>
+
+<span class="comment"># Set operations</span>
+a = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>}
+b = {<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>}
+
+print(a | b)  <span class="comment"># {1, 2, 3, 4, 5, 6} Union</span>
+print(a & b)  <span class="comment"># {3, 4} Intersection</span>
+print(a - b)  <span class="comment"># {1, 2} Difference</span>
+print(a ^ b)  <span class="comment"># {1, 2, 5, 6} Symmetric difference</span>
+
+<span class="comment"># Checking membership</span>
+print(<span class="number">3</span> <span class="keyword">in</span> a)  <span class="comment"># True</span>
+
+<span class="comment"># Remove duplicates from list</span>
+numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>]
+unique = list(set(numbers))  <span class="comment"># [1, 2, 3, 4]</span></code></pre>
+
+            <h3>Dictionary</h3>
+            <p><strong>Theory:</strong> A <code>dictionary</code> stores key-value pairs and offers fast lookup by key
+                (hash table). From Python 3.7 dictionaries preserve insertion order. Use dictionaries for mapping,
+                counting, grouping, and when you need O(1) average-time access by key. Keys must be hashable (immutable
+                types like strings, numbers, tuples).</p>
+            <pre><code><span class="comment"># Creating dictionaries</span>
+person = {
+    <span class="string">"name"</span>: <span class="string">"Rahul"</span>,
+    <span class="string">"age"</span>: <span class="number">25</span>,
+    <span class="string">"city"</span>: <span class="string">"Mumbai"</span>
+}
+
+empty = {}
+
+<span class="comment"># Accessing values</span>
+print(person[<span class="string">"name"</span>])        <span class="comment"># Rahul</span>
+print(person.get(<span class="string">"age"</span>))     <span class="comment"># 25</span>
+print(person.get(<span class="string">"phone"</span>))   <span class="comment"># None (no error)</span>
+print(person.get(<span class="string">"phone"</span>, <span class="string">"Not found"</span>))  <span class="comment"># Default value</span>
+
+<span class="comment"># Adding/Updating</span>
+person[<span class="string">"email"</span>] = <span class="string">"rahul@example.com"</span>  <span class="comment"># Add</span>
+person[<span class="string">"age"</span>] = <span class="number">26</span>                       <span class="comment"># Update</span>
+
+person.update({<span class="string">"phone"</span>: <span class="string">"1234567890"</span>, <span class="string">"age"</span>: <span class="number">27</span>})
+
+<span class="comment"># Removing</span>
+del person[<span class="string">"city"</span>]
+popped = person.pop(<span class="string">"email"</span>)
+person.clear()  <span class="comment"># Remove all</span>
+
+<span class="comment"># Dictionary methods</span>
+person = {<span class="string">"name"</span>: <span class="string">"Rahul"</span>, <span class="string">"age"</span>: <span class="number">25</span>, <span class="string">"city"</span>: <span class="string">"Mumbai"</span>}
+
+print(person.keys())    <span class="comment"># dict_keys(['name', 'age', 'city'])</span>
+print(person.values())  <span class="comment"># dict_values(['Rahul', 25, 'Mumbai'])</span>
+print(person.items())   <span class="comment"># dict_items([('name', 'Rahul'), ...])</span>
+
+<span class="comment"># Checking keys</span>
+print(<span class="string">"name"</span> <span class="keyword">in</span> person)  <span class="comment"># True</span>
+
+<span class="comment"># Dictionary comprehension</span>
+squares = {x: x**2 for x in range(<span class="number">1</span>, <span class="number">6</span>)}
+print(squares)  <span class="comment"># {1: 1, 2: 4, 3: 9, 4: 16, 5: 25}</span>
+
+<span class="comment"># Nested dictionary</span>
+students = {
+    <span class="string">"student1"</span>: {<span class="string">"name"</span>: <span class="string">"Rahul"</span>, <span class="string">"marks"</span>: <span class="number">85</span>},
+    <span class="string">"student2"</span>: {<span class="string">"name"</span>: <span class="string">"Priya"</span>, <span class="string">"marks"</span>: <span class="number">92</span>}
+}
+print(students[<span class="string">"student1"</span>][<span class="string">"name"</span>])  <span class="comment"># Rahul</span></code></pre>
+
+            <h3>Looping Through Data Structures</h3>
+            <p><strong>Theory:</strong> Iteration techniques differ slightly by structure: lists/tuples/sets support
+                element iteration, dictionaries support keys/values/items. Use <code>enumerate()</code> for index + item
+                in lists, <code>items()</code> to get key/value pairs for dictionaries. Choose the structure and
+                iteration method that provides clarity and efficiency for the task.</p>
+            <pre><code><span class="comment"># List</span>
+fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"mango"</span>]
+for fruit in fruits:
+    print(fruit)
+
+<span class="comment"># Tuple</span>
+coordinates = (<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>)
+for coord in coordinates:
+    print(coord)
+
+<span class="comment"># Set</span>
+colors = {<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>}
+for color in colors:
+    print(color)
+
+<span class="comment"># Dictionary</span>
+person = {<span class="string">"name"</span>: <span class="string">"Rahul"</span>, <span class="string">"age"</span>: <span class="number">25</span>}
+
+for key in person:
+    print(key, person[key])
+
+for key, value in person.items():
+    print(f<span class="string">"{key}: {value}"</span>)
+
+for key in person.keys():
+    print(key)
+
+for value in person.values():
+    print(value)</code></pre>
+
+            <h3>Interview Questions (Data Structures)</h3>
+            <p><strong>Theory:</strong> Interviewers expect clear explanations of when to use each structure, complexity
+                of key operations (access, insert, delete), and code for common tasks. Below are typical questions with
+                short answers/examples.</p>
+            <ol>
+                <li>
+                    <strong>When would you use a list vs a set vs a tuple vs a dictionary?</strong>
+                    <p>Answer: Use <code>list</code> for ordered collections allowing duplicates and indexed access;
+                        <code>tuple</code> for ordered immutable collections or dictionary keys; <code>set</code> when
+                        uniqueness and fast membership tests matter; <code>dict</code> for key-value mapping and O(1)
+                        lookup by key.
+                    </p>
+                </li>
+
+                <li>
+                    <strong>How to remove duplicates from a list while preserving order?</strong>
+                    <pre><code>def remove_dup(lst):
+    seen = set()
+    out = []
+    for x in lst:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to count frequency of items in a list?</strong>
+                    <pre><code>from collections import Counter
+cnt = Counter(['a','b','a','c','b','a'])
+# Counter({'a': 3, 'b': 2, 'c': 1})</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to merge two dictionaries?</strong>
+                    <pre><code># Python 3.9+
+c = a | b
+
+# Or update:
+a.update(b)</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to find top-k frequent elements?</strong>
+                    <pre><code>from collections import Counter
+def top_k(nums, k):
+    return [x for x, _ in Counter(nums).most_common(k)]</code></pre>
+                    <small>The Counter uses a hash map and is typically O(n).</small>
+                </li>
+
+                <li>
+                    <strong>When is a tuple preferred over a list?</strong>
+                    <p>Answer: When immutability is desired (data must not change), or when using as dict keys or
+                        elements of a set. Tuples are slightly faster and use less memory.</p>
+                </li>
+
+                <li>
+                    <strong>How to efficiently check if two lists have any common elements?</strong>
+                    <pre><code># Convert smaller list to set for O(1) membership checks
+def has_common(a, b):
+    if len(a) < len(b):
+        s = set(a)
+        return any(x in s for x in b)
+    else:
+        s = set(b)
+        return any(x in s for x in a)</code></pre>
+                </li>
+
+                <li>
+                    <strong>Implement an LRU cache using built-in data structures (explain approach).</strong>
+                    <p>Answer: Use <code>collections.OrderedDict</code> (or dict in Python 3.7+) to store key->value and
+                        maintain insertion/access order. On access, move key to end; on insert when full,
+                        popitem(last=False) to evict least recently used. Complexity: O(1) per operation.</p>
+                </li>
+
+                <li>
+                    <strong>What is the complexity of dictionary operations?</strong>
+                    <p>Answer: Average O(1) for lookup, insertion, deletion. Worst-case can degrade (rare) but Python's
+                        hash table implementation and resizing keep it efficient.</p>
+                </li>
+
+                <li>
+                    <strong>How to group items by a property (e.g., group names by first letter)?</strong>
+                    <pre><code>from collections import defaultdict
+groups = defaultdict(list)
+for name in names:
+    groups[name[0]].append(name)</code></pre>
+                </li>
+            </ol>
+
+            <h4>Practice Problems (Data Structures)</h4>
+            <ol>
+                <li>Given a list of integers, return a list of duplicates (values that appear more than once).</li>
+                <li>Given a dictionary of student->score, return the name(s) with highest score.</li>
+                <li>Rotate a list to the right by k steps (in-place if possible).</li>
+                <li>Given two lists, return their intersection (unique values).</li>
+                <li>Given a list of intervals (start,end), merge overlapping intervals (use sorting).</li>
+                <li>Implement stack using two queues (practice data structure building).</li>
+                <li>Given logs with user and timestamp, find most active user per hour (use dicts and grouping).</li>
+            </ol>
+
+            <h4>Quick Interview Tips</h4>
+            <ul>
+                <li>Always state time &amp; space complexity for your solution.</li>
+                <li>Mention edge cases (empty inputs, single element, duplicates, very large inputs).</li>
+                <li>Pick appropriate data structure first, then implement—justify your choice.</li>
+                <li>Use built-in libraries (collections, heapq) when allowed and explain trade-offs.</li>
+                <li>Write readable code and explain termination conditions and invariants.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1.6 Functions</h2>
+
+            <h3>Defining Functions</h3>
+            <p><strong>Theory:</strong> Functions are reusable blocks of code that perform a task. Define them with
+                <code>def</code>. Use <code>return</code> to send a result back. Functions help organize code, avoid
+                repetition, and improve readability.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Name functions using <code>snake_case</code> and make names descriptive.</li>
+                <li>Keep functions short and focused (single responsibility).</li>
+                <li>Prefer returning values over printing directly (makes testing easier).</li>
+                <li>Document behavior with docstrings so others (and tools) understand inputs/outputs.</li>
+            </ul>
+            </p>
+            <pre><code><span class="comment"># Basic function</span>
+def greet():
+    print(<span class="string">"Hello!"</span>)
+
+greet()  <span class="comment"># Call the function</span>
+
+<span class="comment"># Function with return</span>
+def add(a, b):
+    return a + b
+
+result = add(<span class="number">5</span>, <span class="number">3</span>)
+print(result)  <span class="comment"># 8</span>
+
+<span class="comment"># Multiple returns</span>
+def get_user():
+    name = <span class="string">"Rahul"</span>
+    age = <span class="number">25</span>
+    return name, age  <span class="comment"># Returns tuple</span>
+
+n, a = get_user()
+print(n, a)  <span class="comment"># Rahul 25</span></code></pre>
+
+            <h3>Parameters</h3>
+            <p><strong>Theory:</strong> Parameters are variables listed in function definition. Arguments are values you
+                pass. Use positional parameters for required values and keyword arguments for clarity. Order: positional
+                -> *args -> keyword-only (if any) -> **kwargs.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Use keyword args to improve readability when calling functions with many params.</li>
+                <li>Validate parameters when necessary (types, ranges).</li>
+                <li>Prefer explicit parameters over **kwargs when the API is stable.</li>
+            </ul>
+            </p>
+            <pre><code><span class="comment"># Positional parameters</span>
+def introduce(name, age):
+    print(f<span class="string">"I am {name}, {age} years old"</span>)
+
+introduce(<span class="string">"Rahul"</span>, <span class="number">25</span>)
+
+<span class="comment"># Keyword arguments</span>
+introduce(age=<span class="number">25</span>, name=<span class="string">"Rahul"</span>)  <span class="comment"># Order doesn't matter</span>
+
+<span class="comment"># Mixed (positional must come first)</span>
+introduce(<span class="string">"Rahul"</span>, age=<span class="number">25</span>)</code></pre>
+
+            <h3>Default Parameters</h3>
+            <p><strong>Theory:</strong> Default parameters provide fallback values when arguments are not passed.
+                Beware: default mutable objects (like lists) are created once at definition-time — use <code>None</code>
+                and create inside function to avoid shared-state bugs.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Use defaults for optional parameters to simplify calls.</li>
+                <li>Never use mutable objects (lists/dicts) as default values unless you intentionally want shared
+                    state.</li>
+                <li>Document default behavior in docstrings.</li>
+            </ul>
+            </p>
+            <pre><code>def greet(name, message=<span class="string">"Hello"</span>):
+    print(f<span class="string">"{message}, {name}!"</span>)
+
+greet(<span class="string">"Rahul"</span>)              <span class="comment"># Hello, Rahul!</span>
+greet(<span class="string">"Priya"</span>, <span class="string">"Hi"</span>)        <span class="comment"># Hi, Priya!</span>
+greet(<span class="string">"Amit"</span>, message=<span class="string">"Hey"</span>)  <span class="comment"># Hey, Amit!</span>
+
+<span class="comment"># Default values evaluated once</span>
+def add_to_list(item, my_list=[]):  <span class="comment"># Dangerous!</span>
+    my_list.append(item)
+    return my_list
+
+print(add_to_list(<span class="number">1</span>))  <span class="comment"># [1]</span>
+print(add_to_list(<span class="number">2</span>))  <span class="comment"># [1, 2] - Unexpected!</span>
+
+<span class="comment"># Better approach</span>
+def add_to_list(item, my_list=None):
+    if my_list is None:
+        my_list = []
+    my_list.append(item)
+    return my_list</code></pre>
+
+            <div class="image-placeholder">
+
+            </div>
+
+            <h3>*args (Variable positional arguments)</h3>
+            <p><strong>Theory:</strong> <code>*args</code> collects extra positional arguments into a tuple. Use when
+                number of inputs can vary. Good for simple variadic functions like summing numbers.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Access as a tuple inside the function.</li>
+                <li>Useful when wrapping or forwarding arguments to other functions.</li>
+                <li>When combining with other parameters, place <code>*args</code> after regular positional parameters.
+                </li>
+            </ul>
+            </p>
+            <pre><code>def add(*numbers):
+    <span class="string">"""Add any number of arguments"""</span>
+    total = <span class="number">0</span>
+    for num in numbers:
+        total += num
+    return total
+
+print(add(<span class="number">1</span>, <span class="number">2</span>))            <span class="comment"># 3</span>
+print(add(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>))  <span class="comment"># 15</span>
+
+<span class="comment"># *args creates a tuple</span>
+def print_args(*args):
+    print(type(args))  <span class="comment"># &lt;class 'tuple'&gt;</span>
+    print(args)
+
+print_args(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)  <span class="comment"># (1, 2, 3)</span></code></pre>
+
+            <h3>**kwargs (Variable keyword arguments)</h3>
+            <p><strong>Theory:</strong> <code>**kwargs</code> collects extra keyword arguments into a dictionary. Use
+                when you want flexible named parameters, for configuration, or when forwarding options to other
+                functions.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Access as a dict inside the function (<code>info['name']</code>).</li>
+                <li>Useful for wrapper functions and API functions that accept many optional settings.</li>
+                <li>Prefer explicit parameters when possible — kwargs are for flexible / evolving APIs.</li>
+            </ul>
+            </p>
+            <pre><code>def display_info(**info):
+    <span class="string">"""Accept any keyword arguments"""</span>
+    for key, value in info.items():
+        print(f<span class="string">"{key}: {value}"</span>)
+
+display_info(name=<span class="string">"Rahul"</span>, age=<span class="number">25</span>, city=<span class="string">"Mumbai"</span>)
+<span class="comment"># Output:</span>
+<span class="comment"># name: Rahul</span>
+<span class="comment"># age: 25</span>
+<span class="comment"># city: Mumbai</span>
+
+<span class="comment"># **kwargs creates a dictionary</span>
+def print_kwargs(**kwargs):
+    print(type(kwargs))  <span class="comment"># &lt;class 'dict'&gt;</span>
+    print(kwargs)
+
+print_kwargs(a=<span class="number">1</span>, b=<span class="number">2</span>)  <span class="comment"># {'a': 1, 'b': 2}</span></code></pre>
+
+            <h3>Combining Everything</h3>
+            <p><strong>Theory:</strong> Functions can combine positional, default, <code>*args</code>, and
+                <code>**kwargs</code>. The typical signature order is:
+                <code>positional, /, positional-only, *, keyword-only, **kwargs</code> (advanced). Keep argument order
+                clear to avoid confusion.</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Design function signatures so callers find them easy to use.</li>
+                <li>Use <code>*</code> in signature to force keyword-only arguments if that improves clarity.</li>
+                <li>When forwarding arguments, use <code>f(*args, **kwargs)</code>.</li>
+            </ul>
+            </p>
+            <pre><code>def create_profile(name, age, *hobbies, **details):
+    <span class="string">"""
+    name, age: required positional
+    *hobbies: variable positional
+    **details: variable keyword
+    """</span>
+    print(f<span class="string">"Name: {name}"</span>)
+    print(f<span class="string">"Age: {age}"</span>)
+    print(f<span class="string">"Hobbies: {', '.join(hobbies)}"</span>)
+    for key, value in details.items():
+        print(f<span class="string">"{key}: {value}"</span>)
+
+create_profile(
+    <span class="string">"Rahul"</span>, 
+    <span class="number">25</span>,
+    <span class="string">"coding"</span>, <span class="string">"reading"</span>, <span class="string">"gaming"</span>,
+    city=<span class="string">"Mumbai"</span>,
+    education=<span class="string">"B.Tech"</span>
+)</code></pre>
+
+            <h3>Docstrings</h3>
+            <p><strong>Theory:</strong> Docstrings describe what a function does, its parameters, and its return value.
+                They are accessible via <code>__doc__</code> and used by tools (help(), Sphinx). Write clear, concise
+                docstrings (one-line summary + optional details).</p>
+            <p><strong>Simple use points:</strong>
+            <ul>
+                <li>Include parameter types and return type in docstring for clarity (or use type hints).</li>
+                <li>Provide examples when behavior might be tricky.</li>
+                <li>Use triple quotes immediately after function definition.</li>
+            </ul>
+            </p>
+            <pre><code>def calculate_area(length, width):
+    <span class="string">"""
+    Calculate the area of a rectangle.
+    
+    Parameters:
+    length (float): The length of rectangle
+    width (float): The width of rectangle
+    
+    Returns:
+    float: Area of the rectangle
+    """</span>
+    return length * width
+
+<span class="comment"># Access docstring</span>
+print(calculate_area.__doc__)
+
+<span class="comment"># Better docstring format</span>
+def greet(name):
+    <span class="string">"""
+    Greet a person by name.
+    
+    Args:
+        name (str): Name of the person
+        
+    Returns:
+        str: Greeting message
+        
+    Example:
+        >>> greet("Rahul")
+        'Hello, Rahul!'
+    """</span>
+    return f<span class="string">"Hello, {name}!"</span></code></pre>
+
+            <h3>Interview Questions & Practice (Functions)</h3>
+            <p><strong>Theory:</strong> Function interview questions test design (signatures), handling of edge-cases,
+                closures, decorators, recursion, and complexity. Explain the approach, time/space complexity, and edge
+                cases when answering.</p>
+            <ol>
+                <li>
+                    <strong>Explain default mutable argument pitfall and how to fix it.</strong>
+                    <pre><code># Pitfall shown earlier; fix with None default
+def add_to_list(item, my_list=None):
+    if my_list is None:
+        my_list = []
+    my_list.append(item)
+    return my_list</code></pre>
+                </li>
+
+                <li>
+                    <strong>Write a function to compute n-th Fibonacci number (iterative and recursive).</strong>
+                    <pre><code># Iterative O(n)
+def fib_iter(n):
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+# Recursive (naive O(2^n))
+def fib_rec(n):
+    if n < 2:
+        return n
+    return fib_rec(n-1) + fib_rec(n-2)</code></pre>
+                    <small>Mention memoization to make recursion O(n).</small>
+                </li>
+
+                <li>
+                    <strong>What are closures? Give example.</strong>
+                    <pre><code>def outer(x):
+    def inner(y):
+        return x + y
+    return inner
+
+add5 = outer(5)
+print(add5(3))  # 8</code></pre>
+                    <p>Explain that inner remembers variables from outer scope.</p>
+                </li>
+
+                <li>
+                    <strong>Write a decorator that logs function execution time.</strong>
+                    <pre><code>import time
+def timeit(fn):
+    def wrapper(*args, **kwargs):
+        start = time.time()
+        res = fn(*args, **kwargs)
+        end = time.time()
+        print(f"{fn.__name__} took {end-start:.6f}s")
+        return res
+    return wrapper
+
+@timeit
+def work():
+    pass</code></pre>
+                </li>
+
+                <li>
+                    <strong>Explain lambda, map, filter, reduce with examples.</strong>
+                    <pre><code>from functools import reduce
+squares = list(map(lambda x: x*x, [1,2,3]))
+evens = list(filter(lambda x: x%2==0, [1,2,3,4]))
+sum_all = reduce(lambda a,b: a+b, [1,2,3])</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to use type hints and why?</strong>
+                    <pre><code>def greet(name: str) -> str:
+    return f"Hello, {name}"</code></pre>
+                    <p>Type hints help readability and static analysis (mypy), but are not enforced at runtime by
+                        default.</p>
+                </li>
+
+                <li>
+                    <strong>Implement memoization for a recursive function.</strong>
+                    <pre><code>from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to safely forward arguments to another function?</strong>
+                    <pre><code>def wrapper(*args, **kwargs):
+    return target(*args, **kwargs)</code></pre>
+                    <p>Mention preserving <code>__name__</code> and docstring with <code>functools.wraps</code> for
+                        decorators.</p>
+                </li>
+
+                <li>
+                    <strong>Difference between function and method?</strong>
+                    <p>Answer: Method is a function bound to an object; first parameter is usually <code>self</code>.
+                        Functions are standalone. Methods have access to object state.</p>
+                </li>
+
+                <li>
+                    <strong>Practice problem: Implement a retry decorator (retries a function on exception).</strong>
+                    <pre><code>import time
+from functools import wraps
+
+def retry(times=3, delay=1):
+    def decorator(fn):
+        @wraps(fn)
+        def wrapper(*args, **kwargs):
+            for i in range(times-1):
+                try:
+                    return fn(*args, **kwargs)
+                except Exception:
+                    time.sleep(delay)
+            return fn(*args, **kwargs)  # last attempt (let exception bubble)
+        return wrapper
+    return decorator</code></pre>
+                </li>
+            </ol>
+
+            <h4>Practice Exercises (Functions)</h4>
+            <ol>
+                <li>Write a function that returns the longest word in a list of words.</li>
+                <li>Write a function that flattens a nested list (one level) using loops.</li>
+                <li>Implement <code>map</code> functionality from scratch (take function + iterable).</li>
+                <li>Write a decorator that caches results for expensive calls (custom cache).</li>
+                <li>Write a function that validates its arguments and raises informative errors.</li>
+            </ol>
+
+            <h4>Short Interview Tips (Functions)</h4>
+            <ul>
+                <li>Explain signature design and default choices first.</li>
+                <li>Mention complexity and edge cases (empty inputs, None, wrong types).</li>
+                <li>When using decorators, show how you preserve metadata with <code>functools.wraps</code>.</li>
+                <li>Write simple, correct code first; then optimize if needed (memoization, iterative vs recursive).
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>1.7 Memory Concepts</h2>
+
+            <h3>Immutable vs Mutable</h3>
+            <p><strong>Theory (simple, point-wise):</strong></p>
+            <ul>
+                <li><strong>Immutable:</strong> Object value cannot change after creation (examples: <code>int</code>,
+                    <code>float</code>, <code>str</code>, <code>bool</code>, <code>tuple</code>).</li>
+                <li>When you "change" an immutable object you actually create a new object and rebind the name to it.
+                </li>
+                <li>Immutables are safe to share (no accidental modifications) and can be used as dictionary keys (if
+                    hashable).</li>
+                <li><strong>Mutable:</strong> Object can be changed in-place (examples: <code>list</code>,
+                    <code>dict</code>, <code>set</code>).</li>
+                <li>Mutables allow efficient in-place updates but can cause aliasing bugs if multiple names reference
+                    the same object.</li>
+                <li>Use immutability when you want predictability and thread-safety; use mutability for performance when
+                    frequent updates are needed.</li>
+            </ul>
+
+            <pre><code><span class="comment"># Strings are immutable</span>
+name = <span class="string">"Rahul"</span>
+print(id(name))  <span class="comment"># Memory address: 140234567891234</span>
+
+name = name + <span class="string">" Kumar"</span>
+print(id(name))  <span class="comment"># Different address: 140234567892345</span>
+<span class="comment"># New object created, old one discarded</span>
+
+<span class="comment"># Numbers are immutable</span>
+x = <span class="number">10</span>
+print(id(x))  <span class="comment"># 140234567893456</span>
+
+x = x + <span class="number">5</span>
+print(id(x))  <span class="comment"># Different address: 140234567894567</span>
+
+<span class="comment"># Tuples are immutable</span>
+t = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)
+<span class="comment"># t[0] = 10  # Error! Cannot modify</span></code></pre>
+
+            <p><strong>Theory (mutability points):</strong></p>
+            <ul>
+                <li>Mutable objects can be updated without creating a new object (append, pop, set item, etc.).</li>
+                <li>Be mindful when returning or storing mutables — other code may modify them.</li>
+                <li>To avoid accidental changes, return copies or use immutable alternatives (tuple, frozenset).</li>
+            </ul>
+
+            <p><strong>Mutable Objects</strong> - Can be changed after creation (list, dict, set)</p>
+            <pre><code><span class="comment"># Lists are mutable</span>
+fruits = [<span class="string">"apple"</span>, <span class="string">"banana"</span>]
+print(id(fruits))  <span class="comment"># 140234567895678</span>
+
+fruits.append(<span class="string">"mango"</span>)
+print(id(fruits))  <span class="comment"># Same address: 140234567895678</span>
+<span class="comment"># Same object, modified in place</span>
+
+<span class="comment"># Dictionaries are mutable</span>
+person = {<span class="string">"name"</span>: <span class="string">"Rahul"</span>}
+print(id(person))  <span class="comment"># 140234567896789</span>
+
+person[<span class="string">"age"</span>] = <span class="number">25</span>
+print(id(person))  <span class="comment"># Same address: 140234567896789</span></code></pre>
+
+            <h3>Value vs Reference</h3>
+            <p><strong>Theory (point-wise):</strong></p>
+            <ul>
+                <li><strong>Assignment binds names to objects</strong> — variables are labels pointing to objects in
+                    memory.</li>
+                <li>For immutable objects, reassignment creates new objects so behavior looks like "copy by value".</li>
+                <li>For mutable objects, assignment creates additional references to the same object — modifications via
+                    one name are visible through others.</li>
+                <li>Use <code>id(obj)</code> to inspect the object's identity (memory address-like value).</li>
+                <li>To create true independent copies, use explicit copying methods (shallow or deep copy).</li>
+            </ul>
+
+            <p><strong>Value (Copy)</strong> - For immutable objects</p>
+            <pre><code><span class="comment"># With immutable objects (int, str)</span>
+a = <span class="number">10</span>
+b = a  <span class="comment"># b gets a copy of value</span>
+
+a = <span class="number">20</span>
+print(a)  <span class="comment"># 20</span>
+print(b)  <span class="comment"># 10 (unchanged)</span>
+
+<span class="comment"># Strings</span>
+x = <span class="string">"hello"</span>
+y = x  <span class="comment"># y gets same value</span>
+
+x = <span class="string">"world"</span>
+print(x)  <span class="comment"># world</span>
+print(y)  <span class="comment"># hello (unchanged)</span></code></pre>
+
+            <p><strong>Reference (Same object)</strong> - For mutable objects</p>
+            <pre><code><span class="comment"># With mutable objects (list, dict)</span>
+list1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+list2 = list1  <span class="comment"># list2 points to same object</span>
+
+list1.append(<span class="number">4</span>)
+print(list1)  <span class="comment"># [1, 2, 3, 4]</span>
+print(list2)  <span class="comment"># [1, 2, 3, 4] (changed!)</span>
+
+<span class="comment"># Both variables point to same memory location</span>
+print(id(list1))  <span class="comment"># 140234567897890</span>
+print(id(list2))  <span class="comment"># 140234567897890 (same!)</span>
+
+<span class="comment"># Dictionary example</span>
+dict1 = {<span class="string">"a"</span>: <span class="number">1</span>}
+dict2 = dict1  <span class="comment"># Reference</span>
+
+dict1[<span class="string">"b"</span>] = <span class="number">2</span>
+print(dict1)  <span class="comment"># {'a': 1, 'b': 2}</span>
+print(dict2)  <span class="comment"># {'a': 1, 'b': 2} (changed!)</span></code></pre>
+
+            <div class="image-placeholder">
+
+            </div>
+
+            <h3>Shallow Copy vs Deep Copy</h3>
+            <p><strong>Theory (point-wise and simple):</strong></p>
+            <ul>
+                <li><strong>Shallow copy:</strong> Copies only the outer container; inner (nested) objects are still
+                    references to the originals.</li>
+                <li>Methods for shallow copy: slicing (<code>lst[:]</code>), <code>list()</code>,
+                    <code>obj.copy()</code>, <code>copy.copy()</code>.</li>
+                <li>After a shallow copy, modifying nested mutable items affects both original and copy.</li>
+                <li><strong>Deep copy:</strong> Recursively copies the object and all nested objects — copy is fully
+                    independent.</li>
+                <li>Use <code>copy.deepcopy()</code> for deep copying; it is slower and uses more memory but prevents
+                    shared-state bugs.</li>
+                <li>Choose shallow copy when structure is flat or nested parts are intentionally shared; choose deep
+                    copy when full independence is required.</li>
+            </ul>
+
+            <pre><code>import copy
+
+<span class="comment"># Shallow copy - Method 1: slice</span>
+original = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]
+shallow = original[:]
+
+shallow[0] = <span class="number">100</span>
+shallow[2][0] = <span class="number">300</span>
+
+print(original)  <span class="comment"># [1, 2, [300, 4]] - Nested list changed!</span>
+print(shallow)   <span class="comment"># [100, 2, [300, 4]]</span>
+
+<span class="comment"># Shallow copy - Method 2: list()</span>
+original = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]
+shallow = list(original)
+
+<span class="comment"># Shallow copy - Method 3: copy()</span>
+original = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]
+shallow = original.copy()
+
+<span class="comment"># Shallow copy - Method 4: copy.copy()</span>
+original = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]
+shallow = copy.copy(original)
+
+<span class="comment"># Dictionary shallow copy</span>
+original_dict = {<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: [<span class="number">2</span>, <span class="number">3</span>]}
+shallow_dict = original_dict.copy()
+
+shallow_dict[<span class="string">"a"</span>] = <span class="number">100</span>
+shallow_dict[<span class="string">"b"</span>][0] = <span class="number">200</span>
+
+print(original_dict)  <span class="comment"># {'a': 1, 'b': [200, 3]} - List changed!</span>
+print(shallow_dict)   <span class="comment"># {'a': 100, 'b': [200, 3]}</span></code></pre>
+
+            <p><strong>Deep Copy</strong> - Copies everything, including nested objects</p>
+            <pre><code>import copy
+
+original = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]
+deep = copy.deepcopy(original)
+
+deep[0] = <span class="number">100</span>
+deep[2][0] = <span class="number">300</span>
+
+print(original)  <span class="comment"># [1, 2, [3, 4]] - Unchanged!</span>
+print(deep)      <span class="comment"># [100, 2, [300, 4]]</span>
+
+<span class="comment"># Dictionary deep copy</span>
+original_dict = {<span class="string">"a"</span>: <span class="number">1</span>, <span class="string">"b"</span>: [<span class="number">2</span>, <span class="number">3</span>]}
+deep_dict = copy.deepcopy(original_dict)
+
+deep_dict[<span class="string">"a"</span>] = <span class="number">100</span>
+deep_dict[<span class="string">"b"</span>][0] = <span class="number">200</span>
+
+print(original_dict)  <span class="comment"># {'a': 1, 'b': [2, 3]} - Unchanged!</span>
+print(deep_dict)      <span class="comment"># {'a': 100, 'b': [200, 3]}</span></code></pre>
+
+            <p><strong>Visual Summary:</strong></p>
+            <pre><code>import copy
+
+<span class="comment"># Original</span>
+original = [<span class="number">1</span>, [<span class="number">2</span>, <span class="number">3</span>]]
+
+<span class="comment"># Assignment (Reference)</span>
+reference = original
+<span class="comment"># Both point to same object</span>
+<span class="comment"># original: [1, [2, 3]] ← reference points here</span>
+
+<span class="comment"># Shallow Copy</span>
+shallow = original.copy()
+<span class="comment"># Top level copied, nested referenced</span>
+<span class="comment"># original: [1, [2, 3] ←┐]</span>
+<span class="comment"># shallow:  [1,        └─┘] (points to same inner list)</span></code></pre>
+
+            <h3>Interview Questions & Practice (Memory Concepts)</h3>
+            <p><strong>Theory:</strong> Interviewers look for clear explanations, simple examples, and awareness of
+                pitfalls (mutable defaults, aliasing, copying cost). Mention complexity implications and safe coding
+                patterns.</p>
+
+            <ol>
+                <li>
+                    <strong>What is the difference between mutable and immutable objects? Give examples.</strong>
+                    <pre><code># Short answer:
+# Immutable: int, str, tuple — can't change in-place.
+# Mutable: list, dict, set — can change in-place.</code></pre>
+                </li>
+
+                <li>
+                    <strong>Why does using a mutable default argument in a function cause bugs? How to fix?</strong>
+                    <pre><code>def add(x, a=None):
+    if a is None:
+        a = []
+    a.append(x)
+    return a</code></pre>
+                    <p>Explain: default lists are created once at definition time and reused across calls.</p>
+                </li>
+
+                <li>
+                    <strong>Explain shallow vs deep copy with an example.</strong>
+                    <pre><code># See shallow/deep examples above using copy.copy() and copy.deepcopy()</code></pre>
+                </li>
+
+                <li>
+                    <strong>How to detect whether two variables reference the same object?</strong>
+                    <pre><code>a = [1,2,3]
+b = a
+print(a is b)  <span class="comment"># True</span></code></pre>
+                </li>
+
+                <li>
+                    <strong>Given <code>matrix = [[0]*3]*3</code>, why does changing one element affect all rows? Fix
+                        it.</strong>
+                    <pre><code># Problem: inner lists are same object repeated.
+matrix = [[0]*3 for _ in range(3)]  <span class="comment"># Correct: creates independent rows</span></code></pre>
+                </li>
+
+                <li>
+                    <strong>Predict output — aliasing example:</strong>
+                    <pre><code>lst1 = [1, 2]
+lst2 = lst1
+lst1.append(3)
+print(lst2)  <span class="comment"># [1, 2, 3]</span></code></pre>
+                </li>
+
+                <li>
+                    <strong>How does Python free memory for objects that are no longer used?</strong>
+                    <p>Answer: CPython uses reference counting + a cyclic garbage collector to detect and collect
+                        unreachable cycles. When an object's refcount hits zero it is deallocated immediately; cycles
+                        are collected periodically.</p>
+                </li>
+
+                <li>
+                    <strong>Implement a safe shallow-copy function for a dictionary that only deep-copies lists inside
+                        it.</strong>
+                    <pre><code>def copy_dict_shallow_deep_lists(d):
+    new = {}
+    for k, v in d.items():
+        if isinstance(v, list):
+            new[k] = v.copy()  # shallow-copy the list value
+        else:
+            new[k] = v
+    return new</code></pre>
+                </li>
+
+                <li>
+                    <strong>When would you choose immutability over mutability?</strong>
+                    <p>Answer: choose immutability for thread-safety, predictable caching, using as dict keys, or
+                        preventing accidental side effects. Choose mutability when you need in-place updates for
+                        performance.</p>
+                </li>
+
+                <li>
+                    <strong>What are practical ways to avoid aliasing bugs?</strong>
+                    <ul>
+                        <li>Return copies instead of internal mutable objects.</li>
+                        <li>Use <code>tuple</code> instead of <code>list</code> when immutability is desired.</li>
+                        <li>Use <code>copy()</code> or <code>deepcopy()</code> appropriately.</li>
+                        <li>Initialize nested structures properly (list comprehensions, not multiplication).</li>
+                    </ul>
+                </li>
+            </ol>
+
+            <h4>Practice Problems (Memory & Copying)</h4>
+            <ol>
+                <li>Fix the function with mutable default: <code>def add(x, a=[]): a.append(x); return a</code>. Explain
+                    why it's broken and show corrected code.</li>
+                <li>Explain why <code>matrix = [[0]*3]*3</code> creates rows that are aliased. Write code to create an
+                    independent 3×3 matrix.</li>
+                <li>Write a function that deep-copies only the list values inside a dict but keeps other values by
+                    reference.</li>
+                <li>Given two lists of objects, detect if they share any identical object (<code>is</code>) and return
+                    those references.</li>
+                <li>Implement a manual deep-copy for a nested list of integers (no <code>copy</code> module). Discuss
+                    limitations (won't handle custom objects, recursion depth).</li>
+            </ol>
+
+            <h4>Short Tips for Interviews</h4>
+            <ul>
+                <li>When asked, demonstrate both code and a one-line explanation of the idea (what and why).</li>
+                <li>Always clarify if nested objects must be independent before choosing shallow vs deep copy.</li>
+                <li>Mention complexity and memory cost for deep-copying large structures.</li>
+                <li>Show quick fixes: use <code>matrix = [[0]*n for _ in range(n)]</code>, use
+                    <code>if lst is None</code> pattern for default args.</li>
+            </ul>
+
+        </section>
+
+
+    </div>
+
+</body>
+
+</html>

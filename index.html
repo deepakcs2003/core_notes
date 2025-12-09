@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📚 Notes Hub – DBMS, OS, Java & CN</title>
+  <title>📚 Notes Hub – DBMS, OS, Java, CN & AIML</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -87,7 +87,7 @@
     <a href="test.html">➕ Create Test</a>
   </div>
 
-  <h1>📚 Notes Hub – DBMS, OS, Java & CN</h1>
+  <h1>📚 Notes Hub – DBMS, OS, Java, CN & AIML</h1>
 
   <div class="tabs">
     <button onclick="switchTab('dbms')" class="active">DBMS Notes</button>
@@ -95,6 +95,7 @@
     <button onclick="switchTab('java')">Java Notes</button>
     <button onclick="switchTab('cn')">CN Notes</button>
     <button onclick="switchTab('react')">React Notes</button>
+    <button onclick="switchTab('aiml')">AIML Notes</button>
   </div>
 
   <div id="dbms" class="content-section active">
@@ -177,6 +178,14 @@
     </ul>
   </div>
 
+  <div id="aiml" class="content-section">
+    <ul>
+      <li><a href="AIML/Interview_question.html">AI ML Interview Questions</a></li>
+      <li><a href="AIML/pyhton_oops.html">pyhton_oops</a></li>
+      <li><a href="AIML/python.html">python basic</a></li>
+    </ul>
+  </div>
+
   <script>
     function switchTab(tabId) {
       document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
@@ -193,6 +202,8 @@
         document.querySelector('.tabs button:nth-child(4)').classList.add('active');
       } else if (tabId === 'react') {
         document.querySelector('.tabs button:nth-child(5)').classList.add('active');
+      } else if (tabId === 'aiml') {
+        document.querySelector('.tabs button:nth-child(6)').classList.add('active');
       }
     }
   </script>

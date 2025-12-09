@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Advanced Concepts - VS Code Style</title>
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --sidebar-color: #252526;
+            --text-color: #d4d4d4;
+            --keyword-color: #569cd6;
+            /* Blue */
+            --string-color: #ce9178;
+            /* Orange/Brown */
+            --comment-color: #6a9955;
+            /* Green */
+            --function-color: #dcdcaa;
+            /* Yellow */
+            --number-color: #b5cea8;
+            /* Light Green */
+            --class-color: #4ec9b0;
+            /* Teal */
+            --header-color: #569cd6;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Mock Sidebar */
+        .sidebar {
+            width: 60px;
+            background-color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            border-right: 1px solid #000;
+        }
+
+        .sidebar-icon {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+            background-color: #858585;
+            border-radius: 4px;
+        }
+
+        .sidebar-icon.active {
+            opacity: 1;
+            background-color: #fff;
+            border-left: 2px solid white;
+        }
+
+        /* File Explorer Column */
+        .explorer {
+            width: 250px;
+            background-color: var(--sidebar-color);
+            padding: 10px;
+            font-size: 13px;
+            display: none;
+            /* Hidden on small screens */
+        }
+
+        @media (min-width: 800px) {
+            .explorer {
+                display: block;
+            }
+        }
+
+        .explorer-title {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+
+        .file-item {
+            padding: 3px 10px;
+            cursor: pointer;
+            color: #cccccc;
+            display: flex;
+            align-items: center;
+        }
+
+        .file-item:hover {
+            background-color: #37373d;
+        }
+
+        .file-icon {
+            color: #e37933;
+            /* Python Icon color mock */
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        /* Main Editor Area */
+        .main-content {
+            flex: 1;
+            padding: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Tabs Header */
+        .tabs {
+            background-color: #2d2d2d;
+            display: flex;
+            height: 35px;
+            align-items: center;
+        }
+
+        .tab {
+            background-color: var(--bg-color);
+            padding: 8px 15px;
+            font-size: 13px;
+            border-top: 2px solid #007acc;
+            color: white;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .tab span {
+            margin-left: 8px;
+            font-size: 16px;
+        }
+
+        /* Content Container */
+        .content-body {
+            padding: 20px 40px;
+            max-width: 1000px;
+        }
+
+        /* Typography */
+        h1 {
+            color: var(--keyword-color);
+            font-size: 2em;
+            border-bottom: 1px solid #3e3e42;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            color: var(--class-color);
+            font-size: 1.5em;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: var(--function-color);
+            font-size: 1.2em;
+            margin-top: 25px;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #cccccc;
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: #1e1e1e;
+            /* Matches bg for seamless look */
+            border: 1px solid #454545;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 14px;
+            position: relative;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+        }
+
+        /* Syntax Highlighting Simulation */
+        .code-comment {
+            color: var(--comment-color);
+        }
+
+        .code-string {
+            color: var(--string-color);
+        }
+
+        .code-keyword {
+            color: var(--keyword-color);
+        }
+
+        .code-func {
+            color: var(--function-color);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #424242;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f4f4f;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-icon active"></div>
+        <div class="sidebar-icon"></div>
+        <div class="sidebar-icon"></div>
+        <div class="sidebar-icon"></div>
+    </div>
+
+    <div class="explorer">
+        <div class="explorer-title">EXPLORER</div>
+        <div class="explorer-title">> OPEN EDITORS</div>
+        <div class="explorer-title">v PYTHON NOTES</div>
+        <div class="file-item"><span class="file-icon">#</span> advanced_structs.py</div>
+        <div class="file-item"><span class="file-icon">#</span> lambda.py</div>
+        <div class="file-item"><span class="file-icon">#</span> modules.py</div>
+        <div class="file-item"><span class="file-icon">#</span> file_handling.py</div>
+        <div class="file-item"><span class="file-icon">#</span> oop_concepts.py</div>
+    </div>
+
+    <div class="main-content">
+        <div class="tabs">
+            <div class="tab">
+                <span style="color: #e37933; margin-right: 5px; margin-left:0;">#</span>
+                Python_Advanced_Guide.py
+                <span style="font-size: 14px; margin-left: 10px; color: #ccc;">x</span>
+            </div>
+        </div>
+
+        <div class="content-body">
+
+            <h1>Python Advanced Concepts: Complete Guide</h1>
+
+            <h2>2.1 Advanced Data Structures</h2>
+
+            <h3>List Comprehension</h3>
+            <p>A concise way to create lists using a single line of code.<br>
+                Syntax: [expression for item in iterable if condition]</p>
+            <pre><code><span class="code-comment"># Traditional way</span>
+squares = []
+<span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(10):
+    squares.append(i**2)
+
+<span class="code-comment"># List comprehension</span>
+squares = [i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(10)]
+<span class="code-comment"># Output: [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]</span>
+
+<span class="code-comment"># With condition</span>
+even_squares = [i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(10) <span class="code-keyword">if</span> i % 2 == 0]
+<span class="code-comment"># Output: [0, 4, 16, 36, 64]</span>
+
+<span class="code-comment"># With if-else</span>
+nums = [i <span class="code-keyword">if</span> i % 2 == 0 <span class="code-keyword">else</span> -i <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(5)]
+<span class="code-comment"># Output: [0, -1, 2, -3, 4]</span></code></pre>
+
+            <h3>Set Comprehension</h3>
+            <p>Creates sets with unique elements.<br>
+                Syntax: {expression for item in iterable if condition}</p>
+            <pre><code><span class="code-comment"># Create set of squares</span>
+squares_set = {i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(10)}
+<span class="code-comment"># Output: {0, 1, 64, 4, 36, 9, 16, 49, 81, 25}</span>
+
+<span class="code-comment"># Remove duplicates</span>
+text = <span class="code-string">"hello world"</span>
+unique_chars = {char <span class="code-keyword">for</span> char <span class="code-keyword">in</span> text <span class="code-keyword">if</span> char != <span class="code-string">' '</span>}
+<span class="code-comment"># Output: {'h', 'e', 'l', 'o', 'w', 'r', 'd'}</span></code></pre>
+
+            <h3>Dictionary Comprehension</h3>
+            <p>Creates dictionaries in a single line.<br>
+                Syntax: {key: value for item in iterable if condition}</p>
+            <pre><code><span class="code-comment"># Create dictionary</span>
+squares_dict = {i: i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(5)}
+<span class="code-comment"># Output: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}</span>
+
+<span class="code-comment"># Swap keys and values</span>
+original = {<span class="code-string">'a'</span>: 1, <span class="code-string">'b'</span>: 2, <span class="code-string">'c'</span>: 3}
+swapped = {v: k <span class="code-keyword">for</span> k, v <span class="code-keyword">in</span> original.items()}
+<span class="code-comment"># Output: {1: 'a', 2: 'b', 3: 'c'}</span>
+
+<span class="code-comment"># With condition</span>
+filtered = {k: v <span class="code-keyword">for</span> k, v <span class="code-keyword">in</span> original.items() <span class="code-keyword">if</span> v > 1}
+<span class="code-comment"># Output: {'b': 2, 'c': 3}</span></code></pre>
+
+            <h3>Nested Comprehensions</h3>
+            <p>Comprehensions inside comprehensions for multi-dimensional data.</p>
+            <pre><code><span class="code-comment"># 2D matrix</span>
+matrix = [[i*j <span class="code-keyword">for</span> j <span class="code-keyword">in</span> range(3)] <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(3)]
+<span class="code-comment"># Output: [[0, 0, 0], [0, 1, 2], [0, 2, 4]]</span>
+
+<span class="code-comment"># Flatten 2D list</span>
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+flattened = [num <span class="code-keyword">for</span> row <span class="code-keyword">in</span> matrix <span class="code-keyword">for</span> num <span class="code-keyword">in</span> row]
+<span class="code-comment"># Output: [1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
+
+<span class="code-comment"># Complex nested comprehension</span>
+result = [[i+j <span class="code-keyword">for</span> j <span class="code-keyword">in</span> range(3)] <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(3) <span class="code-keyword">if</span> i % 2 == 0]
+<span class="code-comment"># Output: [[0, 1, 2], [2, 3, 4]]</span></code></pre>
+
+            <h3>Generator Expressions</h3>
+            <p>Similar to list comprehensions but return generators (memory efficient).<br>
+                Syntax: (expression for item in iterable if condition)</p>
+            <pre><code><span class="code-comment"># Generator vs List comprehension</span>
+gen = (i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(1000000))  <span class="code-comment"># Uses minimal memory</span>
+lst = [i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(1000000)]  <span class="code-comment"># Uses lots of memory</span>
+
+<span class="code-comment"># Using generators</span>
+squares_gen = (i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(5))
+print(next(squares_gen))  <span class="code-comment"># 0</span>
+print(next(squares_gen))  <span class="code-comment"># 1</span>
+
+<span class="code-comment"># Convert to list</span>
+squares_list = list((i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(5)))
+<span class="code-comment"># Output: [0, 1, 4, 9, 16]</span>
+
+<span class="code-comment"># Use in functions</span>
+sum_of_squares = sum(i**2 <span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(10))
+<span class="code-comment"># Output: 285</span></code></pre>
+
+            <h2>2.2 Lambda Functions</h2>
+
+            <h3>Lambda Basics</h3>
+            <p>Anonymous functions defined in a single line.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>lambda arguments: expression</code></li>
+                <li><strong>Use when:</strong> you need a small one-off function without formally defining
+                    <code>def</code>.
+                </li>
+                <li><strong>Limits:</strong> Can contain only a single expression (no statements, no assignments).</li>
+                <li><strong>Readability:</strong> Overuse can reduce readability — prefer named functions for complex
+                    logic.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Regular function</span>
+<span class="code-keyword">def</span> <span class="code-func">add</span>(x, y):
+    <span class="code-keyword">return</span> x + y
+
+<span class="code-comment"># Lambda equivalent</span>
+add = <span class="code-keyword">lambda</span> x, y: x + y
+print(add(3, 5))  <span class="code-comment"># Output: 8</span>
+
+<span class="code-comment"># Lambda with single argument</span>
+square = <span class="code-keyword">lambda</span> x: x**2
+print(square(4))  <span class="code-comment"># Output: 16</span>
+
+<span class="code-comment"># Lambda with multiple arguments</span>
+multiply = <span class="code-keyword">lambda</span> x, y, z: x * y * z
+print(multiply(2, 3, 4))  <span class="code-comment"># Output: 24</span>
+
+<span class="code-comment"># Lambda with conditional</span>
+max_num = <span class="code-keyword">lambda</span> a, b: a <span class="code-keyword">if</span> a > b <span class="code-keyword">else</span> b
+print(max_num(10, 20))  <span class="code-comment"># Output: 20</span></code></pre>
+
+            <h3>map()</h3>
+            <p>Applies a function to all items in an iterable.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>map(function, iterable)</code></li>
+                <li><strong>Returns:</strong> an iterator (convert to list to view results).</li>
+                <li><strong>When to use:</strong> good for applying simple transformations to all items.</li>
+                <li><strong>Alternative:</strong> list comprehensions are often clearer and faster in Python.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Using lambda with map</span>
+nums = [1, 2, 3, 4, 5]
+squared = list(map(<span class="code-keyword">lambda</span> x: x**2, nums))
+<span class="code-comment"># Output: [1, 4, 9, 16, 25]</span>
+
+<span class="code-comment"># Multiple iterables</span>
+nums1 = [1, 2, 3]
+nums2 = [4, 5, 6]
+result = list(map(<span class="code-keyword">lambda</span> x, y: x + y, nums1, nums2))
+<span class="code-comment"># Output: [5, 7, 9]</span>
+
+<span class="code-comment"># String manipulation</span>
+words = [<span class="code-string">'hello'</span>, <span class="code-string">'world'</span>, <span class="code-string">'python'</span>]
+upper_words = list(map(<span class="code-keyword">lambda</span> x: x.upper(), words))
+<span class="code-comment"># Output: ['HELLO', 'WORLD', 'PYTHON']</span></code></pre>
+
+            <h3>filter()</h3>
+            <p>Filters elements based on a condition.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>filter(function, iterable)</code></li>
+                <li><strong>Returns:</strong> an iterator of items where the function returns True.</li>
+                <li><strong>Use-case:</strong> extract items that match a predicate (e.g., evens, non-null values).</li>
+                <li><strong>Alternative:</strong> list comprehensions with <code>if</code> are often preferred for
+                    readability.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Filter even numbers</span>
+nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+evens = list(filter(<span class="code-keyword">lambda</span> x: x % 2 == 0, nums))
+<span class="code-comment"># Output: [2, 4, 6, 8, 10]</span>
+
+<span class="code-comment"># Filter strings by length</span>
+words = [<span class="code-string">'hi'</span>, <span class="code-string">'hello'</span>, <span class="code-string">'hey'</span>, <span class="code-string">'goodbye'</span>]
+long_words = list(filter(<span class="code-keyword">lambda</span> x: len(x) > 3, words))
+<span class="code-comment"># Output: ['hello', 'goodbye']</span>
+
+<span class="code-comment"># Filter None values</span>
+data = [1, <span class="code-keyword">None</span>, 3, <span class="code-keyword">None</span>, 5]
+clean_data = list(filter(<span class="code-keyword">lambda</span> x: x <span class="code-keyword">is not None</span>, data))
+<span class="code-comment"># Output: [1, 3, 5]</span></code></pre>
+
+            <h3>reduce()</h3>
+            <p>Reduces an iterable to a single value.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>reduce(function, iterable, initializer)</code> (import from
+                    <code>functools</code>).
+                </li>
+                <li><strong>Behaviour:</strong> applies the function cumulatively to the items from left to right.</li>
+                <li><strong>When helpful:</strong> useful for cumulative operations (sum, product, max) when you want a
+                    single result.</li>
+                <li><strong>Caution:</strong> can be less readable than explicit loops or built-in helpers like
+                    <code>sum()</code> — use when it improves clarity.
+                </li>
+            </ul>
+            <pre><code><span class="code-keyword">from</span> functools <span class="code-keyword">import</span> reduce
+
+<span class="code-comment"># Sum all numbers</span>
+nums = [1, 2, 3, 4, 5]
+total = reduce(<span class="code-keyword">lambda</span> x, y: x + y, nums)
+<span class="code-comment"># Output: 15</span>
+
+<span class="code-comment"># Find maximum</span>
+nums = [3, 7, 2, 9, 1]
+maximum = reduce(<span class="code-keyword">lambda</span> x, y: x <span class="code-keyword">if</span> x > y <span class="code-keyword">else</span> y, nums)
+<span class="code-comment"># Output: 9</span>
+
+<span class="code-comment"># Multiply all numbers</span>
+nums = [1, 2, 3, 4, 5]
+product = reduce(<span class="code-keyword">lambda</span> x, y: x * y, nums)
+<span class="code-comment"># Output: 120</span>
+
+<span class="code-comment"># With initial value</span>
+nums = [1, 2, 3]
+result = reduce(<span class="code-keyword">lambda</span> x, y: x + y, nums, 10)
+<span class="code-comment"># Output: 16 (10 + 1 + 2 + 3)</span></code></pre>
+
+            <h3>Important notes & best practices</h3>
+            <ul>
+                <li><strong>Prefer clarity:</strong> For many simple transformations and filters, list comprehensions
+                    are more Pythonic and readable than <code>map</code>/<code>filter</code> with <code>lambda</code>.
+                </li>
+                <li><strong>Single expression only:</strong> Lambdas cannot contain statements (no loops, no assignment
+                    statements). They’re for short expressions only.</li>
+                <li><strong>Name long functions:</strong> If the function contains complex logic or is reused, define it
+                    with <code>def</code> and give it a descriptive name.</li>
+                <li><strong>Use built-ins when available:</strong> For sums use <code>sum()</code>, for max use
+                    <code>max()</code> — these are clearer and often faster than <code>reduce</code>.
+                </li>
+                <li><strong>Iterator behavior:</strong> <code>map</code> and <code>filter</code> return iterators in
+                    Python 3 — convert them to <code>list()</code> if you need to index or display all results at once.
+                </li>
+                <li><strong>Debugging tip:</strong> If a <code>lambda</code> is causing errors, temporarily replace it
+                    with a <code>def</code> so you can add print/log statements while debugging.</li>
+            </ul>
+
+            <h2>2.3 Modules & Packages</h2>
+
+            <h3>import</h3>
+            <p>Imports entire module.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>import module_name</code></li>
+                <li><strong>Use when:</strong> you need multiple names from a module or want to keep the module
+                    namespace explicit (<code>math.sqrt</code>).</li>
+                <li><strong>Alias:</strong> use <code>as</code> to shorten long module names (e.g.,
+                    <code>import numpy as np</code>).
+                </li>
+                <li><strong>Namespace clarity:</strong> accessing names with module prefix avoids collisions with local
+                    names.</li>
+                <li><strong>Performance:</strong> importing a module runs its top-level code once; repeated imports are
+                    cheap (cached).</li>
+            </ul>
+            <pre><code><span class="code-comment"># Import entire module</span>
+<span class="code-keyword">import</span> math
+print(math.sqrt(16))  <span class="code-comment"># Output: 4.0</span>
+print(math.pi)  <span class="code-comment"># Output: 3.141592653589793</span>
+
+<span class="code-comment"># Import with alias</span>
+<span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+arr = np.array([1, 2, 3])
+
+<span class="code-comment"># Import multiple modules</span>
+<span class="code-keyword">import</span> os, sys, random</code></pre>
+
+            <h3>from import</h3>
+            <p>Imports specific items from a module.</p>
+            <ul>
+                <li><strong>Syntax:</strong> <code>from module import name1, name2</code></li>
+                <li><strong>Use when:</strong> you only need a few names and want to use them directly
+                    (<code>sqrt()</code> instead of <code>math.sqrt()</code>).</li>
+                <li><strong>Readability vs collisions:</strong> it can make code cleaner but increases risk of name
+                    collisions in large modules or when using <code>from module import *</code>.</li>
+                <li><strong>Recommendation:</strong> avoid <code>from module import *</code> in production code — it
+                    hides where names come from.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Import specific function</span>
+<span class="code-keyword">from</span> math <span class="code-keyword">import</span> sqrt, pi
+print(sqrt(25))  <span class="code-comment"># Output: 5.0</span>
+print(pi)  <span class="code-comment"># Output: 3.141592653589793</span>
+
+<span class="code-comment"># Import all (not recommended)</span>
+<span class="code-keyword">from</span> math <span class="code-keyword">import</span> *
+print(cos(0))  <span class="code-comment"># Output: 1.0</span>
+
+<span class="code-comment"># Import with alias</span>
+<span class="code-keyword">from</span> datetime <span class="code-keyword">import</span> datetime <span class="code-keyword">as</span> dt
+current_time = dt.now()</code></pre>
+
+            <h3>Create Custom Modules</h3>
+            <ul>
+                <li><strong>Files as modules:</strong> any <code>.py</code> file is a module — import it by filename
+                    (without <code>.py</code>).</li>
+                <li><strong>Organize code:</strong> place related functions/classes/constants in a module so other
+                    scripts can reuse them.</li>
+                <li><strong>Encapsulation:</strong> keep module-level code minimal — prefer functions/classes and avoid
+                    running expensive work on import.</li>
+                <li><strong>Testing:</strong> use <code>if __name__ == "__main__":</code> in modules to run tests only
+                    when file is executed directly.</li>
+            </ul>
+            <pre><code><span class="code-comment"># mymodule.py</span>
+<span class="code-keyword">def</span> <span class="code-func">greet</span>(name):
+    <span class="code-keyword">return</span> f<span class="code-string">"Hello, {name}!"</span>
+
+<span class="code-keyword">def</span> <span class="code-func">add</span>(a, b):
+    <span class="code-keyword">return</span> a + b
+
+PI = 3.14159
+
+<span class="code-keyword">class</span> <span class="code-class">Calculator</span>:
+    <span class="code-keyword">def</span> <span class="code-func">multiply</span>(self, x, y):
+        <span class="code-keyword">return</span> x * y</code></pre>
+
+            <pre><code><span class="code-comment"># main.py</span>
+<span class="code-keyword">import</span> mymodule
+
+print(mymodule.greet(<span class="code-string">"Alice"</span>))  <span class="code-comment"># Output: Hello, Alice!</span>
+print(mymodule.add(5, 3))  <span class="code-comment"># Output: 8</span>
+print(mymodule.PI)  <span class="code-comment"># Output: 3.14159</span>
+
+calc = mymodule.Calculator()
+print(calc.multiply(4, 5))  <span class="code-comment"># Output: 20</span></code></pre>
+
+            <h3>Package Structure</h3>
+            <ul>
+                <li><strong>Folder as package:</strong> a directory with an <code>__init__.py</code> becomes a package.
+                </li>
+                <li><strong>Subpackages:</strong> packages can contain subpackages to group code hierarchically.</li>
+                <li><strong>Import paths:</strong> use dotted paths like <code>mypackage.subpackage.module3</code>.</li>
+                <li><strong>Keep modules focused:</strong> one responsibility per module helps maintainability.</li>
+            </ul>
+            <pre><code>mypackage/
+│
+├── __init__.py
+├── module1.py
+├── module2.py
+└── subpackage/
+    ├── __init__.py
+    └── module3.py</code></pre>
+
+            <h3>__init__.py (makes directory a package)</h3>
+            <ul>
+                <li><strong>Purpose:</strong> initialize package-level variables, expose a clean public API, or import
+                    frequently used submodules.</li>
+                <li><strong>__all__:</strong> controls what <code>from package import *</code> imports — prefer explicit
+                    exports.</li>
+                <li><strong>Avoid heavy work:</strong> keep <code>__init__.py</code> lightweight to prevent side effects
+                    on import.</li>
+            </ul>
+            <pre><code><span class="code-comment"># mypackage/__init__.py</span>
+<span class="code-keyword">from</span> .module1 <span class="code-keyword">import</span> function1
+<span class="code-keyword">from</span> .module2 <span class="code-keyword">import</span> function2
+
+__all__ = [<span class="code-string">'function1'</span>, <span class="code-string">'function2'</span>]</code></pre>
+            <p>Usage:</p>
+            <pre><code><span class="code-keyword">from</span> mypackage <span class="code-keyword">import</span> function1
+<span class="code-keyword">from</span> mypackage.subpackage <span class="code-keyword">import</span> module3</code></pre>
+
+            <h3>Virtual Environment (venv)</h3>
+            <ul>
+                <li><strong>Why venv:</strong> isolates project dependencies so different projects do not conflict.</li>
+                <li><strong>Create:</strong> <code>python -m venv myenv</code></li>
+                <li><strong>Activate:</strong> Windows: <code>myenv\Scripts\activate</code> — Mac/Linux:
+                    <code>source myenv/bin/activate</code>
+                </li>
+                <li><strong>Install packages:</strong> <code>pip install package_name</code> inside the activated venv.
+                </li>
+                <li><strong>Freeze & reproduce:</strong> <code>pip freeze > requirements.txt</code> and
+                    <code>pip install -r requirements.txt</code> to replicate env.
+                </li>
+                <li><strong>Best practice:</strong> add <code>venv/</code> to <code>.gitignore</code> — do not commit
+                    virtual environment to version control.</li>
+                <li><strong>Alternative tools:</strong> consider pip-tools, Poetry, or virtualenvwrapper for advanced
+                    dependency management.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Create virtual environment</span>
+python -m venv myenv
+
+<span class="code-comment"># Activate (Windows)</span>
+myenv\Scripts\activate
+
+<span class="code-comment"># Activate (Mac/Linux)</span>
+source myenv/bin/activate
+
+<span class="code-comment"># Install packages</span>
+pip install requests numpy pandas
+
+<span class="code-comment"># Save dependencies</span>
+pip freeze > requirements.txt
+
+<span class="code-comment"># Install from requirements</span>
+pip install -r requirements.txt
+
+<span class="code-comment"># Deactivate</span>
+deactivate</code></pre>
+
+            <h3>Important notes & best practices</h3>
+            <ul>
+                <li><strong>Prefer explicit imports:</strong> <code>from module import name</code> when you need only
+                    specific items; prefer <code>import module</code> when you want namespace clarity.</li>
+                <li><strong>Avoid star-imports:</strong> <code>from module import *</code> can introduce unexpected
+                    names and debugging issues.</li>
+                <li><strong>Keep modules small:</strong> smaller modules are easier to test and reuse.</li>
+                <li><strong>Avoid heavy import side-effects:</strong> importing should not start long-running tasks or
+                    modify global state unexpectedly.</li>
+                <li><strong>Document package API:</strong> use <code>__all__</code> and clear module docstrings so other
+                    developers know intended public interfaces.</li>
+                <li><strong>Dependency management:</strong> always use a venv during development and record exact deps
+                    in <code>requirements.txt</code> or with lockfiles.</li>
+                <li><strong>Testing tip:</strong> include small example usage in <code>if __name__ == "__main__":</code>
+                    for manual testing, but keep automated tests separate.</li>
+            </ul>
+
+
+            <h2>2.4 File Handling</h2>
+
+            <h3>open(), read(), write(), append</h3>
+
+            <ul>
+                <li><strong>open()</strong> is used to access a file — returns a file object.</li>
+                <li><strong>read()</strong> reads file content (string or bytes).</li>
+                <li><strong>write()</strong> writes text; overwrites if mode is 'w'.</li>
+                <li><strong>append ('a')</strong> adds content at the end of file.</li>
+                <li><strong>Files must be closed</strong> after use to free system resources.</li>
+                <li><strong>Tip:</strong> Prefer <code>with open()</code> instead of <code>open()</code> +
+                    <code>close()</code>.
+                </li>
+            </ul>
+
+            <pre><code><span class="code-comment"># Writing to file</span>
+file = open(<span class="code-string">'example.txt'</span>, <span class="code-string">'w'</span>)
+file.write(<span class="code-string">'Hello, World!\n'</span>)
+file.write(<span class="code-string">'Python is awesome!'</span>)
+file.close()
+
+<span class="code-comment"># Reading from file</span>
+file = open(<span class="code-string">'example.txt'</span>, <span class="code-string">'r'</span>)
+content = file.read()
+print(content)
+file.close()
+
+<span class="code-comment"># Appending to file</span>
+file = open(<span class="code-string">'example.txt'</span>, <span class="code-string">'a'</span>)
+file.write(<span class="code-string">'\nNew line added'</span>)
+file.close()</code></pre>
+
+            <h3>File Modes</h3>
+
+            <ul>
+                <li><strong>r</strong>: Read-only — file must exist.</li>
+                <li><strong>w</strong>: Write — creates new file or overwrites existing.</li>
+                <li><strong>a</strong>: Append — adds content at end; creates if missing.</li>
+                <li><strong>r+</strong>: Read & Write without overwriting.</li>
+                <li><strong>w+</strong>: Read & Write — overwrites file.</li>
+                <li><strong>a+</strong>: Read & Append — file pointer at end.</li>
+                <li><strong>Binary modes</strong> (rb, wb, ab): used for images, videos, PDFs, bytes.</li>
+                <li><strong>Tip:</strong> Reading huge files with <code>read()</code> loads entire file into memory —
+                    use <code>readline()</code> or loops instead.</li>
+            </ul>
+
+            <p>
+                r: Read (default), Error if not exists.<br>
+                w: Write, Creates/Overwrites.<br>
+                a: Append, Creates if not exists.<br>
+                r+: Read & Write, No creation/overwrite.<br>
+                w+: Write & Read, Overwrites.<br>
+                a+: Append & Read.<br>
+                rb/wb/ab: Binary modes.
+            </p>
+
+            <pre><code><span class="code-comment"># Read mode examples</span>
+<span class="code-keyword">with</span> open(<span class="code-string">'file.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> f:
+    content = f.read()  <span class="code-comment"># Read entire file</span>
+    
+<span class="code-keyword">with</span> open(<span class="code-string">'file.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> f:
+    line = f.readline()  <span class="code-comment"># Read one line</span>
+    
+<span class="code-keyword">with</span> open(<span class="code-string">'file.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> f:
+    lines = f.readlines()  <span class="code-comment"># Read all lines into list</span>
+
+<span class="code-comment"># Binary mode</span>
+<span class="code-keyword">with</span> open(<span class="code-string">'image.jpg'</span>, <span class="code-string">'rb'</span>) <span class="code-keyword">as</span> f:
+    data = f.read()
+
+<span class="code-keyword">with</span> open(<span class="code-string">'copy.jpg'</span>, <span class="code-string">'wb'</span>) <span class="code-keyword">as</span> f:
+    f.write(data)</code></pre>
+
+            <h3>with open() (Context Manager)</h3>
+
+            <ul>
+                <li><strong>Automatically closes the file</strong> — even if errors occur.</li>
+                <li><strong>Best practice</strong> for file handling in Python.</li>
+                <li>Makes code cleaner, safer, and memory-efficient.</li>
+            </ul>
+
+            <pre><code><span class="code-comment"># Best practice - using context manager</span>
+<span class="code-keyword">with</span> open(<span class="code-string">'example.txt'</span>, <span class="code-string">'w'</span>) <span class="code-keyword">as</span> file:
+    file.write(<span class="code-string">'Hello, World!'</span>)
+<span class="code-comment"># File automatically closed here</span>
+
+<span class="code-comment"># Multiple files</span>
+<span class="code-keyword">with</span> open(<span class="code-string">'input.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> infile, open(<span class="code-string">'output.txt'</span>, <span class="code-string">'w'</span>) <span class="code-keyword">as</span> outfile:
+    content = infile.read()
+    outfile.write(content.upper())
+
+<span class="code-comment"># Error handling with context manager</span>
+<span class="code-keyword">try</span>:
+    <span class="code-keyword">with</span> open(<span class="code-string">'file.txt'</span>, <span class="code-string">'r'</span>) <span class="code-keyword">as</span> f:
+        content = f.read()
+<span class="code-keyword">except</span> FileNotFoundError:
+    print(<span class="code-string">"File not found!"</span>)</code></pre>
+
+            <h3>OS Module Basics</h3>
+
+            <ul>
+                <li><strong>os</strong> is used to interact with the operating system.</li>
+                <li>You can work with directories, files, paths, permissions, environment variables, etc.</li>
+                <li><strong>os.path</strong> handles path operations (join, split, check existence).</li>
+                <li><strong>mkdir</strong> vs <strong>makedirs</strong>: makedirs creates nested folders.</li>
+                <li><strong>Remove carefully:</strong> <code>os.remove()</code> and <code>os.rmdir()</code> cannot be
+                    undone.</li>
+                <li><strong>Cross-platform paths:</strong> always use <code>os.path.join()</code> to avoid Windows/Linux
+                    differences.</li>
+            </ul>
+
+            <pre><code><span class="code-keyword">import</span> os
+
+<span class="code-comment"># Current working directory</span>
+print(os.getcwd())
+
+<span class="code-comment"># Change directory</span>
+os.chdir(<span class="code-string">'/path/to/directory'</span>)
+
+<span class="code-comment"># List files in directory</span>
+files = os.listdir(<span class="code-string">'.'</span>)
+print(files)
+
+<span class="code-comment"># Check if file/directory exists</span>
+print(os.path.exists(<span class="code-string">'file.txt'</span>))
+print(os.path.isfile(<span class="code-string">'file.txt'</span>))
+print(os.path.isdir(<span class="code-string">'folder'</span>))
+
+<span class="code-comment"># Create directory</span>
+os.mkdir(<span class="code-string">'new_folder'</span>)
+os.makedirs(<span class="code-string">'parent/child/grandchild'</span>)  <span class="code-comment"># Create nested directories</span>
+
+<span class="code-comment"># Remove file/directory</span>
+os.remove(<span class="code-string">'file.txt'</span>)
+os.rmdir(<span class="code-string">'empty_folder'</span>)
+
+<span class="code-comment"># Rename file</span>
+os.rename(<span class="code-string">'old.txt'</span>, <span class="code-string">'new.txt'</span>)
+
+<span class="code-comment"># Get file size</span>
+size = os.path.getsize(<span class="code-string">'file.txt'</span>)
+
+<span class="code-comment"># Join paths (cross-platform)</span>
+path = os.path.join(<span class="code-string">'folder'</span>, <span class="code-string">'subfolder'</span>, <span class="code-string">'file.txt'</span>)
+
+<span class="code-comment"># Split path</span>
+directory, filename = os.path.split(<span class="code-string">'/home/user/file.txt'</span>)</code></pre>
+
+            <h3>Important Notes & Best Practices</h3>
+
+            <ul>
+                <li>Always use <strong>with open()</strong> to avoid forgetting <code>.close()</code>.</li>
+                <li>Use correct <strong>file mode</strong> to avoid accidental overwriting.</li>
+                <li>Use <strong>binary mode</strong> for images, PDFs, audio, video.</li>
+                <li>Never trust file paths from user input — validate them.</li>
+                <li>When copying large files, prefer reading in chunks (not full read).</li>
+                <li><strong>os.path.join()</strong> makes your code work on every OS.</li>
+                <li>Be careful with delete functions — they permanently remove files.</li>
+            </ul>
+            <h2>2.5 Exception Handling</h2>
+
+            <h3>try / except</h3>
+            <ul>
+                <li><strong>Purpose:</strong> handle runtime errors without crashing the program.</li>
+                <li><strong>Syntax:</strong> <code>try</code> block for risky code, <code>except</code> to handle
+                    specific errors.</li>
+                <li><strong>Catch specific exceptions:</strong> prefer catching concrete exceptions (e.g.,
+                    <code>ZeroDivisionError</code>) over generic <code>Exception</code>.
+                </li>
+                <li><strong>Debugging:</strong> use <code>as e</code> to inspect the exception message when needed.</li>
+            </ul>
+
+            <pre><code><span class="code-comment"># Basic exception handling</span>
+<span class="code-keyword">try</span>:
+    result = 10 / 0
+<span class="code-keyword">except</span> ZeroDivisionError:
+    print(<span class="code-string">"Cannot divide by zero!"</span>)
+
+<span class="code-comment"># Generic exception</span>
+<span class="code-keyword">try</span>:
+    num = int(<span class="code-string">"abc"</span>)
+<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
+    print(f<span class="code-string">"Error occurred: {e}"</span>)
+
+<span class="code-comment"># Without storing exception</span>
+<span class="code-keyword">try</span>:
+    file = open(<span class="code-string">'nonexistent.txt'</span>, <span class="code-string">'r'</span>)
+<span class="code-keyword">except</span> FileNotFoundError:
+    print(<span class="code-string">"File not found!"</span>)</code></pre>
+
+            <h3>Multiple excepts</h3>
+            <ul>
+                <li><strong>Order matters:</strong> check specific exceptions before broader ones (e.g.,
+                    <code>ValueError</code> before <code>Exception</code>).
+                </li>
+                <li><strong>Group exceptions:</strong> use a tuple to handle several related exceptions with one
+                    handler.</li>
+            </ul>
+
+            <pre><code><span class="code-keyword">try</span>:
+    num = int(input(<span class="code-string">"Enter a number: "</span>))
+    result = 100 / num
+    print(result)
+<span class="code-keyword">except</span> ValueError:
+    print(<span class="code-string">"Invalid input! Please enter a number."</span>)
+<span class="code-keyword">except</span> ZeroDivisionError:
+    print(<span class="code-string">"Cannot divide by zero!"</span>)
+<span class="code-keyword">except</span> Exception <span class="code-keyword">as</span> e:
+    print(f<span class="code-string">"Unexpected error: {e}"</span>)
+
+<span class="code-comment"># Multiple exceptions in one line</span>
+<span class="code-keyword">try</span>:
+    <span class="code-comment"># Some code</span>
+    <span class="code-keyword">pass</span>
+<span class="code-keyword">except</span> (ValueError, TypeError, KeyError) <span class="code-keyword">as</span> e:
+    print(f<span class="code-string">"Error: {e}"</span>)</code></pre>
+
+            <h3>finally</h3>
+            <ul>
+                <li><strong>Always runs:</strong> used for cleanup (closing files, releasing resources) whether or not
+                    an exception occurred.</li>
+                <li><strong>Useful when:</strong> you need guaranteed execution of cleanup code even if you return
+                    inside <code>try</code>.</li>
+            </ul>
+
+            <pre><code><span class="code-comment"># finally always executes</span>
+<span class="code-keyword">try</span>:
+    file = open(<span class="code-string">'data.txt'</span>, <span class="code-string">'r'</span>)
+    content = file.read()
+<span class="code-keyword">except</span> FileNotFoundError:
+    print(<span class="code-string">"File not found!"</span>)
+<span class="code-keyword">finally</span>:
+    print(<span class="code-string">"This always executes"</span>)
+    <span class="code-comment"># file.close()  # Cleanup code goes here</span>
+
+<span class="code-comment"># Practical example</span>
+<span class="code-keyword">def</span> <span class="code-func">read_file</span>(filename):
+    file = <span class="code-keyword">None</span>
+    <span class="code-keyword">try</span>:
+        file = open(filename, <span class="code-string">'r'</span>)
+        <span class="code-keyword">return</span> file.read()
+    <span class="code-keyword">except</span> FileNotFoundError:
+        print(<span class="code-string">"File not found"</span>)
+        <span class="code-keyword">return None</span>
+    <span class="code-keyword">finally</span>:
+        <span class="code-keyword">if</span> file:
+            file.close()
+            print(<span class="code-string">"File closed"</span>)</code></pre>
+
+            <h3>else block</h3>
+            <ul>
+                <li><strong>Runs only if no exception:</strong> good place for code that should run when the try block
+                    succeeds.</li>
+                <li><strong>Keeps logic clear:</strong> separates success-path code from error handling and cleanup.
+                </li>
+            </ul>
+
+            <pre><code><span class="code-keyword">try</span>:
+    num = int(input(<span class="code-string">"Enter a number: "</span>))
+    result = 10 / num
+<span class="code-keyword">except</span> ValueError:
+    print(<span class="code-string">"Invalid input!"</span>)
+<span class="code-keyword">except</span> ZeroDivisionError:
+    print(<span class="code-string">"Cannot divide by zero!"</span>)
+<span class="code-keyword">else</span>:
+    print(f<span class="code-string">"Result: {result}"</span>)
+    print(<span class="code-string">"No errors occurred"</span>)
+<span class="code-keyword">finally</span>:
+    print(<span class="code-string">"Execution completed"</span>)</code></pre>
+
+            <h3>raise</h3>
+            <ul>
+                <li><strong>Manually trigger errors:</strong> helpful to signal invalid states or enforce contracts.
+                </li>
+                <li><strong>Raise specific exceptions:</strong> prefer built-in exception types or your own custom ones
+                    for clarity.</li>
+                <li><strong>Re-raise:</strong> use <code>raise</code> inside an except to pass the exception up after
+                    logging or cleanup.</li>
+            </ul>
+
+            <pre><code><span class="code-comment"># Raise built-in exception</span>
+<span class="code-keyword">def</span> <span class="code-func">check_age</span>(age):
+    <span class="code-keyword">if</span> age < 0:
+        <span class="code-keyword">raise</span> ValueError(<span class="code-string">"Age cannot be negative"</span>)
+    <span class="code-keyword">if</span> age < 18:
+        <span class="code-keyword">raise</span> Exception(<span class="code-string">"Must be 18 or older"</span>)
+    <span class="code-keyword">return</span> <span class="code-string">"Access granted"</span>
+
+<span class="code-keyword">try</span>:
+    check_age(-5)
+<span class="code-keyword">except</span> ValueError <span class="code-keyword">as</span> e:
+    print(e)
+
+<span class="code-comment"># Re-raising exception</span>
+<span class="code-keyword">try</span>:
+    result = 10 / 0
+<span class="code-keyword">except</span> ZeroDivisionError:
+    print(<span class="code-string">"Logging error..."</span>)
+    <span class="code-keyword">raise</span>  <span class="code-comment"># Re-raises the same exception</span></code></pre>
+
+            <h3>Custom Exceptions</h3>
+            <ul>
+                <li><strong>Define domain-specific errors:</strong> subclass <code>Exception</code> for clearer error
+                    messages and targeted handling.</li>
+                <li><strong>Include useful state:</strong> custom exceptions can carry attributes (balance, amount) to
+                    help debugging.</li>
+                <li><strong>Use them in APIs:</strong> allows calling code to catch very specific failure modes.</li>
+            </ul>
+
+            <pre><code><span class="code-comment"># Define custom exception</span>
+<span class="code-keyword">class</span> <span class="code-class">InsufficientFundsError</span>(Exception):
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, balance, amount):
+        self.balance = balance
+        self.amount = amount
+        super().__init__(f<span class="code-string">"Insufficient funds: Balance {balance}, Requested {amount}"</span>)
+
+<span class="code-keyword">class</span> <span class="code-class">NegativeAmountError</span>(Exception):
+    <span class="code-keyword">pass</span>
+
+<span class="code-comment"># Using custom exception</span>
+<span class="code-keyword">class</span> <span class="code-class">BankAccount</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, balance):
+        self.balance = balance
+    
+    <span class="code-keyword">def</span> <span class="code-func">withdraw</span>(self, amount):
+        <span class="code-keyword">if</span> amount < 0:
+            <span class="code-keyword">raise</span> NegativeAmountError(<span class="code-string">"Amount cannot be negative"</span>)
+        <span class="code-keyword">if</span> amount > self.balance:
+            <span class="code-keyword">raise</span> InsufficientFundsError(self.balance, amount)
+        self.balance -= amount
+        <span class="code-keyword">return</span> self.balance
+
+<span class="code-comment"># Test custom exception</span>
+<span class="code-keyword">try</span>:
+    account = BankAccount(100)
+    account.withdraw(150)
+<span class="code-keyword">except</span> InsufficientFundsError <span class="code-keyword">as</span> e:
+    print(e)
+<span class="code-keyword">except</span> NegativeAmountError <span class="code-keyword">as</span> e:
+    print(e)</code></pre>
+
+            <h3>Important notes & best practices</h3>
+            <ul>
+                <li><strong>Fail fast:</strong> raise errors early when input/state is invalid.</li>
+                <li><strong>Be specific:</strong> catch specific exceptions and avoid bare <code>except:</code> blocks.
+                </li>
+                <li><strong>Log & re-raise:</strong> log useful information before re-raising if you cannot fully handle
+                    the error.</li>
+                <li><strong>Clean up resources:</strong> use <code>finally</code> or context managers
+                    (<code>with</code>) to release resources.</li>
+                <li><strong>User messages:</strong> avoid showing raw exception traces to end users — show friendly
+                    messages and log details for developers.</li>
+                <li><strong>Testing:</strong> write tests for error cases as well as success cases to ensure robust
+                    behavior.</li>
+            </ul>
+
+            <h2>2.6 Object-Oriented Programming (OOP Full)</h2>
+
+            <h3>Classes & Objects</h3>
+            <p>Classes are blueprints; objects (instances) are concrete realizations.</p>
+            <ul>
+                <li><strong>Class:</strong> defines attributes (data) and methods (behavior).</li>
+                <li><strong>Object:</strong> an instance of a class with its own state.</li>
+                <li><strong>Use:</strong> model real-world entities, group related data and behaviour.</li>
+                <li><strong>Note:</strong> classes can contain docstrings and type hints to improve readability.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Basic class</span>
+<span class="code-keyword">class</span> <span class="code-class">Dog</span>:
+    <span class="code-keyword">pass</span>
+
+<span class="code-comment"># Creating objects</span>
+dog1 = Dog()
+dog2 = Dog()
+
+print(type(dog1))  <span class="code-comment"># Output: &lt;class '__main__.Dog'&gt;</span></code></pre>
+
+            <h3>init (Constructor)</h3>
+            <p><code>__init__</code> initializes instance attributes when an object is created.</p>
+            <ul>
+                <li><strong>self:</strong> reference to the instance; required as first parameter in instance methods.
+                </li>
+                <li><strong>Multiple constructors:</strong> Python has one <code>__init__</code> — use default args or
+                    classmethods as alternatives.</li>
+                <li><strong>Validation:</strong> do light validation in <code>__init__</code>, but avoid heavy logic
+                    (use factory methods if needed).</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Person</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name, age):
+        self.name = name  <span class="code-comment"># Instance attribute</span>
+        self.age = age
+    
+    <span class="code-keyword">def</span> <span class="code-func">greet</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"Hello, I'm {self.name} and I'm {self.age} years old"</span>
+
+<span class="code-comment"># Creating objects</span>
+person1 = Person(<span class="code-string">"Alice"</span>, 25)
+person2 = Person(<span class="code-string">"Bob"</span>, 30)
+
+print(person1.greet())  <span class="code-comment"># Output: Hello, I'm Alice and I'm 25 years old</span>
+print(person2.name)  <span class="code-comment"># Output: Bob</span></code></pre>
+
+            <h3>Attributes</h3>
+            <p>Attributes store data; they can be class-level or instance-level.</p>
+            <ul>
+                <li><strong>Class attributes:</strong> shared across all instances (use for constants or defaults).</li>
+                <li><strong>Instance attributes:</strong> unique to each object, defined in <code>__init__</code> or
+                    later.</li>
+                <li><strong>Encapsulation:</strong> prefix attributes with <code>_</code> or <code>__</code> to indicate
+                    protected/private intent.</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Car</span>:
+    <span class="code-comment"># Class attribute (shared by all instances)</span>
+    wheels = 4
+    
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, brand, model):
+        <span class="code-comment"># Instance attributes (unique to each instance)</span>
+        self.brand = brand
+        self.model = model
+
+car1 = Car(<span class="code-string">"Toyota"</span>, <span class="code-string">"Camry"</span>)
+car2 = Car(<span class="code-string">"Honda"</span>, <span class="code-string">"Accord"</span>)
+
+print(car1.brand)  <span class="code-comment"># Output: Toyota</span>
+print(car2.brand)  <span class="code-comment"># Output: Honda</span>
+print(Car.wheels)  <span class="code-comment"># Output: 4</span>
+print(car1.wheels)  <span class="code-comment"># Output: 4</span></code></pre>
+
+            <h3>Methods</h3>
+            <p>Functions defined inside classes that operate on instances or the class itself.</p>
+            <ul>
+                <li><strong>Instance methods:</strong> take <code>self</code> and operate on instance data.</li>
+                <li><strong>Class methods:</strong> use <code>@classmethod</code> and take <code>cls</code> (operate on
+                    class-level data / alternative constructors).</li>
+                <li><strong>Static methods:</strong> use <code>@staticmethod</code> and don’t take <code>self</code> or
+                    <code>cls</code> (utility functions grouped logically inside the class).</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Calculator</span>:
+    <span class="code-keyword">def</span> <span class="code-func">add</span>(self, a, b):
+        <span class="code-keyword">return</span> a + b
+    
+    <span class="code-keyword">def</span> <span class="code-func">subtract</span>(self, a, b):
+        <span class="code-keyword">return</span> a - b
+    
+    <span class="code-keyword">def</span> <span class="code-func">multiply</span>(self, a, b):
+        <span class="code-keyword">return</span> a * b
+
+calc = Calculator()
+print(calc.add(5, 3))  <span class="code-comment"># Output: 8</span>
+print(calc.multiply(4, 2))  <span class="code-comment"># Output: 8</span></code></pre>
+
+            <h3>Class vs Instance Variables</h3>
+            <p>Class variables are shared; instance variables are per-object.</p>
+            <ul>
+                <li><strong>Change class variable:</strong> affects all instances that do not shadow it.</li>
+                <li><strong>Shadowing:</strong> assigning to <code>self.var</code> creates an instance attribute that
+                    hides the class attribute for that instance.</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Student</span>:
+    school = <span class="code-string">"ABC High School"</span>  <span class="code-comment"># Class variable</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name, grade):
+        self.name = name  <span class="code-comment"># Instance variable</span>
+        self.grade = grade
+
+student1 = Student(<span class="code-string">"Alice"</span>, 10)
+student2 = Student(<span class="code-string">"Bob"</span>, 11)
+
+<span class="code-comment"># Instance variables are different</span>
+print(student1.name)  <span class="code-comment"># Output: Alice</span>
+print(student2.name)  <span class="code-comment"># Output: Bob</span>
+
+<span class="code-comment"># Class variable is shared</span>
+print(student1.school)  <span class="code-comment"># Output: ABC High School</span>
+print(student2.school)  <span class="code-comment"># Output: ABC High School</span>
+
+<span class="code-comment"># Changing class variable affects all instances</span>
+Student.school = <span class="code-string">"XYZ High School"</span>
+print(student1.school)  <span class="code-comment"># Output: XYZ High School</span>
+print(student2.school)  <span class="code-comment"># Output: XYZ High School</span>
+
+<span class="code-comment"># Instance variable can shadow class variable</span>
+student1.school = <span class="code-string">"Different School"</span>
+print(student1.school)  <span class="code-comment"># Output: Different School</span>
+print(student2.school)  <span class="code-comment"># Output: XYZ High School</span></code></pre>
+
+            <h3>Inheritance: Single Inheritance</h3>
+            <p>Child class inherits attributes/methods from one parent class.</p>
+            <ul>
+                <li><strong>Use:</strong> reuse code and extend/override behaviour.</li>
+                <li><strong>Caution:</strong> avoid deep inheritance trees — prefer composition when possible.</li>
+                <li><strong>Use <code>super()</code>:</strong> call parent methods safely (especially in multi/diamond
+                    inheritance).</li>
+            </ul>
+            <pre><code><span class="code-comment"># Parent class</span>
+<span class="code-keyword">class</span> <span class="code-class">Animal</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name):
+        self.name = name
+    
+    <span class="code-keyword">def</span> <span class="code-func">speak</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Some sound"</span>
+
+<span class="code-comment"># Child class</span>
+<span class="code-keyword">class</span> <span class="code-class">Dog</span>(Animal):
+    <span class="code-keyword">def</span> <span class="code-func">speak</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"{self.name} says Woof!"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Cat</span>(Animal):
+    <span class="code-keyword">def</span> <span class="code-func">speak</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"{self.name} says Meow!"</span>
+
+dog = Dog(<span class="code-string">"Buddy"</span>)
+cat = Cat(<span class="code-string">"Whiskers"</span>)
+
+print(dog.speak())  <span class="code-comment"># Output: Buddy says Woof!</span>
+print(cat.speak())  <span class="code-comment"># Output: Whiskers says Meow!</span></code></pre>
+
+            <h3>Multiple Inheritance</h3>
+            <p>Child class inherits from multiple parents; watch for MRO (Method Resolution Order).</p>
+            <ul>
+                <li><strong>MRO:</strong> determines which parent method is used — inspect with
+                    <code>Class.mro()</code>.</li>
+                <li><strong>Diamond problem:</strong> use <code>super()</code> + cooperative multiple inheritance to
+                    avoid surprises.</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Father</span>:
+    <span class="code-keyword">def</span> <span class="code-func">skills</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Gardening"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Mother</span>:
+    <span class="code-keyword">def</span> <span class="code-func">talent</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Cooking"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Child</span>(Father, Mother):
+    <span class="code-keyword">def</span> <span class="code-func">hobby</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Gaming"</span>
+
+child = Child()
+print(child.skills())  <span class="code-comment"># Output: Gardening</span>
+print(child.talent())  <span class="code-comment"># Output: Cooking</span>
+print(child.hobby())  <span class="code-comment"># Output: Gaming</span>
+
+<span class="code-comment"># Method Resolution Order (MRO)</span>
+print(Child.mro())</code></pre>
+
+            <h3>Multilevel Inheritance</h3>
+            <p>Chain of inheritance: grandparent → parent → child. Methods/attributes flow down the chain.</p>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Grandparent</span>:
+    <span class="code-keyword">def</span> <span class="code-func">heritage</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Family heritage"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Parent</span>(Grandparent):
+    <span class="code-keyword">def</span> <span class="code-func">property</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"House and land"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Child</span>(Parent):
+    <span class="code-keyword">def</span> <span class="code-func">education</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"University degree"</span>
+
+child = Child()
+print(child.heritage())  <span class="code-comment"># Output: Family heritage</span>
+print(child.property())  <span class="code-comment"># Output: House and land</span>
+print(child.education())  <span class="code-comment"># Output: University degree</span></code></pre>
+
+            <h3>Hybrid Inheritance</h3>
+            <p>Combines more than one inheritance pattern (e.g., multiple + multilevel).</p>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Vehicle</span>:
+    <span class="code-keyword">def</span> <span class="code-func">vehicle_info</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"This is a vehicle"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Car</span>(Vehicle):
+    <span class="code-keyword">def</span> <span class="code-func">car_info</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"This is a car"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Boat</span>(Vehicle):
+    <span class="code-keyword">def</span> <span class="code-func">boat_info</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"This is a boat"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">AmphibiousVehicle</span>(Car, Boat):
+    <span class="code-keyword">def</span> <span class="code-func">amphibious_info</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Works on land and water"</span>
+
+amphi = AmphibiousVehicle()
+print(amphi.vehicle_info())
+print(amphi.car_info())
+print(amphi.boat_info())
+print(amphi.amphibious_info())</code></pre>
+
+            <h3>Polymorphism</h3>
+            <p>Same interface, different implementations — allows interchangeable objects.</p>
+            <ul>
+                <li><strong>Method polymorphism:</strong> child classes implement methods defined in parent/abstract
+                    classes.</li>
+                <li><strong>Operator polymorphism:</strong> same operator behaves differently for different types (e.g.,
+                    <code>+</code> for numbers, strings, lists).</li>
+                <li><strong>Duck typing:</strong> "If it walks like a duck..." — prefer pragmatic duck typing over
+                    strict type checks when appropriate.</li>
+            </ul>
+            <pre><code><span class="code-comment"># Method polymorphism</span>
+<span class="code-keyword">class</span> <span class="code-class">Shape</span>:
+    <span class="code-keyword">def</span> <span class="code-func">area</span>(self):
+        <span class="code-keyword">pass</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Rectangle</span>(Shape):
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, width, height):
+        self.width = width
+        self.height = height
+    
+    <span class="code-keyword">def</span> <span class="code-func">area</span>(self):
+        <span class="code-keyword">return</span> self.width * self.height
+
+<span class="code-keyword">class</span> <span class="code-class">Circle</span>(Shape):
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, radius):
+        self.radius = radius
+    
+    <span class="code-keyword">def</span> <span class="code-func">area</span>(self):
+        <span class="code-keyword">return</span> 3.14 * self.radius ** 2
+
+<span class="code-comment"># Polymorphic behavior</span>
+shapes = [Rectangle(5, 4), Circle(3), Rectangle(2, 6)]
+
+<span class="code-keyword">for</span> shape <span class="code-keyword">in</span> shapes:
+    print(f<span class="code-string">"Area: {shape.area()}"</span>)
+
+<span class="code-comment"># Operator polymorphism</span>
+print(5 + 3)  <span class="code-comment"># Output: 8</span>
+print(<span class="code-string">"Hello"</span> + <span class="code-string">"World"</span>)  <span class="code-comment"># Output: HelloWorld</span>
+print([1, 2] + [3, 4])  <span class="code-comment"># Output: [1, 2, 3, 4]</span></code></pre>
+
+            <h3>Method Overriding</h3>
+            <p>Child class provides its own implementation of a parent's method.</p>
+            <ul>
+                <li><strong>Use <code>super()</code>:</strong> call overridden parent method when extending behaviour.
+                </li>
+                <li><strong>Polymorphism:</strong> overriding supports runtime selection of implementation.</li>
+            </ul>
+            <pre><code><span class="code-keyword">class</span> <span class="code-class">Parent</span>:
+    <span class="code-keyword">def</span> <span class="code-func">show</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Parent method"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Child</span>(Parent):
+    <span class="code-keyword">def</span> <span class="code-func">show</span>(self):
+        <span class="code-keyword">return</span> <span class="code-string">"Child method overrides parent"</span>
+
+parent = Parent()
+child = Child()
+
+print(parent.show())  <span class="code-comment"># Output: Parent method</span>
+print(child.show())  <span class="code-comment"># Output: Child method overrides parent</span></code></pre>
+
+            <h3>Important notes & best practices</h3>
+            <ul>
+                <li><strong>Prefer composition over inheritance:</strong> composition (has-a) often leads to more
+                    flexible designs than heavy inheritance (is-a).</li>
+                <li><strong>Use <code>super()</code>:</strong> when calling parent methods, especially in multiple
+                    inheritance, use <code>super()</code> for cooperative method calls.</li>
+                <li><strong>Encapsulation:</strong> indicate privacy with <code>_attr</code> (protected) or
+                    <code>__attr</code> (name mangling). Rely on conventions rather than enforcing strict privacy.</li>
+                <li><strong>Use <code>@staticmethod</code>/<code>@classmethod</code> appropriately:</strong>
+                    classmethods for alternative constructors or operations that affect the class; staticmethods for
+                    utility functions related to the class.</li>
+                <li><strong>Keep methods small and single-purpose:</strong> easier testing and maintenance.</li>
+                <li><strong>Use dataclasses for simple data containers:</strong> <code>@dataclass</code> (from
+                    <code>dataclasses</code>) reduces boilerplate for classes primarily storing data.</li>
+                <li><strong>Favor explicit ove
+
+
+                        <h3>Encapsulation</h3>
+                        <p>Restricting access to certain parts of an object.</p>
+                        <ul>
+                            <li><strong>Purpose:</strong> protect internal state and expose a controlled API (methods)
+                                for safe usage.</li>
+                            <li><strong>Conventions:</strong> single underscore <code>_attr</code> = protected
+                                (convention); double underscore <code>__attr</code> = name-mangled private (avoids
+                                accidental access).</li>
+                            <li><strong>Why not truly private:</strong> Python uses name-mangling, not strict access
+                                control — it's about intention and discipline.</li>
+                            <li><strong>Use getters/setters:</strong> use methods (or <code>@property</code>) to
+                                validate or transform values when reading/writing attributes.</li>
+                            <li><strong>Tip:</strong> prefer <code>@property</code> when you want attribute-like access
+                                with validation.</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">class</span> <span class="code-class">BankAccount</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, account_number, balance):
+        self.account_number = account_number  <span class="code-comment"># Public</span>
+        self._branch = <span class="code-string">"Main Branch"</span>  <span class="code-comment"># Protected (convention)</span>
+        self.__balance = balance  <span class="code-comment"># Private</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">deposit</span>(self, amount):
+        self.__balance += amount
+    
+    <span class="code-keyword">def</span> <span class="code-func">withdraw</span>(self, amount):
+        <span class="code-keyword">if</span> amount <= self.__balance:
+            self.__balance -= amount
+        <span class="code-keyword">else</span>:
+            print(<span class="code-string">"Insufficient funds"</span>)
+    
+    <span class="code-keyword">def</span> <span class="code-func">get_balance</span>(self):
+        <span class="code-keyword">return</span> self.__balance
+
+account = BankAccount(<span class="code-string">"12345"</span>, 1000)
+account.deposit(500)
+print(account.get_balance())  <span class="code-comment"># Output: 1500</span>
+
+<span class="code-comment"># Direct access to private variable (name mangling)</span>
+<span class="code-comment"># print(account.__balance)  # AttributeError</span>
+print(account._BankAccount__balance)  <span class="code-comment"># Output: 1500 (not recommended)</span></code></pre>
+
+                        <h3>Abstraction</h3>
+                        <p>Hiding complex implementation details, showing only essential features.</p>
+                        <ul>
+                            <li><strong>Goal:</strong> keep interfaces simple — expose what users need, hide how it's
+                                done.</li>
+                            <li><strong>Abstract base classes:</strong> define required methods for subclasses using
+                                <code>abc</code> and <code>@abstractmethod</code>.</li>
+                            <li><strong>Benefit:</strong> enforces a contract and allows polymorphic use of different
+                                implementations.</li>
+                            <li><strong>Tip:</strong> use abstraction to separate "what" from "how" — tests and
+                                higher-level code rely on the "what".</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">from</span> abc <span class="code-keyword">import</span> ABC, abstractmethod
+
+<span class="code-keyword">class</span> <span class="code-class">Payment</span>(ABC):
+    @abstractmethod
+    <span class="code-keyword">def</span> <span class="code-func">pay</span>(self, amount):
+        <span class="code-keyword">pass</span>
+
+<span class="code-keyword">class</span> <span class="code-class">CreditCard</span>(Payment):
+    <span class="code-keyword">def</span> <span class="code-func">pay</span>(self, amount):
+        <span class="code-keyword">return</span> f<span class="code-string">"Paid ${amount} using Credit Card"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">PayPal</span>(Payment):
+    <span class="code-keyword">def</span> <span class="code-func">pay</span>(self, amount):
+        <span class="code-keyword">return</span> f<span class="code-string">"Paid ${amount} using PayPal"</span>
+
+<span class="code-comment"># Cannot instantiate abstract class</span>
+<span class="code-comment"># payment = Payment()  # TypeError</span>
+
+credit = CreditCard()
+paypal = PayPal()
+
+print(credit.pay(100))  <span class="code-comment"># Output: Paid $100 using Credit Card</span>
+print(paypal.pay(50))  <span class="code-comment"># Output: Paid $50 using PayPal</span></code></pre>
+
+                        <h3>super()</h3>
+                        <p>Calls parent class methods.</p>
+                        <ul>
+                            <li><strong>Use:</strong> invoke parent initialization or behaviour (e.g.,
+                                <code>super().__init__(...)</code>).</li>
+                            <li><strong>In multiple inheritance:</strong> <code>super()</code> follows MRO and enables
+                                cooperative calls — prefer it over direct parent class calls.</li>
+                            <li><strong>Tip:</strong> design parent classes to cooperate (accept flexible
+                                <code>\*\*kwargs</code> when needed) to avoid argument mismatches.</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">class</span> <span class="code-class">Parent</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name):
+        self.name = name
+    
+    <span class="code-keyword">def</span> <span class="code-func">show</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"Parent: {self.name}"</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Child</span>(Parent):
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name, age):
+        super().__init__(name)  <span class="code-comment"># Call parent's __init__</span>
+        self.age = age
+    
+    <span class="code-keyword">def</span> <span class="code-func">show</span>(self):
+        parent_msg = super().show()  <span class="code-comment"># Call parent's show</span>
+        <span class="code-keyword">return</span> f<span class="code-string">"{parent_msg}, Child age: {self.age}"</span>
+
+child = Child(<span class="code-string">"Alice"</span>, 10)
+print(child.show())
+<span class="code-comment"># Output: Parent: Alice, Child age: 10</span>
+
+<span class="code-comment"># Multiple inheritance with super()</span>
+<span class="code-keyword">class</span> <span class="code-class">A</span>:
+    <span class="code-keyword">def</span> <span class="code-func">method</span>(self):
+        print(<span class="code-string">"A method"</span>)
+
+<span class="code-keyword">class</span> <span class="code-class">B</span>(A):
+    <span class="code-keyword">def</span> <span class="code-func">method</span>(self):
+        print(<span class="code-string">"B method"</span>)
+        super().method()
+
+<span class="code-keyword">class</span> <span class="code-class">C</span>(A):
+    <span class="code-keyword">def</span> <span class="code-func">method</span>(self):
+        print(<span class="code-string">"C method"</span>)
+        super().method()
+
+<span class="code-keyword">class</span> <span class="code-class">D</span>(B, C):
+    <span class="code-keyword">def</span> <span class="code-func">method</span>(self):
+        print(<span class="code-string">"D method"</span>)
+        super().method()
+
+d = D()
+d.method()
+<span class="code-comment"># Output:</span>
+<span class="code-comment"># D method</span>
+<span class="code-comment"># B method</span>
+<span class="code-comment"># C method</span>
+<span class="code-comment"># A method</span></code></pre>
+
+                        <h3>Dunder / Magic Methods: str & repr</h3>
+                        <ul>
+                            <li><strong>Purpose:</strong> customize how objects are displayed (<code>__str__</code>) and
+                                how they are represented for developers (<code>__repr__</code>).</li>
+                            <li><strong>Guideline:</strong> <code>__repr__</code> should, if possible, return a string
+                                that can recreate the object; <code>__str__</code> is user-friendly.</li>
+                            <li><strong>Tip:</strong> implement both for classes used in debugging or interactive
+                                sessions.</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">class</span> <span class="code-class">Person</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name, age):
+        self.name = name
+        self.age = age
+    
+    <span class="code-keyword">def</span> <span class="code-func">__str__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"{self.name} ({self.age} years old)"</span>
+
+person = Person(<span class="code-string">"Alice"</span>, 25)
+print(person)  <span class="code-comment"># Output: Alice (25 years old)</span>
+print(str(person))  <span class="code-comment"># Output: Alice (25 years old)</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Point</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, x, y):
+        self.x = x
+        self.y = y
+    
+    <span class="code-keyword">def</span> <span class="code-func">__repr__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"Point({self.x}, {self.y})"</span>
+
+point = Point(3, 4)
+print(repr(point))  <span class="code-comment"># Output: Point(3, 4)</span>
+print(point)  <span class="code-comment"># Output: Point(3, 4)</span></code></pre>
+
+                        <h3>len, add, getitem</h3>
+                        <ul>
+                            <li><strong>Why:</strong> magic methods let your objects behave like built-in types
+                                (sequence, numeric, container).</li>
+                            <li><strong>Common:</strong> <code>__len__</code>, <code>__getitem__</code>,
+                                <code>__iter__</code>, <code>__add__</code> — implement combinations depending on
+                                desired behaviour.</li>
+                            <li><strong>Tip:</strong> when implementing <code>__getitem__</code>, support slicing by
+                                checking if index is <code>slice</code>.</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">class</span> <span class="code-class">Playlist</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, songs):
+        self.songs = songs
+    
+    <span class="code-keyword">def</span> <span class="code-func">__len__</span>(self):
+        <span class="code-keyword">return</span> len(self.songs)
+
+playlist = Playlist([<span class="code-string">"Song1"</span>, <span class="code-string">"Song2"</span>, <span class="code-string">"Song3"</span>])
+print(len(playlist))  <span class="code-comment"># Output: 3</span>
+
+<span class="code-keyword">class</span> <span class="code-class">Vector</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, x, y):
+        self.x = x
+        self.y = y
+    
+    <span class="code-keyword">def</span> <span class="code-func">__add__</span>(self, other):
+        <span class="code-keyword">return</span> Vector(self.x + other.x, self.y + other.y)
+    
+    <span class="code-keyword">def</span> <span class="code-func">__repr__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"Vector({self.x}, {self.y})"</span>
+
+v1 = Vector(2, 3)
+v2 = Vector(4, 5)
+v3 = v1 + v2
+print(v3)  <span class="code-comment"># Output: Vector(6, 8)</span>
+
+<span class="code-keyword">class</span> <span class="code-class">CustomList</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, items):
+        self.items = items
+    
+    <span class="code-keyword">def</span> <span class="code-func">__getitem__</span>(self, index):
+        <span class="code-keyword">return</span> self.items[index]
+    
+    <span class="code-keyword">def</span> <span class="code-func">__len__</span>(self):
+        <span class="code-keyword">return</span> len(self.items)
+
+custom = CustomList([10, 20, 30, 40, 50])
+print(custom[0])  <span class="code-comment"># Output: 10</span>
+print(custom[2])  <span class="code-comment"># Output: 30</span>
+print(custom[1:4])  <span class="code-comment"># Output: [20, 30, 40]</span>
+
+<span class="code-comment"># Makes object iterable</span>
+<span class="code-keyword">for</span> item <span class="code-keyword">in</span> custom:
+    print(item)</code></pre>
+
+                        <h3>Other Common Magic Methods</h3>
+                        <ul>
+                            <li><strong>Comparison:</strong> <code>__eq__</code>, <code>__lt__</code>,
+                                <code>__le__</code>, etc. Implement these to make objects comparable and sortable.</li>
+                            <li><strong>Container:</strong> <code>__contains__</code> supports the <code>in</code>
+                                operator.</li>
+                            <li><strong>Numeric:</strong> <code>__mul__</code>, <code>__sub__</code>, etc. implement
+                                when objects represent numeric-like entities.</li>
+                            <li><strong>Tip:</strong> implement <code>__hash__</code> when you make objects immutable
+                                and want them usable as dict keys/sets (ensure consistency with <code>__eq__</code>).
+                            </li>
+                        </ul>
+                        <pre><code><span class="code-keyword">class</span> <span class="code-class">Book</span>:
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, title, pages):
+        self.title = title
+        self.pages = pages
+    
+    <span class="code-keyword">def</span> <span class="code-func">__str__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"'{self.title}' with {self.pages} pages"</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">__repr__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"Book('{self.title}', {self.pages})"</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">__len__</span>(self):
+        <span class="code-keyword">return</span> self.pages
+    
+    <span class="code-keyword">def</span> <span class="code-func">__eq__</span>(self, other):
+        <span class="code-keyword">return</span> self.pages == other.pages
+    
+    <span class="code-keyword">def</span> <span class="code-func">__lt__</span>(self, other):
+        <span class="code-keyword">return</span> self.pages < other.pages
+    
+    <span class="code-keyword">def</span> <span class="code-func">__add__</span>(self, other):
+        <span class="code-keyword">return</span> self.pages + other.pages
+    
+    <span class="code-keyword">def</span> <span class="code-func">__contains__</span>(self, word):
+        <span class="code-keyword">return</span> word <span class="code-keyword">in</span> self.title
+
+book1 = Book(<span class="code-string">"Python Basics"</span>, 300)
+book2 = Book(<span class="code-string">"Advanced Python"</span>, 500)
+
+print(str(book1))  <span class="code-comment"># Output: 'Python Basics' with 300 pages</span>
+print(repr(book1))  <span class="code-comment"># Output: Book('Python Basics', 300)</span>
+print(len(book1))  <span class="code-comment"># Output: 300</span>
+print(book1 == book2)  <span class="code-comment"># Output: False</span>
+print(book1 < book2)  <span class="code-comment"># Output: True</span>
+print(book1 + book2)  <span class="code-comment"># Output: 800</span>
+print(<span class="code-string">"Python"</span> <span class="code-keyword">in</span> book1)  <span class="code-comment"># Output: True</span></code></pre>
+
+                        <h3>Complete OOP Example</h3>
+                        <ul>
+                            <li><strong>Design:</strong> combine abstraction, encapsulation, and polymorphism for
+                                maintainable designs.</li>
+                            <li><strong>Private data:</strong> store sensitive data privately and expose controlled
+                                setters/getters.</li>
+                            <li><strong>Extendability:</strong> abstract base classes make it easy to add new employee
+                                types with custom salary calculations.</li>
+                            <li><strong>Testing:</strong> test boundary conditions (e.g., negative salary, missing
+                                fields) and public API behaviour.</li>
+                        </ul>
+                        <pre><code><span class="code-keyword">from</span> abc <span class="code-keyword">import</span> ABC, abstractmethod
+
+<span class="code-comment"># Abstract base class</span>
+<span class="code-keyword">class</span> <span class="code-class">Employee</span>(ABC):
+    company = <span class="code-string">"TechCorp"</span>  <span class="code-comment"># Class variable</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">__init__</span>(self, name, emp_id):
+        self.name = name
+        self.emp_id = emp_id
+        self.__salary = 0  <span class="code-comment"># Private attribute</span>
+    
+    @abstractmethod
+    <span class="code-keyword">def</span> <span class="code-func">calculate_salary</span>(self):
+        <span class="code-keyword">pass</span>
+    
+    <span class="code-keyword">def</span> <span class="code-func">set_salary</span>(self, salary):
+        <span class="code-keyword">if</span> salary > 0:
+            self.__salary = salary
+    
+    <span class="code-keyword">def</span> <span class="code-func">get_salary</span>(self):
+        <span class="code-keyword">return</span> self.__salary
+    
+    <span class="code-keyword">def</span> <span class="code-func">__str__</span>(self):
+        <span class="code-keyword">return</span> f<span class="code-string">"{self.name} (ID: {self.emp_id})"</span></code></pre>
+
+                        <h3>Important notes & best practices</h3>
+                        <ul>
+                            <li><strong>Favor clarity:</strong> make interfaces simple and document public
+                                methods/attributes.</li>
+                            <li><strong>Composition > inheritance:</strong> prefer composing small reusable components
+                                over deep inheritance chains.</li>
+                            <li><strong>Use properties:</strong> <code>@property</code> for attribute access with
+                                validation — preserves a simple API while allowing easy future changes.</li>
+                            <li><strong>Design for extension:</strong> abstract parent classes and clear contracts make
+                                adding new types easier and safer.</li>
+                            <li><strong>Document MRO:</strong> if using multiple inheritance, document the intended MRO
+                                and cooperative <code>super()</code> usage.</li>
+                            <li><strong>Testing:</strong> unit-test public behaviors rather than private internals; test
+                                edge cases and interactions between classes.</li>
+                        </ul>
+
+</body>
+
+</html>
