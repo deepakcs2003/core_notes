@@ -1076,28 +1076,50 @@ print(car2.brand)  <span class="code-comment"># Output: Honda</span>
 print(Car.wheels)  <span class="code-comment"># Output: 4</span>
 print(car1.wheels)  <span class="code-comment"># Output: 4</span></code></pre>
 
-            <h3>Methods</h3>
-            <p>Functions defined inside classes that operate on instances or the class itself.</p>
-            <ul>
-                <li><strong>Instance methods:</strong> take <code>self</code> and operate on instance data.</li>
-                <li><strong>Class methods:</strong> use <code>@classmethod</code> and take <code>cls</code> (operate on
-                    class-level data / alternative constructors).</li>
-                <li><strong>Static methods:</strong> use <code>@staticmethod</code> and don’t take <code>self</code> or
-                    <code>cls</code> (utility functions grouped logically inside the class).</li>
-            </ul>
-            <pre><code><span class="code-keyword">class</span> <span class="code-class">Calculator</span>:
-    <span class="code-keyword">def</span> <span class="code-func">add</span>(self, a, b):
-        <span class="code-keyword">return</span> a + b
-    
-    <span class="code-keyword">def</span> <span class="code-func">subtract</span>(self, a, b):
-        <span class="code-keyword">return</span> a - b
-    
-    <span class="code-keyword">def</span> <span class="code-func">multiply</span>(self, a, b):
-        <span class="code-keyword">return</span> a * b
+        <h3>Methods</h3>
+<p>Methods are functions inside a class. They can work on objects, the class, or act as simple helpers.</p>
+<ul>
+    <li><strong>Instance Method:</strong> Uses <code>self</code> and works with object data.</li>
+    <li><strong>Class Method:</strong> Uses <code>cls</code> and works with class-level data (or creates objects).</li>
+    <li><strong>Static Method:</strong> No <code>self</code> or <code>cls</code>; simple utility function inside the class.</li>
+</ul>
 
-calc = Calculator()
-print(calc.add(5, 3))  <span class="code-comment"># Output: 8</span>
-print(calc.multiply(4, 2))  <span class="code-comment"># Output: 8</span></code></pre>
+<pre><code><span class="code-keyword">class</span> <span class="code-class">Example</span>:
+    <span class="code-comment"># Instance method (needs object)</span>
+    <span class="code-keyword">def</span> <span class="code-func">greet</span>(self, name):
+        <span class="code-keyword">return</span> f<span class="code-string">"Hello {name}, welcome!"</span>
+
+    <span class="code-comment"># Class method (works with class)</span>
+    @<span class="code-keyword">classmethod</span>
+    <span class="code-keyword">def</span> <span class="code-func">set_platform</span>(cls, value):
+        cls.platform = value
+        <span class="code-keyword">return</span> f<span class="code-string">"Platform set to {value}"</span>
+
+    <span class="code-comment"># Static method (simple helper)</span>
+    @<span class="code-keyword">staticmethod</span>
+    <span class="code-keyword">def</span> <span class="code-func">add</span>(a, b):
+        <span class="code-keyword">return</span> a + b
+
+<span class="code-comment"># Using instance method</span>
+obj = Example()
+print(obj.greet(<span class="code-string">"Alice"</span>))  
+<span class="code-comment"># Output: Hello Alice, welcome!</span>
+
+<span class="code-comment"># Using class method</span>
+print(Example.set_platform(<span class="code-string">"Web App"</span>))
+<span class="code-comment"># Output: Platform set to Web App</span>
+
+<span class="code-comment"># Using static method</span>
+print(Example.add(10, 5))
+<span class="code-comment"># Output: 15</span>
+</code></pre>
+
+<ul>
+    <li><strong>Use instance methods</strong> when you need object data.</li>
+    <li><strong>Use class methods</strong> when changing class-level values or creating objects.</li>
+    <li><strong>Use static methods</strong> for small helper tasks related to the class.</li>
+</ul>
+
 
             <h3>Class vs Instance Variables</h3>
             <p>Class variables are shared; instance variables are per-object.</p>
