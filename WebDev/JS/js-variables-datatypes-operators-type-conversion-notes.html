@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: #1c2128;
+    --bg-card2: #21262d;
+    --bg-sidebar: #13181f;
+    --border: #30363d;
+    --border-light: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #58a6ff;
+    --accent-cyan: #39d0d8;
+    --accent-green: #3fb950;
+    --accent-yellow: #d29922;
+    --accent-orange: #f0883e;
+    --accent-red: #f85149;
+    --accent-purple: #bc8cff;
+    --code-bg: #0d1117;
+    --tag-bg: rgba(56, 139, 253, 0.1);
+    --tag-border: rgba(56, 139, 253, 0.4);
+    --sidebar-width: 240px;
+    --header-height: 48px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: var(--header-height);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 16px;
+  }
+  .header-left { display: flex; align-items: center; gap: 8px; }
+  .traffic-lights { display: flex; gap: 6px; margin-right: 8px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red   { background: #ff5f57; }
+  .dot-yellow{ background: #febc2e; }
+  .dot-green { background: #28c840; }
+  .filename {
+    font-size: 13px; color: var(--text-secondary);
+    font-family: 'Fira Code', monospace;
+  }
+  .filename span { color: var(--accent-cyan); }
+  .badge {
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text-secondary); padding: 3px 10px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: flex;
+    padding-top: var(--header-height);
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 16px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-section {
+    padding: 0 0 8px 0;
+    margin-bottom: 4px;
+  }
+  .sidebar-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--text-muted); padding: 6px 16px 4px;
+    text-transform: uppercase;
+  }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 16px; cursor: pointer; font-size: 12px;
+    color: var(--text-secondary); transition: all 0.15s;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .sidebar-item:hover { background: var(--bg-card); color: var(--text-primary); }
+  .sidebar-item.active { background: var(--tag-bg); color: var(--accent-blue); border-left: 2px solid var(--accent-blue); }
+  .sidebar-icon { font-size: 13px; flex-shrink: 0; }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 24px 32px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO CARD ── */
+  .hero-card {
+    background: linear-gradient(135deg, #1c2a3a 0%, #1a2332 60%, #161f2e 100%);
+    border: 1px solid #2d4a6b;
+    border-radius: 12px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: 'JS';
+    position: absolute; right: 32px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 120px; font-weight: 800;
+    color: rgba(88, 166, 255, 0.06);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -4px;
+    user-select: none;
+  }
+  .hero-tags { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .hero-tag {
+    background: rgba(56,139,253,0.12); border: 1px solid rgba(56,139,253,0.35);
+    color: var(--accent-blue); padding: 4px 12px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .hero-title {
+    font-size: clamp(26px, 4vw, 40px); font-weight: 800; line-height: 1.2;
+    margin-bottom: 14px;
+  }
+  .hero-title .highlight { color: var(--accent-blue); }
+  .hero-desc {
+    color: var(--text-secondary); font-size: 13px; max-width: 560px;
+    line-height: 1.7; margin-bottom: 18px;
+  }
+  .source-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .source-tag {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--text-muted); padding: 4px 12px; border-radius: 4px;
+    font-size: 11px; display: flex; align-items: center; gap: 6px;
+  }
+  .source-tag .dot2 { width: 5px; height: 5px; background: var(--accent-cyan); border-radius: 50%; display: inline-block; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex; align-items: center; gap: 14px;
+    margin: 32px 0 18px;
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-blue);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    box-shadow: 0 0 14px rgba(88,166,255,0.3);
+  }
+  .section-meta { }
+  .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+  .section-sub { font-size: 11px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 14px; font-weight: 700; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    margin: 10px 0;
+    color: #e6edf3;
+  }
+  code {
+    font-family: 'Fira Code', monospace;
+    background: rgba(110,118,129,0.15);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--accent-cyan);
+  }
+  pre code { background: none; padding: 0; color: inherit; font-size: 12px; }
+  .kw { color: #ff7b72; }
+  .str { color: #a5d6ff; }
+  .num { color: #79c0ff; }
+  .cmt { color: #8b949e; font-style: italic; }
+  .fn { color: #d2a8ff; }
+  .var2 { color: #ffa657; }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 10px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    background: var(--bg-card2); color: var(--text-secondary);
+    padding: 8px 14px; text-align: left;
+    border: 1px solid var(--border); font-weight: 600;
+    font-size: 11px; letter-spacing: 0.5px;
+  }
+  td {
+    padding: 8px 14px; border: 1px solid var(--border);
+    color: var(--text-secondary); vertical-align: middle;
+  }
+  td:first-child { color: var(--accent-cyan); font-weight: 600; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── BADGES / PILLS ── */
+  .pill {
+    display: inline-block; padding: 2px 8px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .pill-green  { background: rgba(63,185,80,0.15); color: var(--accent-green); border: 1px solid rgba(63,185,80,0.3); }
+  .pill-red    { background: rgba(248,81,73,0.15);  color: var(--accent-red);   border: 1px solid rgba(248,81,73,0.3); }
+  .pill-yellow { background: rgba(210,153,34,0.15); color: var(--accent-yellow);border: 1px solid rgba(210,153,34,0.3); }
+  .pill-blue   { background: rgba(88,166,255,0.12); color: var(--accent-blue);  border: 1px solid rgba(88,166,255,0.3); }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-left: 3px solid;
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  .callout-yellow { border-color: var(--accent-yellow); background: rgba(210,153,34,0.08); color: var(--text-secondary); }
+  .callout-blue   { border-color: var(--accent-blue);   background: rgba(88,166,255,0.08); color: var(--text-secondary); }
+  .callout-green  { border-color: var(--accent-green);  background: rgba(63,185,80,0.08);  color: var(--text-secondary); }
+  .callout-red    { border-color: var(--accent-red);    background: rgba(248,81,73,0.08);  color: var(--text-secondary); }
+  .callout-icon { margin-right: 8px; }
+
+  /* ── LIST ── */
+  ul.styled { list-style: none; padding: 0; }
+  ul.styled li {
+    padding: 4px 0 4px 18px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ul.styled li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--accent-blue); font-size: 10px; top: 5px;
+  }
+  ul.styled li strong { color: var(--text-primary); }
+
+  ol.styled { list-style: none; padding: 0; counter-reset: li; }
+  ol.styled li {
+    counter-increment: li;
+    padding: 5px 0 5px 26px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    position: relative;
+    line-height: 1.7;
+  }
+  ol.styled li::before {
+    content: counter(li)'.';
+    position: absolute; left: 0;
+    color: var(--accent-blue); font-weight: 700;
+  }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 18px; margin: 10px 0;
+    font-size: 12px;
+  }
+  .highlight-box h4 { color: var(--text-primary); margin-bottom: 8px; font-size: 13px; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  /* ── SECTION ANCHOR ── */
+  .sec { scroll-margin-top: 60px; }
+
+  /* ── DIFF TABLE ── */
+  .diff-table { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .diff-box {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px;
+  }
+  .diff-box-title { font-size: 12px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+
+  /* ── STEP BOX ── */
+  .step-box {
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 18px; margin: 10px 0;
+  }
+  .step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+  .step-num {
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: var(--accent-blue); color: #000;
+    font-weight: 700; font-size: 11px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step-content { color: var(--text-secondary); line-height: 1.6; }
+
+  /* ── MOBILE ── */
+  .mobile-menu-btn {
+    display: none;
+    background: var(--bg-card); border: 1px solid var(--border);
+    color: var(--text-secondary); padding: 4px 10px; border-radius: 6px;
+    cursor: pointer; font-size: 16px;
+  }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 98;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 99;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.open { display: block; }
+    .mobile-menu-btn { display: block; }
+    .main { margin-left: 0; padding: 16px; }
+    .hero-card { padding: 22px 18px; }
+    .hero-card::before { display: none; }
+    .hero-title { font-size: 22px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .diff-table { grid-template-columns: 1fr; }
+    table { font-size: 11px; }
+    th, td { padding: 6px 10px; }
+  }
+
+  @media (max-width: 480px) {
+    .main { padding: 12px; }
+    .hero-card { padding: 16px 14px; }
+    .source-tags { flex-direction: column; align-items: flex-start; }
+    pre { font-size: 11px; padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="traffic-lights">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+    </div>
+    <span class="filename"><span>javascript</span>-notes.js</span>
+  </div>
+  <div class="badge">ES2023</div>
+</header>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<!-- LAYOUT -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Contents</div>
+      <a class="sidebar-item active" href="#variables"><span class="sidebar-icon">📘</span>Variables & Datatypes</a>
+      <a class="sidebar-item" href="#what-is-variable"><span class="sidebar-icon">🧠</span>What is a Variable</a>
+      <a class="sidebar-item" href="#declare"><span class="sidebar-icon">🔑</span>Ways to Declare</a>
+      <a class="sidebar-item" href="#var"><span class="sidebar-icon">🔴</span>var</a>
+      <a class="sidebar-item" href="#let"><span class="sidebar-icon">🟡</span>let</a>
+      <a class="sidebar-item" href="#const"><span class="sidebar-icon">🟢</span>const</a>
+      <a class="sidebar-item" href="#diff-table"><span class="sidebar-icon">📊</span>Difference Table</a>
+      <a class="sidebar-item" href="#datatypes"><span class="sidebar-icon">📦</span>Data Types</a>
+      <a class="sidebar-item" href="#primitive"><span class="sidebar-icon">🔵</span>Primitive Types</a>
+      <a class="sidebar-item" href="#non-primitive"><span class="sidebar-icon">🟣</span>Non-Primitive Types</a>
+      <a class="sidebar-item" href="#tricky"><span class="sidebar-icon">⚠️</span>Tricky Expressions</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Operators</div>
+      <a class="sidebar-item" href="#operators"><span class="sidebar-icon">🔢</span>Arithmetic</a>
+      <a class="sidebar-item" href="#assignment"><span class="sidebar-icon">📝</span>Assignment</a>
+      <a class="sidebar-item" href="#comparison"><span class="sidebar-icon">⚖️</span>Comparison</a>
+      <a class="sidebar-item" href="#logical"><span class="sidebar-icon">🔗</span>Logical</a>
+      <a class="sidebar-item" href="#bitwise"><span class="sidebar-icon">💻</span>Bitwise</a>
+      <a class="sidebar-item" href="#ternary"><span class="sidebar-icon">❓</span>Ternary</a>
+      <a class="sidebar-item" href="#unary"><span class="sidebar-icon">🔼</span>Unary</a>
+      <a class="sidebar-item" href="#optional"><span class="sidebar-icon">🔗</span>Optional Chaining</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Type System</div>
+      <a class="sidebar-item" href="#type-conversion"><span class="sidebar-icon">🔄</span>Type Conversion</a>
+      <a class="sidebar-item" href="#type-coercion"><span class="sidebar-icon">⚡</span>Type Coercion</a>
+      <a class="sidebar-item" href="#best-practices"><span class="sidebar-icon">🧠</span>Best Practices</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HERO -->
+    <div class="hero-card" id="variables">
+      <div class="hero-tags">
+        <span class="hero-tag">JavaScript</span>
+        <span class="hero-tag">Full Notes</span>
+      </div>
+      <h1 class="hero-title">Variables and <span class="highlight">Datatypes</span><br>in JavaScript</h1>
+      <p class="hero-desc">
+        JavaScript uses <strong>Variables</strong> → to store data and <strong>Data Types</strong> → to define what type of data is stored.
+      </p>
+      <div class="source-tags">
+        <a href="https://www.geeksforgeeks.org/javascript/variables-datatypes-javascript/" target="_blank">📄 GFG · Variables & Data Types</a>
+        <a href="https://www.geeksforgeeks.org/javascript/javascript-operators/" target="_blank">📄 GFG · Operators</a>
+        <a href="https://www.geeksforgeeks.org/javascript/type-conversion-and-type-coercion-in-javascript/" target="_blank">📄 GFG · Type Conversion & Coercion</a>
+      </div>
+    </div>
+
+    <!-- WHAT IS A VARIABLE -->
+    <div class="sec" id="what-is-variable">
+      <div class="section-header">
+        <div class="section-icon">🧠</div>
+        <div class="section-meta">
+          <div class="section-title">What is a Variable?</div>
+          <div class="section-sub">Basics</div>
+        </div>
+      </div>
+      <div class="card">
+        <p style="color:var(--text-secondary);margin-bottom:12px;">👉 A variable is like a container (box) that stores values.</p>
+        <p style="color:var(--text-secondary);margin-bottom:8px;font-size:12px;"><strong style="color:var(--text-primary);">Example:</strong></p>
+        <pre><span class="kw">let</span> <span class="var2">name</span> = <span class="str">"Deepak"</span>;</pre>
+        <div class="callout callout-blue">
+          <strong>📌 Here:</strong><br>
+          <code>name</code> → variable &nbsp;&nbsp; <code>"Deepak"</code> → value
+        </div>
+      </div>
+    </div>
+
+    <!-- WAYS TO DECLARE -->
+    <div class="sec" id="declare">
+      <div class="section-header">
+        <div class="section-icon">🔑</div>
+        <div class="section-meta">
+          <div class="section-title">Ways to Declare Variables</div>
+          <div class="section-sub">3 Keywords</div>
+        </div>
+      </div>
+      <div class="card">
+        <p style="color:var(--text-secondary);margin-bottom:12px;">JavaScript has 3 keywords:</p>
+        <ol class="styled">
+          <li><code>var</code></li>
+          <li><code>let</code></li>
+          <li><code>const</code></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- VAR -->
+    <div class="sec" id="var">
+      <div class="card" style="border-left:3px solid var(--accent-red);">
+        <div class="card-title" style="color:var(--accent-red);">🔴 1. var (Old Way)</div>
+        <pre><span class="kw">var</span> <span class="var2">n</span> = <span class="num">5</span>;
+<span class="var2">n</span> = <span class="num">20</span>; <span class="cmt">// allowed</span>
+<span class="kw">var</span> <span class="var2">n</span> = <span class="num">30</span>; <span class="cmt">// allowed again</span></pre>
+        <div class="callout callout-blue" style="margin-top:12px;">
+          <strong>📌 Features:</strong>
+          <ul class="styled" style="margin-top:6px;">
+            <li>Function-scoped (or global)</li>
+            <li>Can redeclare</li>
+            <li>Can update</li>
+          </ul>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:8px;">
+          <strong>⚠️ Problem:</strong>
+          <ul class="styled" style="margin-top:6px;">
+            <li>Causes bugs due to re-declaration</li>
+            <li>Not recommended in modern JS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LET -->
+    <div class="sec" id="let">
+      <div class="card" style="border-left:3px solid var(--accent-yellow);">
+        <div class="card-title" style="color:var(--accent-yellow);">🟡 2. let (Modern Way)</div>
+        <pre><span class="kw">let</span> <span class="var2">n</span> = <span class="num">10</span>;
+<span class="var2">n</span> = <span class="num">20</span>; <span class="cmt">// allowed</span>
+<span class="cmt">// let n = 15; ❌ error</span></pre>
+        <div class="callout callout-blue" style="margin-top:12px;">
+          <strong>📌 Features:</strong>
+          <ul class="styled" style="margin-top:6px;">
+            <li>Block-scoped (<code>{}</code>)</li>
+            <li>Cannot redeclare in same block</li>
+            <li>Can update value</li>
+          </ul>
+        </div>
+        <div class="callout callout-green" style="margin-top:8px;">
+          <strong>✅ Best for:</strong> Changing values
+        </div>
+      </div>
+    </div>
+
+    <!-- CONST -->
+    <div class="sec" id="const">
+      <div class="card" style="border-left:3px solid var(--accent-green);">
+        <div class="card-title" style="color:var(--accent-green);">🟢 3. const (Constant)</div>
+        <pre><span class="kw">const</span> <span class="var2">n</span> = <span class="num">100</span>;
+<span class="cmt">// n = 200 ❌ error</span></pre>
+        <div class="callout callout-blue" style="margin-top:12px;">
+          <strong>📌 Features:</strong>
+          <ul class="styled" style="margin-top:6px;">
+            <li>Block-scoped</li>
+            <li>Cannot reassign</li>
+            <li>Must initialize</li>
+          </ul>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:8px;">
+          <strong>⚠️ Important:</strong>
+          <pre style="margin-top:8px;"><span class="kw">const</span> <span class="var2">obj</span> = {<span class="var2">name</span>: <span class="str">"Amit"</span>};
+<span class="var2">obj</span>.<span class="var2">name</span> = <span class="str">"Rahul"</span>; <span class="cmt">// ✅ allowed</span></pre>
+          👉 Object content can change, but variable cannot be reassigned
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFERENCE TABLE -->
+    <div class="sec" id="diff-table">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div class="section-meta">
+          <div class="section-title">Difference Table</div>
+          <div class="section-sub">var vs let vs const</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Feature</th><th>var</th><th>let</th><th>const</th></tr></thead>
+            <tbody>
+              <tr><td>Scope</td><td>Function</td><td>Block</td><td>Block</td></tr>
+              <tr><td>Reassign</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td></tr>
+              <tr><td>Redeclare</td><td><span class="pill pill-green">✅</span></td><td><span class="pill pill-red">❌</span></td><td><span class="pill pill-red">❌</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- DATA TYPES -->
+    <div class="sec" id="datatypes">
+      <div class="section-header">
+        <div class="section-icon">📦</div>
+        <div class="section-meta">
+          <div class="section-title">Data Types in JavaScript</div>
+          <div class="section-sub">Two Types</div>
+        </div>
+      </div>
+      <div class="card">
+        <ol class="styled">
+          <li><strong>Primitive</strong></li>
+          <li><strong>Non-Primitive</strong></li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PRIMITIVE -->
+    <div class="sec" id="primitive">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-blue);">🔵</div>
+        <div class="section-meta">
+          <div class="section-title">Primitive Data Types</div>
+          <div class="section-sub">Store single value · Immutable</div>
+        </div>
+      </div>
+      <div class="callout callout-blue">
+        👉 Store single value &nbsp;&nbsp; 👉 Immutable (cannot change directly)
+      </div>
+
+      <!-- 1. Number -->
+      <div class="card">
+        <div class="card-title">1. Number</div>
+        <pre><span class="kw">let</span> <span class="var2">n</span> = <span class="num">42</span>;
+<span class="kw">let</span> <span class="var2">pi</span> = <span class="num">3.14</span>;</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Includes: Integers, Decimals</p>
+      </div>
+
+      <!-- 2. String -->
+      <div class="card">
+        <div class="card-title">2. String</div>
+        <pre><span class="kw">let</span> <span class="var2">s</span> = <span class="str">"Hello"</span>;</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Text inside: <code>" "</code> or <code>' '</code></p>
+      </div>
+
+      <!-- 3. Boolean -->
+      <div class="card">
+        <div class="card-title">3. Boolean</div>
+        <pre><span class="kw">let</span> <span class="var2">isTrue</span> = <span class="kw">true</span>;</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Only: <code>true</code> or <code>false</code></p>
+      </div>
+
+      <!-- 4. Undefined -->
+      <div class="card">
+        <div class="card-title">4. Undefined</div>
+        <pre><span class="kw">let</span> <span class="var2">x</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">x</span>); <span class="cmt">// undefined</span></pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Variable declared but no value</p>
+      </div>
+
+      <!-- 5. Null -->
+      <div class="card">
+        <div class="card-title">5. Null</div>
+        <pre><span class="kw">let</span> <span class="var2">empty</span> = <span class="kw">null</span>;</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Intentional empty value</p>
+        <div class="callout callout-red" style="margin-top:10px;">
+          <strong>🔥 Difference:</strong>
+          <div class="table-wrap" style="margin-top:8px;">
+            <table>
+              <thead><tr><th>null</th><th>undefined</th></tr></thead>
+              <tbody>
+                <tr><td>intentional</td><td>accidental</td></tr>
+                <tr><td>assigned manually</td><td>automatic</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Symbol -->
+      <div class="card">
+        <div class="card-title">6. Symbol</div>
+        <pre><span class="kw">let</span> <span class="var2">sym</span> = <span class="fn">Symbol</span>(<span class="str">"id"</span>);</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Unique value (used in objects)</p>
+      </div>
+
+      <!-- 7. BigInt -->
+      <div class="card">
+        <div class="card-title">7. BigInt</div>
+        <pre><span class="kw">let</span> <span class="var2">big</span> = <span class="num">12345678901234567890n</span>;</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 For very large numbers</p>
+      </div>
+    </div>
+
+    <!-- NON-PRIMITIVE -->
+    <div class="sec" id="non-primitive">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-purple);">🟣</div>
+        <div class="section-meta">
+          <div class="section-title">Non-Primitive Data Types</div>
+          <div class="section-sub">Store multiple / complex data</div>
+        </div>
+      </div>
+      <div class="callout callout-blue">
+        👉 Store multiple values / complex data
+      </div>
+
+      <div class="card">
+        <div class="card-title">1. Object</div>
+        <pre><span class="kw">let</span> <span class="var2">obj</span> = {
+    <span class="var2">name</span>: <span class="str">"Amit"</span>,
+    <span class="var2">age</span>: <span class="num">25</span>
+};</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Key-value pairs</p>
+      </div>
+      <div class="card">
+        <div class="card-title">2. Array</div>
+        <pre><span class="kw">let</span> <span class="var2">arr</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Ordered list</p>
+      </div>
+      <div class="card">
+        <div class="card-title">3. Function</div>
+        <pre><span class="kw">function</span> <span class="fn">greet</span>() {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello"</span>);
+}</pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Reusable block of code</p>
+      </div>
+    </div>
+
+    <!-- TRICKY EXPRESSIONS -->
+    <div class="sec" id="tricky">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-yellow);">⚠️</div>
+        <div class="section-meta">
+          <div class="section-title">Important Concepts (Tricky Expressions)</div>
+          <div class="section-sub">Step-by-Step Explanation</div>
+        </div>
+      </div>
+
+      <!-- 1 -->
+      <div class="card">
+        <div class="card-title">1. <code>null === undefined</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">null</span> === <span class="kw">undefined</span>); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Different types · <code>===</code> checks type + value
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="card">
+        <div class="card-title">2. <code>5 &gt; 3 &gt; 2</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="num">5</span> > <span class="num">3</span> > <span class="num">2</span>); <span class="cmt">// false</span></pre>
+        <div class="step-box" style="margin-top:10px;">
+          <div class="step"><div class="step-num">1</div><div class="step-content"><code>5 &gt; 3 → true</code></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><code>true → 1</code></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><code>1 &gt; 2 → false</code></div></div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="card">
+        <div class="card-title">3. <code>[] === []</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>([] === []); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Arrays are objects · Compared by reference, not value
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="card">
+        <div class="card-title">4. <code>"10" &lt; "9"</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"10"</span> &lt; <span class="str">"9"</span>); <span class="cmt">// true</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          String comparison → character by character · <code>"1" &lt; "9" → true</code>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="card">
+        <div class="card-title">5. <code>NaN === NaN</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">NaN</span> === <span class="kw">NaN</span>); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Special rule in JS · NaN is NOT equal to itself
+        </div>
+        <div class="callout callout-green" style="margin-top:8px;">
+          👉 Correct way: <code>Number.isNaN(NaN); // true</code>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="card">
+        <div class="card-title">6. <code>true == 1</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">true</span> == <span class="num">1</span>); <span class="cmt">// true</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          <code>==</code> → type conversion · <code>true → 1</code>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:8px;">
+          ⚠️ Tip: Always use <code>===</code> (strict equality)
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="card">
+        <div class="card-title">7. <code>undefined &gt; 0</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">undefined</span> > <span class="num">0</span>); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          <code>undefined → NaN</code> · NaN comparison → always false
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="card">
+        <div class="card-title">8. <code>"5" === 5</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"5"</span> === <span class="num">5</span>); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Different types (string vs number)
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="card">
+        <div class="card-title">9. <code>[1,2] == [1,2]</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>([<span class="num">1</span>,<span class="num">2</span>] == [<span class="num">1</span>,<span class="num">2</span>]); <span class="cmt">// false</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Different memory reference
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="card">
+        <div class="card-title">10. <code>Infinity &gt; 1000</code></div>
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">Infinity</span> > <span class="num">1000</span>); <span class="cmt">// true</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Why?</strong><br>
+          Infinity = unlimited large number
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="card" style="border:1px solid var(--accent-blue);">
+        <div class="card-title" style="color:var(--accent-blue);">🧠 Important Concepts Summary</div>
+        <div class="highlight-box">
+          <h4>🔹 Type Coercion</h4>
+          <p style="color:var(--text-secondary);font-size:12px;">👉 Automatic type conversion</p>
+          <pre style="margin-top:8px;"><span class="kw">true</span> == <span class="num">1</span> <span class="cmt">// true</span></pre>
+        </div>
+        <div class="highlight-box" style="margin-top:10px;">
+          <h4>🔹 Strict vs Loose Equality</h4>
+          <div class="table-wrap" style="margin-top:8px;">
+            <table>
+              <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td><code>==</code></td><td>value only</td></tr>
+                <tr><td><code>===</code></td><td>value + type</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- OPERATORS SECTION -->
+    <div class="hero-card" style="background:linear-gradient(135deg,#1a2c1a,#1f2a1f,#161f16);border-color:#2d6b2d;" id="operators-hero">
+      <div class="hero-tags">
+        <span class="hero-tag" style="background:rgba(63,185,80,.12);border-color:rgba(63,185,80,.4);color:var(--accent-green);">JavaScript</span>
+        <span class="hero-tag" style="background:rgba(63,185,80,.12);border-color:rgba(63,185,80,.4);color:var(--accent-green);">Operators</span>
+      </div>
+      <h1 class="hero-title">JavaScript <span style="color:var(--accent-green);">Operators</span></h1>
+      <p class="hero-desc">
+        👉 Definition: JavaScript operators are symbols or keywords used to perform operations on <strong>Values</strong> and <strong>Variables</strong>
+      </p>
+      <pre style="margin-top:14px;max-width:320px;"><span class="kw">let</span> <span class="var2">sum</span> = <span class="num">5</span> + <span class="num">3</span>;</pre>
+      <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">Here: <code>+</code> → operator &nbsp;&nbsp; <code>5, 3</code> → operands</p>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">🧠 Why Operators are Important?</div>
+      <ul class="styled">
+        <li>Used in calculations</li>
+        <li>Used in conditions (if, loops)</li>
+        <li>Used in data manipulation</li>
+        <li>Foundation of all logic in JS</li>
+      </ul>
+    </div>
+
+    <!-- ARITHMETIC -->
+    <div class="sec" id="operators">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-orange);">🔢</div>
+        <div class="section-meta">
+          <div class="section-title">1. Arithmetic Operators</div>
+          <div class="section-sub">Mathematical Calculations</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">const</span> <span class="var2">sum</span>  = <span class="num">5</span> + <span class="num">3</span>;   <span class="cmt">// 8</span>
+<span class="kw">const</span> <span class="var2">diff</span> = <span class="num">10</span> - <span class="num">2</span>; <span class="cmt">// 8</span>
+<span class="kw">const</span> <span class="var2">mul</span>  = <span class="num">4</span> * <span class="num">2</span>;   <span class="cmt">// 8</span>
+<span class="kw">const</span> <span class="var2">div</span>  = <span class="num">8</span> / <span class="num">2</span>;   <span class="cmt">// 4</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>+</code></td><td>Addition</td></tr>
+              <tr><td><code>-</code></td><td>Subtraction</td></tr>
+              <tr><td><code>*</code></td><td>Multiplication</td></tr>
+              <tr><td><code>/</code></td><td>Division</td></tr>
+              <tr><td><code>%</code></td><td>Modulus (remainder)</td></tr>
+              <tr><td><code>**</code></td><td>Power</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:12px;">
+          <strong>⚠️ Important:</strong><br>
+          <code>5 % 2 = 1</code><br>
+          <code>2 ** 3 = 8</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSIGNMENT -->
+    <div class="sec" id="assignment">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-cyan);">📝</div>
+        <div class="section-meta">
+          <div class="section-title">2. Assignment Operators</div>
+          <div class="section-sub">Assign Values to Variables</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">let</span> <span class="var2">n</span> = <span class="num">10</span>;
+<span class="var2">n</span> += <span class="num">5</span>; <span class="cmt">// 15</span>
+<span class="var2">n</span> *= <span class="num">2</span>; <span class="cmt">// 30</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>=</code></td><td>Assign</td></tr>
+              <tr><td><code>+=</code></td><td>Add and assign</td></tr>
+              <tr><td><code>-=</code></td><td>Subtract and assign</td></tr>
+              <tr><td><code>*=</code></td><td>Multiply and assign</td></tr>
+              <tr><td><code>/=</code></td><td>Divide and assign</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARISON -->
+    <div class="sec" id="comparison">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-yellow);">⚖️</div>
+        <div class="section-meta">
+          <div class="section-title">3. Comparison Operators</div>
+          <div class="section-sub">Compare values → return true/false</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="num">10</span> > <span class="num">5</span>);     <span class="cmt">// true</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="num">10</span> === <span class="str">"10"</span>); <span class="cmt">// false</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>&gt;</code></td><td>Greater</td></tr>
+              <tr><td><code>&lt;</code></td><td>Less</td></tr>
+              <tr><td><code>&gt;=</code></td><td>Greater equal</td></tr>
+              <tr><td><code>&lt;=</code></td><td>Less equal</td></tr>
+              <tr><td><code>==</code></td><td>Loose equality</td></tr>
+              <tr><td><code>===</code></td><td>Strict equality</td></tr>
+              <tr><td><code>!=</code></td><td>Not equal</td></tr>
+              <tr><td><code>!==</code></td><td>Strict not equal</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:12px;">
+          <strong>⚠️ Important Difference:</strong>
+          <pre style="margin-top:8px;"><span class="num">5</span> == <span class="str">"5"</span>   <span class="cmt">// true (type conversion)</span>
+<span class="num">5</span> === <span class="str">"5"</span>  <span class="cmt">// false (no conversion)</span></pre>
+          👉 Always prefer <code>===</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGICAL -->
+    <div class="sec" id="logical">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-purple);">🔗</div>
+        <div class="section-meta">
+          <div class="section-title">4. Logical Operators</div>
+          <div class="section-sub">Used in Conditions</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">const</span> <span class="var2">a</span> = <span class="kw">true</span>, <span class="var2">b</span> = <span class="kw">false</span>;
+
+<span class="var2">a</span> && <span class="var2">b</span> <span class="cmt">// false</span>
+<span class="var2">a</span> || <span class="var2">b</span> <span class="cmt">// true</span>
+!<span class="var2">a</span>     <span class="cmt">// false</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>&&</code></td><td>AND</td></tr>
+              <tr><td><code>||</code></td><td>OR</td></tr>
+              <tr><td><code>!</code></td><td>NOT</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Logic:</strong><br>
+          <code>&&</code> → both true<br>
+          <code>||</code> → at least one true<br>
+          <code>!</code> → reverse
+        </div>
+      </div>
+    </div>
+
+    <!-- BITWISE -->
+    <div class="sec" id="bitwise">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-red);">💻</div>
+        <div class="section-meta">
+          <div class="section-title">5. Bitwise Operators</div>
+          <div class="section-sub">Work on binary (0/1)</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="num">5</span> & <span class="num">1</span> <span class="cmt">// 1</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>&</code></td><td>AND</td></tr>
+              <tr><td><code>|</code></td><td>OR</td></tr>
+              <tr><td><code>^</code></td><td>XOR</td></tr>
+              <tr><td><code>~</code></td><td>NOT</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-blue" style="margin-top:12px;">
+          <strong>🧠 Example:</strong>
+          <pre style="margin-top:8px;"><span class="num">5</span> → <span class="num">101</span>
+<span class="num">1</span> → <span class="num">001</span>
+& → <span class="num">001</span> → <span class="num">1</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- TERNARY -->
+    <div class="sec" id="ternary">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-cyan);">❓</div>
+        <div class="section-meta">
+          <div class="section-title">6. Ternary Operator</div>
+          <div class="section-sub">Shortcut of if-else</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">const</span> <span class="var2">age</span> = <span class="num">18</span>;
+<span class="kw">const</span> <span class="var2">status</span> = <span class="var2">age</span> >= <span class="num">18</span> ? <span class="str">"Adult"</span> : <span class="str">"Minor"</span>;</pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>📌 Syntax:</strong><br>
+          <code>condition ? true_value : false_value</code>
+        </div>
+        <div class="callout callout-green" style="margin-top:8px;">
+          <strong>✅ Use:</strong> Short conditions · Clean code
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMA -->
+    <div class="card" id="comma">
+      <div class="card-title">🔄 7. Comma Operator</div>
+      <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">👉 Executes multiple expressions → returns last value</p>
+      <pre><span class="kw">let</span> <span class="var2">n1</span>, <span class="var2">n2</span>;
+<span class="kw">const</span> <span class="var2">res</span> = (<span class="var2">n1</span> = <span class="num">1</span>, <span class="var2">n2</span> = <span class="num">2</span>, <span class="var2">n1</span> + <span class="var2">n2</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">res</span>); <span class="cmt">// 3</span></pre>
+      <div class="callout callout-blue" style="margin-top:10px;">
+        <strong>📌 Rule:</strong><br>
+        Left → right execution · Returns last result
+      </div>
+    </div>
+
+    <!-- UNARY -->
+    <div class="sec" id="unary">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-green);">🔼</div>
+        <div class="section-meta">
+          <div class="section-title">8. Unary Operators</div>
+          <div class="section-sub">Work on single operand</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">let</span> <span class="var2">x</span> = <span class="num">5</span>;
+
+<span class="fn">console</span>.<span class="fn">log</span>(++<span class="var2">x</span>); <span class="cmt">// 6</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">x</span>--); <span class="cmt">// 6 (then x becomes 5)</span></pre>
+        <div class="table-wrap" style="margin-top:12px;">
+          <table>
+            <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td><code>++</code></td><td>Increment</td></tr>
+              <tr><td><code>--</code></td><td>Decrement</td></tr>
+              <tr><td><code>typeof</code></td><td>Get type</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-red" style="margin-top:12px;">
+          <strong>🔥 Pre vs Post:</strong>
+          <pre style="margin-top:8px;"><span class="cmt">++x → first increase, then use</span>
+<span class="cmt">x++ → first use, then increase</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELATIONAL -->
+    <div class="card" id="relational">
+      <div class="card-title">🔍 9. Relational Operators</div>
+      <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">👉 Check relationships</p>
+      <pre><span class="kw">const</span> <span class="var2">obj</span> = { <span class="var2">length</span>: <span class="num">10</span> };
+
+<span class="str">"length"</span> <span class="kw">in</span> <span class="var2">obj</span>      <span class="cmt">// true</span>
+[] <span class="kw">instanceof</span> <span class="fn">Array</span>  <span class="cmt">// true</span></pre>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>in</code></td><td>property exists</td></tr>
+            <tr><td><code>instanceof</code></td><td>object type check</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BIGINT OPERATORS -->
+    <div class="card" id="bigint-ops">
+      <div class="card-title">🔢 10. BigInt Operators</div>
+      <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">👉 For very large numbers</p>
+      <pre><span class="kw">const</span> <span class="var2">big1</span> = <span class="num">12345678901234567890n</span>;
+<span class="kw">const</span> <span class="var2">big2</span> = <span class="num">10n</span>;
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">big1</span> + <span class="var2">big2</span>);</pre>
+      <div class="callout callout-yellow" style="margin-top:10px;">
+        <strong>⚠️ Rule:</strong><br>
+        <code>10n + 5 ❌ error</code><br>
+        👉 Cannot mix BigInt and Number
+      </div>
+    </div>
+
+    <!-- STRING OPERATORS -->
+    <div class="card" id="string-ops">
+      <div class="card-title">🔤 11. String Operators</div>
+      <p style="color:var(--text-secondary);font-size:12px;margin-bottom:10px;">👉 Used to join strings</p>
+      <pre><span class="kw">const</span> <span class="var2">s</span> = <span class="str">"Hello"</span> + <span class="str">" World"</span>;</pre>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table>
+          <thead><tr><th>Operator</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>+</code></td><td>Concatenate</td></tr>
+            <tr><td><code>+=</code></td><td>Append</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-blue" style="margin-top:10px;">
+        <strong>🧠 Example:</strong><br>
+        <code>"Hello" + 5 → "Hello5"</code>
+      </div>
+    </div>
+
+    <!-- OPTIONAL CHAINING -->
+    <div class="sec" id="optional">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-blue);">🔗</div>
+        <div class="section-meta">
+          <div class="section-title">12. Optional Chaining Operator (?.) </div>
+          <div class="section-sub">Safe access to nested data</div>
+        </div>
+      </div>
+      <div class="card">
+        <pre><span class="kw">const</span> <span class="var2">obj</span> = {
+  <span class="var2">name</span>: <span class="str">"Aman"</span>,
+  <span class="var2">address</span>: { <span class="var2">city</span>: <span class="str">"Delhi"</span> }
+};
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">obj</span>.<span class="var2">address</span>?.<span class="var2">city</span>);   <span class="cmt">// Delhi</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">obj</span>.<span class="var2">contact</span>?.<span class="var2">phone</span>); <span class="cmt">// undefined</span></pre>
+        <div class="callout callout-red" style="margin-top:10px;">
+          <strong>📌 Why needed?</strong><br>
+          👉 Avoid errors like: <code>obj.contact.phone ❌ error</code>
+        </div>
+        <div class="callout callout-green" style="margin-top:8px;">
+          <strong>✅ Advantage:</strong> No crash · Safe access
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORTANT CONCEPTS -->
+    <div class="card" style="border:1px solid var(--accent-blue);">
+      <div class="card-title" style="color:var(--accent-blue);">⚠️ Important Concepts (Must Know)</div>
+
+      <div class="highlight-box">
+        <h4>🔥 Operator Precedence</h4>
+        <p style="color:var(--text-secondary);font-size:12px;margin-bottom:8px;">👉 Order of execution</p>
+        <pre><span class="num">5</span> + <span class="num">2</span> * <span class="num">3</span> = <span class="num">11</span></pre>
+        <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 <code>*</code> runs first</p>
+      </div>
+
+      <div class="highlight-box" style="margin-top:10px;">
+        <h4>🔄 Type Coercion</h4>
+        <pre><span class="str">"5"</span> + <span class="num">2</span> = <span class="str">"52"</span>
+<span class="str">"5"</span> - <span class="num">2</span> = <span class="num">3</span></pre>
+      </div>
+
+      <div class="highlight-box" style="margin-top:10px;">
+        <h4>⚠️ Short-Circuiting</h4>
+        <pre><span class="kw">true</span> || <span class="kw">false</span> → <span class="kw">true</span></pre>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- TYPE CONVERSION SECTION -->
+    <div class="hero-card" style="background:linear-gradient(135deg,#1e1a2e,#1a1828,#151320);border-color:#4a3a7a;" id="type-conversion-hero">
+      <div class="hero-tags">
+        <span class="hero-tag" style="background:rgba(188,140,255,.12);border-color:rgba(188,140,255,.4);color:var(--accent-purple);">Type System</span>
+        <span class="hero-tag" style="background:rgba(188,140,255,.12);border-color:rgba(188,140,255,.4);color:var(--accent-purple);">Complete Guide</span>
+      </div>
+      <h1 class="hero-title">Type Conversion &amp; <span style="color:var(--accent-purple);">Type Coercion</span></h1>
+      <p class="hero-desc">
+        JavaScript is <strong>dynamically typed</strong>, meaning: 👉 Variable type can change at runtime.<br>
+        JavaScript provides 2 ways to change data types: <strong>Type Conversion (Explicit)</strong> and <strong>Type Coercion (Implicit)</strong>
+      </p>
+    </div>
+
+    <!-- TYPE CONVERSION -->
+    <div class="sec" id="type-conversion">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-purple);">🔄</div>
+        <div class="section-meta">
+          <div class="section-title">1. Type Conversion (Explicit)</div>
+          <div class="section-sub">Manually converting one data type to another</div>
+        </div>
+      </div>
+      <div class="callout callout-blue">
+        📌 Also called: <strong>Explicit Type Casting</strong>
+      </div>
+      <div class="card">
+        <div class="card-title">🔑 Key Features:</div>
+        <ul class="styled">
+          <li>Done by programmer</li>
+          <li>Uses functions like: <code>Number()</code>, <code>String()</code>, <code>Boolean()</code></li>
+          <li>Gives full control</li>
+        </ul>
+      </div>
+
+      <div class="section-header" style="margin-top:20px;">
+        <div class="section-meta">
+          <div class="section-title" style="font-size:15px;">🔢 Types of Type Conversion</div>
+        </div>
+      </div>
+
+      <!-- String → Number -->
+      <div class="card">
+        <div class="card-title">1. String → Number</div>
+        <pre><span class="kw">let</span> <span class="var2">s</span> = <span class="str">"123"</span>;
+<span class="kw">let</span> <span class="var2">n</span> = <span class="fn">Number</span>(<span class="var2">s</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">n</span>); <span class="cmt">// 123</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Other Methods:</strong>
+          <pre style="margin-top:8px;"><span class="fn">parseInt</span>(<span class="str">"123"</span>);   <span class="cmt">// 123</span>
+<span class="fn">parseFloat</span>(<span class="str">"12.5"</span>); <span class="cmt">// 12.5</span></pre>
+        </div>
+        <div class="callout callout-yellow" style="margin-top:8px;">
+          <strong>⚠️ Important Cases:</strong>
+          <pre style="margin-top:8px;"><span class="fn">Number</span>(<span class="str">"123abc"</span>); <span class="cmt">// NaN</span>
+<span class="fn">parseInt</span>(<span class="str">"123abc"</span>); <span class="cmt">// 123</span></pre>
+          👉 <code>parseInt</code> stops at invalid character<br>
+          👉 <code>Number</code> fails completely
+        </div>
+      </div>
+
+      <!-- Number → String -->
+      <div class="card">
+        <div class="card-title">2. Number → String</div>
+        <pre><span class="kw">let</span> <span class="var2">n</span> = <span class="num">123</span>;
+<span class="kw">let</span> <span class="var2">s</span> = <span class="fn">String</span>(<span class="var2">n</span>);</pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Shortcut:</strong>
+          <pre style="margin-top:8px;"><span class="kw">let</span> <span class="var2">s</span> = <span class="var2">n</span> + <span class="str">""</span>;</pre>
+        </div>
+      </div>
+
+      <!-- Boolean → Number -->
+      <div class="card">
+        <div class="card-title">3. Boolean → Number</div>
+        <pre><span class="fn">Number</span>(<span class="kw">true</span>);  <span class="cmt">// 1</span>
+<span class="fn">Number</span>(<span class="kw">false</span>); <span class="cmt">// 0</span></pre>
+      </div>
+
+      <!-- Boolean → String -->
+      <div class="card">
+        <div class="card-title">4. Boolean → String</div>
+        <pre><span class="fn">String</span>(<span class="kw">true</span>); <span class="cmt">// "true"</span></pre>
+      </div>
+
+      <!-- Summary Table -->
+      <div class="card">
+        <div class="card-title">📊 Summary of Type Conversion</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>From</th><th>To</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td><code>"123"</code> → Number</td><td>Number</td><td><code>123</code></td></tr>
+              <tr><td><code>true</code> → Number</td><td>Number</td><td><code>1</code></td></tr>
+              <tr><td><code>false</code> → Number</td><td>Number</td><td><code>0</code></td></tr>
+              <tr><td><code>123</code> → String</td><td>String</td><td><code>"123"</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE COERCION -->
+    <div class="sec" id="type-coercion">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-orange);">⚡</div>
+        <div class="section-meta">
+          <div class="section-title">2. Type Coercion (Implicit)</div>
+          <div class="section-sub">Automatic conversion done by JavaScript</div>
+        </div>
+      </div>
+      <div class="callout callout-blue">
+        📌 Also called: <strong>Implicit Type Casting</strong>
+      </div>
+      <div class="card">
+        <div class="card-title">🔑 Key Features:</div>
+        <ul class="styled">
+          <li>Done by JavaScript engine</li>
+          <li>Happens during: Operations (<code>+</code>, <code>-</code>), Comparisons (<code>==</code>)</li>
+          <li>Can cause unexpected results</li>
+        </ul>
+      </div>
+
+      <!-- Examples -->
+      <div class="card">
+        <div class="card-title">1. String + Number</div>
+        <pre><span class="kw">let</span> <span class="var2">n</span> = <span class="num">5</span>;
+<span class="kw">let</span> <span class="var2">s</span> = <span class="str">"5"</span>;
+
+<span class="kw">let</span> <span class="var2">res</span> = <span class="var2">n</span> + <span class="var2">s</span>;
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="var2">res</span>);        <span class="cmt">// "55"</span>
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">typeof</span> <span class="var2">res</span>); <span class="cmt">// string</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Why?</strong><br>
+          👉 If string is present → everything becomes string
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">2. Boolean + Number</div>
+        <pre><span class="kw">true</span>  + <span class="num">10</span> <span class="cmt">// 11</span>
+<span class="kw">false</span> + <span class="num">10</span> <span class="cmt">// 10</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Rule:</strong><br>
+          <code>true → 1</code> &nbsp;&nbsp; <code>false → 0</code>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">3. Comparison (Different Types)</div>
+        <pre><span class="str">"10"</span> == <span class="num">10</span> <span class="cmt">// true</span></pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>🧠 Why?</strong><br>
+          👉 <code>"10"</code> → converted to number
+        </div>
+        <div class="callout callout-yellow" style="margin-top:8px;">
+          <strong>⚠️ Important:</strong><br>
+          <pre><span class="str">"10"</span> === <span class="num">10</span> <span class="cmt">// false</span></pre>
+          👉 <code>===</code> does NOT convert types
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">4. Boolean Context (if condition)</div>
+        <pre><span class="kw">let</span> <span class="var2">s</span> = <span class="str">""</span>;
+
+<span class="kw">if</span> (<span class="var2">s</span>) {
+   <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"true"</span>);
+} <span class="kw">else</span> {
+   <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"false"</span>);
+}</pre>
+        <div class="callout callout-blue" style="margin-top:10px;">
+          <strong>👉 Output:</strong> <code>false</code>
+        </div>
+      </div>
+
+      <!-- Truthy / Falsy -->
+      <div class="card" style="border:1px solid var(--accent-purple);">
+        <div class="card-title" style="color:var(--accent-purple);">🧠 Truthy &amp; Falsy Values</div>
+        <div class="diff-table">
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-red);">❌ Falsy:</div>
+            <ul class="styled">
+              <li><code>false</code></li>
+              <li><code>0</code></li>
+              <li><code>""</code> (empty string)</li>
+              <li><code>null</code></li>
+              <li><code>undefined</code></li>
+              <li><code>NaN</code></li>
+            </ul>
+          </div>
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-green);">✅ Truthy:</div>
+            <p style="color:var(--text-secondary);font-size:12px;padding-top:4px;">Everything else</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Important Coercion Rules -->
+      <div class="card">
+        <div class="card-title">⚠️ Important Coercion Rules</div>
+        <div class="highlight-box">
+          <h4>🔹 "+" Operator Special Case</h4>
+          <pre style="margin-top:8px;"><span class="str">"5"</span> + <span class="num">2</span> = <span class="str">"52"</span>
+<span class="str">"5"</span> - <span class="num">2</span> = <span class="num">3</span></pre>
+          <p style="color:var(--text-muted);font-size:12px;margin-top:6px;">
+            👉 <code>+</code> → string concatenation &nbsp;&nbsp; 👉 <code>-</code> → numeric conversion
+          </p>
+        </div>
+        <div class="highlight-box" style="margin-top:10px;">
+          <h4>🔹 Null &amp; Undefined</h4>
+          <pre style="margin-top:8px;"><span class="kw">null</span> == <span class="kw">undefined</span>  <span class="cmt">// true</span>
+<span class="kw">null</span> === <span class="kw">undefined</span> <span class="cmt">// false</span></pre>
+        </div>
+        <div class="highlight-box" style="margin-top:10px;">
+          <h4>🔹 NaN Behavior</h4>
+          <pre style="margin-top:8px;"><span class="kw">NaN</span> == <span class="kw">NaN</span> <span class="cmt">// false</span></pre>
+          <p style="color:var(--text-muted);font-size:12px;margin-top:6px;">👉 Use: <code>Number.isNaN(NaN) // true</code></p>
+        </div>
+      </div>
+
+      <!-- Comparison Table -->
+      <div class="card">
+        <div class="card-title">📊 Difference: Type Conversion vs Coercion</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Feature</th><th>Type Conversion</th><th>Type Coercion</th></tr></thead>
+            <tbody>
+              <tr><td>Who does it</td><td>Programmer</td><td>JavaScript</td></tr>
+              <tr><td>Type</td><td>Explicit</td><td>Implicit</td></tr>
+              <tr><td>Control</td><td>Full</td><td>No control</td></tr>
+              <tr><td>Example</td><td><code>Number("5") → 5</code></td><td><code>"5" - 2 → 3</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Analogy -->
+      <div class="card" style="border:1px solid var(--accent-cyan);">
+        <div class="card-title" style="color:var(--accent-cyan);">🧠 Real-Life Analogy</div>
+        <div class="callout callout-blue" style="margin-bottom:8px;">
+          <strong>👉 Type Conversion:</strong><br>
+          You manually change currency (₹ → $)
+        </div>
+        <div class="callout callout-blue">
+          <strong>👉 Type Coercion:</strong><br>
+          System auto converts without asking
+        </div>
+      </div>
+
+      <!-- Common Mistakes -->
+      <div class="card" style="border:1px solid var(--accent-red);">
+        <div class="card-title" style="color:var(--accent-red);">⚠️ Common Mistakes (VERY IMPORTANT)</div>
+        <div class="diff-table">
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-red);">❌ Using <code>==</code></div>
+            <pre><span class="num">0</span> == <span class="kw">false</span> <span class="cmt">// true</span>
+<span class="str">""</span> == <span class="num">0</span>    <span class="cmt">// true</span></pre>
+            <p style="color:var(--text-muted);font-size:12px;margin-top:8px;">👉 Confusing results</p>
+          </div>
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-green);">✅ Use <code>===</code></div>
+            <pre><span class="num">0</span> === <span class="kw">false</span> <span class="cmt">// false</span></pre>
+          </div>
+        </div>
+        <div class="diff-table" style="margin-top:12px;">
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-red);">❌ Mixing types</div>
+            <pre><span class="str">"5"</span> + <span class="num">1</span> <span class="cmt">// "51"</span></pre>
+          </div>
+          <div class="diff-box">
+            <div class="diff-box-title" style="color:var(--accent-green);">✅ Fix</div>
+            <pre><span class="fn">Number</span>(<span class="str">"5"</span>) + <span class="num">1</span> <span class="cmt">// 6</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEST PRACTICES -->
+    <div class="sec" id="best-practices">
+      <div class="section-header">
+        <div class="section-icon" style="background:var(--accent-green);">🧠</div>
+        <div class="section-meta">
+          <div class="section-title">Best Practices</div>
+          <div class="section-sub">Must Follow</div>
+        </div>
+      </div>
+      <div class="card" style="border:1px solid var(--accent-green);">
+        <ul class="styled">
+          <li><strong>✔</strong> Always use explicit conversion</li>
+          <li><strong>✔</strong> Prefer <code>===</code> over <code>==</code></li>
+          <li><strong>✔</strong> Check type using: <code>typeof value</code></li>
+          <li><strong>✔</strong> Convert input before use: <code>let num = Number(input);</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="height:40px;"></div>
+  </main>
+</div>
+
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+// Sidebar active state on scroll
+const sections = document.querySelectorAll('.sec[id]');
+const sidebarLinks = document.querySelectorAll('.sidebar-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sidebar-item[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0% -70% 0%' });
+
+sections.forEach(s => observer.observe(s));
+
+// Close sidebar on link click (mobile)
+sidebarLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 768) toggleSidebar();
+  });
+});
+</script>
+</body>
+</html>

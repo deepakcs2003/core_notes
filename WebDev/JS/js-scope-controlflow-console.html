@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>javascript-notes.js</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-card: #1a2030;
+    --bg-sidebar: #111722;
+    --bg-code: #0d1117;
+    --accent-blue: #58a6ff;
+    --accent-cyan: #39d0d0;
+    --accent-green: #3fb950;
+    --accent-yellow: #d29922;
+    --accent-red: #f85149;
+    --accent-purple: #bc8cff;
+    --accent-orange: #f0883e;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border: #21262d;
+    --border-bright: #30363d;
+    --tag-bg: #1f3041;
+    --tag-border: #1f6feb;
+    --sidebar-w: 260px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 2rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-bright) transparent;
+  }
+
+  .sidebar-header {
+    padding: 1rem 1.2rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    color: var(--accent-blue);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-sidebar);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .sidebar-header .dots { display: flex; gap: 5px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #28c840; }
+
+  .filename {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.78rem;
+    color: var(--text-primary);
+    margin-left: 0.3rem;
+  }
+
+  .es-badge {
+    margin-left: auto;
+    background: #1f3041;
+    border: 1px solid #1f6feb;
+    color: var(--accent-blue);
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .sidebar-section {
+    padding: 1rem 1.2rem 0.3rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.38rem 1.2rem;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-item:hover {
+    color: var(--text-primary);
+    background: rgba(88,166,255,0.07);
+    border-left-color: var(--accent-blue);
+  }
+
+  .sidebar-item.active {
+    color: var(--accent-blue);
+    background: rgba(88,166,255,0.1);
+    border-left-color: var(--accent-blue);
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    padding: 2rem 2.5rem 4rem;
+    max-width: 960px;
+  }
+
+  /* ── HERO CARD ── */
+  .hero-card {
+    background: linear-gradient(135deg, #0f1f3d 0%, #1a2540 60%, #0d1a2e 100%);
+    border: 1px solid var(--border-bright);
+    border-radius: 12px;
+    padding: 2rem 2.2rem 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(88,166,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hero-tag {
+    background: rgba(88,166,255,0.12);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent-blue);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+    color: var(--text-primary);
+  }
+
+  .hero-title span { color: var(--accent-blue); }
+
+  .hero-desc {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 640px;
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border-bright);
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-family: 'Fira Code', monospace;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .hero-link:hover { color: var(--accent-blue); border-color: var(--accent-blue); }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 2.2rem 0 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .icon-blue { background: rgba(88,166,255,0.15); }
+  .icon-green { background: rgba(63,185,80,0.15); }
+  .icon-yellow { background: rgba(210,153,34,0.15); }
+  .icon-purple { background: rgba(188,140,255,0.15); }
+  .icon-cyan { background: rgba(57,208,208,0.15); }
+
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .section-sub {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  /* ── TOPIC CARDS ── */
+  .topic-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.6rem;
+    margin-bottom: 1.4rem;
+    transition: border-color 0.2s;
+  }
+
+  .topic-card:hover { border-color: var(--border-bright); }
+
+  .topic-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .topic-badge {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+    margin-left: auto;
+  }
+
+  .badge-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-green { background: rgba(63,185,80,0.15); color: var(--accent-green); border: 1px solid rgba(63,185,80,0.3); }
+  .badge-yellow { background: rgba(210,153,34,0.15); color: var(--accent-yellow); border: 1px solid rgba(210,153,34,0.3); }
+  .badge-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border: 1px solid rgba(188,140,255,0.3); }
+  .badge-cyan { background: rgba(57,208,208,0.15); color: var(--accent-cyan); border: 1px solid rgba(57,208,208,0.3); }
+  .badge-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border: 1px solid rgba(248,81,73,0.3); }
+
+  .topic-desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .topic-desc strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── FEATURE GRID ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    margin: 0.8rem 0;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    padding: 0.5rem 0.7rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .feature-item .check { color: var(--accent-green); flex-shrink: 0; font-size: 0.85rem; }
+  .feature-item .cross { color: var(--accent-red); flex-shrink: 0; font-size: 0.85rem; }
+
+  /* ── DIAGRAM ── */
+  .diagram {
+    width: 100%;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    margin: 0.8rem 0;
+    display: block;
+    background: #0d1520;
+    overflow: hidden;
+  }
+  .diagram svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── CODE BLOCK ── */
+  .code-block {
+    background: #010409;
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0.8rem 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.82rem;
+  }
+
+  .code-header {
+    background: #161b22;
+    padding: 0.4rem 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  .code-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  pre {
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    line-height: 1.7;
+    color: #e6edf3;
+  }
+
+  .kw { color: #ff7b72; }
+  .fn { color: #d2a8ff; }
+  .str { color: #a5d6ff; }
+  .num { color: #79c0ff; }
+  .cmt { color: #8b949e; font-style: italic; }
+  .var-name { color: #ffa657; }
+  .op { color: #ff7b72; }
+  .punc { color: #e6edf3; }
+  .method { color: #d2a8ff; }
+  .obj { color: #79c0ff; }
+
+  /* ── NOTE BOX ── */
+  .note-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.75rem 1rem;
+    border-radius: 7px;
+    margin: 0.8rem 0;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .note-blue { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); color: var(--accent-blue); }
+  .note-yellow { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.25); color: var(--accent-yellow); }
+  .note-green { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.25); color: var(--accent-green); }
+  .note-red { background: rgba(248,81,73,0.08); border: 1px solid rgba(248,81,73,0.25); color: var(--accent-red); }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin: 0.8rem 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .data-table th {
+    background: #1c2333;
+    color: var(--text-secondary);
+    padding: 0.55rem 0.9rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-bright);
+  }
+
+  .data-table td {
+    padding: 0.5rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table code { font-family: 'Fira Code', monospace; color: var(--accent-cyan); font-size: 0.8rem; }
+
+  /* ── TWO-COL COMPARE ── */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin: 0.8rem 0;
+  }
+
+  .compare-card {
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    border: 1px solid;
+  }
+
+  .compare-card h4 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .compare-card ul {
+    list-style: none;
+    font-size: 0.81rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+  }
+
+  .compare-card ul li::before { content: '• '; }
+
+  .compare-bad { background: rgba(248,81,73,0.06); border-color: rgba(248,81,73,0.25); }
+  .compare-bad h4 { color: var(--accent-red); }
+  .compare-good { background: rgba(63,185,80,0.06); border-color: rgba(63,185,80,0.25); }
+  .compare-good h4 { color: var(--accent-green); }
+
+  /* ── MOBILE TOGGLE ── */
+  .menu-toggle {
+    display: none;
+    position: fixed;
+    top: 12px; left: 12px;
+    z-index: 200;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    color: var(--text-primary);
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Fira Code', monospace;
+  }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 90;
+  }
+
+  @media (max-width: 768px) {
+    .menu-toggle { display: block; }
+    .sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .overlay.open { display: block; }
+    .main { margin-left: 0; padding: 1.2rem 1rem 3rem; padding-top: 3.5rem; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 1.6rem; }
+    .topic-card { padding: 1.1rem 1.1rem; }
+    pre { font-size: 0.75rem; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<button class="menu-toggle" id="menuToggle">☰</button>
+<div class="overlay" id="overlay"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="dots">
+      <div class="dot dot-red"></div>
+      <div class="dot dot-yellow"></div>
+      <div class="dot dot-green"></div>
+    </div>
+    <span class="filename">javascript-notes.js</span>
+    <span class="es-badge">ES2023</span>
+  </div>
+
+  <div class="sidebar-section">Contents</div>
+  <a class="sidebar-item active" href="#scope">🌍 Scope of Variables</a>
+  <a class="sidebar-item" href="#global">🌐 Global Scope</a>
+  <a class="sidebar-item" href="#local">🏠 Local Scope</a>
+  <a class="sidebar-item" href="#block">🧱 Block Scope</a>
+  <a class="sidebar-item" href="#lexical">🔗 Lexical Scope</a>
+  <a class="sidebar-item" href="#module">📦 Module Scope</a>
+
+  <div class="sidebar-section">Control Flow</div>
+  <a class="sidebar-item" href="#controlflow">🔥 Control Flow</a>
+  <a class="sidebar-item" href="#if">🔹 if Statement</a>
+  <a class="sidebar-item" href="#ifelse">🔹 if...else</a>
+  <a class="sidebar-item" href="#elseif">🔹 else if Ladder</a>
+  <a class="sidebar-item" href="#switch">🔹 switch</a>
+  <a class="sidebar-item" href="#ternary">🔹 Ternary Operator</a>
+  <a class="sidebar-item" href="#loops">🔁 Loops</a>
+  <a class="sidebar-item" href="#jump">⛔ Jump Statements</a>
+
+  <div class="sidebar-section">Console</div>
+  <a class="sidebar-item" href="#console">🖥️ Console Object</a>
+  <a class="sidebar-item" href="#log">console.log()</a>
+  <a class="sidebar-item" href="#error">console.error()</a>
+  <a class="sidebar-item" href="#warn">console.warn()</a>
+  <a class="sidebar-item" href="#table">console.table()</a>
+  <a class="sidebar-item" href="#timer">console.time()</a>
+  <a class="sidebar-item" href="#assert">console.assert()</a>
+  <a class="sidebar-item" href="#group">console.group()</a>
+  <a class="sidebar-item" href="#count">console.count()</a>
+  <a class="sidebar-item" href="#trace">console.trace()</a>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ── SCOPE SECTION ── -->
+  <div id="scope">
+    <div class="hero-card">
+      <div class="hero-tags">
+        <span class="hero-tag">JavaScript</span>
+        <span class="hero-tag">Full Notes</span>
+      </div>
+      <h1 class="hero-title">Scope of <span>Variables</span></h1>
+      <p class="hero-desc">
+        <strong>Scope = where a variable can be used (accessed) in your code.</strong> It decides where a variable is visible, where you can use it, and how long it lives.
+      </p>
+      <div class="hero-links">
+        <a class="hero-link" href="#global">📄 GFG · Global Scope</a>
+        <a class="hero-link" href="#block">📄 GFG · Block Scope</a>
+      </div>
+    </div>
+
+    <!-- Basic Example -->
+    <div class="topic-card">
+      <div class="topic-title">Basic Understanding <span class="topic-badge badge-blue">Example</span></div>
+      <p class="topic-desc"><code style="color:var(--accent-cyan)">x</code> → global variable (can use anywhere) &nbsp;|&nbsp; <code style="color:var(--accent-cyan)">y</code> → local variable (only inside function)</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">scope-intro.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">x</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span>
+
+<span class="kw">function</span> <span class="fn">func</span><span class="punc">() {</span>
+    <span class="kw">let</span> <span class="var-name">y</span> <span class="op">=</span> <span class="num">20</span><span class="punc">;</span>
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">,</span> <span class="var-name">y</span><span class="punc">);</span>
+<span class="punc">}</span>
+
+<span class="fn">func</span><span class="punc">();</span></pre>
+      </div>
+    </div>
+
+    <!-- Types overview -->
+    <div class="note-box note-blue">📌 There are <strong>5 main types</strong> of scope: Global, Local, Block, Lexical, and Module Scope.</div>
+  </div>
+
+  <!-- ── 1. GLOBAL SCOPE ── -->
+  <div id="global">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🌐</div>
+      <span class="section-title">1. Global Scope</span>
+      <span class="section-sub">Accessible Everywhere</span>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-title">What is Global Scope? <span class="topic-badge badge-blue">Global</span></div>
+      <p class="topic-desc">A variable declared <strong>outside any function or block</strong> is global. It's accessible everywhere — inside functions ✔ and outside functions ✔.</p>
+      <div class="diagram"><svg viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="600" height="220" fill="#0d1520"/>
+  <rect x="18" y="18" width="564" height="184" rx="10" fill="none" stroke="#58a6ff" stroke-width="2" stroke-dasharray="7,3"/>
+  <text x="34" y="42" font-size="13" fill="#58a6ff" font-weight="700">🌍 Global Scope</text>
+  <text x="200" y="42" font-size="11" fill="#6e7681">— accessible everywhere</text>
+  <rect x="200" y="55" width="200" height="38" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="300" y="79" font-size="13" fill="#3fb950" text-anchor="middle" font-weight="600">const x = 10</text>
+  <line x1="220" y1="93" x2="140" y2="130" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#a1)"/>
+  <line x1="380" y1="93" x2="460" y2="130" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#a1)"/>
+  <rect x="55" y="130" width="160" height="56" rx="7" fill="#131d2e" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="135" y="154" font-size="11" fill="#d2a8ff" text-anchor="middle">function fun1()</text>
+  <text x="135" y="172" font-size="11" fill="#3fb950" text-anchor="middle">✔ can access x</text>
+  <rect x="385" y="130" width="160" height="56" rx="7" fill="#131d2e" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="465" y="154" font-size="11" fill="#d2a8ff" text-anchor="middle">function fun2()</text>
+  <text x="465" y="172" font-size="11" fill="#3fb950" text-anchor="middle">✔ can access x</text>
+  <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#58a6ff"/></marker></defs>
+</svg></div>
+      <div class="feature-grid">
+        <div class="feature-item"><span class="check">✔</span> Accessible inside any function</div>
+        <div class="feature-item"><span class="check">✔</span> Accessible outside any function</div>
+        <div class="feature-item"><span class="check">✔</span> Lives for the entire program</div>
+        <div class="feature-item"><span class="check">✔</span> Declared at top-level</div>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">global-scope.js</span></div>
+        <pre><span class="kw">const</span> <span class="var-name">x</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span> <span class="cmt">// Global variable</span>
+
+<span class="kw">function</span> <span class="fn">fun1</span><span class="punc">() {</span>
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">);</span> <span class="cmt">// ✔ Can access x</span>
+<span class="punc">}</span>
+
+<span class="fn">fun1</span><span class="punc">();</span></pre>
+      </div>
+      <div class="note-box note-blue">📌 Global = <strong>"sab jagah available"</strong> — available everywhere in code.</div>
+    </div>
+  </div>
+
+  <!-- ── 2. LOCAL SCOPE ── -->
+  <div id="local">
+    <div class="section-header">
+      <div class="section-icon icon-green">🏠</div>
+      <span class="section-title">2. Local Scope</span>
+      <span class="section-sub">Inside Function Only</span>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-title">What is Local Scope? <span class="topic-badge badge-green">Local</span></div>
+      <p class="topic-desc">A variable declared <strong>inside a function</strong> is local. It's only accessible inside that function — cannot be used outside ❌.</p>
+      <div class="diagram"><svg viewBox="0 0 600 230" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="600" height="230" fill="#0d1520"/>
+  <!-- outer = global -->
+  <rect x="18" y="18" width="564" height="196" rx="10" fill="none" stroke="#58a6ff" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="34" y="40" font-size="11" fill="#58a6ff">Global Scope</text>
+  <!-- function box -->
+  <rect x="100" y="55" width="400" height="140" rx="9" fill="#12202e" stroke="#d29922" stroke-width="2"/>
+  <text x="120" y="78" font-size="13" fill="#d29922" font-weight="700">function fun2()  — Local Scope</text>
+  <!-- local var -->
+  <rect x="190" y="92" width="220" height="38" rx="7" fill="#1a1a0a" stroke="#ffa657" stroke-width="1.8"/>
+  <text x="300" y="116" font-size="13" fill="#ffa657" text-anchor="middle" font-weight="600">let x = 10</text>
+  <!-- tick -->
+  <text x="300" y="162" font-size="12" fill="#3fb950" text-anchor="middle">✔ console.log(x)  →  works</text>
+  <!-- outside cross -->
+  <text x="300" y="205" font-size="12" fill="#f85149" text-anchor="middle">❌ Outside function → ReferenceError</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">local-scope.js</span></div>
+        <pre><span class="kw">function</span> <span class="fn">fun2</span><span class="punc">() {</span>
+    <span class="kw">let</span> <span class="var-name">x</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span> <span class="cmt">// Local variable</span>
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">);</span> <span class="cmt">// ✔ Works fine</span>
+<span class="punc">}</span>
+
+<span class="fn">fun2</span><span class="punc">();</span>
+<span class="cmt">// console.log(x); ❌ Error — x is not defined</span></pre>
+      </div>
+      <div class="note-box note-green">📌 Local = <strong>"sirf ghar ke andar allowed"</strong> — only accessible inside the function.</div>
+    </div>
+
+    <!-- Before ES6 -->
+    <div class="topic-card">
+      <div class="topic-title">⚠️ Important: Before ES6 <span class="topic-badge badge-yellow">History</span></div>
+      <p class="topic-desc">Before <strong>ES6 (2015)</strong>, only <code style="color:var(--accent-cyan)">var</code> was used. It had serious problems.</p>
+      <div class="compare-grid">
+        <div class="compare-card compare-bad">
+          <h4>❌ Before ES6 — <code>var</code></h4>
+          <ul>
+            <li>Function scoped only</li>
+            <li>Global pollution 😵</li>
+            <li>Hoisting issues</li>
+            <li>Block scope ignored</li>
+          </ul>
+        </div>
+        <div class="compare-card compare-good">
+          <h4>✅ After ES6 — <code>let</code> / <code>const</code></h4>
+          <ul>
+            <li>Block scoped</li>
+            <li>No pollution</li>
+            <li>Safer hoisting</li>
+            <li>Better control</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. BLOCK SCOPE ── -->
+  <div id="block">
+    <div class="section-header">
+      <div class="section-icon icon-yellow">🧱</div>
+      <span class="section-title">3. Block Scope</span>
+      <span class="section-sub">Inside { } Only</span>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-title">What is Block Scope? <span class="topic-badge badge-yellow">Block</span></div>
+      <p class="topic-desc"><strong>Block = { }</strong> (like if-blocks, loops). <code style="color:var(--accent-cyan)">let</code> and <code style="color:var(--accent-cyan)">const</code> are block-scoped. <code style="color:var(--accent-orange)">var</code> is <strong>NOT</strong> block-scoped.</p>
+      <div class="diagram"><svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="600" height="240" fill="#0d1520"/>
+  <!-- block -->
+  <rect x="30" y="20" width="540" height="130" rx="9" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="50" y="44" font-size="13" fill="#d29922" font-weight="700">Block  {  }</text>
+  <!-- var -->
+  <rect x="55" y="56" width="140" height="34" rx="6" fill="#13200d" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="125" y="78" font-size="12" fill="#ffa657" text-anchor="middle">var x = 10</text>
+  <!-- const -->
+  <rect x="225" y="56" width="140" height="34" rx="6" fill="#0f1a2a" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="295" y="78" font-size="12" fill="#58a6ff" text-anchor="middle">const y = 20</text>
+  <!-- let -->
+  <rect x="395" y="56" width="140" height="34" rx="6" fill="#0f1a2a" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="465" y="78" font-size="12" fill="#bc8cff" text-anchor="middle">let z = 30</text>
+  <!-- inside ok -->
+  <text x="125" y="118" font-size="11" fill="#3fb950" text-anchor="middle">✔ inside block</text>
+  <text x="295" y="118" font-size="11" fill="#3fb950" text-anchor="middle">✔ inside block</text>
+  <text x="465" y="118" font-size="11" fill="#3fb950" text-anchor="middle">✔ inside block</text>
+  <!-- outside -->
+  <text x="50" y="178" font-size="12" fill="#8b949e">Outside block  { }:</text>
+  <text x="125" y="200" font-size="11" fill="#3fb950" text-anchor="middle">✔ var escapes</text>
+  <text x="295" y="200" font-size="11" fill="#f85149" text-anchor="middle">❌ const blocked</text>
+  <text x="465" y="200" font-size="11" fill="#f85149" text-anchor="middle">❌ let blocked</text>
+  <line x1="125" y1="152" x2="125" y2="188" stroke="#3fb950" stroke-width="1.2" stroke-dasharray="3,2"/>
+  <line x1="295" y1="152" x2="295" y2="188" stroke="#f85149" stroke-width="1.2" stroke-dasharray="3,2"/>
+  <line x1="465" y1="152" x2="465" y2="188" stroke="#f85149" stroke-width="1.2" stroke-dasharray="3,2"/>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">block-scope.js</span></div>
+        <pre><span class="punc">{</span>
+    <span class="kw">var</span> <span class="var-name">x</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span>
+    <span class="kw">const</span> <span class="var-name">y</span> <span class="op">=</span> <span class="num">20</span><span class="punc">;</span>
+    <span class="kw">let</span> <span class="var-name">z</span> <span class="op">=</span> <span class="num">30</span><span class="punc">;</span>
+
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">);</span> <span class="cmt">// ✔ OK</span>
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">y</span><span class="punc">);</span> <span class="cmt">// ✔ OK</span>
+    <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">z</span><span class="punc">);</span> <span class="cmt">// ✔ OK</span>
+<span class="punc">}</span>
+
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">);</span>   <span class="cmt">// ✔ OK — var escapes block</span>
+<span class="cmt">// console.log(y); ❌ Error — const is block-scoped</span>
+<span class="cmt">// console.log(z); ❌ Error — let is block-scoped</span></pre>
+      </div>
+      <table class="data-table">
+        <thead><tr><th>Variable</th><th>Block Scoped?</th><th>Accessible Outside?</th></tr></thead>
+        <tbody>
+          <tr><td><code>var</code></td><td>❌ No</td><td>✔ Yes — escapes block</td></tr>
+          <tr><td><code>let</code></td><td>✔ Yes</td><td>❌ Only inside block</td></tr>
+          <tr><td><code>const</code></td><td>✔ Yes</td><td>❌ Only inside block</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box note-yellow">📌 <strong>var</strong> ignores block boundaries. <strong>let &amp; const</strong> strictly follow block scope.</div>
+    </div>
+  </div>
+
+  <!-- ── 4. LEXICAL SCOPE ── -->
+  <div id="lexical">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🔗</div>
+      <span class="section-title">4. Lexical Scope</span>
+      <span class="section-sub">Very Important</span>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-title">What is Lexical Scope? <span class="topic-badge badge-purple">Lexical</span></div>
+      <p class="topic-desc"><strong>Lexical = where code is written.</strong> An inner function can access its own variables <em>and</em> the parent function's variables. But the outer function cannot access inner variables.</p>
+      <div class="diagram"><svg viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="600" height="240" fill="#0d1520"/>
+  <!-- outer func -->
+  <rect x="20" y="18" width="560" height="204" rx="10" fill="#130d1f" stroke="#bc8cff" stroke-width="2"/>
+  <text x="40" y="44" font-size="13" fill="#bc8cff" font-weight="700">function func1()  — outer</text>
+  <rect x="130" y="56" width="200" height="34" rx="7" fill="#1a0f2a" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="230" y="78" font-size="12" fill="#bc8cff" text-anchor="middle">const x = 10</text>
+  <!-- inner func -->
+  <rect x="60" y="108" width="480" height="100" rx="9" fill="#0f1d2e" stroke="#58a6ff" stroke-width="2"/>
+  <text x="80" y="130" font-size="13" fill="#58a6ff" font-weight="700">function func2()  — inner</text>
+  <rect x="120" y="142" width="200" height="32" rx="6" fill="#0a1520" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="220" y="163" font-size="12" fill="#58a6ff" text-anchor="middle">const y = 20</text>
+  <text x="400" y="163" font-size="12" fill="#3fb950" text-anchor="middle">✔ can access x</text>
+  <text x="400" y="185" font-size="12" fill="#3fb950" text-anchor="middle">✔ can access y</text>
+  <!-- outer cross -->
+  <text x="340" y="80" font-size="11" fill="#f85149" text-anchor="middle">❌ func1 cannot access y</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">lexical-scope.js</span></div>
+        <pre><span class="kw">function</span> <span class="fn">func1</span><span class="punc">() {</span>
+    <span class="kw">const</span> <span class="var-name">x</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span>
+
+    <span class="kw">function</span> <span class="fn">func2</span><span class="punc">() {</span>
+        <span class="kw">const</span> <span class="var-name">y</span> <span class="op">=</span> <span class="num">20</span><span class="punc">;</span>
+        <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">x</span><span class="punc">,</span> <span class="var-name">y</span><span class="punc">);</span> <span class="cmt">// ✔ func2 can access x from parent</span>
+    <span class="punc">}</span>
+
+    <span class="fn">func2</span><span class="punc">();</span>
+<span class="punc">}</span>
+
+<span class="fn">func1</span><span class="punc">();</span></pre>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-item"><span class="check">✔</span> Inner function → can access outer variables</div>
+        <div class="feature-item"><span class="cross">✗</span> Outer function → cannot access inner variables</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. MODULE SCOPE ── -->
+  <div id="module">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">📦</div>
+      <span class="section-title">5. Module Scope</span>
+      <span class="section-sub">File Level</span>
+    </div>
+
+    <div class="topic-card">
+      <div class="topic-title">What is Module Scope? <span class="topic-badge badge-cyan">Module</span></div>
+      <p class="topic-desc">Used in <strong>multiple files (modules)</strong>. Variables inside one file are <strong>private</strong>. Use <code style="color:var(--accent-cyan)">export</code> to share them and <code style="color:var(--accent-cyan)">import</code> to use them in another file.</p>
+      <div class="diagram"><svg viewBox="0 0 600 210" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="600" height="210" fill="#0d1520"/>
+  <!-- math.js -->
+  <rect x="30" y="28" width="220" height="155" rx="9" fill="#0f1f1f" stroke="#39d0d0" stroke-width="2"/>
+  <text x="50" y="52" font-size="13" fill="#39d0d0" font-weight="700">📁 math.js</text>
+  <rect x="50" y="64" width="180" height="32" rx="5" fill="#0a1a1a" stroke="#39d0d0" stroke-width="1.2"/>
+  <text x="140" y="85" font-size="11" fill="#3fb950" text-anchor="middle">export const number</text>
+  <rect x="50" y="106" width="180" height="32" rx="5" fill="#0a1a1a" stroke="#39d0d0" stroke-width="1.2"/>
+  <text x="140" y="127" font-size="11" fill="#3fb950" text-anchor="middle">export function add()</text>
+  <text x="140" y="168" font-size="11" fill="#6e7681" text-anchor="middle">private to this file</text>
+  <!-- arrow -->
+  <line x1="255" y1="110" x2="345" y2="110" stroke="#58a6ff" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="300" y="100" font-size="10" fill="#58a6ff" text-anchor="middle">export</text>
+  <text x="300" y="128" font-size="10" fill="#d29922" text-anchor="middle">import</text>
+  <line x1="345" y1="120" x2="255" y2="120" stroke="#d29922" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#a3)"/>
+  <!-- main.js -->
+  <rect x="350" y="28" width="220" height="155" rx="9" fill="#0f1520" stroke="#58a6ff" stroke-width="2"/>
+  <text x="370" y="52" font-size="13" fill="#58a6ff" font-weight="700">📁 main.js</text>
+  <rect x="370" y="64" width="180" height="32" rx="5" fill="#0a1020" stroke="#58a6ff" stroke-width="1.2"/>
+  <text x="460" y="85" font-size="11" fill="#d2a8ff" text-anchor="middle">import { number, add }</text>
+  <rect x="370" y="106" width="180" height="32" rx="5" fill="#0a1020" stroke="#58a6ff" stroke-width="1.2"/>
+  <text x="460" y="127" font-size="11" fill="#ffa657" text-anchor="middle">console.log(number) // 10</text>
+  <text x="460" y="168" font-size="11" fill="#6e7681" text-anchor="middle">uses imported values</text>
+  <defs>
+    <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#58a6ff"/></marker>
+    <marker id="a3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#d29922"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">📁 math.js</span></div>
+        <pre><span class="kw">export</span> <span class="kw">const</span> <span class="var-name">number</span> <span class="op">=</span> <span class="num">10</span><span class="punc">;</span>
+
+<span class="kw">export</span> <span class="kw">function</span> <span class="fn">add</span><span class="punc">(</span><span class="var-name">a</span><span class="punc">,</span> <span class="var-name">b</span><span class="punc">) {</span>
+    <span class="kw">return</span> <span class="var-name">a</span> <span class="op">+</span> <span class="var-name">b</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">📁 main.js</span></div>
+        <pre><span class="kw">import</span> <span class="punc">{</span> <span class="var-name">number</span><span class="punc">,</span> <span class="fn">add</span> <span class="punc">}</span> <span class="kw">from</span> <span class="str">"./math.js"</span><span class="punc">;</span>
+
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">number</span><span class="punc">);</span>        <span class="cmt">// 10</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="fn">add</span><span class="punc">(</span><span class="num">5</span><span class="punc">,</span> <span class="num">3</span><span class="punc">));</span>    <span class="cmt">// 8</span></pre>
+      </div>
+      <div class="note-box note-cyan">📌 Module scope prevents <strong>global conflicts</strong> and keeps code organized.</div>
+    </div>
+
+    <!-- Scope Summary Table -->
+    <div class="topic-card">
+      <div class="topic-title">📋 Scope Summary Table</div>
+      <table class="data-table">
+        <thead><tr><th>Scope Type</th><th>Where it works</th><th>Key Point</th></tr></thead>
+        <tbody>
+          <tr><td><code>Global</code></td><td>Everywhere</td><td>Declared outside all functions</td></tr>
+          <tr><td><code>Local</code></td><td>Inside function</td><td>Private to that function</td></tr>
+          <tr><td><code>Block</code></td><td>Inside { }</td><td>let/const only</td></tr>
+          <tr><td><code>Lexical</code></td><td>Nested functions</td><td>Inner can access outer</td></tr>
+          <tr><td><code>Module</code></td><td>File level</td><td>import / export</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONTROL FLOW SECTION
+  ══════════════════════════════════════════════ -->
+  <div id="controlflow">
+    <div class="hero-card" style="margin-top:3rem">
+      <div class="hero-tags">
+        <span class="hero-tag">JavaScript</span>
+        <span class="hero-tag">Full Notes</span>
+      </div>
+      <h1 class="hero-title">Control <span>Flow</span> Statements</h1>
+      <p class="hero-desc">
+        <strong>Control Flow</strong> = the order in which code runs. By default it runs top → bottom. Control flow statements let us make decisions, repeat code, and jump around the execution.
+      </p>
+      <div class="hero-links">
+        <a class="hero-link" href="#loops">📄 GFG · Loops</a>
+        <a class="hero-link" href="#switch">📄 GFG · Switch</a>
+      </div>
+    </div>
+    <div class="note-box note-blue">📌 Control flow statements control execution order, allow <strong>decisions</strong>, <strong>loops</strong>, and <strong>jumps</strong> in code.</div>
+  </div>
+
+  <!-- ── IF ── -->
+  <div id="if">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔹</div>
+      <span class="section-title">if Statement</span>
+      <span class="section-sub">Basic Decision</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">What is the <code style="font-size:.9rem">if</code> Statement? <span class="topic-badge badge-blue">Conditional</span></div>
+      <p class="topic-desc">Used when you want to <strong>take decisions</strong>. If the condition is <strong>true → code executes</strong>. If false → skipped.</p>
+      <div class="diagram"><svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="400" height="280" fill="#0d1520"/>
+  <!-- start -->
+  <ellipse cx="200" cy="35" rx="60" ry="22" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="200" y="40" font-size="12" fill="#58a6ff" text-anchor="middle">START</text>
+  <line x1="200" y1="57" x2="200" y2="88" stroke="#8b949e" stroke-width="1.5" marker-end="url(#af)"/>
+  <!-- diamond -->
+  <polygon points="200,90 290,135 200,180 110,135" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="200" y="130" font-size="12" fill="#d29922" text-anchor="middle">condition</text>
+  <text x="200" y="148" font-size="11" fill="#ffa657" text-anchor="middle">true / false?</text>
+  <!-- true arrow down -->
+  <line x1="200" y1="180" x2="200" y2="210" stroke="#3fb950" stroke-width="1.5" marker-end="url(#ag)"/>
+  <text x="215" y="200" font-size="11" fill="#3fb950">True</text>
+  <!-- code block -->
+  <rect x="130" y="210" width="140" height="40" rx="6" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="200" y="235" font-size="12" fill="#3fb950" text-anchor="middle">execute code</text>
+  <!-- false arrow right -->
+  <line x1="290" y1="135" x2="355" y2="135" stroke="#f85149" stroke-width="1.5" marker-end="url(#ah)"/>
+  <text x="320" y="128" font-size="11" fill="#f85149">False</text>
+  <!-- skip -->
+  <rect x="350" y="118" width="30" height="34" rx="4" fill="#1a0f0f" stroke="#f85149" stroke-width="1.2"/>
+  <text x="365" y="132" font-size="9" fill="#f85149" text-anchor="middle">skip</text>
+  <text x="365" y="144" font-size="9" fill="#f85149" text-anchor="middle">block</text>
+  <defs>
+    <marker id="af" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="ag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">if-statement.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">age</span> <span class="op">=</span> <span class="num">18</span><span class="punc">;</span>
+
+<span class="kw">if</span> <span class="punc">(</span><span class="var-name">age</span> <span class="op">>=</span> <span class="num">18</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"You are adult"</span><span class="punc">);</span>
+<span class="punc">}</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── IF...ELSE ── -->
+  <div id="ifelse">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔹</div>
+      <span class="section-title">if...else Statement</span>
+      <span class="section-sub">Two Paths</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">if...else Statement <span class="topic-badge badge-blue">Conditional</span></div>
+      <p class="topic-desc">Always <strong>one block runs</strong>. If condition is true → if block. If false → else block.</p>
+      <div class="diagram"><svg viewBox="0 0 500 290" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="500" height="290" fill="#0d1520"/>
+  <ellipse cx="250" cy="32" rx="60" ry="22" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="250" y="37" font-size="12" fill="#58a6ff" text-anchor="middle">START</text>
+  <line x1="250" y1="54" x2="250" y2="84" stroke="#8b949e" stroke-width="1.5" marker-end="url(#bi)"/>
+  <polygon points="250,86 355,136 250,186 145,136" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="250" y="130" font-size="12" fill="#d29922" text-anchor="middle">age &gt;= 18</text>
+  <text x="250" y="148" font-size="11" fill="#ffa657" text-anchor="middle">condition?</text>
+  <!-- true down -->
+  <line x1="250" y1="186" x2="250" y2="216" stroke="#3fb950" stroke-width="1.5" marker-end="url(#bj)"/>
+  <text x="264" y="206" font-size="11" fill="#3fb950">True</text>
+  <rect x="168" y="216" width="164" height="40" rx="6" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="250" y="241" font-size="12" fill="#3fb950" text-anchor="middle">log("Adult")</text>
+  <!-- false left -->
+  <line x1="145" y1="136" x2="75" y2="136" stroke="#f85149" stroke-width="1.5" marker-end="url(#bk)"/>
+  <text x="106" y="128" font-size="11" fill="#f85149">False</text>
+  <rect x="20" y="116" width="54" height="40" rx="6" fill="#2a0f0f" stroke="#f85149" stroke-width="1.8"/>
+  <text x="47" y="134" font-size="10" fill="#f85149" text-anchor="middle">log(</text>
+  <text x="47" y="148" font-size="10" fill="#f85149" text-anchor="middle">"Not Adult")</text>
+  <defs>
+    <marker id="bi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="bj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="bk" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">if-else.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">age</span> <span class="op">=</span> <span class="num">16</span><span class="punc">;</span>
+
+<span class="kw">if</span> <span class="punc">(</span><span class="var-name">age</span> <span class="op">>=</span> <span class="num">18</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Adult"</span><span class="punc">);</span>
+<span class="punc">}</span> <span class="kw">else</span> <span class="punc">{</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Not Adult"</span><span class="punc">);</span>
+<span class="punc">}</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ELSE IF ── -->
+  <div id="elseif">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔹</div>
+      <span class="section-title">else if Ladder</span>
+      <span class="section-sub">Multiple Conditions</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">else if Ladder <span class="topic-badge badge-blue">Conditional</span></div>
+      <p class="topic-desc">Multiple conditions checked in sequence. The <strong>first true condition</strong> executes, rest are skipped.</p>
+      <div class="diagram"><svg viewBox="0 0 580 300" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="580" height="300" fill="#0d1520"/>
+  <ellipse cx="100" cy="32" rx="60" ry="22" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="100" y="37" font-size="12" fill="#58a6ff" text-anchor="middle">START</text>
+  <line x1="100" y1="54" x2="100" y2="80" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ci)"/>
+  <!-- diamond 1 -->
+  <polygon points="100,82 175,120 100,158 25,120" fill="#1a1a10" stroke="#d29922" stroke-width="1.8"/>
+  <text x="100" y="116" font-size="11" fill="#d29922" text-anchor="middle">num &gt; 0</text>
+  <text x="100" y="130" font-size="10" fill="#ffa657" text-anchor="middle">True?</text>
+  <!-- true right -->
+  <line x1="175" y1="120" x2="230" y2="120" stroke="#3fb950" stroke-width="1.5" marker-end="url(#cj)"/>
+  <text x="200" y="113" font-size="10" fill="#3fb950">True</text>
+  <rect x="230" y="102" width="110" height="36" rx="6" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="285" y="125" font-size="11" fill="#3fb950" text-anchor="middle">"Positive"</text>
+  <!-- false down -->
+  <line x1="100" y1="158" x2="100" y2="186" stroke="#f85149" stroke-width="1.5" marker-end="url(#ck)"/>
+  <text x="112" y="177" font-size="10" fill="#f85149">False</text>
+  <!-- diamond 2 -->
+  <polygon points="100,188 175,226 100,264 25,226" fill="#1a1a10" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="100" y="222" font-size="11" fill="#58a6ff" text-anchor="middle">num &lt; 0</text>
+  <text x="100" y="236" font-size="10" fill="#79c0ff" text-anchor="middle">True?</text>
+  <!-- true right 2 -->
+  <line x1="175" y1="226" x2="230" y2="226" stroke="#3fb950" stroke-width="1.5" marker-end="url(#cj)"/>
+  <text x="200" y="219" font-size="10" fill="#3fb950">True</text>
+  <rect x="230" y="208" width="110" height="36" rx="6" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="285" y="231" font-size="11" fill="#3fb950" text-anchor="middle">"Negative"</text>
+  <!-- false right else -->
+  <line x1="25" y1="226" x2="-10" y2="226" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="-10" y1="226" x2="-10" y2="285" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="-10" y1="285" x2="380" y2="285" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#cl)"/>
+  <rect x="380" y="267" width="110" height="36" rx="6" fill="#1a0f2a" stroke="#bc8cff" stroke-width="1.5"/>
+  <text x="435" y="290" font-size="11" fill="#bc8cff" text-anchor="middle">else: "Zero"</text>
+  <defs>
+    <marker id="ci" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="cj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="ck" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+    <marker id="cl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#bc8cff"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">else-if.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">num</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span>
+
+<span class="kw">if</span> <span class="punc">(</span><span class="var-name">num</span> <span class="op">></span> <span class="num">0</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Positive"</span><span class="punc">);</span>
+<span class="punc">}</span> <span class="kw">else if</span> <span class="punc">(</span><span class="var-name">num</span> <span class="op"><</span> <span class="num">0</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Negative"</span><span class="punc">);</span>
+<span class="punc">}</span> <span class="kw">else</span> <span class="punc">{</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Zero"</span><span class="punc">);</span>
+<span class="punc">}</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SWITCH ── -->
+  <div id="switch">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🔹</div>
+      <span class="section-title">switch Statement</span>
+      <span class="section-sub">Multiple Values</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">switch Statement <span class="topic-badge badge-purple">Conditional</span></div>
+      <p class="topic-desc">Compares one variable against <strong>multiple values</strong>. <code style="color:var(--accent-cyan)">break</code> is important — without it, execution "falls through" to the next case.</p>
+      <div class="diagram"><svg viewBox="0 0 560 300" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="300" fill="#0d1520"/>
+  <!-- switch box -->
+  <rect x="190" y="18" width="180" height="40" rx="7" fill="#1a1020" stroke="#bc8cff" stroke-width="2"/>
+  <text x="280" y="43" font-size="13" fill="#bc8cff" text-anchor="middle">switch(day)</text>
+  <line x1="280" y1="58" x2="280" y2="84" stroke="#8b949e" stroke-width="1.5" marker-end="url(#di)"/>
+  <!-- diamond -->
+  <polygon points="280,86 370,130 280,174 190,130" fill="#1a1020" stroke="#bc8cff" stroke-width="1.8"/>
+  <text x="280" y="126" font-size="11" fill="#bc8cff" text-anchor="middle">match</text>
+  <text x="280" y="142" font-size="11" fill="#d2a8ff" text-anchor="middle">which case?</text>
+  <!-- case 1 left -->
+  <line x1="190" y1="130" x2="110" y2="130" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#dj)"/>
+  <text x="150" y="122" font-size="10" fill="#58a6ff">case 1</text>
+  <rect x="20" y="112" width="88" height="36" rx="5" fill="#0f1a2e" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="64" y="128" font-size="11" fill="#58a6ff" text-anchor="middle">"Monday"</text>
+  <text x="64" y="143" font-size="10" fill="#3fb950" text-anchor="middle">break ✔</text>
+  <!-- case 2 down -->
+  <line x1="280" y1="174" x2="280" y2="210" stroke="#3fb950" stroke-width="1.5" marker-end="url(#dk)"/>
+  <text x="296" y="196" font-size="10" fill="#3fb950">case 2</text>
+  <rect x="200" y="210" width="160" height="36" rx="5" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="280" y="226" font-size="11" fill="#3fb950" text-anchor="middle">"Tuesday"</text>
+  <text x="280" y="241" font-size="10" fill="#3fb950" text-anchor="middle">break ✔</text>
+  <!-- default right -->
+  <line x1="370" y1="130" x2="440" y2="130" stroke="#d29922" stroke-width="1.5" marker-end="url(#dl)"/>
+  <text x="402" y="122" font-size="10" fill="#d29922">default</text>
+  <rect x="440" y="112" width="104" height="36" rx="5" fill="#1a1a0a" stroke="#d29922" stroke-width="1.5"/>
+  <text x="492" y="128" font-size="11" fill="#d29922" text-anchor="middle">"Other day"</text>
+  <text x="492" y="143" font-size="10" fill="#8b949e" text-anchor="middle">no break needed</text>
+  <defs>
+    <marker id="di" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="dj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#58a6ff"/></marker>
+    <marker id="dk" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="dl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#d29922"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">switch.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">day</span> <span class="op">=</span> <span class="num">2</span><span class="punc">;</span>
+
+<span class="kw">switch</span><span class="punc">(</span><span class="var-name">day</span><span class="punc">) {</span>
+   <span class="kw">case</span> <span class="num">1</span><span class="punc">:</span>
+      <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Monday"</span><span class="punc">);</span>
+      <span class="kw">break</span><span class="punc">;</span>
+   <span class="kw">case</span> <span class="num">2</span><span class="punc">:</span>
+      <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Tuesday"</span><span class="punc">);</span>
+      <span class="kw">break</span><span class="punc">;</span>
+   <span class="kw">default</span><span class="punc">:</span>
+      <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Other day"</span><span class="punc">);</span>
+<span class="punc">}</span></pre>
+      </div>
+      <div class="note-box note-purple">📌 switch replaces long <strong>if-else chains</strong> when comparing one variable to many values.</div>
+    </div>
+  </div>
+
+  <!-- ── TERNARY ── -->
+  <div id="ternary">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔹</div>
+      <span class="section-title">Ternary Operator ?:</span>
+      <span class="section-sub">One-line Decision</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">Ternary Operator <span class="topic-badge badge-blue">Short Form</span></div>
+      <p class="topic-desc">Short form of <code style="color:var(--accent-cyan)">if-else</code>. Syntax: <code style="color:var(--accent-orange)">condition ? trueValue : falseValue</code></p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">ternary.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">age</span> <span class="op">=</span> <span class="num">20</span><span class="punc">;</span>
+
+<span class="kw">let</span> <span class="var-name">result</span> <span class="op">=</span> <span class="punc">(</span><span class="var-name">age</span> <span class="op">>=</span> <span class="num">18</span><span class="punc">)</span> <span class="op">?</span> <span class="str">"Adult"</span> <span class="op">:</span> <span class="str">"Not Adult"</span><span class="punc">;</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">result</span><span class="punc">);</span> <span class="cmt">// "Adult"</span></pre>
+      </div>
+
+      <!-- Nested if -->
+      <div class="topic-title" style="margin-top:1.2rem">Nested if <span class="topic-badge badge-yellow">Complex Logic</span></div>
+      <p class="topic-desc">One <code style="color:var(--accent-cyan)">if</code> inside another <code style="color:var(--accent-cyan)">if</code>. Used for complex conditions.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">nested-if.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">marks</span> <span class="op">=</span> <span class="num">85</span><span class="punc">;</span>
+
+<span class="kw">if</span> <span class="punc">(</span><span class="var-name">marks</span> <span class="op">>=</span> <span class="num">50</span><span class="punc">) {</span>
+   <span class="kw">if</span> <span class="punc">(</span><span class="var-name">marks</span> <span class="op">>=</span> <span class="num">80</span><span class="punc">) {</span>
+      <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Excellent"</span><span class="punc">);</span>
+   <span class="punc">}</span>
+<span class="punc">}</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LOOPS ── -->
+  <div id="loops">
+    <div class="section-header">
+      <div class="section-icon icon-green">🔁</div>
+      <span class="section-title">Looping Statements</span>
+      <span class="section-sub">Repetition</span>
+    </div>
+
+    <!-- for loop -->
+    <div class="topic-card" id="forloop">
+      <div class="topic-title">for Loop <span class="topic-badge badge-green">Loop</span></div>
+      <p class="topic-desc">Used when you know <strong>exactly how many times</strong> to repeat. Has 3 parts: <strong>init, condition, increment</strong>.</p>
+      <div class="diagram"><svg viewBox="0 0 500 310" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="500" height="310" fill="#0d1520"/>
+  <!-- init -->
+  <rect x="170" y="18" width="160" height="38" rx="7" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="250" y="42" font-size="13" fill="#58a6ff" text-anchor="middle">let i = 0  (init)</text>
+  <line x1="250" y1="56" x2="250" y2="86" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ei)"/>
+  <!-- condition diamond -->
+  <polygon points="250,88 355,136 250,184 145,136" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="250" y="130" font-size="12" fill="#d29922" text-anchor="middle">i &lt; 5</text>
+  <text x="250" y="148" font-size="11" fill="#ffa657" text-anchor="middle">condition?</text>
+  <!-- true down -->
+  <line x1="250" y1="184" x2="250" y2="214" stroke="#3fb950" stroke-width="1.5" marker-end="url(#ej)"/>
+  <text x="264" y="204" font-size="11" fill="#3fb950">True</text>
+  <!-- statements -->
+  <rect x="140" y="214" width="220" height="38" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="250" y="238" font-size="12" fill="#3fb950" text-anchor="middle">console.log(i)</text>
+  <line x1="250" y1="252" x2="250" y2="278" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ek)"/>
+  <!-- update -->
+  <rect x="155" y="278" width="190" height="28" rx="6" fill="#1a1020" stroke="#bc8cff" stroke-width="1.8"/>
+  <text x="250" y="297" font-size="12" fill="#bc8cff" text-anchor="middle">i++  (update)</text>
+  <!-- loop back arrow -->
+  <path d="M 345 292 Q 440 292 440 136 Q 440 88 356 88" fill="none" stroke="#bc8cff" stroke-width="1.8" marker-end="url(#el)" stroke-dasharray="5,2"/>
+  <!-- false exit -->
+  <line x1="145" y1="136" x2="60" y2="136" stroke="#f85149" stroke-width="1.5" marker-end="url(#em)"/>
+  <text x="100" y="128" font-size="11" fill="#f85149">False</text>
+  <rect x="10" y="120" width="48" height="32" rx="5" fill="#2a0f0f" stroke="#f85149" stroke-width="1.5"/>
+  <text x="34" y="140" font-size="11" fill="#f85149" text-anchor="middle">EXIT</text>
+  <defs>
+    <marker id="ei" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="ej" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="ek" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="el" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#bc8cff"/></marker>
+    <marker id="em" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">for-loop.js</span></div>
+        <pre><span class="kw">for</span> <span class="punc">(</span><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span> <span class="var-name">i</span> <span class="op"><</span> <span class="num">5</span><span class="punc">;</span> <span class="var-name">i</span><span class="op">++</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">i</span><span class="punc">);</span>
+<span class="punc">}</span>
+<span class="cmt">// Output: 0 1 2 3 4</span></pre>
+      </div>
+    </div>
+
+    <!-- while loop -->
+    <div class="topic-card">
+      <div class="topic-title">while Loop <span class="topic-badge badge-green">Loop</span></div>
+      <p class="topic-desc">Runs <strong>as long as the condition is true</strong>. Condition is checked <em>before</em> each iteration.</p>
+      <div class="diagram"><svg viewBox="0 0 480 290" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="480" height="290" fill="#0d1520"/>
+  <ellipse cx="240" cy="32" rx="65" ry="22" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="240" y="37" font-size="12" fill="#58a6ff" text-anchor="middle">let i = 0</text>
+  <line x1="240" y1="54" x2="240" y2="84" stroke="#8b949e" stroke-width="1.5" marker-end="url(#fi)"/>
+  <!-- condition -->
+  <polygon points="240,86 340,134 240,182 140,134" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="240" y="128" font-size="12" fill="#d29922" text-anchor="middle">i &lt; 5</text>
+  <text x="240" y="146" font-size="11" fill="#ffa657" text-anchor="middle">while condition?</text>
+  <!-- true -->
+  <line x1="240" y1="182" x2="240" y2="212" stroke="#3fb950" stroke-width="1.5" marker-end="url(#fj)"/>
+  <text x="254" y="202" font-size="11" fill="#3fb950">True</text>
+  <rect x="130" y="212" width="220" height="52" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="240" y="234" font-size="12" fill="#3fb950" text-anchor="middle">console.log(i)</text>
+  <text x="240" y="254" font-size="12" fill="#3fb950" text-anchor="middle">i++</text>
+  <!-- loop back -->
+  <path d="M 350 238 Q 420 238 420 134 Q 420 86 342 86" fill="none" stroke="#39d0d0" stroke-width="1.8" marker-end="url(#fk)" stroke-dasharray="5,2"/>
+  <text x="434" y="170" font-size="10" fill="#39d0d0" transform="rotate(-90,434,170)">loop back</text>
+  <!-- false exit -->
+  <line x1="140" y1="134" x2="60" y2="134" stroke="#f85149" stroke-width="1.5" marker-end="url(#fl)"/>
+  <text x="96" y="126" font-size="11" fill="#f85149">False</text>
+  <rect x="10" y="118" width="48" height="32" rx="5" fill="#2a0f0f" stroke="#f85149" stroke-width="1.5"/>
+  <text x="34" y="138" font-size="11" fill="#f85149" text-anchor="middle">EXIT</text>
+  <defs>
+    <marker id="fi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="fj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#3fb950"/></marker>
+    <marker id="fk" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#39d0d0"/></marker>
+    <marker id="fl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">while-loop.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span>
+
+<span class="kw">while</span> <span class="punc">(</span><span class="var-name">i</span> <span class="op"><</span> <span class="num">5</span><span class="punc">) {</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">i</span><span class="punc">);</span>
+   <span class="var-name">i</span><span class="op">++</span><span class="punc">;</span>
+<span class="punc">}</span></pre>
+      </div>
+    </div>
+
+    <!-- do-while loop -->
+    <div class="topic-card">
+      <div class="topic-title">do...while Loop <span class="topic-badge badge-green">Loop</span></div>
+      <p class="topic-desc">Runs <strong>at least once</strong> regardless of condition. Condition is checked <em>after</em> each iteration.</p>
+      <div class="diagram"><svg viewBox="0 0 480 310" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="480" height="310" fill="#0d1520"/>
+  <ellipse cx="240" cy="32" rx="65" ry="22" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="240" y="37" font-size="12" fill="#58a6ff" text-anchor="middle">let i = 0</text>
+  <line x1="240" y1="54" x2="240" y2="80" stroke="#8b949e" stroke-width="1.5" marker-end="url(#gi)"/>
+  <!-- do block -->
+  <rect x="120" y="80" width="240" height="60" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="240" y="106" font-size="12" fill="#3fb950" text-anchor="middle">do {</text>
+  <text x="240" y="126" font-size="12" fill="#3fb950" text-anchor="middle">console.log(i);  i++</text>
+  <text x="30" y="112" font-size="11" fill="#39d0d0">runs at</text>
+  <text x="30" y="128" font-size="11" fill="#39d0d0">least once!</text>
+  <line x1="240" y1="140" x2="240" y2="170" stroke="#8b949e" stroke-width="1.5" marker-end="url(#gj)"/>
+  <!-- condition diamond -->
+  <polygon points="240,172 340,216 240,260 140,216" fill="#1a1a10" stroke="#d29922" stroke-width="2"/>
+  <text x="240" y="210" font-size="12" fill="#d29922" text-anchor="middle">i &lt; 5</text>
+  <text x="240" y="228" font-size="11" fill="#ffa657" text-anchor="middle">while condition?</text>
+  <!-- true loop back -->
+  <path d="M 340 216 Q 420 216 420 110 Q 420 80 362 80" fill="none" stroke="#39d0d0" stroke-width="1.8" marker-end="url(#gk)" stroke-dasharray="5,2"/>
+  <text x="432" y="180" font-size="10" fill="#39d0d0" transform="rotate(-90,432,180)">True — loop</text>
+  <!-- false exit -->
+  <line x1="140" y1="216" x2="60" y2="216" stroke="#f85149" stroke-width="1.5" marker-end="url(#gl)"/>
+  <text x="96" y="208" font-size="11" fill="#f85149">False</text>
+  <rect x="10" y="200" width="48" height="32" rx="5" fill="#2a0f0f" stroke="#f85149" stroke-width="1.5"/>
+  <text x="34" y="220" font-size="11" fill="#f85149" text-anchor="middle">EXIT</text>
+  <defs>
+    <marker id="gi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="gj" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker>
+    <marker id="gk" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#39d0d0"/></marker>
+    <marker id="gl" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#f85149"/></marker>
+  </defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">do-while.js</span></div>
+        <pre><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span>
+
+<span class="kw">do</span> <span class="punc">{</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">i</span><span class="punc">);</span>
+   <span class="var-name">i</span><span class="op">++</span><span class="punc">;</span>
+<span class="punc">}</span> <span class="kw">while</span><span class="punc">(</span><span class="var-name">i</span> <span class="op"><</span> <span class="num">5</span><span class="punc">);</span></pre>
+      </div>
+      <div class="note-box note-green">📌 Key difference: <strong>do…while always executes at least 1 time</strong> even if the condition is false from the start.</div>
+    </div>
+  </div>
+
+  <!-- ── JUMP STATEMENTS ── -->
+  <div id="jump">
+    <div class="section-header">
+      <div class="section-icon icon-yellow">⛔</div>
+      <span class="section-title">Jump / Branch Statements</span>
+      <span class="section-sub">Control Loop Flow</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">break <span class="topic-badge badge-red">Jump</span></div>
+      <p class="topic-desc"><strong>Immediately stops</strong> the loop and exits.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">break.js</span></div>
+        <pre><span class="kw">for</span> <span class="punc">(</span><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span> <span class="var-name">i</span> <span class="op"><</span> <span class="num">5</span><span class="punc">;</span> <span class="var-name">i</span><span class="op">++</span><span class="punc">) {</span>
+   <span class="kw">if</span> <span class="punc">(</span><span class="var-name">i</span> <span class="op">===</span> <span class="num">3</span><span class="punc">)</span> <span class="kw">break</span><span class="punc">;</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">i</span><span class="punc">);</span>
+<span class="punc">}</span>
+<span class="cmt">// Output: 0 1 2</span></pre>
+      </div>
+
+      <div class="topic-title" style="margin-top:1.2rem">continue <span class="topic-badge badge-yellow">Jump</span></div>
+      <p class="topic-desc"><strong>Skips</strong> the current iteration and moves to the next one.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">continue.js</span></div>
+        <pre><span class="kw">for</span> <span class="punc">(</span><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span> <span class="var-name">i</span> <span class="op"><</span> <span class="num">5</span><span class="punc">;</span> <span class="var-name">i</span><span class="op">++</span><span class="punc">) {</span>
+   <span class="kw">if</span> <span class="punc">(</span><span class="var-name">i</span> <span class="op">===</span> <span class="num">3</span><span class="punc">)</span> <span class="kw">continue</span><span class="punc">;</span>
+   <span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="var-name">i</span><span class="punc">);</span>
+<span class="punc">}</span>
+<span class="cmt">// Output: 0 1 2 4</span></pre>
+      </div>
+    </div>
+
+    <!-- Control Flow Summary -->
+    <div class="topic-card">
+      <div class="topic-title">📋 Control Flow Summary Table</div>
+      <table class="data-table">
+        <thead><tr><th>Type</th><th>Statement</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Conditional</td><td><code>if, if-else</code></td><td>Decision making</td></tr>
+          <tr><td>Multiple Condition</td><td><code>else-if, switch</code></td><td>Multiple choices</td></tr>
+          <tr><td>Short Form</td><td><code>ternary ?:</code></td><td>One-line decision</td></tr>
+          <tr><td>Looping</td><td><code>for, while, do-while</code></td><td>Repeat code</td></tr>
+          <tr><td>Jump</td><td><code>break, continue</code></td><td>Control loop flow</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       CONSOLE SECTION
+  ══════════════════════════════════════════════ -->
+  <div id="console">
+    <div class="hero-card" style="margin-top:3rem">
+      <div class="hero-tags">
+        <span class="hero-tag">JavaScript</span>
+        <span class="hero-tag">Full Notes</span>
+      </div>
+      <h1 class="hero-title">Console <span>Object</span></h1>
+      <p class="hero-desc">
+        The <strong>console object</strong> is used to print messages, debug code, check errors, and test code while running. It works in the Browser console (Chrome DevTools) and Node.js terminal.
+      </p>
+      <div class="hero-links">
+        <a class="hero-link" href="#log">📄 console.log()</a>
+        <a class="hero-link" href="#trace">📄 console.trace()</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.log -->
+  <div id="log">
+    <div class="section-header">
+      <div class="section-icon icon-green">1️⃣</div>
+      <span class="section-title">console.log()</span>
+      <span class="section-sub">Most Used</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.log() <span class="topic-badge badge-green">Output</span></div>
+      <p class="topic-desc">Used to print <strong>normal messages</strong>. Most commonly used method for debugging and checking values.</p>
+      <div class="diagram"><svg viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="170" fill="#0d1520"/>
+  <!-- browser console mockup -->
+  <rect x="20" y="20" width="520" height="130" rx="8" fill="#1a1a1a" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="20" y="20" width="520" height="32" rx="8" fill="#252525"/>
+  <rect x="20" y="40" width="520" height="12" fill="#252525"/>
+  <text x="40" y="42" font-size="11" fill="#8b949e">Console</text>
+  <text x="110" y="42" font-size="11" fill="#6e7681">Elements</text>
+  <text x="185" y="42" font-size="11" fill="#6e7681">Network</text>
+  <!-- log line -->
+  <text x="40" y="80" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">console.log("Hello, World!");</text>
+  <rect x="30" y="94" width="500" height="36" rx="4" fill="#0f1f0f" stroke="#3fb950" stroke-width="1"/>
+  <text x="46" y="117" font-size="13" fill="#3fb950" font-family="Fira Code, monospace">Hello, World!</text>
+  <text x="490" y="117" font-size="10" fill="#6e7681" text-anchor="end">console-log.js:1</text>
+  <text x="40" y="145" font-size="11" fill="#8b949e">► Normal output — no color, no icon</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-log.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">"Hello, World!"</span><span class="punc">);</span>
+<span class="cmt">// Output: Hello, World!</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.error -->
+  <div id="error">
+    <div class="section-header">
+      <div class="section-icon icon-yellow">2️⃣</div>
+      <span class="section-title">console.error()</span>
+      <span class="section-sub">Error Messages</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.error() <span class="topic-badge badge-red">Error 🔴</span></div>
+      <p class="topic-desc">Used to print <strong>error messages</strong>. Usually shown in <strong>red color 🔴</strong>. Helps identify problems quickly.</p>
+      <div class="diagram"><svg viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="170" fill="#0d1520"/>
+  <rect x="20" y="20" width="520" height="130" rx="8" fill="#1a1a1a" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="20" y="20" width="520" height="32" rx="8" fill="#252525"/>
+  <rect x="20" y="40" width="520" height="12" fill="#252525"/>
+  <text x="40" y="42" font-size="11" fill="#8b949e">Console</text>
+  <text x="40" y="80" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">console.error("This is an error.");</text>
+  <rect x="30" y="94" width="500" height="36" rx="4" fill="#2a0f0f" stroke="#f85149" stroke-width="1.2"/>
+  <text x="46" y="112" font-size="14" fill="#f85149">⛔</text>
+  <text x="68" y="117" font-size="13" fill="#f85149" font-family="Fira Code, monospace">This is an error.</text>
+  <text x="490" y="117" font-size="10" fill="#6e7681" text-anchor="end">console-error.js:1</text>
+  <text x="40" y="145" font-size="11" fill="#8b949e">► Shown in red — indicates something went wrong</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-error.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">error</span><span class="punc">(</span><span class="str">"This is an error message."</span><span class="punc">);</span>
+<span class="cmt">// Output: This is an error message. (in red)</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.warn -->
+  <div id="warn">
+    <div class="section-header">
+      <div class="section-icon icon-yellow">3️⃣</div>
+      <span class="section-title">console.warn()</span>
+      <span class="section-sub">Warning Messages</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.warn() <span class="topic-badge badge-yellow">Warning ⚠️</span></div>
+      <p class="topic-desc">Used to show <strong>warning messages</strong>. Shown in <strong>yellow ⚠️</strong>. Indicates something might go wrong.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-warn.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">warn</span><span class="punc">(</span><span class="str">"This is a warning message."</span><span class="punc">);</span>
+<span class="cmt">// Output: ⚠ This is a warning message. (in yellow)</span></pre>
+      </div>
+
+      <!-- console.info inline -->
+      <div class="topic-title" style="margin-top:1.2rem">console.info() <span class="topic-badge badge-blue">Info</span></div>
+      <p class="topic-desc">Used for <strong>informational messages</strong>. Similar to <code style="color:var(--accent-cyan)">console.log()</code>. Can be styled using <code style="color:var(--accent-orange)">%c</code>.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-info.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">info</span><span class="punc">(</span><span class="str">'%cStyled info message!'</span><span class="punc">,</span>
+             <span class="str">'color: blue; font-size: 16px; font-weight: bold;'</span><span class="punc">);</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.table -->
+  <div id="table">
+    <div class="section-header">
+      <div class="section-icon icon-cyan">5️⃣</div>
+      <span class="section-title">console.table()</span>
+      <span class="section-sub">Tabular Data</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.table() <span class="topic-badge badge-cyan">Table</span></div>
+      <p class="topic-desc">Displays data in <strong>table format</strong>. Works with arrays and objects. Easy to read large data.</p>
+      <div class="diagram"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="200" fill="#0d1520"/>
+  <rect x="20" y="20" width="520" height="165" rx="8" fill="#1a1a1a" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="20" y="20" width="520" height="28" rx="8" fill="#252525"/>
+  <rect x="20" y="40" width="520" height="8" fill="#252525"/>
+  <text x="40" y="38" font-size="11" fill="#8b949e">Console</text>
+  <!-- table header -->
+  <rect x="30" y="55" width="500" height="28" rx="3" fill="#1c2333"/>
+  <text x="55" y="74" font-size="12" fill="#8b949e" font-weight="600">(index)</text>
+  <text x="175" y="74" font-size="12" fill="#8b949e" font-weight="600">name</text>
+  <text x="320" y="74" font-size="12" fill="#8b949e" font-weight="600">age</text>
+  <!-- row 1 -->
+  <rect x="30" y="83" width="500" height="28" rx="0" fill="#0f1a0f"/>
+  <text x="55" y="102" font-size="12" fill="#79c0ff">0</text>
+  <text x="175" y="102" font-size="12" fill="#a5d6ff">"Amit"</text>
+  <text x="320" y="102" font-size="12" fill="#ffa657">30</text>
+  <!-- row 2 -->
+  <rect x="30" y="111" width="500" height="28" rx="0" fill="#131d0f"/>
+  <text x="55" y="130" font-size="12" fill="#79c0ff">1</text>
+  <text x="175" y="130" font-size="12" fill="#a5d6ff">"Jatin"</text>
+  <text x="320" y="130" font-size="12" fill="#ffa657">25</text>
+  <line x1="30" y1="83" x2="530" y2="83" stroke="#21262d" stroke-width="1"/>
+  <line x1="30" y1="111" x2="530" y2="111" stroke="#21262d" stroke-width="1"/>
+  <line x1="30" y1="139" x2="530" y2="139" stroke="#21262d" stroke-width="1"/>
+  <text x="40" y="168" font-size="11" fill="#8b949e">► Displays array/object data in readable table format</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-table.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">table</span><span class="punc">([</span>
+  <span class="punc">{</span><span class="var-name">name</span><span class="punc">:</span> <span class="str">"Amit"</span><span class="punc">,</span> <span class="var-name">age</span><span class="punc">:</span> <span class="num">30</span><span class="punc">},</span>
+  <span class="punc">{</span><span class="var-name">name</span><span class="punc">:</span> <span class="str">"Jatin"</span><span class="punc">,</span> <span class="var-name">age</span><span class="punc">:</span> <span class="num">25</span><span class="punc">}</span>
+<span class="punc">]);</span>
+<span class="cmt">// (index)  name     age</span>
+<span class="cmt">// 0        Amit     30</span>
+<span class="cmt">// 1        Jatin    25</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.time -->
+  <div id="timer">
+    <div class="section-header">
+      <div class="section-icon icon-blue">6️⃣</div>
+      <span class="section-title">console.time() &amp; timeEnd()</span>
+      <span class="section-sub">Performance</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.time() &amp; console.timeEnd() <span class="topic-badge badge-blue">Timer</span></div>
+      <p class="topic-desc">Used to measure <strong>execution time</strong>. Start with <code style="color:var(--accent-cyan)">time()</code>, end with <code style="color:var(--accent-cyan)">timeEnd()</code>. Useful for performance testing.</p>
+      <div class="diagram"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="200" fill="#0d1520"/>
+  <!-- timeline -->
+  <rect x="40" y="50" width="140" height="42" rx="7" fill="#0f1f2a" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="110" y="68" font-size="11" fill="#58a6ff" text-anchor="middle">console.time(</text>
+  <text x="110" y="83" font-size="11" fill="#a5d6ff" text-anchor="middle">'timer1')</text>
+  <!-- arrow -->
+  <line x1="180" y1="71" x2="265" y2="71" stroke="#39d0d0" stroke-width="1.5" marker-end="url(#hi)"/>
+  <!-- code runs -->
+  <rect x="265" y="50" width="140" height="42" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="335" y="68" font-size="11" fill="#3fb950" text-anchor="middle">...code runs...</text>
+  <text x="335" y="83" font-size="10" fill="#8b949e" text-anchor="middle">loops() executes</text>
+  <!-- arrow -->
+  <line x1="405" y1="71" x2="480" y2="71" stroke="#39d0d0" stroke-width="1.5" marker-end="url(#hi)"/>
+  <!-- timeEnd -->
+  <rect x="480" y="50" width="60" height="42" rx="7" fill="#1a1020" stroke="#bc8cff" stroke-width="1.8"/>
+  <text x="510" y="65" font-size="9" fill="#bc8cff" text-anchor="middle">console</text>
+  <text x="510" y="78" font-size="9" fill="#bc8cff" text-anchor="middle">.timeEnd(</text>
+  <text x="510" y="88" font-size="9" fill="#d2a8ff" text-anchor="middle">'timer1')</text>
+  <!-- output box -->
+  <rect x="30" y="120" width="500" height="42" rx="6" fill="#1a1020" stroke="#bc8cff" stroke-width="1.2"/>
+  <text x="50" y="138" font-size="11" fill="#8b949e">Output:</text>
+  <text x="120" y="138" font-size="13" fill="#bc8cff" font-family="Fira Code, monospace">timer1: 0.359ms</text>
+  <text x="50" y="155" font-size="11" fill="#6e7681">⏱ Measures time between .time() and .timeEnd()</text>
+  <defs><marker id="hi" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#39d0d0"/></marker></defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-time.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">time</span><span class="punc">(</span><span class="str">'timer1'</span><span class="punc">);</span>
+
+<span class="kw">function</span> <span class="fn">loops</span><span class="punc">() {</span>
+    <span class="kw">for</span> <span class="punc">(</span><span class="kw">let</span> <span class="var-name">i</span> <span class="op">=</span> <span class="num">0</span><span class="punc">;</span> <span class="var-name">i</span> <span class="op"><=</span> <span class="num">10000</span><span class="punc">;</span> <span class="var-name">i</span><span class="op">++</span><span class="punc">) {}</span>
+<span class="punc">}</span>
+
+<span class="fn">loops</span><span class="punc">();</span>
+
+<span class="obj">console</span><span class="punc">.</span><span class="method">timeEnd</span><span class="punc">(</span><span class="str">'timer1'</span><span class="punc">);</span>
+<span class="cmt">// Output: timer1: 0.359ms</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.assert -->
+  <div id="assert">
+    <div class="section-header">
+      <div class="section-icon icon-yellow">7️⃣</div>
+      <span class="section-title">console.assert()</span>
+      <span class="section-sub">Condition Check</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.assert() <span class="topic-badge badge-yellow">Assert</span></div>
+      <p class="topic-desc">Checks a condition. If condition is <strong>false → error shown</strong>. If true → nothing happens. Used for testing conditions.</p>
+      <div class="diagram"><svg viewBox="0 0 560 190" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="190" fill="#0d1520"/>
+  <!-- two cases -->
+  <rect x="30" y="24" width="230" height="70" rx="7" fill="#0f2a0f" stroke="#3fb950" stroke-width="1.8"/>
+  <text x="145" y="48" font-size="12" fill="#3fb950" text-anchor="middle">console.assert(</text>
+  <text x="145" y="65" font-size="12" fill="#a5d6ff" text-anchor="middle">5 &gt; 3, "failed")</text>
+  <text x="145" y="84" font-size="11" fill="#3fb950" text-anchor="middle">✔ True → nothing shown</text>
+  <rect x="300" y="24" width="230" height="70" rx="7" fill="#2a0f0f" stroke="#f85149" stroke-width="1.8"/>
+  <text x="415" y="48" font-size="12" fill="#f85149" text-anchor="middle">console.assert(</text>
+  <text x="415" y="65" font-size="12" fill="#a5d6ff" text-anchor="middle">5 &gt; 10, "failed")</text>
+  <text x="415" y="84" font-size="11" fill="#f85149" text-anchor="middle">❌ False → error shown</text>
+  <!-- output -->
+  <rect x="30" y="118" width="500" height="44" rx="6" fill="#2a0f0f" stroke="#f85149" stroke-width="1.2"/>
+  <text x="50" y="136" font-size="11" fill="#f85149">⛔ Assertion failed:</text>
+  <text x="220" y="136" font-size="13" fill="#f85149" font-family="Fira Code, monospace">This assertion failed</text>
+  <text x="50" y="153" font-size="11" fill="#8b949e">Condition false hone par hi message dikhta hai</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-assert.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">assert</span><span class="punc">(</span><span class="num">5</span> <span class="op">></span> <span class="num">10</span><span class="punc">,</span> <span class="str">"This assertion failed"</span><span class="punc">);</span>
+<span class="cmt">// Output: Assertion failed: This assertion failed</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.group -->
+  <div id="group">
+    <div class="section-header">
+      <div class="section-icon icon-purple">8️⃣</div>
+      <span class="section-title">console.group() &amp; groupEnd()</span>
+      <span class="section-sub">Organized Logs</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.group() &amp; console.groupEnd() <span class="topic-badge badge-purple">Group</span></div>
+      <p class="topic-desc">Used to <strong>group logs</strong> together. Makes logs organized. Helpful in big programs.</p>
+      <div class="diagram"><svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="200" fill="#0d1520"/>
+  <rect x="20" y="20" width="520" height="162" rx="8" fill="#1a1a1a" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="20" y="20" width="520" height="28" rx="8" fill="#252525"/>
+  <rect x="20" y="40" width="520" height="8" fill="#252525"/>
+  <text x="40" y="37" font-size="11" fill="#8b949e">Console</text>
+  <!-- group label -->
+  <text x="40" y="72" font-size="13" fill="#d2a8ff" font-family="Fira Code, monospace">▼ User Information</text>
+  <line x1="58" y1="80" x2="58" y2="155" stroke="#30363d" stroke-width="2"/>
+  <!-- items -->
+  <text x="78" y="100" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">Name: Ritik</text>
+  <text x="78" y="125" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">Age: 30</text>
+  <text x="78" y="150" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">Role: Developer</text>
+  <text x="40" y="175" font-size="11" fill="#8b949e">► Logs grouped under collapsible label for easy reading</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-group.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">group</span><span class="punc">(</span><span class="str">'User Information'</span><span class="punc">);</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">'Name: Ritik'</span><span class="punc">);</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">log</span><span class="punc">(</span><span class="str">'Age: 30'</span><span class="punc">);</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">groupEnd</span><span class="punc">();</span>
+<span class="cmt">// User Information</span>
+<span class="cmt">//   Name: Ritik</span>
+<span class="cmt">//   Age: 30</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.count -->
+  <div id="count">
+    <div class="section-header">
+      <div class="section-icon icon-green">9️⃣</div>
+      <span class="section-title">console.count()</span>
+      <span class="section-sub">Execution Counter</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.count() <span class="topic-badge badge-green">Count</span></div>
+      <p class="topic-desc">Counts how many times it runs. Tracks execution count. Useful for loops and functions.</p>
+      <div class="diagram"><svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="180" fill="#0d1520"/>
+  <rect x="20" y="20" width="520" height="142" rx="8" fill="#1a1a1a" stroke="#30363d" stroke-width="1.5"/>
+  <rect x="20" y="20" width="520" height="28" rx="8" fill="#252525"/>
+  <rect x="20" y="40" width="520" height="8" fill="#252525"/>
+  <text x="40" y="37" font-size="11" fill="#8b949e">Console</text>
+  <text x="40" y="74" font-size="13" fill="#e6edf3" font-family="Fira Code, monospace">console.count("countLabel");</text>
+  <text x="40" y="100" font-size="13" fill="#39d0d0" font-family="Fira Code, monospace">countLabel: 1</text>
+  <text x="40" y="120" font-size="13" fill="#39d0d0" font-family="Fira Code, monospace">countLabel: 2</text>
+  <text x="40" y="140" font-size="13" fill="#39d0d0" font-family="Fira Code, monospace">countLabel: 3</text>
+  <text x="350" y="120" font-size="11" fill="#8b949e">each call auto-increments</text>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-count.js</span></div>
+        <pre><span class="obj">console</span><span class="punc">.</span><span class="method">count</span><span class="punc">(</span><span class="str">"countLabel"</span><span class="punc">);</span>  <span class="cmt">// countLabel: 1</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">count</span><span class="punc">(</span><span class="str">"countLabel"</span><span class="punc">);</span>  <span class="cmt">// countLabel: 2</span>
+<span class="obj">console</span><span class="punc">.</span><span class="method">count</span><span class="punc">(</span><span class="str">"countLabel"</span><span class="punc">);</span>  <span class="cmt">// countLabel: 3</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- console.trace -->
+  <div id="trace">
+    <div class="section-header">
+      <div class="section-icon icon-blue">🔟</div>
+      <span class="section-title">console.trace()</span>
+      <span class="section-sub">Call Stack</span>
+    </div>
+    <div class="topic-card">
+      <div class="topic-title">console.trace() <span class="topic-badge badge-blue">Trace</span></div>
+      <p class="topic-desc">Shows <strong>call stack (execution path)</strong>. Shows function calling order. Very useful for tracking bugs in complex code.</p>
+      <div class="diagram"><svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" font-family="Fira Code, monospace">
+  <rect width="560" height="210" fill="#0d1520"/>
+  <!-- call stack boxes -->
+  <rect x="30" y="20" width="120" height="36" rx="6" fill="#1a2030" stroke="#58a6ff" stroke-width="1.8"/>
+  <text x="90" y="43" font-size="13" fill="#58a6ff" text-anchor="middle">a()</text>
+  <line x1="150" y1="38" x2="200" y2="38" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ii)"/>
+  <rect x="200" y="20" width="120" height="36" rx="6" fill="#1a2030" stroke="#d2a8ff" stroke-width="1.8"/>
+  <text x="260" y="43" font-size="13" fill="#d2a8ff" text-anchor="middle">b()</text>
+  <line x1="320" y1="38" x2="370" y2="38" stroke="#8b949e" stroke-width="1.5" marker-end="url(#ii)"/>
+  <rect x="370" y="20" width="160" height="36" rx="6" fill="#1a2030" stroke="#39d0d0" stroke-width="1.8"/>
+  <text x="450" y="38" font-size="13" fill="#39d0d0" text-anchor="middle">c() ← console</text>
+  <text x="450" y="52" font-size="10" fill="#39d0d0" text-anchor="middle">.trace() called here</text>
+  <!-- output -->
+  <rect x="30" y="80" width="500" height="110" rx="7" fill="#0d1520" stroke="#30363d" stroke-width="1.2"/>
+  <text x="50" y="102" font-size="12" fill="#8b949e">console.trace output:</text>
+  <text x="50" y="124" font-size="13" fill="#39d0d0" font-family="Fira Code, monospace">  c  @ script.js:3</text>
+  <text x="50" y="146" font-size="13" fill="#d2a8ff" font-family="Fira Code, monospace">  b  @ script.js:2</text>
+  <text x="50" y="168" font-size="13" fill="#58a6ff" font-family="Fira Code, monospace">  a  @ script.js:1</text>
+  <defs><marker id="ii" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8b949e"/></marker></defs>
+</svg></div>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dot" style="background:#ff5f57"></div><div class="code-dot" style="background:#ffbd2e"></div><div class="code-dot" style="background:#28c840"></div><span style="margin-left:0.3rem">console-trace.js</span></div>
+        <pre><span class="kw">function</span> <span class="fn">a</span><span class="punc">() {</span> <span class="fn">b</span><span class="punc">();</span> <span class="punc">}</span>
+<span class="kw">function</span> <span class="fn">b</span><span class="punc">() {</span> <span class="fn">c</span><span class="punc">();</span> <span class="punc">}</span>
+<span class="kw">function</span> <span class="fn">c</span><span class="punc">() {</span> <span class="obj">console</span><span class="punc">.</span><span class="method">trace</span><span class="punc">();</span> <span class="punc">}</span>
+
+<span class="fn">a</span><span class="punc">();</span>
+<span class="cmt">// Output: c → b → a (call stack)</span></pre>
+      </div>
+    </div>
+
+    <!-- Console Summary Table -->
+    <div class="topic-card">
+      <div class="topic-title">📋 Console Methods Summary</div>
+      <table class="data-table">
+        <thead><tr><th>Method</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>log()</code></td><td>Normal output</td></tr>
+          <tr><td><code>error()</code></td><td>Error message (red)</td></tr>
+          <tr><td><code>warn()</code></td><td>Warning (yellow)</td></tr>
+          <tr><td><code>info()</code></td><td>Info message</td></tr>
+          <tr><td><code>table()</code></td><td>Data in table format</td></tr>
+          <tr><td><code>time()</code></td><td>Start performance timer</td></tr>
+          <tr><td><code>timeEnd()</code></td><td>End timer & show result</td></tr>
+          <tr><td><code>assert()</code></td><td>Check condition</td></tr>
+          <tr><td><code>group()</code></td><td>Group logs together</td></tr>
+          <tr><td><code>count()</code></td><td>Count executions</td></tr>
+          <tr><td><code>trace()</code></td><td>Show call stack</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box note-blue" style="margin-top:1rem">📌 Console = Developer's <strong>best debugging tool</strong>. It helps print values, find bugs, measure performance, and track execution.</div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('open');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+  });
+
+  // Active sidebar link on click
+  document.querySelectorAll('.sidebar-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

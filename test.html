@@ -243,11 +243,148 @@
             color: var(--accent);
         }
 
+
+        /* ===== VS Code-style Java code rendering ===== */
         .question-text {
             font-size: 20px;
             margin-bottom: 25px;
             line-height: 1.6;
             font-weight: 500;
+        }
+
+        .question-prompt {
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .code-editor {
+            position: relative;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 14px 0 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.18);
+        }
+
+        .code-editor-header {
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            background: #161b22;
+            border-bottom: 1px solid #30363d;
+            color: #8b949e;
+            font: 600 12px/1 "Segoe UI", sans-serif;
+            letter-spacing: .2px;
+        }
+
+        .code-editor-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .code-dots span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+            background: #484f58;
+        }
+
+        .code-language {
+            color: #79c0ff;
+            font-weight: 700;
+        }
+
+        .code-copy {
+            border: 1px solid #30363d;
+            background: #21262d;
+            color: #c9d1d9;
+            border-radius: 5px;
+            padding: 5px 9px;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        .code-copy:hover {
+            background: #30363d;
+            color: #fff;
+        }
+
+        .code-body {
+            display: grid;
+            grid-template-columns: 48px minmax(0, 1fr);
+            max-height: 520px;
+            overflow: auto;
+            font-family: "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.65;
+            tab-size: 4;
+        }
+
+        .code-line-numbers {
+            user-select: none;
+            text-align: right;
+            padding: 14px 12px 14px 8px;
+            color: #6e7681;
+            background: #0d1117;
+            border-right: 1px solid #21262d;
+        }
+
+        .code-content {
+            margin: 0;
+            padding: 14px 18px;
+            color: #e6edf3;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        .code-keyword { color: #ff7b72; }
+        .code-type { color: #79c0ff; }
+        .code-string { color: #a5d6ff; }
+        .code-number { color: #79c0ff; }
+        .code-comment { color: #8b949e; font-style: italic; }
+        .code-annotation { color: #d2a8ff; }
+        .code-method { color: #d2a8ff; }
+
+        .option-text {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            font-family: "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            line-height: 1.5;
+        }
+
+        .explanation-text {
+            white-space: pre-wrap;
+            line-height: 1.65;
+        }
+
+        .review-code {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 768px) {
+            .code-body {
+                grid-template-columns: 38px minmax(0, 1fr);
+                font-size: 12px;
+            }
+
+            .code-content {
+                padding: 12px;
+            }
+
+            .code-line-numbers {
+                padding-right: 8px;
+            }
         }
 
         .options {
@@ -625,7 +762,7 @@ Who wrote Hamlet?,Dickens|Shakespeare|Austen|Orwell,Shakespeare,William Shakespe
 
             <div id="explanation" class="explanation hidden">
                 <div class="explanation-title">💡 Explanation:</div>
-                <div id="explanationText"></div>
+                <div id="explanationText" class="explanation-text"></div>
             </div>
 
             <div class="quiz-actions">
@@ -851,11 +988,11 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
                         
                         return {
                             id: index,
-                            question: row.Question || row.question || '',
-                            options: options,
-                            correctOption: (row['Correct Option'] || row['correct option'] || '').trim(),
-                            explanation: row.Explanation || row.explanation || '',
-                            topic: row.Topic || row.topic || 'General'
+                            question: normalizeQuizText(row.Question || row.question || ''),
+                            options: options.map(normalizeQuizText),
+                            correctOption: normalizeQuizText(row['Correct Option'] || row['correct option'] || '').trim(),
+                            explanation: normalizeQuizText(row.Explanation || row.explanation || ''),
+                            topic: normalizeQuizText(row.Topic || row.topic || 'General')
                         };
                     }).filter(q => q.question && q.options.length > 0 && q.correctOption);
 
@@ -982,13 +1119,117 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
             }, 1000);
         }
 
+
+        function normalizeQuizText(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/\\r\\n/g, '\n')
+                .replace(/\\n/g, '\n')
+                .replace(/\\t/g, '\t')
+                .replace(/\r\n/g, '\n')
+                .replace(/\r/g, '\n');
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function highlightJava(code) {
+            let s = escapeHtml(code);
+
+            // Protect strings/comments before applying other token styles.
+            const protectedParts = [];
+            const protect = (htmlPart) => {
+                const token = `@@PROTECTED_${protectedParts.length}@@`;
+                protectedParts.push(htmlPart);
+                return token;
+            };
+
+            s = s.replace(/\/\/.*$/gm, m => protect(`<span class="code-comment">${m}</span>`));
+            s = s.replace(/\/\*[\s\S]*?\*\//g, m => protect(`<span class="code-comment">${m}</span>`));
+            s = s.replace(/&quot;(?:\\.|[^&quot;])*&quot;|'(?:\\.|[^'])*'/g,
+                m => protect(`<span class="code-string">${m}</span>`));
+
+            s = s.replace(/@\w+/g, '<span class="code-annotation">$&</span>');
+            s = s.replace(/\b(class|interface|extends|implements|public|private|protected|static|final|abstract|void|new|return|if|else|for|while|do|switch|case|break|continue|this|super|instanceof|throws|throw|try|catch|finally|import|package|enum)\b/g,
+                '<span class="code-keyword">$&</span>');
+            s = s.replace(/\b(String|Object|Integer|Number|Boolean|Long|Double|Float|Character|System|Math|Override)\b/g,
+                '<span class="code-type">$&</span>');
+            s = s.replace(/\b\d+(?:\.\d+)?\b/g, '<span class="code-number">$&</span>');
+
+            protectedParts.forEach((part, i) => {
+                s = s.replace(`@@PROTECTED_${i}@@`, part);
+            });
+            return s;
+        }
+
+        function createCodeEditor(code) {
+            const normalized = normalizeQuizText(code).replace(/\t/g, '    ');
+            const lines = normalized.split('\n');
+            const lineNumbers = lines.map((_, i) => i + 1).join('\n');
+            const highlighted = highlightJava(normalized);
+
+            return `
+                <div class="code-editor">
+                    <div class="code-editor-header">
+                        <div class="code-editor-title">
+                            <div class="code-dots"><span></span><span></span><span></span></div>
+                            <span>Question.java</span>
+                            <span class="code-language">Java</span>
+                        </div>
+                        <button class="code-copy" type="button" onclick="copyCode(this)">Copy</button>
+                    </div>
+                    <div class="code-body">
+                        <pre class="code-line-numbers">${escapeHtml(lineNumbers)}</pre>
+                        <pre class="code-content">${highlighted}</pre>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderQuestion(questionText) {
+            const text = normalizeQuizText(questionText).trim();
+            const parts = text.split(/\n\s*\n/);
+
+            if (parts.length > 1) {
+                const prompt = parts.shift().trim();
+                const code = parts.join('\n\n').trim();
+                return `<div class="question-prompt">${escapeHtml(prompt)}</div>${createCodeEditor(code)}`;
+            }
+
+            // If no blank-line separator exists, still render Java-looking content as a code editor.
+            if (/\b(class|interface|extends|implements|public static void main|System\.out)\b/.test(text)) {
+                return createCodeEditor(text);
+            }
+
+            return `<div class="question-prompt">${escapeHtml(text)}</div>`;
+        }
+
+        async function copyCode(button) {
+            const code = button.closest('.code-editor').querySelector('.code-content').textContent;
+            try {
+                await navigator.clipboard.writeText(code);
+                const oldText = button.textContent;
+                button.textContent = 'Copied ✓';
+                setTimeout(() => button.textContent = oldText, 1200);
+            } catch (e) {
+                button.textContent = 'Copy failed';
+                setTimeout(() => button.textContent = 'Copy', 1200);
+            }
+        }
+
         function displayQuestion() {
             const question = currentQuiz[currentQuestionIndex];
             const progress = ((currentQuestionIndex + 1) / currentQuiz.length) * 100;
             
             document.getElementById('progressFill').style.width = `${progress}%`;
             document.getElementById('questionCounter').textContent = `Question ${currentQuestionIndex + 1} of ${currentQuiz.length}`;
-            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionText').innerHTML = renderQuestion(question.question);
             
             const optionsContainer = document.getElementById('options');
             optionsContainer.innerHTML = '';
@@ -1002,7 +1243,7 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
                 
                 optionDiv.innerHTML = `
                     <span style="font-weight: bold; min-width: 25px;">${String.fromCharCode(65 + index)}.</span>
-                    <span>${option}</span>
+                    <span class="option-text">${escapeHtml(normalizeQuizText(option))}</span>
                 `;
                 
                 optionDiv.onclick = () => selectOption(option, optionDiv);
@@ -1029,7 +1270,7 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
             
             if (quizMode === 'practice') {
                 // Show immediate feedback in practice mode
-                const isCorrect = option === question.correctOption;
+                const isCorrect = normalizeQuizText(option) === normalizeQuizText(question.correctOption);
                 
                 if (isCorrect) {
                     optionDiv.classList.add('correct');
@@ -1037,7 +1278,7 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
                     optionDiv.classList.add('incorrect');
                     // Highlight correct answer
                     document.querySelectorAll('.option').forEach(opt => {
-                        const optText = opt.querySelector('span:last-child').textContent;
+                        const optText = normalizeQuizText(opt.querySelector('.option-text').textContent);
                         if (optText === question.correctOption) {
                             opt.classList.add('correct');
                         }
@@ -1088,7 +1329,7 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
                 const userAnswer = userAnswers[index];
                 if (!userAnswer) {
                     skipped++;
-                } else if (userAnswer === question.correctOption) {
+                } else if (normalizeQuizText(userAnswer) === normalizeQuizText(question.correctOption)) {
                     correct++;
                 } else {
                     wrong++;
@@ -1134,27 +1375,63 @@ What is 10 * 5?,45|50|55|60,50,Basic multiplication: 10 * 5 = 50,Mathematics`;
         function reviewAnswers() {
             document.getElementById('resultsSection').classList.add('hidden');
             document.getElementById('reviewSection').classList.remove('hidden');
-            
+
             const reviewContent = document.getElementById('reviewContent');
             reviewContent.innerHTML = '';
-            
+
             currentQuiz.forEach((question, index) => {
                 const userAnswer = userAnswers[index];
-                const isCorrect = userAnswer === question.correctOption;
-                
+                const isCorrect = normalizeQuizText(userAnswer || '') === normalizeQuizText(question.correctOption);
+
                 const reviewDiv = document.createElement('div');
                 reviewDiv.className = 'review-question';
+
+                const statusClass = isCorrect ? 'correct' : 'incorrect';
                 reviewDiv.innerHTML = `
                     <div class="review-header">
-                        <strong>Q${index + 1}. ${question.question}</strong>
-                        <span class="review-status ${isCorrect ? 'correct' : 'incorrect'}">
+                        <strong>Q${index + 1}</strong>
+                        <span class="review-status ${statusClass}">
                             ${isCorrect ? '✅ Correct' : '❌ Wrong'}
                         </span>
                     </div>
-                    <p style="margin: 10px 0;"><strong>Your Answer:</strong> ${userAnswer || 'Not answered'}</p>
-                    <p style="margin: 10px 0; color: var(--success);"><strong>Correct Answer:</strong> ${question.correctOption}</p>
-                    ${question.explanation ? `<p style="margin: 10px 0; padding: 10px; background: var(--bg-card); border-radius: 6px;"><strong>💡 Explanation:</strong> ${question.explanation}</p>` : ''}
+                    <div class="review-question-content"></div>
                 `;
+
+                const content = reviewDiv.querySelector('.review-question-content');
+                content.insertAdjacentHTML('beforeend', renderQuestion(question.question));
+
+                const yourAnswer = document.createElement('p');
+                yourAnswer.style.margin = '12px 0';
+                yourAnswer.innerHTML = '<strong>Your Answer:</strong> ';
+                const yourAnswerText = document.createElement('span');
+                yourAnswerText.className = 'option-text';
+                yourAnswerText.textContent = userAnswer ? normalizeQuizText(userAnswer) : 'Not answered';
+                yourAnswer.appendChild(yourAnswerText);
+                content.appendChild(yourAnswer);
+
+                const correctAnswer = document.createElement('p');
+                correctAnswer.style.margin = '12px 0';
+                correctAnswer.style.color = 'var(--success)';
+                correctAnswer.innerHTML = '<strong>Correct Answer:</strong> ';
+                const correctText = document.createElement('span');
+                correctText.className = 'option-text';
+                correctText.textContent = normalizeQuizText(question.correctOption);
+                correctAnswer.appendChild(correctText);
+                content.appendChild(correctAnswer);
+
+                if (question.explanation) {
+                    const explanation = document.createElement('p');
+                    explanation.style.margin = '12px 0';
+                    explanation.style.padding = '12px';
+                    explanation.style.background = 'var(--bg-card)';
+                    explanation.style.borderRadius = '6px';
+                    explanation.className = 'explanation-text';
+                    explanation.innerHTML = '<strong>💡 Explanation:</strong><br>';
+                    const explanationText = document.createTextNode(normalizeQuizText(question.explanation));
+                    explanation.appendChild(explanationText);
+                    content.appendChild(explanation);
+                }
+
                 reviewContent.appendChild(reviewDiv);
             });
         }

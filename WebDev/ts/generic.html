@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript Generics Notes</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    color: #cdd6f4;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ── Sidebar ── */
+  #sidebar {
+    width: 220px;
+    min-width: 220px;
+    background: #161622;
+    border-right: 1px solid #2a2a3e;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .sidebar-header {
+    padding: 14px 16px 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: #6c7086;
+    text-transform: uppercase;
+    font-weight: 600;
+    border-bottom: 1px solid #2a2a3e;
+  }
+
+  .sidebar-scroll {
+    overflow-y: auto;
+    flex: 1;
+    padding: 8px 0;
+  }
+
+  .sidebar-scroll::-webkit-scrollbar { width: 4px; }
+  .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
+  .sidebar-scroll::-webkit-scrollbar-thumb { background: #313244; border-radius: 2px; }
+
+  .sidebar-section-label {
+    padding: 10px 16px 4px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: #585b70;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    cursor: pointer;
+    color: #a6adc8;
+    font-size: 13px;
+    transition: background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .nav-item:hover { background: #1e1e2e; color: #cdd6f4; }
+
+  .nav-item.active {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-left: 2px solid #89b4fa;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-blue   { background: #89b4fa; }
+  .dot-green  { background: #a6e3a1; }
+  .dot-yellow { background: #f9e2af; }
+  .dot-orange { background: #fab387; }
+  .dot-purple { background: #cba6f7; }
+  .dot-red    { background: #f38ba8; }
+  .dot-teal   { background: #94e2d5; }
+  .dot-pink   { background: #f5c2e7; }
+  .dot-sky    { background: #74c7ec; }
+
+  /* ── Main content ── */
+  #main {
+    flex: 1;
+    overflow-y: auto;
+    background: #1e1e2e;
+  }
+
+  #main::-webkit-scrollbar { width: 6px; }
+  #main::-webkit-scrollbar-track { background: #1e1e2e; }
+  #main::-webkit-scrollbar-thumb { background: #313244; border-radius: 3px; }
+
+  /* ── Mobile Toggle Button ── */
+  .mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #89b4fa;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px 12px;
+  }
+
+  /* ── Title bar ── */
+  .titlebar {
+    background: #181825;
+    border-bottom: 1px solid #2a2a3e;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .titlebar-icon {
+    background: #313244;
+    color: #89b4fa;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: monospace;
+  }
+
+  .titlebar-text h1 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #cdd6f4;
+    line-height: 1;
+  }
+
+  .titlebar-text span {
+    font-size: 10px;
+    color: #585b70;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── Content area ── */
+  .content {
+    padding: 28px 32px 48px;
+    max-width: 860px;
+  }
+
+  /* ── Info banner ── */
+  .info-banner {
+    background: #181825;
+    border: 1px solid #313244;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13.5px;
+    color: #bac2de;
+    line-height: 1.6;
+  }
+
+  .info-banner code {
+    background: #313244;
+    color: #89b4fa;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 12.5px;
+  }
+
+  /* ── Analogy bar ── */
+  .analogy-bar {
+    border-left: 3px solid #89b4fa;
+    background: #181825;
+    border-radius: 0 6px 6px 0;
+    padding: 10px 16px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #a6adc8;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .analogy-bar strong { color: #f9e2af; }
+
+  .badge {
+    background: #313244;
+    color: #89b4fa;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 12px;
+  }
+
+  .badge-green { background: #1e3a2a; color: #a6e3a1; }
+
+  /* ── Section heading ── */
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #cdd6f4;
+  }
+
+  .section-heading::before {
+    content: '';
+    display: block;
+    width: 3px;
+    height: 18px;
+    background: #89b4fa;
+    border-radius: 2px;
+  }
+
+  /* ── Subsection / example heading ── */
+  .example-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #a6e3a1;
+  }
+
+  .example-heading .check { color: #a6e3a1; font-size: 14px; }
+
+  /* ── Code block ── */
+  pre {
+    background: #11111b;
+    border: 1px solid #2a2a3e;
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0 0 10px;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: #cdd6f4;
+  }
+
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-thumb { background: #313244; border-radius: 2px; }
+
+  /* Syntax colors */
+  .kw  { color: #cba6f7; } /* keywords: function, class, const, let, return */
+  .fn  { color: #89b4fa; } /* function/method names */
+  .ty  { color: #f9e2af; } /* types: T, string, number, boolean */
+  .str { color: #a6e3a1; } /* string literals */
+  .num { color: #fab387; } /* number literals */
+  .cm  { color: #585b70; font-style: italic; } /* comments */
+  .op  { color: #89dceb; } /* operators, punctuation emphasis */
+  .cl  { color: #94e2d5; } /* class names */
+
+  /* ── Output block ── */
+  .output-block {
+    background: #181825;
+    border: 1px solid #2a2a3e;
+    border-radius: 0 0 8px 8px;
+    border-top: none;
+    padding: 10px 18px;
+    margin-bottom: 14px;
+  }
+
+  .output-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #585b70;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+
+  .output-block code {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 12px;
+    color: #a6e3a1;
+    display: block;
+    line-height: 1.7;
+    white-space: pre;
+  }
+
+  /* ── Key points ── */
+  .key-points {
+    margin: 8px 0 18px;
+  }
+
+  .key-points p {
+    font-size: 12.5px;
+    color: #6c7086;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 5px;
+  }
+
+  .key-points ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .key-points li {
+    font-size: 13px;
+    color: #a6adc8;
+    padding: 3px 0 3px 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .key-points li::before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    color: #a6e3a1;
+    font-size: 11px;
+    top: 4px;
+  }
+
+  /* ── Syntax box ── */
+  .syntax-box {
+    background: #11111b;
+    border: 1px solid #2a2a3e;
+    border-left: 3px solid #cba6f7;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+
+  .syntax-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #585b70;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .syntax-box pre { background: transparent; border: none; padding: 0; margin: 0; }
+
+  /* ── Explanation list ── */
+  .explain-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px;
+  }
+
+  .explain-list li {
+    font-size: 13px;
+    color: #a6adc8;
+    padding: 3px 0;
+    line-height: 1.6;
+  }
+
+  .explain-list code {
+    font-family: 'Cascadia Code', monospace;
+    font-size: 12px;
+    color: #89b4fa;
+    background: #313244;
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid #2a2a3e;
+    margin: 32px 0;
+  }
+
+  /* ── Conclusion box ── */
+  .conclusion-box {
+    background: #181825;
+    border: 1px solid #313244;
+    border-radius: 10px;
+    padding: 20px 22px;
+    margin-top: 32px;
+  }
+
+  .conclusion-box h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #cdd6f4;
+    margin-bottom: 12px;
+  }
+
+  .conclusion-box ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .conclusion-box li {
+    font-size: 13px;
+    color: #a6adc8;
+    padding: 4px 0 4px 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .conclusion-box li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: #89b4fa;
+    font-size: 11px;
+    top: 5px;
+  }
+
+  /* ── Pre + output stacked ── */
+  pre.stacked { border-radius: 8px 8px 0 0; margin-bottom: 0; }
+
+  /* ════════════════════════════════════════════════════════════ */
+  /* RESPONSIVE DESIGN - TABLET & MOBILE */
+  /* ════════════════════════════════════════════════════════════ */
+
+  @media (max-width: 1024px) {
+    #sidebar {
+      width: 200px;
+      min-width: 200px;
+    }
+
+    .content {
+      padding: 24px 24px 40px;
+      max-width: 100%;
+    }
+
+    .titlebar {
+      padding: 0 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+    }
+
+    #sidebar {
+      width: 100%;
+      min-width: auto;
+      height: auto;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-in-out;
+      border-right: none;
+      border-bottom: 1px solid #2a2a3e;
+      position: relative;
+      z-index: 100;
+    }
+
+    #sidebar.active {
+      max-height: 600px;
+      border-bottom: 1px solid #2a2a3e;
+    }
+
+    .sidebar-scroll {
+      max-height: 500px;
+    }
+
+    .mobile-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #main {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .titlebar {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      height: 56px;
+      gap: 8px;
+    }
+
+    .titlebar-text h1 {
+      font-size: 14px;
+    }
+
+    .titlebar-text span {
+      font-size: 9px;
+    }
+
+    .titlebar-icon {
+      width: 28px;
+      height: 28px;
+      font-size: 12px;
+    }
+
+    .content {
+      padding: 16px 14px 32px;
+      max-width: 100%;
+    }
+
+    .section-heading {
+      margin: 20px 0 12px;
+      font-size: 14px;
+    }
+
+    .example-heading {
+      font-size: 12px;
+      margin: 16px 0 6px;
+    }
+
+    pre {
+      padding: 12px 12px;
+      font-size: 11px;
+      line-height: 1.5;
+      margin: 0 0 8px;
+    }
+
+    .info-banner {
+      padding: 10px 12px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+
+    .info-banner code {
+      font-size: 11px;
+      padding: 1px 3px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 2px 6px;
+    }
+
+    .syntax-box {
+      padding: 12px 12px;
+      margin-bottom: 12px;
+    }
+
+    .output-block {
+      padding: 8px 12px;
+      margin-bottom: 10px;
+    }
+
+    .output-label {
+      font-size: 9px;
+    }
+
+    .output-block code {
+      font-size: 11px;
+    }
+
+    .key-points p {
+      font-size: 11px;
+    }
+
+    .key-points li {
+      font-size: 12px;
+      padding: 2px 0 2px 14px;
+    }
+
+    .nav-item {
+      padding: 4px 12px;
+      font-size: 12px;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+    }
+
+    .sidebar-header {
+      padding: 10px 12px 8px;
+      font-size: 10px;
+    }
+
+    .sidebar-section-label {
+      padding: 8px 12px 3px;
+      font-size: 9px;
+    }
+
+    .conclusion-box {
+      padding: 16px 14px;
+      margin-top: 24px;
+    }
+
+    .conclusion-box h3 {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .conclusion-box li {
+      font-size: 12px;
+      padding: 3px 0 3px 14px;
+    }
+
+    .divider {
+      margin: 20px 0;
+    }
+
+    .analogy-bar {
+      padding: 8px 12px;
+      font-size: 12px;
+      margin-bottom: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #sidebar {
+      max-height: 0;
+    }
+
+    #sidebar.active {
+      max-height: 500px;
+    }
+
+    .sidebar-scroll {
+      max-height: 400px;
+    }
+
+    .content {
+      padding: 12px 10px 24px;
+    }
+
+    .titlebar {
+      height: 50px;
+      padding: 0 8px;
+    }
+
+    .titlebar-text h1 {
+      font-size: 13px;
+    }
+
+    .titlebar-text span {
+      font-size: 8px;
+    }
+
+    .titlebar-icon {
+      width: 24px;
+      height: 24px;
+      font-size: 10px;
+    }
+
+    .mobile-toggle {
+      padding: 6px 8px;
+      font-size: 18px;
+    }
+
+    .section-heading {
+      font-size: 13px;
+      margin: 16px 0 10px;
+    }
+
+    .section-heading::before {
+      width: 2px;
+      height: 16px;
+    }
+
+    .example-heading {
+      font-size: 11px;
+      margin: 12px 0 6px;
+    }
+
+    pre {
+      padding: 10px 10px;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .info-banner {
+      padding: 8px 10px;
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .syntax-box {
+      padding: 10px 10px;
+      margin-bottom: 10px;
+    }
+
+    .output-block {
+      padding: 6px 10px;
+      margin-bottom: 8px;
+    }
+
+    .output-label {
+      font-size: 8px;
+    }
+
+    .output-block code {
+      font-size: 10px;
+    }
+
+    .key-points p {
+      font-size: 10px;
+    }
+
+    .key-points li {
+      font-size: 11px;
+      padding: 2px 0 2px 12px;
+    }
+
+    .key-points li::before {
+      font-size: 10px;
+    }
+
+    .nav-item {
+      padding: 3px 10px;
+      font-size: 11px;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+    }
+
+    .sidebar-header {
+      padding: 8px 10px 6px;
+      font-size: 9px;
+    }
+
+    .sidebar-section-label {
+      padding: 6px 10px 2px;
+      font-size: 8px;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 1px 4px;
+    }
+
+    .conclusion-box {
+      padding: 12px 10px;
+      margin-top: 20px;
+    }
+
+    .conclusion-box h3 {
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .conclusion-box li {
+      font-size: 11px;
+      padding: 2px 0 2px 12px;
+    }
+
+    .conclusion-box li::before {
+      font-size: 10px;
+    }
+
+    .divider {
+      margin: 16px 0;
+    }
+
+    .analogy-bar {
+      padding: 6px 10px;
+      font-size: 11px;
+      margin-bottom: 12px;
+      flex-direction: column;
+    }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- ═══ SIDEBAR ═══ -->
+<nav id="sidebar">
+  <div class="sidebar-header">typescript — generics</div>
+  <div class="sidebar-scroll">
+
+    <div class="sidebar-section-label">Overview</div>
+    <div class="nav-item active" onclick="scrollTo('intro', this)"><span class="dot dot-blue"></span> What are Generics</div>
+    <div class="nav-item" onclick="scrollTo('syntax', this)"><span class="dot dot-green"></span> Basic Syntax</div>
+
+    <div class="sidebar-section-label">Generic Functions</div>
+    <div class="nav-item" onclick="scrollTo('gf1', this)"><span class="dot dot-yellow"></span> With Parameters</div>
+    <div class="nav-item" onclick="scrollTo('gf2', this)"><span class="dot dot-orange"></span> With Array</div>
+    <div class="nav-item" onclick="scrollTo('gf3', this)"><span class="dot dot-purple"></span> Multiple Params</div>
+    <div class="nav-item" onclick="scrollTo('gf4', this)"><span class="dot dot-red"></span> Constraints</div>
+
+    <div class="sidebar-section-label">More Functions</div>
+    <div class="nav-item" onclick="scrollTo('mf1', this)"><span class="dot dot-blue"></span> Single Type</div>
+    <div class="nav-item" onclick="scrollTo('mf2', this)"><span class="dot dot-green"></span> Array Parameter</div>
+    <div class="nav-item" onclick="scrollTo('mf3', this)"><span class="dot dot-teal"></span> Merge Arrays</div>
+
+    <div class="sidebar-section-label">Generic Constraints</div>
+    <div class="nav-item" onclick="scrollTo('gc1', this)"><span class="dot dot-yellow"></span> Interface Constraint</div>
+    <div class="nav-item" onclick="scrollTo('gc2', this)"><span class="dot dot-orange"></span> keyof Constraint</div>
+    <div class="nav-item" onclick="scrollTo('gc3', this)"><span class="dot dot-purple"></span> Class + Constraint</div>
+
+    <div class="sidebar-section-label">Generic Object Types</div>
+    <div class="nav-item" onclick="scrollTo('got1', this)"><span class="dot dot-pink"></span> Key-Value Pair</div>
+    <div class="nav-item" onclick="scrollTo('got2', this)"><span class="dot dot-sky"></span> Data Container</div>
+
+    <div class="sidebar-section-label">Generic Classes</div>
+    <div class="nav-item" onclick="scrollTo('gc-basic', this)"><span class="dot dot-blue"></span> Basic Class</div>
+    <div class="nav-item" onclick="scrollTo('gc-constraint', this)"><span class="dot dot-green"></span> With Constraint</div>
+    <div class="nav-item" onclick="scrollTo('gc-multi', this)"><span class="dot dot-yellow"></span> Multiple Types</div>
+    <div class="nav-item" onclick="scrollTo('gc-static', this)"><span class="dot dot-orange"></span> Static + Generics</div>
+
+    <div class="sidebar-section-label">Conclusion</div>
+    <div class="nav-item" onclick="scrollTo('conclusion', this)"><span class="dot dot-teal"></span> Final Conclusion</div>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<div id="main">
+  <div class="titlebar">
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="titlebar-icon">{ }</div>
+    <div class="titlebar-text">
+      <h1>TypeScript Generics</h1>
+      <span>Core Concept</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── Intro ── -->
+    <div id="intro">
+      <div class="info-banner">
+        🔷 Generics in TypeScript allow developers to create reusable and type-safe code that works with multiple data types (like <code>string</code>, <code>number</code>, <code>boolean</code>).<br><br>
+        👉 Instead of writing separate code for each type, we write one flexible code using a placeholder type (<code>T</code>).
+      </div>
+    </div>
+
+    <!-- ── Basic Syntax ── -->
+    <div id="syntax">
+      <div class="section-heading">Basic Syntax</div>
+      <div class="syntax-box">
+        <div class="syntax-label">Syntax</div>
+        <pre><span class="kw">function</span> <span class="fn">function_name</span>&lt;<span class="ty">T</span>&gt;(
+  <span class="fn">parameter_name</span>: <span class="ty">T</span>
+): <span class="ty">T</span> {
+  <span class="cm">// code</span>
+}</pre>
+      </div>
+      <ul class="explain-list">
+        <li><code>function_name</code> → function name</li>
+        <li><code>&lt;T&gt;</code> → type parameter (placeholder for any type)</li>
+        <li><code>parameter_name: T</code> → parameter depends on type</li>
+        <li><code>: T</code> → return type also depends on same type</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Generic Functions ── -->
+    <div class="section-heading">Generic Functions</div>
+
+    <!-- Example 1 -->
+    <div id="gf1">
+      <div class="example-heading"><span class="check">✅</span> Example 1: Generic Function with Parameters</div>
+      <pre class="stacked"><span class="kw">function</span> <span class="fn">displayData</span>&lt;<span class="ty">T</span>&gt;(parameter: <span class="ty">T</span>): <span class="ty">T</span> {
+  <span class="kw">return</span> parameter;
+}
+
+<span class="kw">let</span> result1 = <span class="fn">displayData</span>&lt;<span class="ty">string</span>&gt;(<span class="str">"GeeksforGeeks"</span>);
+<span class="kw">let</span> result2 = <span class="fn">displayData</span>&lt;<span class="ty">string</span>&gt;(<span class="str">"Hello World !!"</span>);
+<span class="kw">let</span> result3 = <span class="fn">displayData</span>&lt;<span class="ty">number</span>&gt;(<span class="num">1234567890</span>);
+
+console.<span class="fn">log</span>(result1);
+console.<span class="fn">log</span>(result2);
+console.<span class="fn">log</span>(result3);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>GeeksforGeeks
+Hello World !!
+1234567890</code>
+      </div>
+      <div class="key-points">
+        <p>Key Points</p>
+        <ul>
+          <li>Function works for multiple types</li>
+          <li>Type is preserved (no data loss)</li>
+          <li>No need to rewrite logic</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div id="gf2">
+      <div class="example-heading"><span class="check">✅</span> Example 2: Generic Function with Array</div>
+      <pre class="stacked"><span class="kw">let</span> <span class="fn">displayResult</span> = &lt;<span class="ty">T</span>&gt;(data_item: <span class="ty">T</span>[]): <span class="ty">T</span>[] =&gt; {
+  <span class="kw">return new</span> <span class="cl">Array</span>&lt;<span class="ty">T</span>&gt;().<span class="fn">concat</span>(data_item);
+}
+
+<span class="kw">let</span> numbersArray = <span class="fn">displayResult</span>&lt;<span class="ty">number</span>&gt;([<span class="num">50</span>, <span class="num">60</span>, <span class="num">80</span>, <span class="num">90</span>]);
+<span class="kw">let</span> stringArray  = <span class="fn">displayResult</span>&lt;<span class="ty">string</span>&gt;([<span class="str">"Hello World"</span>, <span class="str">"GeeksforGeeks"</span>]);
+
+console.<span class="fn">log</span>(numbersArray);
+console.<span class="fn">log</span>(stringArray);
+
+numbersArray.<span class="fn">push</span>(<span class="num">100</span>);
+stringArray.<span class="fn">push</span>(<span class="str">"Apple"</span>);
+
+console.<span class="fn">log</span>(numbersArray);
+console.<span class="fn">log</span>(stringArray);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>[50, 60, 80, 90]
+["Hello World", "GeeksforGeeks"]
+[50, 60, 80, 90, 100]
+["Hello World", "GeeksforGeeks", "Apple"]</code>
+      </div>
+      <div class="key-points">
+        <p>Key Points</p>
+        <ul>
+          <li>Works with arrays of any type</li>
+          <li>Type safety maintained (number → number only, string → string only)</li>
+          <li>Return type matches input</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div id="gf3">
+      <div class="example-heading"><span class="check">✅</span> Example 3: Multiple Generic Parameters</div>
+      <pre class="stacked"><span class="kw">let</span> <span class="fn">displayResult</span> = &lt;<span class="ty">T</span>, <span class="ty">U</span>&gt;(id: <span class="ty">T</span>, name: <span class="ty">U</span>) =&gt; {
+  <span class="kw">return</span> id + <span class="str">" - "</span> + name;
+}
+
+<span class="kw">let</span> data1 = <span class="fn">displayResult</span>&lt;<span class="ty">number</span>, <span class="ty">string</span>&gt;(<span class="num">2000</span>, <span class="str">"GeeksforGeeks"</span>);
+<span class="kw">let</span> data2 = <span class="fn">displayResult</span>&lt;<span class="ty">number</span>, <span class="ty">string</span>&gt;(<span class="num">2001</span>, <span class="str">"Hello World !!"</span>);
+
+console.<span class="fn">log</span>(data1);
+console.<span class="fn">log</span>(data2);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>2000 - GeeksforGeeks
+2001 - Hello World !!</code>
+      </div>
+      <div class="key-points">
+        <p>Key Points</p>
+        <ul>
+          <li>Multiple types can be used (T, U)</li>
+          <li>Useful when working with different data together</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <div id="gf4">
+      <div class="example-heading"><span class="check">✅</span> Example 4: Generic Constraints</div>
+      <pre class="stacked"><span class="kw">function</span> <span class="fn">getLength</span>&lt;<span class="ty">T</span> <span class="kw">extends</span> { length: <span class="ty">number</span> }&gt;(arg: <span class="ty">T</span>): <span class="ty">number</span> {
+  <span class="kw">return</span> arg.length;
+}
+
+console.<span class="fn">log</span>(<span class="fn">getLength</span>(<span class="str">"Hello"</span>));
+console.<span class="fn">log</span>(<span class="fn">getLength</span>([<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>]));</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>5
+3</code>
+      </div>
+      <div class="key-points">
+        <p>Key Points</p>
+        <ul>
+          <li><code>extends</code> is used to restrict types</li>
+          <li>Only values with <code>length</code> property allowed</li>
+          <li>Prevents invalid inputs</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── More Generic Functions ── -->
+    <div class="section-heading">Generic Functions (More Usage)</div>
+
+    <div id="mf1">
+      <div class="example-heading"><span class="check">✅</span> Single Type Parameter</div>
+      <pre><span class="kw">function</span> <span class="fn">gfg</span>&lt;<span class="ty">T</span>&gt;(arg: <span class="ty">T</span>): <span class="ty">T</span> {
+  <span class="kw">return</span> arg;
+}
+
+<span class="kw">let</span> result1: <span class="ty">string</span>  = <span class="fn">gfg</span>&lt;<span class="ty">string</span>&gt;(<span class="str">"GEEKSFORGEEKS"</span>);
+<span class="kw">let</span> result2: <span class="ty">number</span>  = <span class="fn">gfg</span>&lt;<span class="ty">number</span>&gt;(<span class="num">740</span>);
+<span class="kw">let</span> result3: <span class="ty">boolean</span> = <span class="fn">gfg</span>&lt;<span class="ty">boolean</span>&gt;(<span class="kw">false</span>);</pre>
+      <div class="key-points">
+        <ul><li>Works for multiple types with same logic</li></ul>
+      </div>
+    </div>
+
+    <div id="mf2">
+      <div class="example-heading"><span class="check">✅</span> Generic Function with Array Parameter</div>
+      <pre><span class="kw">function</span> <span class="fn">arrayEl</span>&lt;<span class="ty">T</span>&gt;(arr: <span class="ty">T</span>[]): <span class="ty">void</span> {
+  <span class="kw">for</span> (<span class="kw">const</span> x <span class="kw">of</span> arr) {
+    console.<span class="fn">log</span>(x);
+  }
+}
+
+<span class="kw">let</span> elements:  <span class="ty">number</span>[] = [<span class="num">101</span>, <span class="num">102</span>, <span class="num">103</span>];
+<span class="fn">arrayEl</span>(elements);
+
+<span class="kw">let</span> elements1: <span class="ty">string</span>[] = [<span class="str">"Geeks"</span>, <span class="str">"For"</span>, <span class="str">"Geeks"</span>];
+<span class="fn">arrayEl</span>(elements1);</pre>
+      <div class="key-points">
+        <ul><li>Works with different array types safely</li></ul>
+      </div>
+    </div>
+
+    <div id="mf3">
+      <div class="example-heading"><span class="check">✅</span> Multiple Types with Merge</div>
+      <pre class="stacked"><span class="kw">function</span> <span class="fn">mergeArrays</span>&lt;<span class="ty">T</span>, <span class="ty">U</span>&gt;(arr1: <span class="ty">T</span>[], arr2: <span class="ty">U</span>[]): (<span class="ty">T</span> | <span class="ty">U</span>)[] {
+  <span class="kw">return</span> [...arr1, ...arr2];
+}
+
+<span class="kw">const</span> numbers: <span class="ty">number</span>[] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="kw">const</span> words:   <span class="ty">string</span>[] = [<span class="str">"hello"</span>, <span class="str">"world"</span>];
+
+<span class="kw">const</span> mergedArray = <span class="fn">mergeArrays</span>(numbers, words);
+console.<span class="fn">log</span>(mergedArray);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>[1, 2, 3, "hello", "world"]</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Returns combined array with both types</li></ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Generic Constraints ── -->
+    <div class="section-heading">Generic Constraints (Detailed)</div>
+
+    <div class="info-banner">
+      Generic constraints restrict which types can be used.<br><br>
+      <strong>Syntax:</strong> <code>function func&lt;T extends Type&gt;(param: T) {}</code>
+    </div>
+
+    <div id="gc1">
+      <div class="example-heading"><span class="check">✅</span> Example 1: Interface Constraint</div>
+      <pre class="stacked"><span class="kw">interface</span> <span class="cl">Sports</span> {
+  name: <span class="ty">string</span>;
+}
+
+<span class="kw">function</span> <span class="fn">printSportName</span>&lt;<span class="ty">T</span> <span class="kw">extends</span> <span class="cl">Sports</span>&gt;(sport: <span class="ty">T</span>): <span class="ty">void</span> {
+  console.<span class="fn">log</span>(sport.name);
+}
+
+<span class="kw">let</span> sport = { name: <span class="str">"baseball"</span> };
+<span class="fn">printSportName</span>(sport);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>baseball</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Ensures object has <code>name</code> property</li></ul>
+      </div>
+    </div>
+
+    <div id="gc2">
+      <div class="example-heading"><span class="check">✅</span> Example 2: keyof Constraint</div>
+      <pre class="stacked"><span class="kw">interface</span> <span class="cl">Sports</span> {
+  name:    <span class="ty">string</span>;
+  players: <span class="ty">number</span>;
+}
+
+<span class="kw">function</span> <span class="fn">getNumberOfPlayers</span>&lt;<span class="ty">T</span> <span class="kw">extends</span> <span class="cl">Sports</span>, <span class="ty">K</span> <span class="kw">extends</span> <span class="kw">keyof</span> <span class="ty">T</span>&gt;(
+  sport: <span class="ty">T</span>,
+  key: <span class="ty">K</span>
+): <span class="ty">T</span>[<span class="ty">K</span>] {
+  <span class="kw">return</span> sport[key];
+}
+
+<span class="kw">let</span> sport   = { name: <span class="str">"baseball"</span>, players: <span class="num">9</span> };
+<span class="kw">let</span> players = <span class="fn">getNumberOfPlayers</span>(sport, <span class="str">'players'</span>);
+
+console.<span class="fn">log</span>(players);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>9</code>
+      </div>
+      <div class="key-points">
+        <ul><li><code>keyof</code> ensures valid property access</li></ul>
+      </div>
+    </div>
+
+    <div id="gc3">
+      <div class="example-heading"><span class="check">✅</span> Example 3: Class with Constraint</div>
+      <pre class="stacked"><span class="kw">interface</span> <span class="cl">Sports</span> {
+  name:    <span class="ty">string</span>;
+  players: <span class="ty">number</span>;
+  <span class="fn">getNumberOfGloves</span>(): <span class="ty">number</span>;
+}
+
+<span class="kw">class</span> <span class="cl">Baseball</span> <span class="kw">implements</span> <span class="cl">Sports</span> {
+  <span class="kw">constructor</span>(<span class="kw">public</span> name: <span class="ty">string</span>, <span class="kw">public</span> players: <span class="ty">number</span>) {}
+
+  <span class="fn">getNumberOfGloves</span>(): <span class="ty">number</span> {
+    <span class="kw">return this</span>.players * <span class="num">2</span>;
+  }
+}
+
+<span class="kw">function</span> <span class="fn">getNumberOfGloves</span>&lt;<span class="ty">T</span> <span class="kw">extends</span> <span class="cl">Sports</span>&gt;(sport: <span class="ty">T</span>): <span class="ty">void</span> {
+  console.<span class="fn">log</span>(sport.<span class="fn">getNumberOfGloves</span>());
+}
+
+<span class="kw">let</span> baseball = <span class="kw">new</span> <span class="cl">Baseball</span>(<span class="str">"baseball"</span>, <span class="num">9</span>);
+<span class="fn">getNumberOfGloves</span>(baseball);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>18</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Ensures class follows structure</li></ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Generic Object Types ── -->
+    <div class="section-heading">Generic Object Types</div>
+    <div class="info-banner">Generic object types allow flexible object structures.</div>
+
+    <div class="syntax-box">
+      <div class="syntax-label">Syntax</div>
+      <pre><span class="kw">type</span> <span class="cl">MyGenericObject</span>&lt;<span class="ty">T</span>&gt; = {
+  key:   <span class="ty">string</span>;
+  value: <span class="ty">T</span>;
+};</pre>
+    </div>
+
+    <div id="got1">
+      <div class="example-heading"><span class="check">✅</span> Example 1: Key-Value Pair</div>
+      <pre class="stacked"><span class="kw">type</span> <span class="cl">KeyValuePair</span>&lt;<span class="ty">T</span>&gt; = {
+  key:   <span class="ty">string</span>;
+  value: <span class="ty">T</span>;
+};
+
+<span class="kw">const</span> stringPair: <span class="cl">KeyValuePair</span>&lt;<span class="ty">string</span>&gt; = { key: <span class="str">'name'</span>, value: <span class="str">'John'</span> };
+<span class="kw">const</span> numberPair: <span class="cl">KeyValuePair</span>&lt;<span class="ty">number</span>&gt; = { key: <span class="str">'age'</span>,  value: <span class="num">30</span> };
+
+console.<span class="fn">log</span>(stringPair);
+console.<span class="fn">log</span>(numberPair);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>{ key: 'name', value: 'John' }
+{ key: 'age',  value: 30 }</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Same structure works with different value types</li></ul>
+      </div>
+    </div>
+
+    <div id="got2">
+      <div class="example-heading"><span class="check">✅</span> Example 2: Data Container</div>
+      <pre class="stacked"><span class="kw">type</span> <span class="cl">DataContainer</span>&lt;<span class="ty">T</span>&gt; = {
+  data: <span class="ty">T</span>;
+};
+
+<span class="kw">const</span> numericData: <span class="cl">DataContainer</span>&lt;<span class="ty">number</span>&gt; = { data: <span class="num">25</span> };
+<span class="kw">const</span> stringData:  <span class="cl">DataContainer</span>&lt;<span class="ty">string</span>&gt; = { data: <span class="str">'TypeScript'</span> };
+
+console.<span class="fn">log</span>(numericData.data);
+console.<span class="fn">log</span>(stringData.data);</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>25
+TypeScript</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Encapsulates different data types</li></ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Generic Classes ── -->
+    <div class="section-heading">Generic Classes</div>
+
+    <div class="syntax-box">
+      <div class="syntax-label">Syntax</div>
+      <pre><span class="kw">class</span> <span class="cl">GenericClass</span>&lt;<span class="ty">T</span>&gt; {
+  <span class="kw">constructor</span>(<span class="kw">private</span> value: <span class="ty">T</span>) {}
+
+  <span class="fn">getValue</span>(): <span class="ty">T</span> {
+    <span class="kw">return this</span>.value;
+  }
+}</pre>
+    </div>
+
+    <div id="gc-basic">
+      <div class="example-heading"><span class="check">✅</span> Example 1: Basic Generic Class</div>
+      <pre class="stacked"><span class="kw">class</span> <span class="cl">Box</span>&lt;<span class="ty">T</span>&gt; {
+  <span class="kw">private</span> content: <span class="ty">T</span>;
+
+  <span class="kw">constructor</span>(content: <span class="ty">T</span>) {
+    <span class="kw">this</span>.content = content;
+  }
+
+  <span class="fn">getContent</span>(): <span class="ty">T</span> {
+    <span class="kw">return this</span>.content;
+  }
+}
+
+<span class="kw">const</span> numBox = <span class="kw">new</span> <span class="cl">Box</span>&lt;<span class="ty">number</span>&gt;(<span class="num">100</span>);
+<span class="kw">const</span> strBox = <span class="kw">new</span> <span class="cl">Box</span>&lt;<span class="ty">string</span>&gt;(<span class="str">"Hello"</span>);
+
+console.<span class="fn">log</span>(numBox.<span class="fn">getContent</span>());
+console.<span class="fn">log</span>(strBox.<span class="fn">getContent</span>());</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>100
+Hello</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Stores any type safely</li></ul>
+      </div>
+    </div>
+
+    <div id="gc-constraint">
+      <div class="example-heading"><span class="check">✅</span> Example 2: Class with Constraint</div>
+      <pre class="stacked"><span class="kw">class</span> <span class="cl">Box</span>&lt;<span class="ty">T</span> <span class="kw">extends</span> <span class="ty">number</span>&gt; {
+  <span class="kw">constructor</span>(<span class="kw">private</span> value: <span class="ty">T</span>) {}
+
+  <span class="fn">double</span>(): <span class="ty">number</span> {
+    <span class="kw">return this</span>.value * <span class="num">2</span>;
+  }
+}
+
+<span class="kw">const</span> numBox = <span class="kw">new</span> <span class="cl">Box</span>(<span class="num">10</span>);
+console.<span class="fn">log</span>(numBox.<span class="fn">double</span>());</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>20</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Only numbers allowed</li></ul>
+      </div>
+    </div>
+
+    <div id="gc-multi">
+      <div class="example-heading"><span class="check">✅</span> Example 3: Multiple Types in Class</div>
+      <pre><span class="kw">class</span> <span class="cl">Pair</span>&lt;<span class="ty">K</span>, <span class="ty">V</span>&gt; {
+  <span class="kw">constructor</span>(<span class="kw">private</span> key: <span class="ty">K</span>, <span class="kw">private</span> value: <span class="ty">V</span>) {}
+
+  <span class="fn">getKey</span>():   <span class="ty">K</span> { <span class="kw">return this</span>.key;   }
+  <span class="fn">getValue</span>(): <span class="ty">V</span> { <span class="kw">return this</span>.value; }
+}
+
+<span class="kw">const</span> userPair = <span class="kw">new</span> <span class="cl">Pair</span>&lt;<span class="ty">number</span>, <span class="ty">string</span>&gt;(<span class="num">1</span>, <span class="str">"John"</span>);</pre>
+      <div class="key-points">
+        <ul><li>Stores two different types</li></ul>
+      </div>
+    </div>
+
+    <div id="gc-static">
+      <div class="example-heading"><span class="check">✅</span> Example 4: Static with Generics</div>
+      <pre class="stacked"><span class="kw">class</span> <span class="cl">Counter</span>&lt;<span class="ty">T</span>&gt; {
+  <span class="kw">static</span> count = <span class="num">0</span>;
+
+  <span class="kw">constructor</span>(<span class="kw">private</span> value: <span class="ty">T</span>) {
+    <span class="cl">Counter</span>.count++;
+  }
+
+  <span class="kw">static</span> <span class="fn">getCount</span>() {
+    <span class="kw">return</span> <span class="cl">Counter</span>.count;
+  }
+}
+
+<span class="kw">new</span> <span class="cl">Counter</span>&lt;<span class="ty">number</span>&gt;(<span class="num">10</span>);
+<span class="kw">new</span> <span class="cl">Counter</span>&lt;<span class="ty">string</span>&gt;(<span class="str">"Hello"</span>);
+
+console.<span class="fn">log</span>(<span class="cl">Counter</span>.<span class="fn">getCount</span>());</pre>
+      <div class="output-block">
+        <div class="output-label">Output</div>
+        <code>2</code>
+      </div>
+      <div class="key-points">
+        <ul><li>Static is shared across all instances</li></ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- ── Conclusion ── -->
+    <div id="conclusion">
+      <div class="conclusion-box">
+        <h3>🔷 Final Conclusion</h3>
+        <ul>
+          <li>Generics = Reusable + Type-safe code</li>
+          <li>Use <code style="font-family:monospace;font-size:12px;background:#313244;color:#89b4fa;padding:1px 5px;border-radius:3px;">&lt;T&gt;</code> as type placeholder</li>
+          <li>Works with: Functions, Arrays, Objects, Classes</li>
+          <li>Constraints (<code style="font-family:monospace;font-size:12px;background:#313244;color:#cba6f7;padding:1px 5px;border-radius:3px;">extends</code>) ensure safety</li>
+          <li>Reduces errors and code duplication</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function scrollTo(id, navElement) {
+  const el = document.getElementById(id);
+  if (el) {
+    // Scroll to the element
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    // Update active nav item
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    // Add active class to clicked nav item
+    if (navElement) {
+      navElement.classList.add('active');
+    }
+    
+    // Close sidebar on mobile after clicking
+    const sidebar = document.getElementById('sidebar');
+    if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+    }
+  }
+}
+
+// Mobile toggle function
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('active');
+}
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', function(event) {
+  const sidebar = document.getElementById('sidebar');
+  const toggle = document.querySelector('.mobile-toggle');
+  
+  if (window.innerWidth <= 768 && 
+      sidebar.classList.contains('active') && 
+      !sidebar.contains(event.target) && 
+      !toggle.contains(event.target)) {
+    sidebar.classList.remove('active');
+  }
+});
+
+// Handle window resize
+window.addEventListener('resize', function() {
+  const sidebar = document.getElementById('sidebar');
+  if (window.innerWidth > 768) {
+    sidebar.classList.remove('active');
+  }
+});
+</script>
+</body>
+</html>

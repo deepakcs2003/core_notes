@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JavaScript Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:        #0d1117;
+    --surface:   #161b22;
+    --surface2:  #1c2330;
+    --border:    #30363d;
+    --blue:      #58a6ff;
+    --blue-dim:  #1f4068;
+    --blue-soft: #1a2d4a;
+    --white:     #e6edf3;
+    --muted:     #8b949e;
+    --accent:    #79c0ff;
+    --accent2:   #56d364;
+    --accent3:   #ffa657;
+    --accent4:   #f78166;
+    --accent5:   #d2a8ff;
+    --code-bg:   #0d1117;
+    --tag-kw:    #ff7b72;
+    --tag-str:   #a5d6ff;
+    --tag-num:   #79c0ff;
+    --tag-fn:    #d2a8ff;
+    --tag-cmt:   #6e7681;
+    --tag-attr:  #ffa657;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Sora', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(1rem, 4vw, 3rem);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 56px;
+  }
+  .header-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #f78166; }
+  .dot-y { background: #ffa657; }
+  .dot-g { background: #56d364; }
+  .header-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .85rem;
+    color: var(--muted);
+    margin-left: .5rem;
+  }
+  .header-title span { color: var(--blue); }
+  .header-badge {
+    margin-left: auto;
+    background: var(--blue-dim);
+    color: var(--blue);
+    font-size: .7rem;
+    font-weight: 600;
+    padding: .25rem .65rem;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: .05em;
+  }
+
+  /* ── LAYOUT ── */
+  .wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 56px);
+    max-width: 100%;
+  }
+
+  /* ── SIDEBAR ── */
+  aside {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0;
+    position: sticky;
+    top: 56px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+  }
+  aside::-webkit-scrollbar { width: 4px; }
+  aside::-webkit-scrollbar-track { background: transparent; }
+  aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .sidebar-label {
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--muted);
+    text-transform: uppercase;
+    padding: 0 1.25rem .5rem;
+  }
+  .sidebar-link {
+    display: block;
+    padding: .45rem 1.25rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: .82rem;
+    border-left: 3px solid transparent;
+    transition: all .2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .sidebar-link:hover {
+    color: var(--white);
+    background: var(--surface2);
+    border-left-color: var(--blue);
+  }
+  .sidebar-sep {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: .75rem 1.25rem;
+  }
+
+  /* ── MAIN ── */
+  main {
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 4rem);
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-soft) 0%, var(--surface2) 100%);
+    border: 1px solid var(--blue-dim);
+    border-radius: 14px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: 'JS';
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-size: 9rem;
+    font-weight: 800;
+    color: rgba(88,166,255,.06);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--blue-dim);
+    color: var(--blue);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .25rem .75rem;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 1rem;
+  }
+  .hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: .75rem;
+  }
+  .hero h1 span { color: var(--blue); }
+  .hero p { color: var(--muted); font-size: .95rem; max-width: 560px; }
+  .hero-sources {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .hero-sources a {
+    font-size: .72rem;
+    color: var(--blue);
+    background: var(--blue-dim);
+    padding: .2rem .6rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    transition: opacity .2s;
+  }
+  .hero-sources a:hover { opacity: .75; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 3rem; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: .75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--blue-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    font-weight: 700;
+    color: var(--white);
+  }
+  .section-header h2 small {
+    display: block;
+    font-size: .72rem;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    margin-bottom: 1rem;
+    transition: border-color .2s;
+  }
+  .card:hover { border-color: var(--blue-dim); }
+
+  .card h3 {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .card p { color: var(--muted); font-size: .875rem; margin-bottom: .5rem; }
+  .card ul { list-style: none; padding: 0; }
+  .card ul li {
+    color: var(--muted);
+    font-size: .875rem;
+    padding: .2rem 0 .2rem 1.1rem;
+    position: relative;
+  }
+  .card ul li::before {
+    content: '▸';
+    color: var(--blue);
+    position: absolute;
+    left: 0;
+    font-size: .7rem;
+    top: .35rem;
+  }
+  .card ul li strong { color: var(--white); }
+
+  /* ── NOTE / CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: .75rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--blue);
+    border-radius: 8px;
+    padding: .85rem 1rem;
+    margin-bottom: .75rem;
+    font-size: .85rem;
+    color: var(--muted);
+    align-items: flex-start;
+  }
+  .callout.warn { border-left-color: var(--accent3); }
+  .callout.warn .ci { color: var(--accent3); }
+  .callout.good { border-left-color: var(--accent2); }
+  .callout.good .ci { color: var(--accent2); }
+  .callout.danger { border-left-color: var(--accent4); }
+  .callout.danger .ci { color: var(--accent4); }
+  .callout.purple { border-left-color: var(--accent5); }
+  .callout.purple .ci { color: var(--accent5); }
+  .ci { font-size: 1rem; flex-shrink: 0; margin-top: .05rem; }
+  .callout p { margin: 0; }
+  .callout strong { color: var(--white); }
+
+  /* ── CODE ── */
+  .code-wrap {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: .75rem 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .code-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: .4rem .9rem;
+    font-size: .68rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .code-bar span { color: var(--accent3); }
+  pre {
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-size: .82rem;
+    line-height: 1.65;
+    tab-size: 2;
+    white-space: pre;
+  }
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── VS Code token colors ── */
+  .kw   { color: #ff7b72; }   /* keywords: let, const, function */
+  .fn   { color: #d2a8ff; }   /* function names */
+  .str  { color: #a5d6ff; }   /* strings */
+  .num  { color: #79c0ff; }   /* numbers */
+  .cmt  { color: #6e7681; font-style: italic; } /* comments */
+  .tag  { color: #7ee787; }   /* html tags */
+  .attr { color: #ffa657; }   /* attributes */
+  .op   { color: #ff7b72; }   /* operators */
+  .pun  { color: #e6edf3; }   /* punctuation */
+  .var  { color: #ffa657; }   /* variables */
+
+  /* ── GRID CARDS ── */
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-top: .75rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  thead { background: var(--surface2); }
+  thead th { padding: .65rem 1rem; color: var(--blue); font-weight: 700; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; }
+  tbody tr { border-top: 1px solid var(--border); transition: background .15s; }
+  tbody tr:hover { background: var(--surface2); }
+  tbody td { padding: .6rem 1rem; color: var(--muted); }
+  tbody td:first-child { color: var(--accent); font-weight: 600; }
+  .pill {
+    display: inline-block;
+    padding: .15rem .55rem;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pill-b { background: var(--blue-dim); color: var(--blue); }
+  .pill-g { background: rgba(86,211,100,.12); color: var(--accent2); }
+  .pill-o { background: rgba(255,166,87,.12); color: var(--accent3); }
+  .pill-r { background: rgba(247,129,102,.12); color: var(--accent4); }
+
+  /* ── TAG BADGE ── */
+  .badge { display: inline-block; padding: .18rem .55rem; border-radius: 6px; font-size: .72rem; font-weight: 700; font-family: 'JetBrains Mono', monospace; margin-left: .35rem; }
+  .badge-b { background: var(--blue-dim); color: var(--blue); }
+  .badge-g { background: rgba(86,211,100,.15); color: var(--accent2); }
+  .badge-o { background: rgba(255,166,87,.15); color: var(--accent3); }
+  .badge-r { background: rgba(247,129,102,.15); color: var(--accent4); }
+
+  /* ── COMPARISON BLOCK ── */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .5rem; }
+  .compare-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+  .compare-box h4 {
+    font-size: .78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: .6rem;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+  }
+  .cb-blue h4 { color: var(--blue); border-bottom: 1px solid var(--blue-dim); padding-bottom: .4rem; }
+  .cb-green h4 { color: var(--accent2); border-bottom: 1px solid rgba(86,211,100,.2); padding-bottom: .4rem; }
+  .compare-box ul { list-style: none; }
+  .compare-box ul li { font-size: .82rem; color: var(--muted); padding: .22rem 0 .22rem 1rem; position: relative; }
+  .compare-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--blue); font-size: .75rem; }
+  .cb-green ul li::before { color: var(--accent2); }
+  .compare-box strong { color: var(--white); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    padding: 1.5rem clamp(1rem, 5vw, 4rem);
+    text-align: center;
+    font-size: .78rem;
+    color: var(--muted);
+    margin-top: 2rem;
+  }
+  footer a { color: var(--blue); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    .wrapper { grid-template-columns: 1fr; }
+    aside { display: none; }
+    .compare { grid-template-columns: 1fr; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header { gap: .5rem; }
+    .header-badge { font-size: .65rem; }
+  }
+
+  /* scrollbar global */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-dot dot-r"></div>
+  <div class="header-dot dot-y"></div>
+  <div class="header-dot dot-g"></div>
+  <span class="header-title"><span>javascript</span>-notes.js</span>
+  <div class="header-badge">ES2023</div>
+</header>
+
+<div class="wrapper">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="sidebar-label">Contents</div>
+    <a class="sidebar-link" href="#intro">📘 Introduction</a>
+    <a class="sidebar-link" href="#characteristics">⚙️ Core Characteristics</a>
+    <a class="sidebar-link" href="#hello">👋 Hello World</a>
+    <a class="sidebar-link" href="#comments">💬 Comments</a>
+    <a class="sidebar-link" href="#features">🚀 Features</a>
+    <a class="sidebar-link" href="#client-server">🌐 Client vs Server</a>
+    <a class="sidebar-link" href="#paradigms">🧠 Paradigms</a>
+    <a class="sidebar-link" href="#limitations">⚠️ Limitations</a>
+    <a class="sidebar-link" href="#versions">📜 JS Versions</a>
+    <hr class="sidebar-sep"/>
+    <div class="sidebar-label">Adding JS</div>
+    <a class="sidebar-link" href="#adding">🧩 Ways to Add JS</a>
+    <a class="sidebar-link" href="#inline">🔴 Inline JS</a>
+    <a class="sidebar-link" href="#internal">🟡 Internal JS</a>
+    <a class="sidebar-link" href="#external">🟢 External JS</a>
+    <a class="sidebar-link" href="#asyncdefer">⚡ async vs defer</a>
+    <a class="sidebar-link" href="#reference">📂 Reference Methods</a>
+    <a class="sidebar-link" href="#flow">🔁 Complete Flow</a>
+    <a class="sidebar-link" href="#comparison">📊 Comparison Table</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">JavaScript · Full Notes</div>
+      <h1>Introduction to <span>JavaScript</span></h1>
+      <p>JavaScript is a programming language used mainly to make websites interactive and dynamic. It works alongside HTML (structure) and CSS (design) to add logic and behavior to webpages.</p>
+      <div class="hero-sources">
+        <a href="https://www.geeksforgeeks.org/javascript/introduction-to-javascript/" target="_blank">📄 GFG · Introduction</a>
+        <a href="https://www.geeksforgeeks.org/javascript/where-to-put-javascript-in-an-html-document/" target="_blank">📄 GFG · Where to Put JS</a>
+      </div>
+    </div>
+
+    <!-- INTRO -->
+    <section class="section" id="intro">
+      <div class="section-header">
+        <div class="section-icon">📘</div>
+        <h2>Introduction to JavaScript<small>What and Why</small></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>❌ Without JavaScript</h3>
+          <p>Webpage is <strong>static</strong> — only text and images, no interactivity.</p>
+        </div>
+        <div class="card">
+          <h3>✅ With JavaScript</h3>
+          <ul>
+            <li>Buttons work</li>
+            <li>Forms validate</li>
+            <li>Animations run</li>
+            <li>Content changes dynamically</li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="ci">💡</span>
+        <p><strong>Key Idea:</strong> HTML = Structure &nbsp;|&nbsp; CSS = Design &nbsp;|&nbsp; JavaScript = Logic</p>
+      </div>
+    </section>
+
+    <!-- CHARACTERISTICS -->
+    <section class="section" id="characteristics">
+      <div class="section-header">
+        <div class="section-icon">⚙️</div>
+        <h2>Core Characteristics<small>How JS works</small></h2>
+      </div>
+
+      <div class="card">
+        <h3>1. Single-Threaded <span class="badge badge-b">Default</span></h3>
+        <p>JavaScript executes one task at a time. It does NOT run multiple tasks simultaneously in parallel by default.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span>example.js</span></div>
+          <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Task 1"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Task 2"</span>);</pre>
+        </div>
+        <div class="callout good">
+          <span class="ci">✔</span>
+          <p><strong>Output:</strong> Task 1 → Task 2 (in order, one by one)</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>2. Interpreted Language</h3>
+        <ul>
+          <li>Code runs <strong>line by line</strong></li>
+          <li><strong>No need</strong> to compile before running</li>
+          <li>Means <strong>faster development</strong> and easy debugging</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>3. Dynamically Typed</h3>
+        <p>Variable type is decided at <strong>runtime</strong>, not compile time.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span>types.js</span></div>
+          <pre><span class="kw">let</span> <span class="var">x</span> <span class="op">=</span> <span class="num">10</span>;      <span class="cmt">// number</span>
+<span class="var">x</span> <span class="op">=</span> <span class="str">"hello"</span>;   <span class="cmt">// now string — no error!</span></pre>
+        </div>
+        <div class="callout purple">
+          <span class="ci">📌</span>
+          <p>No need to declare types like C++ or Java.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HELLO WORLD -->
+    <section class="section" id="hello">
+      <div class="section-header">
+        <div class="section-icon">👋</div>
+        <h2>"Hello World" Program<small>Your first JS code</small></h2>
+      </div>
+
+      <div class="card">
+        <h3>1. In Browser (HTML + JS)</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span>index.html</span></div>
+          <pre><span class="tag">&lt;html&gt;</span>
+<span class="tag">&lt;head&gt;&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Check the console for the message!<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;script&gt;</span>
+        <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello, World!"</span>);
+    <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></pre>
+        </div>
+        <ul>
+          <li><code>&lt;script&gt;</code> — used to write JavaScript inside HTML</li>
+          <li><code>console.log()</code> — prints output in browser console</li>
+          <li>To see output: Press <strong>F12</strong> → go to <strong>Console</strong> tab</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>2. In Server (Node.js)</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span>hello.js</span></div>
+          <pre><span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Hello, World!"</span>);</pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span>terminal</span></div>
+          <pre>node hello.js</pre>
+        </div>
+        <div class="callout">
+          <span class="ci">📌</span>
+          <p>Here JavaScript runs <strong>outside the browser</strong> using Node.js.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMMENTS -->
+    <section class="section" id="comments">
+      <div class="section-header">
+        <div class="section-icon">💬</div>
+        <h2>Comments in JavaScript<small>Explaining your code</small></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Single-line Comment</h3>
+          <div class="code-wrap">
+            <div class="code-bar"><span>comment.js</span></div>
+            <pre><span class="cmt">// This is a comment</span></pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Multi-line Comment</h3>
+          <div class="code-wrap">
+            <div class="code-bar"><span>comment.js</span></div>
+            <pre><span class="cmt">/*
+This is
+multi-line comment
+*/</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <span class="ci">📌</span>
+        <p><strong>Use comments to:</strong> Explain code &nbsp;|&nbsp; Disable code temporarily</p>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="section-header">
+        <div class="section-icon">🚀</div>
+        <h2>Features of JavaScript<small>Why JS is powerful</small></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1. Client-Side Scripting</h3>
+          <ul>
+            <li>Runs in browser</li>
+            <li>Fast response — no server call needed</li>
+            <li><strong>Example:</strong> Form validation before submit</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>2. Versatile</h3>
+          <ul>
+            <li>Web development</li>
+            <li>Mobile apps</li>
+            <li>Backend (Node.js)</li>
+            <li>Games</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>3. Event-Driven</h3>
+          <p>Responds to user actions:</p>
+          <div class="code-wrap">
+            <div class="code-bar"><span>event.js</span></div>
+            <pre><span class="var">button</span>.<span class="attr">onclick</span> <span class="op">=</span> <span class="kw">function</span>() {
+   <span class="fn">alert</span>(<span class="str">"Clicked!"</span>);
+}</pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>4. Asynchronous</h3>
+          <ul>
+            <li>Can do multiple things without blocking UI</li>
+            <li><strong>Example:</strong> Fetch data while page is still usable</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h3>5. Rich Ecosystem</h3>
+        <p>Popular libraries and frameworks:</p>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem;">
+          <span class="pill pill-b">React</span>
+          <span class="pill pill-g">Angular</span>
+          <span class="pill pill-o">Vue</span>
+        </div>
+        <div class="callout" style="margin-top:.75rem">
+          <span class="ci">📌</span>
+          <p>These frameworks make development <strong>faster and more organized</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLIENT vs SERVER -->
+    <section class="section" id="client-server">
+      <div class="section-header">
+        <div class="section-icon">🌐</div>
+        <h2>Client-Side vs Server-Side<small>Where JS runs</small></h2>
+      </div>
+      <div class="compare">
+        <div class="compare-box cb-blue">
+          <h4>🔵 Client-Side</h4>
+          <ul>
+            <li>Runs in <strong>browser</strong></li>
+            <li>DOM manipulation</li>
+            <li>Handle clicks, inputs</li>
+          </ul>
+          <div class="code-wrap" style="margin-top:.75rem">
+            <div class="code-bar"><span>client.js</span></div>
+            <pre><span class="fn">document</span>
+  .<span class="fn">getElementById</span>(<span class="str">"btn"</span>)
+  .<span class="attr">onclick</span> <span class="op">=</span> <span class="kw">function</span>() {
+    <span class="fn">alert</span>(<span class="str">"Hello"</span>);
+}</pre>
+          </div>
+        </div>
+        <div class="compare-box cb-green">
+          <h4>🟢 Server-Side (Node.js)</h4>
+          <ul>
+            <li>Runs on <strong>server</strong></li>
+            <li>Database handling</li>
+            <li>File operations</li>
+            <li>API creation</li>
+            <li><strong>Example:</strong> Login system backend</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARADIGMS -->
+    <section class="section" id="paradigms">
+      <div class="section-header">
+        <div class="section-icon">🧠</div>
+        <h2>Programming Paradigms<small>Ways to write code</small></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1. Imperative Programming</h3>
+          <div class="callout">
+            <span class="ci">👉</span><p>Focus: <strong>How to do</strong> — Step-by-step instructions</p>
+          </div>
+          <div class="code-wrap">
+            <div class="code-bar"><span>imperative.js</span></div>
+            <pre><span class="kw">let</span> <span class="var">sum</span> <span class="op">=</span> <span class="num">0</span>;
+<span class="kw">for</span>(<span class="kw">let</span> <span class="var">i</span><span class="op">=</span><span class="num">0</span>; <span class="var">i</span><span class="op">&lt;</span><span class="num">5</span>; <span class="var">i</span><span class="op">++</span>){
+   <span class="var">sum</span> <span class="op">+=</span> <span class="var">i</span>;
+}</pre>
+          </div>
+        </div>
+        <div class="card">
+          <h3>2. Declarative Programming</h3>
+          <div class="callout good">
+            <span class="ci">👉</span><p>Focus: <strong>What to do</strong> — Cleaner and shorter</p>
+          </div>
+          <div class="code-wrap">
+            <div class="code-bar"><span>declarative.js</span></div>
+            <pre><span class="kw">let</span> <span class="var">arr</span> <span class="op">=</span> [<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>];
+<span class="kw">let</span> <span class="var">sum</span> <span class="op">=</span> <span class="var">arr</span>.<span class="fn">reduce</span>(
+  (<span class="var">a</span>,<span class="var">b</span>) <span class="op">=&gt;</span> <span class="var">a</span><span class="op">+</span><span class="var">b</span>
+);</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIMITATIONS -->
+    <section class="section" id="limitations">
+      <div class="section-header">
+        <div class="section-icon">⚠️</div>
+        <h2>Limitations of JavaScript<small>Things to watch out for</small></h2>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>1. Security Risks</h3>
+          <div class="callout danger">
+            <span class="ci">⚠</span>
+            <p><strong>XSS (Cross-Site Scripting)</strong> — Hacker injects malicious script into webpage</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>2. Performance Issues</h3>
+          <ul>
+            <li>Slower than languages like C++</li>
+            <li>But fine for <strong>normal web tasks</strong></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>3. Complexity</h3>
+          <p>Advanced JS requires understanding of:</p>
+          <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.5rem;">
+            <span class="pill pill-o">Closures</span>
+            <span class="pill pill-o">Async Handling</span>
+            <span class="pill pill-o">Objects</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>4. Weak Type Checking</h3>
+          <p>No strict type enforcement — can cause bugs:</p>
+          <div class="code-wrap">
+            <div class="code-bar"><span>types.js</span></div>
+            <pre><span class="str">"5"</span> <span class="op">+</span> <span class="num">2</span> <span class="op">=</span> <span class="str">"52"</span>  <span class="cmt">// not 7!</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VERSIONS -->
+    <section class="section" id="versions">
+      <div class="section-header">
+        <div class="section-icon">📜</div>
+        <h2>JavaScript Versions (ECMAScript)<small>History of JS standards</small></h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Year</th>
+              <th>Key Features</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ES5</td>
+              <td>2009</td>
+              <td>strict mode, JSON</td>
+            </tr>
+            <tr>
+              <td>ES6 <span class="badge badge-b">Most Important</span></td>
+              <td>2015</td>
+              <td>let, const, arrow functions, classes</td>
+            </tr>
+            <tr>
+              <td>ES7 – ES13</td>
+              <td>2016–2022</td>
+              <td>async/await, BigInt</td>
+            </tr>
+            <tr>
+              <td>ES14</td>
+              <td>2023</td>
+              <td>toSorted, findLast</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout" style="margin-top:.75rem">
+        <span class="ci">📌</span>
+        <p><strong>ES6 is the most important version</strong> — modern JavaScript starts here.</p>
+      </div>
+    </section>
+
+    <!-- ──────── PART 2: ADDING JS ──────── -->
+    <section class="section" id="adding">
+      <div class="section-header">
+        <div class="section-icon">🧩</div>
+        <h2>Ways to Add JavaScript in HTML<small>3 methods</small></h2>
+      </div>
+      <div class="grid-3">
+        <div class="card" style="border-left:3px solid var(--accent4)">
+          <h3 style="color:var(--accent4)">🔴 Inline</h3>
+          <p>Written directly inside HTML tags. Good for small tasks, quick testing.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent3)">
+          <h3 style="color:var(--accent3)">🟡 Internal</h3>
+          <p>Written inside <code>&lt;script&gt;</code> tag in the same HTML file.</p>
+        </div>
+        <div class="card" style="border-left:3px solid var(--accent2)">
+          <h3 style="color:var(--accent2)">🟢 External</h3>
+          <p>Written in a separate <code>.js</code> file. Best for large projects.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- INLINE -->
+    <section class="section" id="inline">
+      <div class="section-header">
+        <div class="section-icon">🔴</div>
+        <h2>1. Inline JavaScript<small>Directly in HTML tag</small></h2>
+      </div>
+      <div class="card">
+        <div class="code-wrap">
+          <div class="code-bar"><span>inline.html</span></div>
+          <pre><span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"alert('Button Clicked!')"</span><span class="tag">&gt;</span>
+    Click Here
+<span class="tag">&lt;/button&gt;</span></pre>
+        </div>
+        <ul style="margin-top:.5rem">
+          <li><code>onclick</code> — event triggered when button is clicked</li>
+          <li><code>alert()</code> — shows popup message</li>
+        </ul>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem">
+          <div class="callout good">
+            <span class="ci">✅</span>
+            <p><strong>Use when:</strong> Small tasks, quick testing</p>
+          </div>
+          <div class="callout danger">
+            <span class="ci">❌</span>
+            <p><strong>Problems:</strong> Messy code, hard to maintain, not reusable</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- INTERNAL -->
+    <section class="section" id="internal">
+      <div class="section-header">
+        <div class="section-icon">🟡</div>
+        <h2>2. Internal JavaScript<small>Inside &lt;script&gt; tag</small></h2>
+      </div>
+
+      <div class="card">
+        <h3>A. Inside <code>&lt;head&gt;</code> Tag</h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span>head.html</span></div>
+          <pre><span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;script&gt;</span>
+        <span class="kw">function</span> <span class="fn">myFun</span>() {
+            <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"demo"</span>)
+              .<span class="attr">innerHTML</span> <span class="op">=</span> <span class="str">"Content changed!"</span>;
+        }
+    <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/head&gt;</span></pre>
+        </div>
+        <div class="callout warn">
+          <span class="ci">⚠️</span>
+          <p>Runs <strong>before</strong> page loads fully. If element not loaded → error possible.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>B. Inside <code>&lt;body&gt;</code> Tag <span class="badge badge-g">Safer</span></h3>
+        <div class="code-wrap">
+          <div class="code-bar"><span>body.html</span></div>
+          <pre><span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h3</span> <span class="attr">id</span>=<span class="str">"demo"</span><span class="tag">&gt;</span>GeeksforGeeks<span class="tag">&lt;/h3&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="attr">onclick</span>=<span class="str">"myFun()"</span><span class="tag">&gt;</span>Click<span class="tag">&lt;/button&gt;</span>
+
+    <span class="tag">&lt;script&gt;</span>
+        <span class="kw">function</span> <span class="fn">myFun</span>() {
+            <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"demo"</span>)
+              .<span class="attr">innerHTML</span> <span class="op">=</span> <span class="str">"Content changed!"</span>;
+        }
+    <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span></pre>
+        </div>
+        <div class="callout good">
+          <span class="ci">✅</span>
+          <p>Script runs <strong>after HTML loads</strong>. Safer when working with DOM.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.5rem">
+          <div class="callout good">
+            <span class="ci">✅</span>
+            <p><strong>Use when:</strong> Medium size projects, simple pages</p>
+          </div>
+          <div class="callout danger">
+            <span class="ci">❌</span>
+            <p><strong>Problems:</strong> Code mixed with HTML, not reusable across files</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXTERNAL -->
+    <section class="section" id="external">
+      <div class="section-header">
+        <div class="section-icon">🟢</div>
+        <h2>3. External JavaScript <span class="badge badge-g">Best Method</span><small>Separate .js file</small></h2>
+      </div>
+
+      <div class="card">
+        <div class="grid-2">
+          <div>
+            <p style="color:var(--muted);font-size:.82rem;margin-bottom:.4rem">📄 HTML File</p>
+            <div class="code-wrap">
+              <div class="code-bar"><span>index.html</span></div>
+              <pre><span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+            </div>
+          </div>
+          <div>
+            <p style="color:var(--muted);font-size:.82rem;margin-bottom:.4rem">📄 script.js</p>
+            <div class="code-wrap">
+              <div class="code-bar"><span>script.js</span></div>
+              <pre><span class="kw">function</span> <span class="fn">myFun</span>() {
+    <span class="fn">document</span>.<span class="fn">getElementById</span>(<span class="str">"demo"</span>)
+      .<span class="attr">innerHTML</span> <span class="op">=</span> <span class="str">"Content changed!"</span>;
+}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>✅ Advantages of External JavaScript</h3>
+        <div class="grid-2" style="margin-top:.5rem">
+          <div class="callout good"><span class="ci">⚡</span><p><strong>Faster Loading</strong> — Browser caches .js file, no reload every time</p></div>
+          <div class="callout good"><span class="ci">🧹</span><p><strong>Clean Code</strong> — HTML = structure, JS = logic, separated cleanly</p></div>
+          <div class="callout good"><span class="ci">🔧</span><p><strong>Easy Maintenance</strong> — Update one file → changes everywhere</p></div>
+          <div class="callout good"><span class="ci">♻️</span><p><strong>Reusability</strong> — Same JS file used in multiple pages</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASYNC vs DEFER -->
+    <section class="section" id="asyncdefer">
+      <div class="section-header">
+        <div class="section-icon">⚡</div>
+        <h2>async vs defer<small>Script loading behavior</small></h2>
+      </div>
+
+      <div class="callout warn">
+        <span class="ci">⚠️</span>
+        <p>By default, JavaScript <strong>blocks page loading</strong>. Use async or defer to fix this.</p>
+      </div>
+
+      <div class="compare" style="margin-top:.75rem">
+        <div class="compare-box cb-blue">
+          <h4>🔵 async</h4>
+          <div class="code-wrap">
+            <div class="code-bar"><span>html</span></div>
+            <pre><span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"script.js"</span>
+        <span class="attr">async</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+          </div>
+          <ul style="margin-top:.5rem">
+            <li>Loads in <strong>background</strong></li>
+            <li>Executes <strong>immediately</strong> when ready</li>
+            <li>Does NOT wait for HTML</li>
+          </ul>
+          <div class="callout warn" style="margin-top:.5rem">
+            <span class="ci">⚠</span><p><strong>Order is NOT guaranteed</strong></p>
+          </div>
+        </div>
+        <div class="compare-box cb-green">
+          <h4>🟢 defer</h4>
+          <div class="code-wrap">
+            <div class="code-bar"><span>html</span></div>
+            <pre><span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"script.js"</span>
+        <span class="attr">defer</span><span class="tag">&gt;&lt;/script&gt;</span></pre>
+          </div>
+          <ul style="margin-top:.5rem">
+            <li>Loads in <strong>background</strong></li>
+            <li>Executes <strong>AFTER HTML loads</strong></li>
+            <li>Best for DOM manipulation</li>
+            <li><strong>Safe execution</strong> guaranteed</li>
+          </ul>
+          <div class="callout good" style="margin-top:.5rem">
+            <span class="ci">✅</span><p><strong>Recommended for most use cases</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENCE METHODS -->
+    <section class="section" id="reference">
+      <div class="section-header">
+        <div class="section-icon">📂</div>
+        <h2>Ways to Reference External JS File<small>3 path types</small></h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Full URL</h3>
+          <div class="code-wrap">
+            <div class="code-bar"><span>cdn</span></div>
+            <pre><span class="tag">&lt;script</span>
+  <span class="attr">src</span>=<span class="str">"https://example.com/
+  script.js"</span><span class="tag">&gt;
+&lt;/script&gt;</span></pre>
+          </div>
+          <p>Used for CDN or external sources</p>
+        </div>
+        <div class="card">
+          <h3>2. File Path</h3>
+          <div class="code-wrap">
+            <div class="code-bar"><span>path</span></div>
+            <pre><span class="tag">&lt;script</span>
+  <span class="attr">src</span>=<span class="str">"/js/script.js"</span><span class="tag">&gt;
+&lt;/script&gt;</span></pre>
+          </div>
+          <p>From root folder</p>
+        </div>
+        <div class="card">
+          <h3>3. Same Folder <span class="badge badge-g">Common</span></h3>
+          <div class="code-wrap">
+            <div class="code-bar"><span>local</span></div>
+            <pre><span class="tag">&lt;script</span>
+  <span class="attr">src</span>=<span class="str">"script.js"</span><span class="tag">&gt;
+&lt;/script&gt;</span></pre>
+          </div>
+          <p>Most common method</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLOW -->
+    <section class="section" id="flow">
+      <div class="section-header">
+        <div class="section-icon">🔁</div>
+        <h2>Complete Flow<small>How browser handles JS</small></h2>
+      </div>
+      <div class="card">
+        <div style="display:flex;flex-direction:column;gap:.5rem">
+          <div class="callout" style="margin-bottom:0"><span class="ci">1️⃣</span><p>Browser <strong>loads HTML</strong></p></div>
+          <div class="callout" style="margin-bottom:0"><span class="ci">2️⃣</span><p>Finds <code>&lt;script&gt;</code> tag</p></div>
+          <div class="callout" style="margin-bottom:0"><span class="ci">3️⃣</span><p><strong>Loads JavaScript</strong> file</p></div>
+          <div class="callout" style="margin-bottom:0"><span class="ci">4️⃣</span><p><strong>Executes</strong> code</p></div>
+          <div class="callout good" style="margin-bottom:0"><span class="ci">5️⃣</span><p><strong>Updates page</strong> / handles events</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPARISON TABLE -->
+    <section class="section" id="comparison">
+      <div class="section-header">
+        <div class="section-icon">📊</div>
+        <h2>Comparison Table<small>All 3 methods at a glance</small></h2>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th>Location</th>
+              <th>Use Case</th>
+              <th>Problem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>🔴 Inline</td>
+              <td>Inside HTML tag</td>
+              <td>Small tasks</td>
+              <td><span class="pill pill-r">Messy</span></td>
+            </tr>
+            <tr>
+              <td>🟡 Internal</td>
+              <td>&lt;script&gt; in HTML</td>
+              <td>Medium projects</td>
+              <td><span class="pill pill-o">Not reusable</span></td>
+            </tr>
+            <tr>
+              <td>🟢 External</td>
+              <td>.js file</td>
+              <td>Large projects</td>
+              <td><span class="pill pill-g">Best ✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- EXTRA NOTES -->
+    <section class="section">
+      <div class="section-header">
+        <div class="section-icon">🔑</div>
+        <h2>Key Takeaways<small>Remember these</small></h2>
+      </div>
+      <div class="grid-3">
+        <div class="callout purple"><span class="ci">✔</span><p>JS works with <strong>Browser APIs</strong> and <strong>DOM</strong></p></div>
+        <div class="callout good"><span class="ci">✔</span><p>Used everywhere: Websites, Apps, Servers</p></div>
+        <div class="callout"><span class="ci">✔</span><p>Easy to start but <strong>deep to master</strong></p></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Sources: &nbsp;
+    <a href="https://www.geeksforgeeks.org/javascript/introduction-to-javascript/" target="_blank">GeeksForGeeks · Introduction to JavaScript</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.geeksforgeeks.org/javascript/where-to-put-javascript-in-an-html-document/" target="_blank">GeeksForGeeks · Where to Put JavaScript</a>
+  </p>
+</footer>
+
+</body>
+</html>

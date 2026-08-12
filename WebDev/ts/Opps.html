@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>typescript-notes.ts</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1d23;
+    --sidebar-bg: #13151a;
+    --content-bg: #1e2128;
+    --card-bg: #252830;
+    --card-border: #2e3240;
+    --accent-blue: #4f9cf9;
+    --accent-green: #4ec9b0;
+    --accent-yellow: #e5c07b;
+    --accent-orange: #e5814d;
+    --accent-purple: #c792ea;
+    --accent-red: #f47067;
+    --accent-cyan: #56d1dc;
+    --text-primary: #cdd3de;
+    --text-secondary: #7a8499;
+    --text-dim: #4a5166;
+    --header-bg: #13151a;
+    --header-border: #2a2d3a;
+    --sidebar-width: 240px;
+    --header-h: 42px;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: var(--font-mono);
+    background: var(--bg);
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .header {
+    height: var(--header-h);
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 100;
+  }
+  .header-dots { display: flex; gap: 7px; align-items: center; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; }
+  .dot-y { background: #febc2e; }
+  .dot-g { background: #28c840; }
+  .header-title {
+    position: absolute; left: 50%; transform: translateX(-50%);
+    color: var(--text-secondary); font-size: 12px; letter-spacing: 0.5px;
+  }
+  .header-badge {
+    background: #1e3a5f; color: var(--accent-blue);
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    letter-spacing: 0.5px; border: 1px solid #2a4f7a;
+  }
+
+  .layout { display: flex; flex: 1; overflow: hidden; }
+
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--header-border);
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding-bottom: 24px;
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: #2e3240; border-radius: 4px; }
+
+  .sidebar-section { padding: 18px 0 4px; }
+  .sidebar-section-label {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--text-dim); padding: 0 16px 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 9px;
+    padding: 5px 16px; cursor: pointer; transition: background 0.15s;
+    font-size: 12px; color: var(--text-secondary); text-decoration: none;
+    border-left: 2px solid transparent;
+  }
+  .nav-item:hover { background: rgba(79,156,249,0.06); color: var(--text-primary); }
+  .nav-item.active { background: rgba(79,156,249,0.1); color: var(--accent-blue); border-left-color: var(--accent-blue); }
+
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .nav-dot.sq { border-radius: 1.5px; }
+  .nav-dot.tri {
+    width: 0; height: 0; background: none !important;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-bottom: 7px solid var(--accent-orange);
+  }
+  .d-blue   { background: var(--accent-blue); }
+  .d-green  { background: var(--accent-green); }
+  .d-yellow { background: var(--accent-yellow); }
+  .d-orange { background: var(--accent-orange); }
+  .d-purple { background: var(--accent-purple); }
+  .d-red    { background: var(--accent-red); }
+  .d-cyan   { background: var(--accent-cyan); }
+
+  .main {
+    flex: 1; overflow-y: auto;
+    padding: 28px 32px 48px;
+    background: var(--content-bg);
+  }
+  .main::-webkit-scrollbar { width: 6px; }
+  .main::-webkit-scrollbar-track { background: transparent; }
+  .main::-webkit-scrollbar-thumb { background: #2e3240; border-radius: 4px; }
+
+  .topic { margin-bottom: 44px; scroll-margin-top: 20px; }
+
+  .topic-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .topic-icon {
+    width: 32px; height: 32px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
+    color: var(--text-primary);
+  }
+  .ti-blue   { background: rgba(79,156,249,0.15); color: var(--accent-blue); }
+  .ti-green  { background: rgba(78,201,176,0.15); color: var(--accent-green); }
+  .ti-yellow { background: rgba(229,192,123,0.15); color: var(--accent-yellow); }
+  .ti-orange { background: rgba(229,129,77,0.15); color: var(--accent-orange); }
+  .ti-purple { background: rgba(199,146,234,0.15); color: var(--accent-purple); }
+  .ti-red    { background: rgba(244,112,103,0.15); color: var(--accent-red); }
+  .ti-cyan   { background: rgba(86,209,220,0.15); color: var(--accent-cyan); }
+
+  .topic-title { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+  .topic-sub   { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; color: var(--text-dim); margin-top: 2px; }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 12px;
+  }
+  .card p { color: var(--text-secondary); font-size: 12.5px; line-height: 1.75; }
+  .card p + p { margin-top: 8px; }
+
+  .code-block {
+    background: #0d0f14; border: 1px solid #1e2230;
+    border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+    overflow-x: auto; font-size: 12px; line-height: 1.7;
+    white-space: pre-wrap; word-wrap: break-word;
+  }
+  .code-block::-webkit-scrollbar { height: 4px; }
+  .code-block::-webkit-scrollbar-thumb { background: #2e3240; border-radius: 4px; }
+
+  code {
+    background: #1a1d28; color: var(--accent-cyan); padding: 1px 6px;
+    border-radius: 4px; font-size: 11.5px; border: 1px solid #252836;
+    font-family: var(--font-mono);
+  }
+
+  .kw   { color: #c792ea; }
+  .cls  { color: #e5c07b; }
+  .fn   { color: #82aaff; }
+  .str  { color: #c3e88d; }
+  .num  { color: #f78c6c; }
+  .cmt  { color: #4a5166; font-style: italic; }
+  .prop { color: #4ec9b0; }
+  .op   { color: #89ddff; }
+  .type { color: #4fc1ff; }
+
+  .sub-h {
+    font-size: 12px; font-weight: 600; display: flex; align-items: center;
+    gap: 8px; margin: 14px 0 8px; color: var(--accent-blue);
+  }
+  .sub-h::before {
+    content: ''; width: 3px; height: 13px; border-radius: 2px;
+    background: var(--accent-blue); display: inline-block;
+  }
+  .sub-h.g  { color: var(--accent-green);  } .sub-h.g::before  { background: var(--accent-green); }
+  .sub-h.y  { color: var(--accent-yellow); } .sub-h.y::before  { background: var(--accent-yellow); }
+  .sub-h.o  { color: var(--accent-orange); } .sub-h.o::before  { background: var(--accent-orange); }
+  .sub-h.p  { color: var(--accent-purple); } .sub-h.p::before  { background: var(--accent-purple); }
+  .sub-h.r  { color: var(--accent-red);    } .sub-h.r::before  { background: var(--accent-red); }
+  .sub-h.c  { color: var(--accent-cyan);   } .sub-h.c::before  { background: var(--accent-cyan); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip {
+    background: #1a1d28; border: 1px solid #2a2f42; border-radius: 6px;
+    padding: 5px 12px; font-size: 11.5px; display: flex; align-items: center; gap: 7px;
+    color: var(--text-secondary);
+  }
+  .chip-ok { color: var(--accent-green); }
+
+  .err-note {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(244,112,103,0.08); border: 1px solid rgba(244,112,103,0.22);
+    border-radius: 7px; padding: 9px 14px; margin: 8px 0;
+    font-size: 12px; color: #f47067;
+  }
+  .ok-note {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(78,201,176,0.08); border: 1px solid rgba(78,201,176,0.22);
+    border-radius: 7px; padding: 9px 14px; margin: 8px 0;
+    font-size: 12px; color: var(--accent-green);
+  }
+
+  .analogy {
+    background: rgba(229,192,123,0.05); border: 1px solid rgba(229,192,123,0.2);
+    border-left: 3px solid var(--accent-yellow); border-radius: 0 8px 8px 0;
+    padding: 11px 16px; margin: 10px 0; font-size: 12px; color: var(--text-secondary);
+  }
+  .analogy strong { color: var(--accent-yellow); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  th {
+    background: #1a1d28; color: var(--text-secondary); padding: 8px 12px;
+    text-align: left; font-weight: 600; font-size: 11px; border: 1px solid #252836;
+  }
+  td { padding: 8px 12px; border: 1px solid #252836; color: var(--text-secondary); }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+  .yes { color: var(--accent-green); } .no { color: var(--accent-red); } .ro { color: var(--accent-yellow); }
+
+  .lbl {
+    display: inline-block; padding: 1px 8px; border-radius: 4px;
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.3px;
+  }
+  .lbl-pub  { background: rgba(78,201,176,0.15);  color: var(--accent-green);  border: 1px solid rgba(78,201,176,0.3);  }
+  .lbl-priv { background: rgba(244,112,103,0.15); color: var(--accent-red);    border: 1px solid rgba(244,112,103,0.3); }
+  .lbl-prot { background: rgba(229,192,123,0.15); color: var(--accent-yellow); border: 1px solid rgba(229,192,123,0.3); }
+  .lbl-ro   { background: rgba(199,146,234,0.15); color: var(--accent-purple); border: 1px solid rgba(199,146,234,0.3); }
+
+  .sec-label {
+    font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--text-dim); font-weight: 700; margin: 32px 0 12px;
+  }
+
+  .sum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 8px; margin-top: 10px; }
+  .sum-item { background: #1a1d28; border: 1px solid #252836; border-radius: 8px; padding: 10px 12px; }
+  .sum-lbl  { color: var(--text-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 3px; }
+  .sum-val  { color: var(--text-primary); font-weight: 600; font-size: 12px; }
+
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .main { padding: 16px 14px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-dots">
+    <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+  </div>
+  <div class="header-title">typescript-notes.ts</div>
+  <div class="header-badge">TS 5.x</div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Classes</div>
+      <a class="nav-item active" href="#cls-intro"    onclick="go(this)"><span class="nav-dot d-blue"></span>What is a Class</a>
+      <a class="nav-item"        href="#cls-members"  onclick="go(this)"><span class="nav-dot d-green"></span>Properties &amp; Methods</a>
+      <a class="nav-item"        href="#cls-ctor"     onclick="go(this)"><span class="nav-dot d-yellow"></span>Constructor</a>
+      <a class="nav-item"        href="#cls-objects"  onclick="go(this)"><span class="nav-dot d-orange"></span>Creating Objects</a>
+      <a class="nav-item"        href="#cls-inherit"  onclick="go(this)"><span class="nav-dot sq d-purple"></span>Inheritance</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Access Modifiers</div>
+      <a class="nav-item" href="#mod-public"   onclick="go(this)"><span class="nav-dot d-green"></span>public</a>
+      <a class="nav-item" href="#mod-private"  onclick="go(this)"><span class="nav-dot d-red"></span>private</a>
+      <a class="nav-item" href="#mod-protected"onclick="go(this)"><span class="nav-dot d-yellow"></span>protected</a>
+      <a class="nav-item" href="#mod-readonly" onclick="go(this)"><span class="nav-dot d-purple"></span>readonly</a>
+      <a class="nav-item" href="#mod-table"    onclick="go(this)"><span class="nav-dot sq d-blue"></span>Summary Table</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Abstract Classes</div>
+      <a class="nav-item" href="#abs-intro"   onclick="go(this)"><span class="nav-dot d-blue"></span>What is Abstract</a>
+      <a class="nav-item" href="#abs-method"  onclick="go(this)"><span class="nav-dot d-green"></span>Abstract Method</a>
+      <a class="nav-item" href="#abs-concrete"onclick="go(this)"><span class="nav-dot d-yellow"></span>Concrete Method</a>
+      <a class="nav-item" href="#abs-vs-int"  onclick="go(this)"><span class="nav-dot sq d-orange"></span>Abstract vs Interface</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Interfaces</div>
+      <a class="nav-item" href="#int-intro"   onclick="go(this)"><span class="nav-dot d-blue"></span>What is Interface</a>
+      <a class="nav-item" href="#int-impl"    onclick="go(this)"><span class="nav-dot d-green"></span>implements Keyword</a>
+      <a class="nav-item" href="#int-multi"   onclick="go(this)"><span class="nav-dot d-yellow"></span>Multiple Interfaces</a>
+      <a class="nav-item" href="#int-vs-abs"  onclick="go(this)"><span class="nav-dot sq d-purple"></span>Interface vs Abstract</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Getters &amp; Setters</div>
+      <a class="nav-item" href="#gs-get"      onclick="go(this)"><span class="nav-dot d-cyan"></span>get (Getter)</a>
+      <a class="nav-item" href="#gs-set"      onclick="go(this)"><span class="nav-dot d-orange"></span>set (Setter)</a>
+      <a class="nav-item" href="#gs-rules"    onclick="go(this)"><span class="nav-dot sq d-blue"></span>Rules &amp; Examples</a>
+      <a class="nav-item" href="#gs-cases"    onclick="go(this)"><span class="nav-dot sq d-green"></span>Real Use Cases</a>
+      <a class="nav-item" href="#gs-vs"       onclick="go(this)"><span class="nav-dot tri"></span>vs Normal Property</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main" id="mainEl">
+
+    <!-- ══════ CLASSES ══════ -->
+
+    <div class="topic" id="cls-intro">
+      <div class="topic-header">
+        <div class="topic-icon ti-blue">{ }</div>
+        <div><div class="topic-title">TypeScript Classes</div><div class="topic-sub">Core Concept</div></div>
+      </div>
+      <div class="card">
+        <p>A <strong>class</strong> is a <strong>blueprint (template)</strong> for creating objects. The class is the design; objects are the real things created from that design.</p>
+        <div class="analogy"><strong>Analogy:</strong> Class = Car design blueprint &nbsp;·&nbsp; Object = Actual car on the road &nbsp;·&nbsp; <code>color</code> = property &nbsp;·&nbsp; <code>speed()</code> = method</div>
+        <div class="sub-h">Basic Structure</div>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Person</span> {
+  <span class="prop">name</span>: <span class="type">string</span>;
+  <span class="prop">age</span>:  <span class="type">number</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">name</span>: <span class="type">string</span>, <span class="prop">age</span>: <span class="type">number</span>) {
+    <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> name;
+    <span class="kw">this</span>.<span class="prop">age</span>  <span class="op">=</span> age;
+  }
+
+  <span class="fn">introduce</span>(): <span class="type">string</span> {
+    <span class="kw">return</span> <span class="str">`Hi, my name is <span class="kw">${</span><span class="kw">this</span>.<span class="prop">name</span><span class="kw">}</span> and I am <span class="kw">${</span><span class="kw">this</span>.<span class="prop">age</span><span class="kw">}</span> years old.`</span>;
+  }
+}
+
+<span class="kw">const</span> person1 <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">"Alice"</span>, <span class="num">25</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(person1.<span class="fn">introduce</span>()); <span class="cmt">// Hi, my name is Alice and I am 25 years old.</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="cls-members">
+      <div class="topic-header">
+        <div class="topic-icon ti-green">≡</div>
+        <div><div class="topic-title">Properties &amp; Methods</div><div class="topic-sub">Class Members</div></div>
+      </div>
+      <div class="card">
+        <div class="sub-h g">Properties — Variables inside the class</div>
+        <p>Store data unique to each object. Each object gets its own copy.</p>
+        <div class="code-block"><span class="prop">name</span>: <span class="type">string</span>;  <span class="cmt">// text</span>
+<span class="prop">age</span>:  <span class="type">number</span>;  <span class="cmt">// number</span></div>
+        <div class="sub-h g">Methods — Functions inside the class</div>
+        <p>Operate on the object's own data. Access them with dot notation: <code>obj.methodName()</code>.</p>
+        <div class="code-block"><span class="fn">introduce</span>(): <span class="type">string</span> {
+  <span class="kw">return</span> <span class="str">`Hi, I am <span class="kw">${</span><span class="kw">this</span>.<span class="prop">name</span><span class="kw">}</span>`</span>; <span class="cmt">// this = current object</span>
+}</div>
+        <div class="sub-h g">this keyword</div>
+        <p><code>this</code> always refers to the <strong>current object</strong>. <code>this.name</code> means "the name property of this specific object".</p>
+      </div>
+    </div>
+
+    <div class="topic" id="cls-ctor">
+      <div class="topic-header">
+        <div class="topic-icon ti-yellow">⚡</div>
+        <div><div class="topic-title">Constructor</div><div class="topic-sub">Automatic Initializer</div></div>
+      </div>
+      <div class="card">
+        <p>The <code>constructor</code> runs <strong>automatically</strong> the moment an object is created with <code>new</code>. It receives input values and assigns them to the object.</p>
+        <div class="code-block"><span class="fn">constructor</span>(<span class="prop">name</span>: <span class="type">string</span>, <span class="prop">age</span>: <span class="type">number</span>) {
+  <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> name;  <span class="cmt">// put given name into this object</span>
+  <span class="kw">this</span>.<span class="prop">age</span>  <span class="op">=</span> age;
+}</div>
+        <div class="sub-h y">Shortcut Constructor</div>
+        <p>Declare and assign properties in one line using access modifiers in parameters:</p>
+        <div class="code-block"><span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">name</span>: <span class="type">string</span>, <span class="kw">public</span> <span class="prop">age</span>: <span class="type">number</span>) {}
+<span class="cmt">// No need to write this.name = name — it happens automatically</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="cls-objects">
+      <div class="topic-header">
+        <div class="topic-icon ti-orange">◉</div>
+        <div><div class="topic-title">Creating Objects</div><div class="topic-sub">Instantiation with new</div></div>
+      </div>
+      <div class="card">
+        <p>Use the <code>new</code> keyword to create an instance of a class. This calls the constructor automatically.</p>
+        <div class="code-block"><span class="kw">const</span> p <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">"Alice"</span>, <span class="num">25</span>); <span class="cmt">// constructor runs</span>
+p.<span class="fn">introduce</span>();   <span class="cmt">// call method via dot</span>
+p.<span class="prop">name</span>;           <span class="cmt">// access property via dot</span></div>
+        <div class="sub-h o">Bank Account Example</div>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">BankAccount</span> {
+  <span class="prop">accountHolder</span>: <span class="type">string</span>;
+  <span class="prop">balance</span>: <span class="type">number</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">holder</span>: <span class="type">string</span>, <span class="prop">initial</span>: <span class="type">number</span>) {
+    <span class="kw">this</span>.<span class="prop">accountHolder</span> <span class="op">=</span> holder;
+    <span class="kw">this</span>.<span class="prop">balance</span> <span class="op">=</span> initial;
+  }
+
+  <span class="fn">deposit</span>(<span class="prop">amount</span>: <span class="type">number</span>): <span class="type">void</span> { <span class="kw">this</span>.<span class="prop">balance</span> <span class="op">+=</span> amount; }
+  <span class="fn">getBalance</span>(): <span class="type">string</span>          { <span class="kw">return</span> <span class="str">`Balance: <span class="kw">${</span><span class="kw">this</span>.<span class="prop">balance</span><span class="kw">}</span>`</span>; }
+}
+
+<span class="kw">const</span> acc <span class="op">=</span> <span class="kw">new</span> <span class="cls">BankAccount</span>(<span class="str">"John"</span>, <span class="num">500</span>);
+acc.<span class="fn">deposit</span>(<span class="num">200</span>); <span class="cmt">// balance = 700</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="cls-inherit">
+      <div class="topic-header">
+        <div class="topic-icon ti-purple">⇗</div>
+        <div><div class="topic-title">Inheritance</div><div class="topic-sub">extends keyword</div></div>
+      </div>
+      <div class="card">
+        <p>A child class <strong>reuses</strong> everything from a parent class using <code>extends</code>. Use <code>super()</code> inside the child constructor to call the parent constructor.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Student</span> <span class="kw">extends</span> <span class="cls">Person</span> {
+  <span class="prop">grade</span>: <span class="type">string</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">name</span>: <span class="type">string</span>, <span class="prop">age</span>: <span class="type">number</span>, <span class="prop">grade</span>: <span class="type">string</span>) {
+    <span class="kw">super</span>(name, age);       <span class="cmt">// call parent constructor</span>
+    <span class="kw">this</span>.<span class="prop">grade</span> <span class="op">=</span> grade;
+  }
+}
+
+<span class="kw">const</span> s <span class="op">=</span> <span class="kw">new</span> <span class="cls">Student</span>(<span class="str">"Rahul"</span>, <span class="num">20</span>, <span class="str">"A"</span>);
+s.<span class="fn">introduce</span>(); <span class="cmt">// ✅ inherited from Person</span></div>
+        <div class="chips">
+          <div class="chip"><span class="chip-ok">✓</span> Inherits name &amp; age</div>
+          <div class="chip"><span class="chip-ok">✓</span> Inherits introduce()</div>
+          <div class="chip"><span class="chip-ok">✓</span> Adds own grade property</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ ACCESS MODIFIERS ══════ -->
+    <div class="sec-label">Access Modifiers</div>
+
+    <div class="topic" id="mod-public">
+      <div class="topic-header">
+        <div class="topic-icon ti-green" style="font-size:11px">PUB</div>
+        <div><div class="topic-title"><span class="lbl lbl-pub">public</span></div><div class="topic-sub">Accessible Everywhere — Default</div></div>
+      </div>
+      <div class="card">
+        <p>If no modifier is written, it is <strong>public by default</strong>. Public members can be accessed from anywhere — inside the class, child classes, and outside.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Animal</span> {
+  <span class="kw">public</span> <span class="prop">name</span>: <span class="type">string</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">name</span>: <span class="type">string</span>) { <span class="kw">this</span>.<span class="prop">name</span> <span class="op">=</span> name; }
+
+  <span class="kw">public</span> <span class="fn">makeSound</span>(): <span class="type">void</span> {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`<span class="kw">${</span><span class="kw">this</span>.<span class="prop">name</span><span class="kw">}</span> makes a sound.`</span>);
+  }
+}
+
+<span class="kw">const</span> dog <span class="op">=</span> <span class="kw">new</span> <span class="cls">Animal</span>(<span class="str">'Dog'</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(dog.<span class="prop">name</span>); <span class="cmt">// ✅ Dog</span>
+dog.<span class="fn">makeSound</span>();        <span class="cmt">// ✅ Dog makes a sound.</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="mod-private">
+      <div class="topic-header">
+        <div class="topic-icon ti-red" style="font-size:11px">PRV</div>
+        <div><div class="topic-title"><span class="lbl lbl-priv">private</span></div><div class="topic-sub">Only Inside the Class</div></div>
+      </div>
+      <div class="card">
+        <p>Private members can only be accessed <strong>inside the class</strong> where declared. Expose them safely using a public method.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Person</span> {
+  <span class="kw">private</span> <span class="prop">ssn</span>: <span class="type">string</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">ssn</span>: <span class="type">string</span>) { <span class="kw">this</span>.<span class="prop">ssn</span> <span class="op">=</span> ssn; }
+
+  <span class="kw">public</span> <span class="fn">getSSN</span>(): <span class="type">string</span> {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">ssn</span>; <span class="cmt">// ✅ inside class — OK</span>
+  }
+}
+
+<span class="kw">const</span> p <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>(<span class="str">'123-45-6789'</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(p.<span class="fn">getSSN</span>()); <span class="cmt">// ✅ 123-45-6789</span></div>
+        <div class="err-note">❌ &nbsp;<code>p.ssn</code> — Cannot access private member outside the class</div>
+      </div>
+    </div>
+
+    <div class="topic" id="mod-protected">
+      <div class="topic-header">
+        <div class="topic-icon ti-yellow" style="font-size:11px">PRT</div>
+        <div><div class="topic-title"><span class="lbl lbl-prot">protected</span></div><div class="topic-sub">Inside Class + Child Classes</div></div>
+      </div>
+      <div class="card">
+        <p>Protected members work inside the class AND inside child (inherited) classes, but <strong>not</strong> from outside.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">User</span> {
+  <span class="kw">protected</span> <span class="prop">age</span>: <span class="type">number</span>;
+  <span class="fn">constructor</span>(<span class="prop">age</span>: <span class="type">number</span>) { <span class="kw">this</span>.<span class="prop">age</span> <span class="op">=</span> age; }
+}
+
+<span class="kw">class</span> <span class="cls">Employee</span> <span class="kw">extends</span> <span class="cls">User</span> {
+  <span class="fn">getRetirementAge</span>(): <span class="type">number</span> {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">age</span> <span class="op">+</span> <span class="num">65</span>; <span class="cmt">// ✅ child class — OK</span>
+  }
+}
+
+<span class="kw">const</span> emp <span class="op">=</span> <span class="kw">new</span> <span class="cls">Employee</span>(<span class="num">30</span>);
+emp.<span class="fn">getRetirementAge</span>(); <span class="cmt">// ✅ 95</span></div>
+        <div class="err-note">❌ &nbsp;<code>emp.age</code> — Cannot access protected member outside class hierarchy</div>
+      </div>
+    </div>
+
+    <div class="topic" id="mod-readonly">
+      <div class="topic-header">
+        <div class="topic-icon ti-purple">🔒</div>
+        <div><div class="topic-title"><span class="lbl lbl-ro">readonly</span></div><div class="topic-sub">Set Once, Never Change</div></div>
+      </div>
+      <div class="card">
+        <p>A <code>readonly</code> property can only be assigned once — at declaration or inside the constructor. After that, it is permanently fixed.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Car</span> {
+  <span class="kw">readonly</span> <span class="prop">make</span>:  <span class="type">string</span>;
+  <span class="kw">readonly</span> <span class="prop">model</span>: <span class="type">string</span>;
+
+  <span class="fn">constructor</span>(<span class="prop">make</span>: <span class="type">string</span>, <span class="prop">model</span>: <span class="type">string</span>) {
+    <span class="kw">this</span>.<span class="prop">make</span>  <span class="op">=</span> make;
+    <span class="kw">this</span>.<span class="prop">model</span> <span class="op">=</span> model;
+  }
+}
+<span class="kw">const</span> car <span class="op">=</span> <span class="kw">new</span> <span class="cls">Car</span>(<span class="str">'Toyota'</span>, <span class="str">'Corolla'</span>);</div>
+        <div class="err-note">❌ &nbsp;<code>car.make = "Honda"</code> — Cannot assign to a readonly property</div>
+        <div class="sub-h p">Interface &amp; ReadonlyArray</div>
+        <div class="code-block"><span class="kw">interface</span> <span class="cls">Point</span> { <span class="kw">readonly</span> <span class="prop">x</span>: <span class="type">number</span>; <span class="kw">readonly</span> <span class="prop">y</span>: <span class="type">number</span>; }
+<span class="kw">const</span> p1: <span class="cls">Point</span> <span class="op">=</span> { <span class="prop">x</span>: <span class="num">10</span>, <span class="prop">y</span>: <span class="num">20</span> };
+
+<span class="kw">const</span> nums: <span class="cls">ReadonlyArray</span><span class="op">&lt;</span><span class="type">number</span><span class="op">&gt;</span> <span class="op">=</span> [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+<span class="cmt">// nums.push(4) ❌  nums.pop() ❌  — fully immutable</span></div>
+        <div class="analogy"><strong>Real-life:</strong> Aadhaar / PAN Card — assigned once, can never be changed. That is <code>readonly</code>.</div>
+        <div class="sub-h p">readonly vs const</div>
+        <table>
+          <tr><th>Feature</th><th>readonly</th><th>const</th></tr>
+          <tr><td>Used in</td><td>Class / interface properties</td><td>Variables</td></tr>
+          <tr><td>After assignment</td><td class="no">Cannot change property</td><td class="no">Cannot reassign variable</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="topic" id="mod-table">
+      <div class="topic-header">
+        <div class="topic-icon ti-blue">≋</div>
+        <div><div class="topic-title">Access Modifier Summary</div><div class="topic-sub">Quick Reference Table</div></div>
+      </div>
+      <div class="card">
+        <table>
+          <tr><th>Modifier</th><th>Inside Class</th><th>Child Class</th><th>Outside</th></tr>
+          <tr><td><span class="lbl lbl-pub">public</span></td>   <td class="yes">✅ Yes</td><td class="yes">✅ Yes</td><td class="yes">✅ Yes</td></tr>
+          <tr><td><span class="lbl lbl-priv">private</span></td> <td class="yes">✅ Yes</td><td class="no">❌ No</td> <td class="no">❌ No</td></tr>
+          <tr><td><span class="lbl lbl-prot">protected</span></td><td class="yes">✅ Yes</td><td class="yes">✅ Yes</td><td class="no">❌ No</td></tr>
+          <tr><td><span class="lbl lbl-ro">readonly</span></td>   <td class="ro">✅ Read only</td><td class="ro">✅ Read only</td><td class="ro">✅ Read only</td></tr>
+        </table>
+        <div class="analogy" style="margin-top:12px">
+          <strong>Bank analogy:</strong> public = your name (everyone sees) &nbsp;·&nbsp; private = your PIN (only you) &nbsp;·&nbsp; protected = family access (limited) &nbsp;·&nbsp; readonly = your account ID (permanent)
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════ ABSTRACT CLASSES ══════ -->
+    <div class="sec-label">Abstract Classes</div>
+
+    <div class="topic" id="abs-intro">
+      <div class="topic-header">
+        <div class="topic-icon ti-blue">◈</div>
+        <div><div class="topic-title">Abstract Classes</div><div class="topic-sub">Blueprint for Other Classes</div></div>
+      </div>
+      <div class="card">
+        <p>An <code>abstract</code> class is a <strong>base class that provides rules + shared code</strong> to child classes. You <strong>cannot create an object</strong> of it directly — it must be extended.</p>
+        <div class="err-note">❌ &nbsp;<code>new Animal()</code> — Cannot instantiate an abstract class</div>
+        <div class="code-block"><span class="kw">abstract class</span> <span class="cls">Animal</span> {
+  <span class="kw">abstract</span> <span class="fn">makeSound</span>(): <span class="type">void</span>;  <span class="cmt">// no body — child MUST implement</span>
+
+  <span class="fn">move</span>(): <span class="type">void</span> {                   <span class="cmt">// concrete — shared code</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Moving...'</span>);
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Dog</span> <span class="kw">extends</span> <span class="cls">Animal</span> {
+  <span class="fn">makeSound</span>(): <span class="type">void</span> { <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">'Bark'</span>); }
+}
+
+<span class="kw">const</span> dog <span class="op">=</span> <span class="kw">new</span> <span class="cls">Dog</span>();
+dog.<span class="fn">makeSound</span>(); <span class="cmt">// Bark</span>
+dog.<span class="fn">move</span>();       <span class="cmt">// Moving...</span></div>
+        <div class="chips">
+          <div class="chip"><span class="chip-ok">✓</span> Code reuse</div>
+          <div class="chip"><span class="chip-ok">✓</span> Enforces structure</div>
+          <div class="chip"><span class="chip-ok">✓</span> Polymorphism support</div>
+          <div class="chip"><span class="chip-ok">✓</span> Central control</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic" id="abs-method">
+      <div class="topic-header">
+        <div class="topic-icon ti-green">⊘</div>
+        <div><div class="topic-title">Abstract Method</div><div class="topic-sub">No Body — Child Must Implement</div></div>
+      </div>
+      <div class="card">
+        <p>An abstract method has <strong>no body</strong>. It only declares the signature. Every child class <strong>must implement it</strong> — TypeScript gives a compile error if it doesn't.</p>
+        <div class="code-block"><span class="kw">abstract class</span> <span class="cls">Shape</span> {
+  <span class="kw">abstract</span> <span class="fn">getArea</span>(): <span class="type">number</span>;  <span class="cmt">// declare only — no code</span>
+
+  <span class="fn">printArea</span>(): <span class="type">void</span> {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`Area: <span class="kw">${</span><span class="kw">this</span>.<span class="fn">getArea</span>()<span class="kw">}</span>`</span>); <span class="cmt">// uses abstract method</span>
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Circle</span> <span class="kw">extends</span> <span class="cls">Shape</span> {
+  <span class="fn">constructor</span>(<span class="kw">private</span> <span class="prop">radius</span>: <span class="type">number</span>) { <span class="kw">super</span>(); }
+
+  <span class="fn">getArea</span>(): <span class="type">number</span> { <span class="kw">return</span> Math.PI <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>; }
+}
+
+<span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>).<span class="fn">printArea</span>(); <span class="cmt">// Area: 78.53...</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="abs-concrete">
+      <div class="topic-header">
+        <div class="topic-icon ti-yellow">⊕</div>
+        <div><div class="topic-title">Concrete Method</div><div class="topic-sub">Shared Implementation in Abstract Class</div></div>
+      </div>
+      <div class="card">
+        <p>A concrete (normal) method inside an abstract class <strong>has a body</strong>. Child classes inherit it and can use it without reimplementing. Abstract classes can also have properties and constructors.</p>
+        <div class="code-block"><span class="kw">abstract class</span> <span class="cls">Person</span> {
+  <span class="fn">constructor</span>(<span class="kw">public</span> <span class="prop">name</span>: <span class="type">string</span>) {}
+
+  <span class="kw">abstract</span> <span class="prop">role</span>: <span class="type">string</span>;       <span class="cmt">// abstract property</span>
+
+  <span class="fn">display</span>(): <span class="type">void</span> {              <span class="cmt">// concrete — shared</span>
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">`<span class="kw">${</span><span class="kw">this</span>.<span class="prop">name</span><span class="kw">}</span> is a <span class="kw">${</span><span class="kw">this</span>.<span class="prop">role</span><span class="kw">}</span>`</span>);
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Employee</span> <span class="kw">extends</span> <span class="cls">Person</span> {
+  <span class="prop">role</span> <span class="op">=</span> <span class="str">'Engineer'</span>;
+  <span class="fn">constructor</span>(<span class="prop">name</span>: <span class="type">string</span>, <span class="kw">public</span> <span class="prop">empCode</span>: <span class="type">number</span>) { <span class="kw">super</span>(name); }
+}
+
+<span class="kw">new</span> <span class="cls">Employee</span>(<span class="str">"James"</span>, <span class="num">100</span>).<span class="fn">display</span>(); <span class="cmt">// James is a Engineer</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="abs-vs-int">
+      <div class="topic-header">
+        <div class="topic-icon ti-orange">⇄</div>
+        <div><div class="topic-title">Abstract Class vs Interface</div><div class="topic-sub">When to Use Which</div></div>
+      </div>
+      <div class="card">
+        <table>
+          <tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr>
+          <tr><td>Methods with code</td><td class="yes">✅ Yes</td><td class="no">❌ No</td></tr>
+          <tr><td>Constructor</td><td class="yes">✅ Yes</td><td class="no">❌ No</td></tr>
+          <tr><td>Multiple use</td><td class="no">❌ extends one only</td><td class="yes">✅ implements A, B, C</td></tr>
+          <tr><td>Keyword</td><td><code>extends</code></td><td><code>implements</code></td></tr>
+          <tr><td>Use when</td><td>Shared logic + structure</td><td>Pure structure / contract</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ INTERFACES ══════ -->
+    <div class="sec-label">Interfaces</div>
+
+    <div class="topic" id="int-intro">
+      <div class="topic-header">
+        <div class="topic-icon ti-blue">{ }</div>
+        <div><div class="topic-title">Interface</div><div class="topic-sub">Contract / Rule Book</div></div>
+      </div>
+      <div class="card">
+        <p>An <strong>interface</strong> is a rule book. It defines what properties and methods a class <strong>must have</strong>, but contains <strong>no implementation</strong> (no code inside). Pure structure only.</p>
+        <div class="analogy"><strong>Analogy:</strong> Interface = Exam rules (must write answers, follow format) &nbsp;·&nbsp; Class = Student (actually writes the answers)</div>
+        <div class="code-block"><span class="kw">interface</span> <span class="cls">Shape</span> {
+  <span class="fn">calculateArea</span>(): <span class="type">number</span>; <span class="cmt">// must exist — no body</span>
+}</div>
+      </div>
+    </div>
+
+    <div class="topic" id="int-impl">
+      <div class="topic-header">
+        <div class="topic-icon ti-green">⌘</div>
+        <div><div class="topic-title">implements Keyword</div><div class="topic-sub">Class Agrees to Follow the Interface</div></div>
+      </div>
+      <div class="card">
+        <p>A class uses <code>implements</code> to declare it will follow an interface. It <strong>must implement every method and property</strong> defined, or TypeScript gives a compile error.</p>
+        <div class="code-block"><span class="kw">interface</span> <span class="cls">Shape</span> { <span class="fn">calculateArea</span>(): <span class="type">number</span>; }
+
+<span class="kw">class</span> <span class="cls">Rectangle</span> <span class="kw">implements</span> <span class="cls">Shape</span> {
+  <span class="fn">constructor</span>(<span class="kw">private</span> <span class="prop">w</span>: <span class="type">number</span>, <span class="kw">private</span> <span class="prop">h</span>: <span class="type">number</span>) {}
+
+  <span class="fn">calculateArea</span>(): <span class="type">number</span> {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">w</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">h</span>; <span class="cmt">// ✅ implemented</span>
+  }
+}
+
+<span class="fn">console</span>.<span class="fn">log</span>(<span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">5</span>, <span class="num">10</span>).<span class="fn">calculateArea</span>()); <span class="cmt">// 50</span></div>
+        <div class="err-note">❌ &nbsp;Missing any interface method → TypeScript compile error</div>
+        <div class="sub-h g">Payment Example</div>
+        <div class="code-block"><span class="kw">interface</span> <span class="cls">Payment</span> { <span class="fn">pay</span>(<span class="prop">amount</span>: <span class="type">number</span>): <span class="type">void</span>; }
+
+<span class="kw">class</span> <span class="cls">CreditCard</span> <span class="kw">implements</span> <span class="cls">Payment</span> {
+  <span class="fn">pay</span>(<span class="prop">amount</span>: <span class="type">number</span>): <span class="type">void</span> {
+    <span class="fn">console</span>.<span class="fn">log</span>(<span class="str">"Paid via credit card: "</span> <span class="op">+</span> amount);
+  }
+}</div>
+      </div>
+    </div>
+
+    <div class="topic" id="int-multi">
+      <div class="topic-header">
+        <div class="topic-icon ti-yellow">⋈</div>
+        <div><div class="topic-title">Multiple Interfaces</div><div class="topic-sub">implements A, B, C</div></div>
+      </div>
+      <div class="card">
+        <p>A class can <code>implement</code> multiple interfaces separated by commas. It must fulfill requirements from <strong>all</strong> of them. (Unlike <code>extends</code> — you can only extend one class.)</p>
+        <div class="code-block"><span class="kw">interface</span> <span class="cls">Shape</span> { <span class="fn">calculateArea</span>(): <span class="type">number</span>; }
+<span class="kw">interface</span> <span class="cls">Color</span> { <span class="prop">color</span>: <span class="type">string</span>; }
+
+<span class="kw">class</span> <span class="cls">Circle</span> <span class="kw">implements</span> <span class="cls">Shape</span>, <span class="cls">Color</span> {
+  <span class="prop">color</span>: <span class="type">string</span>;
+
+  <span class="fn">constructor</span>(<span class="kw">private</span> <span class="prop">radius</span>: <span class="type">number</span>, <span class="prop">color</span>: <span class="type">string</span>) {
+    <span class="kw">this</span>.<span class="prop">color</span> <span class="op">=</span> color;
+  }
+  <span class="fn">calculateArea</span>(): <span class="type">number</span> { <span class="kw">return</span> Math.PI <span class="op">*</span> <span class="kw">this</span>.<span class="prop">radius</span> <span class="op">**</span> <span class="num">2</span>; }
+}
+
+<span class="kw">const</span> c <span class="op">=</span> <span class="kw">new</span> <span class="cls">Circle</span>(<span class="num">5</span>, <span class="str">"red"</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(c.<span class="prop">color</span>);          <span class="cmt">// red</span>
+<span class="fn">console</span>.<span class="fn">log</span>(c.<span class="fn">calculateArea</span>()); <span class="cmt">// 78.5...</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="int-vs-abs">
+      <div class="topic-header">
+        <div class="topic-icon ti-purple">⇄</div>
+        <div><div class="topic-title">Interface vs Abstract Class</div><div class="topic-sub">Decision Guide</div></div>
+      </div>
+      <div class="card">
+        <table>
+          <tr><th>Feature</th><th>Interface</th><th>Abstract Class</th></tr>
+          <tr><td>Implementation</td><td class="no">❌ None</td><td class="yes">✅ Partial or full</td></tr>
+          <tr><td>Constructor</td><td class="no">❌ No</td><td class="yes">✅ Yes</td></tr>
+          <tr><td>Multiple use</td><td class="yes">✅ implements A, B, C</td><td class="no">❌ extends one only</td></tr>
+          <tr><td>Keyword</td><td><code>implements</code></td><td><code>extends</code></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════ GETTERS & SETTERS ══════ -->
+    <div class="sec-label">Getters &amp; Setters</div>
+
+    <div class="topic" id="gs-get">
+      <div class="topic-header">
+        <div class="topic-icon ti-cyan">↗</div>
+        <div><div class="topic-title">Getter — <code>get</code></div><div class="topic-sub">Safe Read Access</div></div>
+      </div>
+      <div class="card">
+        <p>A <code>get</code> method lets you <strong>read a private value safely</strong>. Accessed like a property (no parentheses), but internally it's a function.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Rectangle</span> {
+  <span class="fn">constructor</span>(<span class="kw">private</span> <span class="prop">_width</span>: <span class="type">number</span>, <span class="kw">private</span> <span class="prop">_height</span>: <span class="type">number</span>) {}
+
+  <span class="kw">get</span> <span class="fn">area</span>(): <span class="type">number</span> {
+    <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">_width</span> <span class="op">*</span> <span class="kw">this</span>.<span class="prop">_height</span>;
+  }
+}
+
+<span class="kw">const</span> rect <span class="op">=</span> <span class="kw">new</span> <span class="cls">Rectangle</span>(<span class="num">5</span>, <span class="num">10</span>);
+<span class="fn">console</span>.<span class="fn">log</span>(rect.<span class="prop">area</span>); <span class="cmt">// 50 — accessed like a property, not area()</span></div>
+        <div class="err-note">❌ &nbsp;No setter defined → <code>rect.area = 100</code> gives an error (read-only)</div>
+      </div>
+    </div>
+
+    <div class="topic" id="gs-set">
+      <div class="topic-header">
+        <div class="topic-icon ti-orange">↙</div>
+        <div><div class="topic-title">Setter — <code>set</code></div><div class="topic-sub">Safe Write with Validation</div></div>
+      </div>
+      <div class="card">
+        <p>A <code>set</code> method lets you <strong>update a private value with validation</strong>. You can reject invalid data before it reaches the property.</p>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Employee</span> {
+  <span class="kw">private</span> <span class="prop">_fullName</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">''</span>;
+
+  <span class="kw">get</span>  <span class="fn">fullName</span>(): <span class="type">string</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">_fullName</span>; }
+
+  <span class="kw">set</span>  <span class="fn">fullName</span>(<span class="prop">name</span>: <span class="type">string</span>) {
+    <span class="kw">if</span> (name &amp;&amp; name.<span class="prop">length</span> <span class="op">&gt;</span> <span class="num">0</span>) {
+      <span class="kw">this</span>.<span class="prop">_fullName</span> <span class="op">=</span> name;
+    } <span class="kw">else</span> {
+      <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">'Invalid name.'</span>);
+    }
+  }
+}
+
+<span class="kw">const</span> emp <span class="op">=</span> <span class="kw">new</span> <span class="cls">Employee</span>();
+emp.<span class="prop">fullName</span> <span class="op">=</span> <span class="str">"John Doe"</span>;  <span class="cmt">// setter called</span>
+<span class="fn">console</span>.<span class="fn">log</span>(emp.<span class="prop">fullName</span>);   <span class="cmt">// getter called → John Doe</span>
+emp.<span class="prop">fullName</span> <span class="op">=</span> <span class="str">""</span>;            <span class="cmt">// Invalid name.</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="gs-rules">
+      <div class="topic-header">
+        <div class="topic-icon ti-blue">✦</div>
+        <div><div class="topic-title">Rules &amp; Underscore Convention</div><div class="topic-sub">Important Constraints</div></div>
+      </div>
+      <div class="card">
+        <div class="chips">
+          <div class="chip"><span class="chip-ok">✓</span> Getter: no parameters, must return a value</div>
+          <div class="chip"><span class="chip-ok">✓</span> Setter: exactly one parameter</div>
+          <div class="chip"><span class="chip-ok">✓</span> Same name for get &amp; set</div>
+          <div class="chip"><span class="chip-ok">✓</span> Used like a property, not a method call</div>
+        </div>
+        <div class="sub-h">Underscore Convention</div>
+        <p>Private backing variables use <code>_name</code> (underscore prefix). The public getter/setter uses <code>name</code> without underscore.</p>
+        <div class="code-block"><span class="kw">private</span> <span class="prop">_age</span>: <span class="type">number</span>;          <span class="cmt">// private backing variable</span>
+<span class="kw">get</span>  <span class="fn">age</span>()        { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">_age</span>; }  <span class="cmt">// same name, no underscore</span>
+<span class="kw">set</span>  <span class="fn">age</span>(<span class="prop">v</span>: <span class="type">number</span>) { <span class="kw">this</span>.<span class="prop">_age</span> <span class="op">=</span> v; }</div>
+      </div>
+    </div>
+
+    <div class="topic" id="gs-cases">
+      <div class="topic-header">
+        <div class="topic-icon ti-green">⚙</div>
+        <div><div class="topic-title">Real Use Cases</div><div class="topic-sub">Validation Examples</div></div>
+      </div>
+      <div class="card">
+        <div class="sub-h g">Age Validation</div>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">User</span> {
+  <span class="kw">private</span> <span class="prop">_age</span>: <span class="type">number</span> <span class="op">=</span> <span class="num">0</span>;
+
+  <span class="kw">get</span>  <span class="fn">age</span>(): <span class="type">number</span> { <span class="kw">return</span> <span class="kw">this</span>.<span class="prop">_age</span>; }
+
+  <span class="kw">set</span>  <span class="fn">age</span>(<span class="prop">v</span>: <span class="type">number</span>) {
+    <span class="kw">if</span> (v <span class="op">&gt;</span> <span class="num">0</span> &amp;&amp; v <span class="op">&lt;</span> <span class="num">150</span>) <span class="kw">this</span>.<span class="prop">_age</span> <span class="op">=</span> v;
+    <span class="kw">else</span> <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Invalid age"</span>);
+  }
+}
+<span class="kw">const</span> u <span class="op">=</span> <span class="kw">new</span> <span class="cls">User</span>(); u.<span class="prop">age</span> <span class="op">=</span> <span class="num">25</span>; <span class="cmt">// ✅</span>  u.<span class="prop">age</span> <span class="op">=</span> <span class="op">-</span><span class="num">5</span>; <span class="cmt">// Invalid age</span></div>
+
+        <div class="sub-h g">Full Name Split</div>
+        <div class="code-block"><span class="kw">class</span> <span class="cls">Person</span> {
+  <span class="kw">private</span> <span class="prop">_first</span>: <span class="type">string</span> <span class="op">=</span> <span class="str">''</span>;
+  <span class="kw">private</span> <span class="prop">_last</span>:  <span class="type">string</span> <span class="op">=</span> <span class="str">''</span>;
+
+  <span class="kw">get</span>  <span class="fn">fullName</span>() { <span class="kw">return</span> <span class="str">`<span class="kw">${</span><span class="kw">this</span>.<span class="prop">_first</span><span class="kw">}</span> <span class="kw">${</span><span class="kw">this</span>.<span class="prop">_last</span><span class="kw">}</span>`</span>; }
+
+  <span class="kw">set</span>  <span class="fn">fullName</span>(<span class="prop">name</span>: <span class="type">string</span>) {
+    <span class="kw">const</span> parts <span class="op">=</span> name.<span class="fn">split</span>(<span class="str">" "</span>);
+    <span class="kw">if</span> (parts.<span class="prop">length</span> <span class="op">===</span> <span class="num">2</span>) [<span class="kw">this</span>.<span class="prop">_first</span>, <span class="kw">this</span>.<span class="prop">_last</span>] <span class="op">=</span> parts;
+    <span class="kw">else</span> <span class="fn">console</span>.<span class="fn">error</span>(<span class="str">"Invalid format"</span>);
+  }
+}
+<span class="kw">const</span> p <span class="op">=</span> <span class="kw">new</span> <span class="cls">Person</span>();
+p.<span class="prop">fullName</span> <span class="op">=</span> <span class="str">"John Doe"</span>; <span class="fn">console</span>.<span class="fn">log</span>(p.<span class="prop">fullName</span>); <span class="cmt">// John Doe</span>
+p.<span class="prop">fullName</span> <span class="op">=</span> <span class="str">"John"</span>;      <span class="cmt">// Invalid format</span></div>
+      </div>
+    </div>
+
+    <div class="topic" id="gs-vs">
+      <div class="topic-header">
+        <div class="topic-icon ti-orange">⇋</div>
+        <div><div class="topic-title">Getter/Setter vs Normal Property</div><div class="topic-sub">Why Use Them</div></div>
+      </div>
+      <div class="card">
+        <table>
+          <tr><th></th><th>Normal Property</th><th>Getter / Setter</th></tr>
+          <tr><td>Access</td><td>Direct (no control)</td><td>Controlled</td></tr>
+          <tr><td>Validation</td><td class="no">❌ Not possible</td><td class="yes">✅ Yes — full logic</td></tr>
+          <tr><td>Safety</td><td class="no">Unsafe — anyone can set</td><td class="yes">Safe — you decide what's valid</td></tr>
+          <tr><td>Encapsulation</td><td class="no">❌ No</td><td class="yes">✅ Yes</td></tr>
+        </table>
+        <div class="analogy" style="margin-top:12px">
+          <strong>Bank analogy:</strong> Getter = check balance &nbsp;·&nbsp; Setter = deposit / withdraw with bank rules enforced
+        </div>
+        <div class="sub-h o" style="margin-top:14px">Summary</div>
+        <div class="sum-grid">
+          <div class="sum-item"><div class="sum-lbl">get</div><div class="sum-val">Safe read</div></div>
+          <div class="sum-item"><div class="sum-lbl">set</div><div class="sum-val">Safe update</div></div>
+          <div class="sum-item"><div class="sum-lbl">Usage</div><div class="sum-val">Like a property</div></div>
+          <div class="sum-item"><div class="sum-lbl">Purpose</div><div class="sum-val">Control + Validate</div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function go(el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const link = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (link) {
+          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+          link.classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.25, rootMargin: '-10px 0px -65% 0px' });
+
+  document.querySelectorAll('.topic').forEach(t => obs.observe(t));
+</script>
+</body>
+</html>
