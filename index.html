@@ -2,210 +2,2253 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📚 Notes Hub – DBMS, OS, Java, CN & AIML</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>📚 Notes Hub</title>
+
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f9;
+    * {
+      box-sizing: border-box;
       margin: 0;
-      padding: 40px 20px;
-      color: #333;
+      padding: 0;
     }
-    h1 {
-      text-align: center;
-      color: #222;
-      margin-bottom: 40px;
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        radial-gradient(circle at top left, #e8f0ff, transparent 35%),
+        radial-gradient(circle at bottom right, #e8fff3, transparent 35%),
+        #f6f8fc;
+      color: #1f2937;
+      min-height: 100vh;
     }
-    .top-bar {
-      text-align: right;
-      margin-bottom: 15px;
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      max-width: 1200px;
+      margin: auto;
+      padding: 35px 25px 20px;
     }
-    .top-bar a {
-      background-color: #28a745;
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 16px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      font-size: 27px;
+
+      background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+      );
+
       color: white;
-      padding: 10px 18px;
-      border-radius: 6px;
+
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .brand h1 {
+      font-size: 27px;
+      font-weight: 750;
+      color: #111827;
+    }
+
+    .brand p {
+      margin-top: 4px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .test-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      background: #111827;
+      color: white;
+
       text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s;
+
+      padding: 12px 18px;
+      border-radius: 10px;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      transition: 0.25s;
     }
-    .top-bar a:hover {
-      background-color: #218838;
+
+    .test-btn:hover {
+      background: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
     }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-wrapper {
+      max-width: 1200px;
+      margin: 10px auto 25px;
+      padding: 0 25px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box span {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+
+      transform: translateY(-50%);
+
+      font-size: 19px;
+      color: #9ca3af;
+    }
+
+    #searchInput {
+      width: 100%;
+
+      padding: 16px 20px 16px 50px;
+
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+
+      background: rgba(255,255,255,0.9);
+
+      outline: none;
+
+      font-size: 15px;
+
+      box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+
+      transition: 0.25s;
+    }
+
+    #searchInput:focus {
+      border-color: #2563eb;
+
+      box-shadow:
+        0 0 0 4px rgba(37,99,235,0.08),
+        0 5px 20px rgba(0,0,0,0.05);
+    }
+
+
+    /* =========================
+       SUBJECT TABS
+    ========================= */
+
+    .tabs-wrapper {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 25px;
+    }
+
     .tabs {
-      text-align: center;
-      margin-bottom: 30px;
+      display: flex;
+      gap: 10px;
+
+      overflow-x: auto;
+
+      padding: 5px 2px 15px;
+
+      scrollbar-width: none;
     }
-    .tabs button {
-      background-color: #ddd;
-      border: none;
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 16px;
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      border: 1px solid #e5e7eb;
+
+      background: white;
+
+      color: #4b5563;
+
+      padding: 12px 18px;
+
+      border-radius: 12px;
+
       cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s;
+
+      white-space: nowrap;
+
+      font-size: 14px;
+      font-weight: 600;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      transition: 0.25s;
     }
-    .tabs button.active {
-      background-color: #007BFF;
+
+    .tab:hover {
+      border-color: #2563eb;
+      color: #2563eb;
+
+      transform: translateY(-2px);
+    }
+
+    .tab.active {
+      background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+      );
+
+      color: white;
+
+      border-color: transparent;
+
+      box-shadow: 0 8px 20px rgba(37,99,235,0.25);
+    }
+
+    .count {
+      font-size: 11px;
+
+      background: #f1f5f9;
+
+      color: #64748b;
+
+      padding: 3px 7px;
+
+      border-radius: 20px;
+    }
+
+    .tab.active .count {
+      background: rgba(255,255,255,0.2);
       color: white;
     }
+
+
+    /* =========================
+       MAIN CONTENT
+    ========================= */
+
+    main {
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 10px 25px 50px;
+    }
+
     .content-section {
       display: none;
-      max-width: 600px;
-      margin: 0 auto;
+
+      animation: fadeIn 0.3s ease;
     }
+
     .content-section.active {
       display: block;
     }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      margin: 10px 0;
-    }
-    a {
-      text-decoration: none;
-      background-color: #fff;
-      display: block;
-      padding: 12px 16px;
-      border-radius: 6px;
-      color: #007BFF;
-      border: 1px solid #ddd;
-      transition: all 0.2s;
-    }
-    a:hover {
-      background-color: #e9f0ff;
-    }
-  </style>
-</head>
-<body>
 
-  <!-- 🔹 Create Test Button -->
-  <div class="top-bar">
-    <a href="test.html">➕ Create Test</a>
-  </div>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
 
-  <h1>📚 Notes Hub – DBMS, OS, Java, CN & AIML</h1>
-
-  <div class="tabs">
-    <button onclick="switchTab('dbms')" class="active">DBMS Notes</button>
-    <button onclick="switchTab('os')">OS Notes</button>
-    <button onclick="switchTab('java')">Java Notes</button>
-    <button onclick="switchTab('cn')">CN Notes</button>
-    <button onclick="switchTab('react')">React Notes</button>
-    <button onclick="switchTab('aiml')">AIML Notes</button>
-  </div>
-
-  <div id="dbms" class="content-section active">
-    <ul>
-      <li><a href="DBMS_NOTE/introduction_to_dbms.html">Introduction to DBMS</a></li>
-      <li><a href="DBMS_NOTE/Relational_Model.html">Relational Model</a></li>
-      <li><a href="DBMS_NOTE/Data_Model_ER_Diagram.html">Data Model & ER Diagram</a></li>
-      <li><a href="DBMS_NOTE/SQL_QUERY.html">SQL Queries</a></li>
-      <li><a href="DBMS_NOTE/DBMS_Indexing.html">DBMS Indexing</a></li>
-      <li><a href="DBMS_NOTE/DBMS_Normalization.html">DBMS Normalization</a></li>
-      <li><a href="DBMS_NOTE/transactions and concurrency.html">Transactions and Concurrency</a></li>
-      <li><a href="DBMS_NOTE/Serialization, Conflict Equivalence, Concurrency Protocols.html">Serialization & Concurrency Protocols</a></li>
-      <li><a href="DBMS_NOTE/recovery.html">Recovery</a></li>
-      <li><a href="DBMS_NOTE/Procedural SQL.html">Procedural SQL</a></li>
-      <li><a href="DBMS_NOTE/Regular Expressions (REGEXP).html">Regular Expressions (REGEXP)</a></li>
-      <li><a href="DBMS_NOTE/Window_Functions.html">Window Functions</a></li>
-      <li><a href="DBMS_NOTE/mongodb.html">MongoDB</a></li>
-    </ul>
-  </div>
-
-  <div id="os" class="content-section">
-    <ul>
-      <li><a href="OS_NOTE/Introduction_And_Type_of_OS.html">Introduction and Types of OS</a></li>
-      <li><a href="OS_NOTE/Boot Process_OS Architecture_Memory Hierarchy.html">Boot Process, OS Architecture & Memory Hierarchy</a></li>
-      <li><a href="OS_NOTE/Multi-Tasking_Multi-Threading_Kernel_System_Calls.html">Multitasking, Kernel & System Calls</a></li>
-      <li><a href="OS_NOTE/process_state_context.html">Process State & Context Switching</a></li>
-      <li><a href="OS_NOTE/Process Scheduling.html">Process Scheduling</a></li>
-      <li><a href="OS_NOTE/Process_Synchronization.html">Process Synchronization</a></li>
-      <li><a href="OS_NOTE/deadlock.html">Deadlock</a></li>
-      <li><a href="OS_NOTE/contigous_memory_management.html">Contiguous Memory Management</a></li>
-      <li><a href="OS_NOTE/Paging.html">Paging</a></li>
-      <li><a href="OS_NOTE/page_replacement.html">Page Replacement</a></li>
-      <li><a href="OS_NOTE/Virtual_memory.html">Virtual Memory</a></li>
-    </ul>
-  </div>
-
-  <div id="java" class="content-section">
-    <ul>
-      <li><a href="java/introduction,class,object,access modifier,getter,setter and encapsulation.html">Intro, Class & Encapsulation</a></li>
-      <li><a href="java/Java Keywords.html">Java Keywords</a></li>
-      <li><a href="java/Constructors,Cloning,deep and shallow copy.html">Constructors, Cloning & Copy</a></li>
-      <li><a href="java/Inheritance.html">Inheritance</a></li>
-      <li><a href="java/Polymorphism.html">Polymorphism</a></li>
-      <li><a href="java/Abstraction.html">Abstraction</a></li>
-      <li><a href="java/Wrapper Classes and Why java is not full object orianted.html">Wrapper Classes & Object Orientation</a></li>
-      <li><a href="java/Java Memory Management.html">Java Memory Management</a></li>
-      <li><a href="java/Exception Handling.html">Exception Handling</a></li>
-      <li><a href="java/Java_topics.html">Java Topics</a></li>
-      <li><a href="java/IO Streams and File Handling.html">IO Streams & File Handling</a></li>
-      <li><a href="java/Relationships_Coupling.html">Relationships & Coupling</a></li>
-      <li><a href="java/Java_Architecture.html">Java Architecture</a></li>
-      <li><a href="java/Adavanced_Java.html">Advanced Java</a></li>
-      <li><a href="java/Collections_FrameWork.html">Collections Framework</a></li>
-      <li><a href="java/importantTopic.html">important Topic</a></li>
-    </ul>
-  </div>
-
-  <div id="cn" class="content-section">
-    <ul>
-      <li><a href="CN/Introduction to Networking.html">Introduction to Networking</a></li>
-      <li><a href="CN/Network Devices.html">Network Devices</a></li>
-      <li><a href="CN/syllabus.html">Syllabus</a></li>
-      <li><a href="CN/Application_Layer_Protocols.html">Application Layer Protocols</a></li>
-      <li><a href="CN/IP_Addressing_Subnetting.html">IP Addressing & Subnetting</a></li>
-      <li><a href="CN/Networking_security.html">Networking Security</a></li>
-      <li><a href="CN/Transport_Layer_tcp_udp.html">Transport Layer (TCP/UDP)</a></li>
-      <li><a href="CN/VPN.html">VPN</a></li>
-    </ul>
-  </div>
-
-  <div id="WebDev" class="content-section">
-    <ul>
-      <li><a href="react/interview_qeastion.html">React Interview Questions</a></li>
-      <li><a href="react/coding.html">ReactJS Introduction</a></li>
-      <li><a href="react/QSet1.html">Questions set 1</a></li>
-      <li><a href="react/Qset2.html"> Questions set 2</a></li>
-      <li><a href="react/Qset3.html">Questions set 3</a></li>
-      <li><a href="react/BackEnd.html">BackEnd</a></li>
-      <li><a href="react/Express.html">Express.js</a></li>
-    </ul>
-  </div>
-
-  <div id="aiml" class="content-section">
-    <ul>
-      <li><a href="AIML/Interview_question.html">AI ML Interview Questions</a></li>
-      <li><a href="AIML/pyhton_oops.html">pyhton_oops</a></li>
-      <li><a href="AIML/python.html">python basic</a></li>
-    </ul>
-  </div>
-
-  <script>
-    function switchTab(tabId) {
-      document.querySelectorAll('.tabs button').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-
-      if (tabId === 'dbms') {
-        document.querySelector('.tabs button:nth-child(1)').classList.add('active');
-      } else if (tabId === 'os') {
-        document.querySelector('.tabs button:nth-child(2)').classList.add('active');
-      } else if (tabId === 'java') {
-        document.querySelector('.tabs button:nth-child(3)').classList.add('active');
-      } else if (tabId === 'cn') {
-        document.querySelector('.tabs button:nth-child(4)').classList.add('active');
-      } else if (tabId === 'react') {
-        document.querySelector('.tabs button:nth-child(5)').classList.add('active');
-      } else if (tabId === 'aiml') {
-        document.querySelector('.tabs button:nth-child(6)').classList.add('active');
+      to {
+        opacity: 1;
+        transform: translateY(0);
       }
     }
+
+
+    /* =========================
+       SECTION HEADER
+    ========================= */
+
+    .section-header {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin: 15px 0 20px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .icon {
+      width: 43px;
+      height: 43px;
+
+      border-radius: 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: #eff6ff;
+
+      font-size: 21px;
+    }
+
+    .section-title h2 {
+      font-size: 21px;
+      color: #111827;
+    }
+
+    .section-title p {
+      color: #6b7280;
+      font-size: 13px;
+
+      margin-top: 3px;
+    }
+
+    .topic-label {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+
+    /* =========================
+       NOTES GRID
+    ========================= */
+
+    .notes-list {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+    .note-card {
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      gap: 14px;
+
+      padding: 16px;
+
+      background: rgba(255,255,255,0.9);
+
+      border: 1px solid #e5e7eb;
+
+      border-radius: 13px;
+
+      text-decoration: none;
+
+      color: #1f2937;
+
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.035);
+
+      transition:
+        transform 0.2s,
+        box-shadow 0.2s,
+        border-color 0.2s;
+    }
+
+    .note-card:hover {
+      transform: translateY(-3px);
+
+      border-color: #bfdbfe;
+
+      box-shadow:
+        0 12px 28px rgba(37,99,235,0.10);
+    }
+
+    .note-number {
+      min-width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 10px;
+
+      background: #eff6ff;
+
+      color: #2563eb;
+
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .note-info {
+      flex: 1;
+    }
+
+    .note-title {
+      font-size: 15px;
+      font-weight: 650;
+
+      color: #1f2937;
+    }
+
+    .note-subtitle {
+      font-size: 12px;
+
+      color: #9ca3af;
+
+      margin-top: 3px;
+    }
+
+    .arrow {
+      color: #9ca3af;
+
+      font-size: 18px;
+
+      transition: 0.2s;
+    }
+
+    .note-card:hover .arrow {
+      color: #2563eb;
+      transform: translateX(3px);
+    }
+
+
+    /* =========================
+       SPRING BOOT
+    ========================= */
+
+    .springboot .section-title .icon {
+      background: #ecfdf5;
+    }
+
+    .springboot .note-number {
+      background: #ecfdf5;
+      color: #16a34a;
+    }
+
+    .springboot .note-card:hover {
+      border-color: #86efac;
+
+      box-shadow:
+        0 12px 28px rgba(22,163,74,0.10);
+    }
+
+    .springboot .note-card:hover .arrow {
+      color: #16a34a;
+    }
+
+    .spring-path {
+      margin-bottom: 22px;
+
+      padding: 14px 18px;
+
+      border-radius: 12px;
+
+      background: linear-gradient(
+        135deg,
+        #ecfdf5,
+        #f0fdf4
+      );
+
+      border: 1px solid #bbf7d0;
+
+      color: #166534;
+
+      font-size: 13px;
+    }
+
+    .spring-path strong {
+      font-weight: 700;
+    }
+
+
+    /* =========================
+       EMPTY SEARCH
+    ========================= */
+
+    .no-result {
+      display: none;
+
+      text-align: center;
+
+      padding: 50px 20px;
+
+      color: #6b7280;
+    }
+
+    .no-result .emoji {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+      header {
+        padding-top: 25px;
+      }
+
+      .header-top {
+        align-items: flex-start;
+      }
+
+      .brand h1 {
+        font-size: 21px;
+      }
+
+      .brand p {
+        font-size: 12px;
+      }
+
+      .brand-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+      }
+
+      .test-btn {
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+
+      .notes-list {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        align-items: flex-start;
+      }
+
+      .topic-label {
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header>
+
+    <div class="header-top">
+
+      <div class="brand">
+
+        <div class="brand-icon">
+          📚
+        </div>
+
+        <div>
+          <h1>Notes Hub</h1>
+
+          <p>
+            DBMS • OS • Java • CN • React • AIML • Spring Boot
+          </p>
+        </div>
+
+      </div>
+
+
+      <a href="test.html" class="test-btn">
+        ➕ Create Test
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       SEARCH
+  ========================= -->
+
+  <div class="search-wrapper">
+
+    <div class="search-box">
+
+      <span>🔍</span>
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search notes, topics..."
+      >
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       TABS
+  ========================= -->
+
+  <div class="tabs-wrapper">
+
+    <div class="tabs">
+
+      <button
+        class="tab active"
+        onclick="switchTab('dbms', this)"
+      >
+        🗄️ DBMS
+        <span class="count">13</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('os', this)"
+      >
+        💻 OS
+        <span class="count">11</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('java', this)"
+      >
+        ☕ Java
+        <span class="count">16</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('cn', this)"
+      >
+        🌐 CN
+        <span class="count">8</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('react', this)"
+      >
+        ⚛️ React
+        <span class="count">7</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('aiml', this)"
+      >
+        🤖 AIML
+        <span class="count">3</span>
+      </button>
+
+
+      <button
+        class="tab"
+        onclick="switchTab('springboot', this)"
+      >
+        🍃 Spring Boot
+        <span class="count">9</span>
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
+  <main>
+
+
+    <!-- =====================================================
+         DBMS
+    ====================================================== -->
+
+    <section
+      id="dbms"
+      class="content-section active"
+    >
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">
+            🗄️
+          </div>
+
+          <div>
+
+            <h2>DBMS Notes</h2>
+
+            <p>
+              Database Management System
+            </p>
+
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          13 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="DBMS_NOTE/introduction_to_dbms.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Introduction to DBMS
+            </div>
+            <div class="note-subtitle">
+              Database fundamentals
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Relational_Model.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Relational Model
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Data_Model_ER_Diagram.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Data Model & ER Diagram
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/SQL_QUERY.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              SQL Queries
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/DBMS_Indexing.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              DBMS Indexing
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/DBMS_Normalization.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              DBMS Normalization
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/transactions and concurrency.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Transactions & Concurrency
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Serialization, Conflict Equivalence, Concurrency Protocols.html">
+
+          <div class="note-number">08</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Serialization & Concurrency Protocols
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/recovery.html">
+
+          <div class="note-number">09</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Recovery
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Procedural SQL.html">
+
+          <div class="note-number">10</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Procedural SQL
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Regular Expressions (REGEXP).html">
+
+          <div class="note-number">11</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Regular Expressions
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/Window_Functions.html">
+
+          <div class="note-number">12</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Window Functions
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="DBMS_NOTE/mongodb.html">
+
+          <div class="note-number">13</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              MongoDB
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         OS
+    ====================================================== -->
+
+    <section id="os" class="content-section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">💻</div>
+
+          <div>
+            <h2>Operating System</h2>
+            <p>OS concepts and fundamentals</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          11 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="OS_NOTE/Introduction_And_Type_of_OS.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Introduction and Types of OS
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Boot Process_OS Architecture_Memory Hierarchy.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Boot Process, Architecture & Memory Hierarchy
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Multi-Tasking_Multi-Threading_Kernel_System_Calls.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Multitasking, Multithreading & Kernel
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/process_state_context.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Process State & Context Switching
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Process Scheduling.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Process Scheduling
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Process_Synchronization.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Process Synchronization
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/deadlock.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Deadlock
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/contigous_memory_management.html">
+
+          <div class="note-number">08</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Contiguous Memory Management
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Paging.html">
+
+          <div class="note-number">09</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Paging
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/page_replacement.html">
+
+          <div class="note-number">10</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Page Replacement
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="OS_NOTE/Virtual_memory.html">
+
+          <div class="note-number">11</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Virtual Memory
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         JAVA
+    ====================================================== -->
+
+    <section id="java" class="content-section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">☕</div>
+
+          <div>
+            <h2>Java Notes</h2>
+            <p>Core Java & Advanced Java</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          16 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="java/introduction,class,object,access modifier,getter,setter and encapsulation.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Intro, Class & Encapsulation
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Java Keywords.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Java Keywords
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Constructors,Cloning,deep and shallow copy.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Constructors, Cloning & Copy
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Inheritance.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Inheritance
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Polymorphism.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Polymorphism
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Abstraction.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Abstraction
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Wrapper Classes and Why java is not full object orianted.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Wrapper Classes & Object Orientation
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Java Memory Management.html">
+
+          <div class="note-number">08</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Java Memory Management
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Exception Handling.html">
+
+          <div class="note-number">09</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Exception Handling
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Java_topics.html">
+
+          <div class="note-number">10</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Java Topics
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/IO Streams and File Handling.html">
+
+          <div class="note-number">11</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              IO Streams & File Handling
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Relationships_Coupling.html">
+
+          <div class="note-number">12</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Relationships & Coupling
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Java_Architecture.html">
+
+          <div class="note-number">13</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Java Architecture
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Adavanced_Java.html">
+
+          <div class="note-number">14</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Advanced Java
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/Collections_FrameWork.html">
+
+          <div class="note-number">15</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Collections Framework
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="java/importantTopic.html">
+
+          <div class="note-number">16</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Important Topics
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CN
+    ====================================================== -->
+
+    <section id="cn" class="content-section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">🌐</div>
+
+          <div>
+            <h2>Computer Networks</h2>
+            <p>Networking concepts & protocols</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          8 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="CN/Introduction to Networking.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Introduction to Networking
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/Network Devices.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Network Devices
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/syllabus.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Networking Syllabus
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/Application_Layer_Protocols.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Application Layer Protocols
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/IP_Addressing_Subnetting.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              IP Addressing & Subnetting
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/Networking_security.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Networking Security
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/Transport_Layer_tcp_udp.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Transport Layer — TCP / UDP
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="CN/VPN.html">
+
+          <div class="note-number">08</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              VPN
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         REACT
+    ====================================================== -->
+
+    <section id="react" class="content-section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">⚛️</div>
+
+          <div>
+            <h2>React Notes</h2>
+            <p>ReactJS & Backend</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          7 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="react/coding.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              ReactJS Introduction
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/QSet1.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Questions Set 1
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/Qset2.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Questions Set 2
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/Qset3.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Questions Set 3
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/BackEnd.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Backend
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/Express.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Express.js
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="react/interview_qeastion.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              React Interview Questions
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         AIML
+    ====================================================== -->
+
+    <section id="aiml" class="content-section">
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">🤖</div>
+
+          <div>
+            <h2>AI / ML Notes</h2>
+            <p>Python & Machine Learning</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          3 Topics
+        </span>
+
+      </div>
+
+
+      <div class="notes-list">
+
+        <a class="note-card"
+           href="AIML/python.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Python Basics
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="AIML/pyhton_oops.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              Python OOPs
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="AIML/Interview_question.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+            <div class="note-title">
+              AI / ML Interview Questions
+            </div>
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SPRING BOOT
+    ====================================================== -->
+
+    <section
+      id="springboot"
+      class="content-section springboot"
+    >
+
+      <div class="section-header">
+
+        <div class="section-title">
+
+          <div class="icon">🍃</div>
+
+          <div>
+            <h2>Spring Boot</h2>
+            <p>Java Backend Development</p>
+          </div>
+
+        </div>
+
+        <span class="topic-label">
+          9 Topics
+        </span>
+
+      </div>
+
+
+      <!-- Learning path -->
+
+      <div class="spring-path">
+
+        🍃 <strong>Recommended Learning Path:</strong>
+
+        Spring Basics
+        →
+        Spring Boot
+        →
+        JDBC
+        →
+        MySQL
+        →
+        Data Persistence
+        →
+        REST API
+        →
+        Validation
+        →
+        Security
+        →
+        Project
+
+      </div>
+
+
+      <div class="notes-list">
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_Basics.html">
+
+          <div class="note-number">01</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring Basics
+            </div>
+
+            <div class="note-subtitle">
+              Core Spring concepts
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_starter.html">
+
+          <div class="note-number">02</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring Boot Starter & Project Setup
+            </div>
+
+            <div class="note-subtitle">
+              Create your first Spring Boot application
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/JDBC.html">
+
+          <div class="note-number">03</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              JDBC
+            </div>
+
+            <div class="note-subtitle">
+              Java Database Connectivity
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_MySql.html">
+
+          <div class="note-number">04</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring + MySQL
+            </div>
+
+            <div class="note-subtitle">
+              Connect Spring Boot with database
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_Data_Persistence.html">
+
+          <div class="note-number">05</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring Data Persistence
+            </div>
+
+            <div class="note-subtitle">
+              JPA & data persistence
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_REST_API.html">
+
+          <div class="note-number">06</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring REST API
+            </div>
+
+            <div class="note-subtitle">
+              Build RESTful backend APIs
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_Validation_Exception_handling.html">
+
+          <div class="note-number">07</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Validation & Exception Handling
+            </div>
+
+            <div class="note-subtitle">
+              Handle invalid data and errors
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_Security.html">
+
+          <div class="note-number">08</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring Security
+            </div>
+
+            <div class="note-subtitle">
+              Authentication & authorization
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+        <a class="note-card"
+           href="SpringBoot/Spring_Shopping_App.html">
+
+          <div class="note-number">09</div>
+
+          <div class="note-info">
+
+            <div class="note-title">
+              Spring Boot Shopping App
+            </div>
+
+            <div class="note-subtitle">
+              Complete practical project
+            </div>
+
+          </div>
+
+          <div class="arrow">→</div>
+
+        </a>
+
+
+      </div>
+
+    </section>
+
+
+    <!-- SEARCH EMPTY STATE -->
+
+    <div id="noResult" class="no-result">
+
+      <div class="emoji">🔍</div>
+
+      <h3>No notes found</h3>
+
+      <p>
+        Try searching with another topic name.
+      </p>
+
+    </div>
+
+
+  </main>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+
+    function switchTab(tabId, button) {
+
+      // Hide all sections
+      document
+        .querySelectorAll(".content-section")
+        .forEach(section => {
+          section.classList.remove("active");
+        });
+
+
+      // Remove active from buttons
+      document
+        .querySelectorAll(".tab")
+        .forEach(tab => {
+          tab.classList.remove("active");
+        });
+
+
+      // Activate selected section
+      document
+        .getElementById(tabId)
+        .classList.add("active");
+
+
+      // Activate selected button
+      button.classList.add("active");
+
+
+      // Clear search
+      document.getElementById("searchInput").value = "";
+
+      showAllNotes();
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    document
+      .getElementById("searchInput")
+      .addEventListener("input", function () {
+
+        const searchText =
+          this.value.toLowerCase().trim();
+
+
+        const activeSection =
+          document.querySelector(
+            ".content-section.active"
+          );
+
+
+        if (!activeSection) return;
+
+
+        const cards =
+          activeSection.querySelectorAll(
+            ".note-card"
+          );
+
+
+        let found = 0;
+
+
+        cards.forEach(card => {
+
+          const title =
+            card
+              .querySelector(".note-title")
+              .textContent
+              .toLowerCase();
+
+
+          const subtitle =
+            card
+              .querySelector(".note-subtitle");
+
+          const subtitleText =
+            subtitle
+              ? subtitle.textContent.toLowerCase()
+              : "";
+
+
+          if (
+            title.includes(searchText) ||
+            subtitleText.includes(searchText)
+          ) {
+
+            card.style.display = "flex";
+
+            found++;
+
+          } else {
+
+            card.style.display = "none";
+
+          }
+
+        });
+
+
+        const noResult =
+          document.getElementById("noResult");
+
+
+        if (found === 0) {
+
+          noResult.style.display = "block";
+
+        } else {
+
+          noResult.style.display = "none";
+
+        }
+
+      });
+
+
+    function showAllNotes() {
+
+      document
+        .querySelectorAll(".note-card")
+        .forEach(card => {
+
+          card.style.display = "flex";
+
+        });
+
+      document
+        .getElementById("noResult")
+        .style.display = "none";
+    }
+
   </script>
 
 </body>
