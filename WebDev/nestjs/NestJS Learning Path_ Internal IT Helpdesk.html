@@ -163,6 +163,45 @@ nav.open{transform:none}
 <a href="#p7i">9. Architecture + structure</a>
 <a href="#p7j">10. Checklist + quiz</a>
 <a href="#p7k">11. Next lesson</a>
+<div class="grp">Phase 8: Pagination + Search</div>
+<a href="#p8a">1. Overview + Pagination</a>
+<a href="#p8b">2. Search + Filtering</a>
+<a href="#p8c">3. Sorting</a>
+<a href="#p8d">4. Query DTO</a>
+<a href="#p8e">5. Controller update</a>
+<a href="#p8f">6. Service implementation</a>
+<a href="#p8g">7. Service explained</a>
+<a href="#p8h">8. Response + Postman tests</a>
+<a href="#p8i">9. Indexing + performance</a>
+<a href="#p8j">10. Methods + Promise.all</a>
+<a href="#p8k">11. Checklist + quiz</a>
+<a href="#p8l">12. Next lesson</a>
+<div class="grp">Phase 9: Audit Logs</div>
+<a href="#p9a">1. What is an Audit Log?</a>
+<a href="#p9b">2. Database + folder structure</a>
+<a href="#p9c">3. Enum + Schema</a>
+<a href="#p9d">4. Module + Service</a>
+<a href="#p9e">5. Inject into TicketsService</a>
+<a href="#p9f">6. Log create + update</a>
+<a href="#p9g">7. Log status, assign, delete</a>
+<a href="#p9h">8. Activity + Admin APIs</a>
+<a href="#p9i">9. Security + Postman tests</a>
+<a href="#p9j">10. Audit vs Activity, checklist</a>
+<a href="#p9k">11. Next lesson</a>
+<div class="grp">Phase 11: Ticket Comments</div>
+<a href="#p11a">1. Overview, DB and API design</a>
+<a href="#p11b">2. Access control + structure</a>
+<a href="#p11c">3. Comment Schema</a>
+<a href="#p11d">4. DTOs</a>
+<a href="#p11e">5. Module wiring + audit enum</a>
+<a href="#p11f">6. CommentsService + create</a>
+<a href="#p11g">7. Get comments (pagination)</a>
+<a href="#p11h">8. Update + soft delete</a>
+<a href="#p11i">9. CommentsController</a>
+<a href="#p11j">10. Postman + Compass</a>
+<a href="#p11k">11. Production concepts</a>
+<a href="#p11l">12. Checklist, questions, roadmap</a>
+<a href="#p11m">13. Next lesson</a>
 <!-- NEW NAV LINKS GO ABOVE THIS LINE -->
 </nav>
 <main>
@@ -5148,6 +5187,2512 @@ export class TicketsService {
 <div class="note"><b>Practice task:</b> first verify one successful API response and one error response in the standard format in Phase 7. Then in Phase 8 we will make the ticket listing industry-style.</div>
 </section>
 
+<section class="lesson" id="p8a">
+<span class="tag">Phase 8 · Lesson 1</span>
+<h2>1. Overview and Pagination</h2>
+<p>In this phase we make the Tickets API of our Internal IT Helpdesk project industry-style. So far we can create, update and delete tickets and do role-based access. But in real projects, when the database has 10,000 or 1 lakh tickets, we do not return all records at once.</p>
+<p>We will build the API with:</p>
+<ol>
+<li><b>Pagination:</b> return limited records at a time.</li>
+<li><b>Search:</b> search tickets by title and description.</li>
+<li><b>Filtering:</b> filter tickets by status, priority and category.</li>
+<li><b>Sorting:</b> order by newest, oldest and priority.</li>
+<li><b>Metadata:</b> give total records, total pages and next/previous page information.</li>
+<li><b>Role-based filtering:</b> show an Employee their own tickets, a Technician the assigned tickets and an Admin all tickets.</li>
+</ol>
+<p>Example API:</p>
+<pre><code>GET /api/v1/tickets?page=1&amp;limit=10&amp;search=laptop&amp;status=open&amp;priority=high&amp;sortBy=createdAt&amp;sortOrder=desc</code></pre>
+<p>Meaning: 10 tickets of the first page, whose title/description has <code>laptop</code>, status is <code>open</code> and priority is <code>high</code>. Results come newest first.</p>
+<h3>What is pagination?</h3>
+<p>Suppose the database has 1000 tickets. If we send all 1000 tickets to the frontend:</p>
+<ul>
+<li>The API response becomes large.</li>
+<li>Unnecessary data is transferred over the network.</li>
+<li>Frontend rendering can become slow.</li>
+<li>Unnecessary load falls on the database.</li>
+</ul>
+<p>So we divide the records into pages. Example: 25 tickets, 10 records per page.</p>
+<pre><code>PAGE 1 (10 records): 1  2  3  4  5  6  7  8  9  10
+PAGE 2 (10 records): 11 12 13 14 15 16 17 18 19 20
+PAGE 3 (5 records):  21 22 23 24 25
+
+Total 25 records → 3 pages</code></pre>
+<h3>Two important parameters</h3>
+<ul>
+<li><code>page</code>: which page do you want?</li>
+<li><code>limit</code>: how many records do you want in one page?</li>
+</ul>
+<div class="sc"><table>
+<tr><th>Request</th><th>Meaning</th></tr>
+<tr><td><code>?page=1&amp;limit=10</code></td><td>First 10 records</td></tr>
+<tr><td><code>?page=2&amp;limit=10</code></td><td>Next 10 records</td></tr>
+<tr><td><code>?page=3&amp;limit=10</code></td><td>Next 10 records</td></tr>
+</table></div>
+<h3>Skip formula</h3>
+<p>MongoDB uses <code>.skip()</code>.</p>
+<pre><code>skip = (page - 1) × limit</code></pre>
+<div class="sc"><table>
+<tr><th>Page</th><th>Limit</th><th>Skip</th></tr>
+<tr><td>1</td><td>10</td><td>0</td></tr>
+<tr><td>2</td><td>10</td><td>10</td></tr>
+<tr><td>3</td><td>10</td><td>20</td></tr>
+<tr><td>4</td><td>10</td><td>30</td></tr>
+</table></div>
+<pre><code>const page = 2;
+const limit = 10;
+
+const skip = (page - 1) * limit;
+
+const tickets = await this.ticketModel
+  .find()
+  .skip(skip)
+  .limit(limit);</code></pre>
+<ul>
+<li><code>.find()</code> finds matching documents in the database.</li>
+<li><code>.skip(10)</code> skips the first 10 documents.</li>
+<li><code>.limit(10)</code> returns at most 10 documents.</li>
+<li><code>await</code> waits for the database operation to complete.</li>
+</ul>
+</section>
+
+<section class="lesson" id="p8b">
+<span class="tag">Phase 8 · Lesson 2</span>
+<h2>2. Search and Filtering</h2>
+<h3>Search</h3>
+<p>Search is used when a user wants to find a particular ticket by title or description. Example database:</p>
+<pre><code>[
+  {
+    "title": "Laptop not working",
+    "description": "Laptop screen is blank"
+  },
+  {
+    "title": "Internet issue",
+    "description": "WiFi connection is slow"
+  },
+  {
+    "title": "Keyboard problem",
+    "description": "Laptop keyboard is not working"
+  }
+]</code></pre>
+<p>If the user searches <code>GET /api/v1/tickets?search=laptop</code>, the first and the third ticket can match.</p>
+<h3>MongoDB $or and $regex</h3>
+<pre><code>const filter = {
+  $or: [
+    { title: { $regex: 'laptop', $options: 'i' } },
+    { description: { $regex: 'laptop', $options: 'i' } },
+  ],
+};
+
+const tickets = await this.ticketModel.find(filter);</code></pre>
+<ul>
+<li><code>$or</code>: matches if any one of the multiple conditions is true.</li>
+<li><code>$regex</code>: text pattern search.</li>
+<li><code>$options: 'i'</code>: case-insensitive search. <code>Laptop</code>, <code>laptop</code> and <code>LAPTOP</code> can match.</li>
+</ul>
+<p>In production, escape the user’s search text for regex, so special regex characters do not create an unintended pattern. We add this safety in the code too.</p>
+<h3>Filtering</h3>
+<p>Filtering means bringing from the database only the records that match the selected conditions. Our ticket filters:</p>
+<ul>
+<li><code>status</code>: open, in_progress, resolved, closed</li>
+<li><code>priority</code>: low, medium, high, critical</li>
+<li><code>category</code>: hardware, software, network, access</li>
+</ul>
+<pre><code>GET /api/v1/tickets?status=open          // only open tickets
+GET /api/v1/tickets?priority=high        // only high-priority tickets
+GET /api/v1/tickets?category=hardware    // only hardware tickets</code></pre>
+<p>You can use multiple filters together:</p>
+<pre><code>GET /api/v1/tickets?status=open&amp;priority=high&amp;category=hardware</code></pre>
+<p>In MongoDB, normal object conditions work like <code>AND</code> by default:</p>
+<pre><code>const filter = {
+  status: 'open',
+  priority: 'high',
+  category: 'hardware',
+};</code></pre>
+<p>All three conditions must match.</p>
+</section>
+
+<section class="lesson" id="p8c">
+<span class="tag">Phase 8 · Lesson 3</span>
+<h2>3. Sorting</h2>
+<p>Sorting means arranging records in some order.</p>
+<pre><code>GET /api/v1/tickets?sortBy=createdAt&amp;sortOrder=desc   // newest first
+GET /api/v1/tickets?sortBy=createdAt&amp;sortOrder=asc    // oldest first</code></pre>
+<p>Mongoose:</p>
+<pre><code>const tickets = await this.ticketModel
+  .find()
+  .sort({ createdAt: -1 });</code></pre>
+<div class="sc"><table>
+<tr><th>Value</th><th>Meaning</th></tr>
+<tr><td><code>1</code></td><td>Ascending: small/old to large/new</td></tr>
+<tr><td><code>-1</code></td><td>Descending: large/new to small/old</td></tr>
+</table></div>
+<div class="note"><b>Special point for priority sorting:</b> arranging <code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code> with normal alphabetical sorting is not the correct priority order. So for priority sorting we use explicit ranking logic.</div>
+</section>
+
+<section class="lesson" id="p8d">
+<span class="tag">Phase 8 · Lesson 4</span>
+<h2>4. Query DTO</h2>
+<p>Now we convert the theory into real code and update the existing <code>Tickets</code> module.</p>
+<p>File: <code>src/modules/tickets/dto/ticket-query.dto.ts</code>. The job of this DTO is to validate the URL query parameters such as <code>page</code>, <code>limit</code>, <code>search</code>, <code>status</code> etc.</p>
+<pre><code>import { Type } from 'class-transformer';
+import {
+  IsEnum,
+  IsIn,
+  IsInt,
+  IsOptional,
+  IsString,
+  Max,
+  MaxLength,
+  Min,
+} from 'class-validator';
+
+import { TicketStatus } from '../../../common/enums/ticket-status.enum';
+import { TicketPriority } from '../../../common/enums/ticket-priority.enum';
+import { TicketCategory } from '../../../common/enums/ticket-category.enum';
+
+export enum TicketSortBy {
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt',
+  PRIORITY = 'priority',
+}
+
+export class TicketQueryDto {
+  @IsOptional()
+  @Type(() =&gt; Number)
+  @IsInt()
+  @Min(1)
+  page: number = 1;
+
+  @IsOptional()
+  @Type(() =&gt; Number)
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  limit: number = 10;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(100)
+  search?: string;
+
+  @IsOptional()
+  @IsEnum(TicketStatus)
+  status?: TicketStatus;
+
+  @IsOptional()
+  @IsEnum(TicketPriority)
+  priority?: TicketPriority;
+
+  @IsOptional()
+  @IsEnum(TicketCategory)
+  category?: TicketCategory;
+
+  @IsOptional()
+  @IsEnum(TicketSortBy)
+  sortBy: TicketSortBy = TicketSortBy.CREATED_AT;
+
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  sortOrder: 'asc' | 'desc' = 'desc';
+}</code></pre>
+<h3>What each decorator does</h3>
+<div class="sc"><table>
+<tr><th>Decorator</th><th>Purpose</th></tr>
+<tr><td><code>@IsOptional()</code></td><td>Sending the field is not compulsory</td></tr>
+<tr><td><code>@Type(() =&gt; Number)</code></td><td>Converts the string from the URL into a number</td></tr>
+<tr><td><code>@IsInt()</code></td><td>Checks for an integer</td></tr>
+<tr><td><code>@Min(1)</code></td><td>Minimum value 1</td></tr>
+<tr><td><code>@Max(100)</code></td><td>Maximum limit 100</td></tr>
+<tr><td><code>@IsString()</code></td><td>Validates a string</td></tr>
+<tr><td><code>@MaxLength(100)</code></td><td>Search text maximum 100 characters</td></tr>
+<tr><td><code>@IsEnum()</code></td><td>Value must be one of the existing enum values</td></tr>
+<tr><td><code>@IsIn()</code></td><td>Value must be from the given list</td></tr>
+</table></div>
+<h3>Why is <code>@Type(() =&gt; Number)</code> important?</h3>
+<p>URL query parameters arrive as strings. For <code>GET /tickets?page=2&amp;limit=10</code>:</p>
+<pre><code>// Without transformation:
+page = '2';   // string
+limit = '10'; // string
+
+// With @Type(() =&gt; Number):
+page = 2;     // number
+limit = 10;   // number</code></pre>
+<p>So we can use <code>@IsInt()</code> properly.</p>
+<div class="note">This DTO works with the global <code>ValidationPipe</code> of your existing Phase 4, which has <code>transform: true</code> enabled.</div>
+</section>
+
+<section class="lesson" id="p8e">
+<span class="tag">Phase 8 · Lesson 5</span>
+<h2>5. Update the controller</h2>
+<p>File: <code>src/modules/tickets/tickets.controller.ts</code>. Update your existing <code>GET /tickets</code> endpoint. You do not need to change the other ticket routes.</p>
+<pre><code>import { Query } from '@nestjs/common';
+import { TicketQueryDto } from './dto/ticket-query.dto';</code></pre>
+<p>Replace the existing <code>findAll</code> method with this:</p>
+<pre><code>@Get()
+findAll(
+  @Query() query: TicketQueryDto,
+  @CurrentUser() user: AuthenticatedUser,
+) {
+  return this.ticketsService.findAllForUser(query, user);
+}</code></pre>
+<ul>
+<li><code>@Get()</code> handles the GET request.</li>
+<li><code>@Query()</code> reads the URL query parameters.</li>
+<li><code>TicketQueryDto</code> validates the parameters.</li>
+<li><code>@CurrentUser()</code> gives the authenticated user from the JWT.</li>
+<li><code>findAllForUser()</code> will execute the filtering, pagination and sorting logic in the service.</li>
+</ul>
+<p>Example request: <code>GET /api/v1/tickets?page=1&amp;limit=10&amp;status=open</code>. NestJS converts the query parameters into the DTO and passes it to the service.</p>
+</section>
+
+<section class="lesson" id="p8f">
+<span class="tag">Phase 8 · Lesson 6</span>
+<h2>6. Service: pagination + search + filtering + sorting</h2>
+<p>File: <code>src/modules/tickets/tickets.service.ts</code>. First add the imports:</p>
+<pre><code>import { FilterQuery } from 'mongoose';
+import { TicketQueryDto, TicketSortBy } from './dto/ticket-query.dto';
+import { TicketDocument } from './schemas/ticket.schema';</code></pre>
+<p>If the import of <code>TicketDocument</code> or <code>TicketQueryDto</code> already exists, do not duplicate it.</p>
+<h3>6.1 Make the search text safe</h3>
+<p>Write a helper function outside the service class:</p>
+<pre><code>function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&amp;');
+}</code></pre>
+<p><b>What is it for?</b> A user can type <code>laptop</code> in the search. But a user can also enter special regex characters, like <code>.*</code>. If we put the user input directly into a regex, the input can become a regex pattern instead of normal text. <code>escapeRegex()</code> escapes the special regex characters, so the search text is treated as text.</p>
+<h3>6.2 The main findAllForUser() method</h3>
+<p>Replace your existing <code>findAllForUser()</code> with this version:</p>
+<pre><code>async findAllForUser(
+  query: TicketQueryDto,
+  user: AuthenticatedUser,
+) {
+  const {
+    page = 1,
+    limit = 10,
+    search,
+    status,
+    priority,
+    category,
+    sortBy = TicketSortBy.CREATED_AT,
+    sortOrder = 'desc',
+  } = query;
+
+  // 1. Calculate skip
+  const skip = (page - 1) * limit;
+
+  // 2. Build MongoDB filter
+  const filter: FilterQuery&lt;TicketDocument&gt; = {};
+
+  // 3. Apply role-based restrictions
+  if (user.role === UserRole.EMPLOYEE) {
+    filter.createdBy = user.userId;
+  } else if (user.role === UserRole.TECHNICIAN) {
+    filter.assignedTo = user.userId;
+  } else if (user.role !== UserRole.ADMIN) {
+    throw new ForbiddenException('You cannot access tickets');
+  }
+
+  // 4. Apply status filter
+  if (status) {
+    filter.status = status;
+  }
+
+  // 5. Apply priority filter
+  if (priority) {
+    filter.priority = priority;
+  }
+
+  // 6. Apply category filter
+  if (category) {
+    filter.category = category;
+  }
+
+  // 7. Apply search
+  if (search?.trim()) {
+    const safeSearch = escapeRegex(search.trim());
+    const searchRegex = new RegExp(safeSearch, 'i');
+
+    filter.$or = [
+      { title: searchRegex },
+      { description: searchRegex },
+    ];
+  }
+
+  // 8. Calculate total matching records
+  const totalRecords = await this.ticketModel.countDocuments(filter);
+
+  // 9. Fetch paginated records
+  const sortDirection = sortOrder === 'asc' ? 1 : -1;
+
+  let tickets;
+
+  if (sortBy === TicketSortBy.PRIORITY) {
+    tickets = await this.ticketModel.aggregate([
+      { $match: filter },
+
+      {
+        $addFields: {
+          priorityRank: {
+            $switch: {
+              branches: [
+                { case: { $eq: ['$priority', 'critical'] }, then: 4 },
+                { case: { $eq: ['$priority', 'high'] }, then: 3 },
+                { case: { $eq: ['$priority', 'medium'] }, then: 2 },
+                { case: { $eq: ['$priority', 'low'] }, then: 1 },
+              ],
+              default: 0,
+            },
+          },
+        },
+      },
+
+      {
+        $sort: {
+          priorityRank: sortDirection,
+          createdAt: -1,
+        },
+      },
+
+      { $skip: skip },
+      { $limit: limit },
+
+      { $project: { priorityRank: 0 } },
+    ]);
+
+    tickets = await this.ticketModel.populate(tickets, [
+      { path: 'createdBy', select: 'name email' },
+      { path: 'assignedTo', select: 'name email' },
+    ]);
+  } else {
+    const sortField =
+      sortBy === TicketSortBy.UPDATED_AT ? 'updatedAt' : 'createdAt';
+
+    tickets = await this.ticketModel
+      .find(filter)
+      .populate('createdBy', 'name email')
+      .populate('assignedTo', 'name email')
+      .sort({ [sortField]: sortDirection })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  }
+
+  // 10. Calculate total pages
+  const totalPages = Math.ceil(totalRecords / limit);
+
+  // 11. Return standard pagination response
+  return {
+    items: tickets,
+    pagination: {
+      totalRecords,
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNextPage: page &lt; totalPages,
+      hasPreviousPage: page &gt; 1,
+    },
+  };
+}</code></pre>
+<p>The service file must also have these NestJS imports:</p>
+<pre><code>import { ForbiddenException } from '@nestjs/common';
+import { UserRole } from '../../common/enums/user-role.enum';</code></pre>
+<p>Your actual relative import paths can differ a little according to your folder structure.</p>
+</section>
+
+<section class="lesson" id="p8g">
+<span class="tag">Phase 8 · Lesson 7</span>
+<h2>7. The service method in detail</h2>
+<p>This method is the main part of Phase 8.</p>
+<p><b>A. Pagination calculation</b></p>
+<pre><code>const skip = (page - 1) * limit;</code></pre>
+<p>If <code>page = 3</code> and <code>limit = 10</code>, skip is 20. The database skips the first 20 matching records and returns the next 10.</p>
+<p><b>B. Role-based restriction</b></p>
+<pre><code>if (user.role === UserRole.EMPLOYEE) {
+  filter.createdBy = user.userId;
+} else if (user.role === UserRole.TECHNICIAN) {
+  filter.assignedTo = user.userId;
+} else if (user.role !== UserRole.ADMIN) {
+  throw new ForbiddenException('You cannot access tickets');
+}</code></pre>
+<p>This is very important security logic.</p>
+<div class="sc"><table>
+<tr><th>Logged-in user</th><th>Database filter</th></tr>
+<tr><td>Employee</td><td><code>createdBy = logged-in user ID</code></td></tr>
+<tr><td>Technician</td><td><code>assignedTo = logged-in user ID</code></td></tr>
+<tr><td>Admin</td><td>No ownership restriction</td></tr>
+</table></div>
+<p>Example: Rahul is an employee. He sends <code>GET /api/v1/tickets?status=open</code>. The backend internally builds this query:</p>
+<pre><code>{
+  createdBy: "RAHUL_USER_ID",
+  status: "open"
+}</code></pre>
+<p>Rahul cannot send another <code>createdBy</code> in the URL and access someone else’s tickets, because we do not take the ownership filter from the request. The backend sets it itself from the JWT’s authenticated user.</p>
+<p><b>C. Filters</b></p>
+<pre><code>if (status) filter.status = status;
+if (priority) filter.priority = priority;
+if (category) filter.category = category;</code></pre>
+<p>For <code>GET /api/v1/tickets?status=open&amp;priority=critical</code>, the MongoDB query has both conditions:</p>
+<pre><code>{
+  status: "open",
+  priority: "critical"
+}</code></pre>
+<p>The ticket’s status must be open and the priority must also be critical.</p>
+<p><b>D. Search</b></p>
+<pre><code>filter.$or = [
+  { title: searchRegex },
+  { description: searchRegex },
+];</code></pre>
+<p>Here <code>$or</code> means a match in any one of the title or description fields is sufficient. Note that we add <code>$or</code> to the existing <code>filter</code> object. So the role-based ownership and the other filters stay applied.</p>
+<p><b>E. Total records</b></p>
+<pre><code>const totalRecords = await this.ticketModel.countDocuments(filter);</code></pre>
+<p>This counts the total records that match the current filter. It does not count the records of the current page. Example: after the search, 45 tickets matched, but the page limit is 10. <code>totalRecords</code> is still 45.</p>
+<p><b>F. Populate</b></p>
+<pre><code>.populate('createdBy', 'name email')
+.populate('assignedTo', 'name email')</code></pre>
+<p><code>createdBy</code> and <code>assignedTo</code> in the ticket document are User ObjectIds. <code>populate()</code> gives the selected information of the related User instead of those IDs. We do not select the password. We take only <code>name</code> and <code>email</code>.</p>
+<p><b>G. Priority sorting</b></p>
+<p>For priority we use the aggregation <code>$switch</code>:</p>
+<div class="sc"><table>
+<tr><th>Priority</th><th>Rank</th></tr>
+<tr><td>Critical</td><td>4</td></tr>
+<tr><td>High</td><td>3</td></tr>
+<tr><td>Medium</td><td>2</td></tr>
+<tr><td>Low</td><td>1</td></tr>
+</table></div>
+<p>So with <code>sortOrder=desc</code> the critical tickets come first, and with <code>sortOrder=asc</code> the low-priority tickets come first. <code>$addFields</code> makes a temporary <code>priorityRank</code>, <code>$sort</code> sets the order, and <code>$project</code> removes the temporary field from the response.</p>
+<p><b>H. Total pages</b></p>
+<pre><code>const totalPages = Math.ceil(totalRecords / limit);</code></pre>
+<p>Example: total records = 45, limit = 10, total pages = 5. <code>Math.ceil()</code> rounds a decimal up to the next whole number.</p>
+</section>
+
+<section class="lesson" id="p8h">
+<span class="tag">Phase 8 · Lesson 8</span>
+<h2>8. API response and Postman testing</h2>
+<h3>What does the API response look like?</h3>
+<p>If you use the global <code>TransformInterceptor</code> of Phase 7, the service result comes inside the interceptor’s <code>data</code>.</p>
+<pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "message": "Request successful",
+  "data": {
+    "items": [
+      {
+        "_id": "671a12345678901234567890",
+        "title": "Laptop not working",
+        "description": "Laptop screen is blank",
+        "status": "open",
+        "priority": "high",
+        "category": "hardware",
+        "createdBy": {
+          "_id": "671a12345678901234567891",
+          "name": "Rahul",
+          "email": "rahul@example.com"
+        },
+        "assignedTo": null
+      }
+    ],
+    "pagination": {
+      "totalRecords": 45,
+      "totalPages": 5,
+      "currentPage": 1,
+      "limit": 10,
+      "hasNextPage": true,
+      "hasPreviousPage": false
+    }
+  },
+  "timestamp": "2026-10-31T08:00:00.000Z",
+  "path": "/api/v1/tickets?page=1&amp;limit=10"
+}</code></pre>
+<p>The frontend can use this response easily:</p>
+<ul>
+<li><code>data.items</code>: the list of tickets.</li>
+<li><code>data.pagination.totalRecords</code>: total tickets.</li>
+<li><code>data.pagination.totalPages</code>: total pages.</li>
+<li><code>data.pagination.hasNextPage</code>: enable/disable the Next button.</li>
+<li><code>data.pagination.hasPreviousPage</code>: enable/disable the Previous button.</li>
+</ul>
+<h3>Test in Postman</h3>
+<pre><code>npm run start:dev</code></pre>
+<p>In Postman, select Bearer Token in the Authorization tab and add the JWT token of the logged-in user. Base URL: <code>http://localhost:3000/api/v1/tickets</code></p>
+<div class="sc"><table>
+<tr><th>Test</th><th>Query</th><th>Expected</th></tr>
+<tr><td>1. Basic pagination</td><td><code>?page=1&amp;limit=10</code></td><td>Maximum 10 tickets</td></tr>
+<tr><td>2. Next page</td><td><code>?page=2&amp;limit=10</code></td><td>Records of page 2</td></tr>
+<tr><td>3. Search</td><td><code>?search=laptop</code></td><td>Tickets with laptop in the title or description</td></tr>
+<tr><td>4. Status filter</td><td><code>?status=open</code></td><td>Only open tickets</td></tr>
+<tr><td>5. Multiple filters</td><td><code>?status=open&amp;priority=high&amp;category=hardware</code></td><td>Tickets matching all three conditions</td></tr>
+<tr><td>6. Newest first</td><td><code>?sortBy=createdAt&amp;sortOrder=desc</code></td><td>Latest created tickets first</td></tr>
+<tr><td>7. Oldest first</td><td><code>?sortBy=createdAt&amp;sortOrder=asc</code></td><td>Oldest created tickets first</td></tr>
+<tr><td>8. Priority sorting</td><td><code>?sortBy=priority&amp;sortOrder=desc</code></td><td>Critical → High → Medium → Low</td></tr>
+<tr><td>9. Invalid page</td><td><code>?page=0&amp;limit=10</code></td><td>HTTP 400 validation error</td></tr>
+<tr><td>10. Invalid limit</td><td><code>?page=1&amp;limit=500</code></td><td>HTTP 400 validation error</td></tr>
+<tr><td>11. Invalid status</td><td><code>?status=pending</code></td><td>HTTP 400 validation error</td></tr>
+<tr><td>12. Invalid sorting</td><td><code>?sortBy=password&amp;sortOrder=desc</code></td><td>HTTP 400 validation error</td></tr>
+</table></div>
+</section>
+
+<section class="lesson" id="p8i">
+<span class="tag">Phase 8 · Lesson 9</span>
+<h2>9. Database indexing: improve performance</h2>
+<p>An important industry concept: indexing. Suppose the database has 10 lakh tickets. If we frequently query on <code>createdBy</code>, <code>assignedTo</code> and <code>createdAt</code>, MongoDB indexes can improve searching and sorting.</p>
+<p>File: <code>src/modules/tickets/schemas/ticket.schema.ts</code>. After the schema creation add these indexes:</p>
+<pre><code>TicketSchema.index({ createdBy: 1, createdAt: -1 });
+
+TicketSchema.index({ assignedTo: 1, createdAt: -1 });
+
+TicketSchema.index({ status: 1, priority: 1, createdAt: -1 });</code></pre>
+<ul>
+<li>The first index helps with an employee’s tickets and newest-first sorting.</li>
+<li>The second index helps with a technician’s assigned tickets and sorting.</li>
+<li>The third index can help with status/priority filtering and created-date sorting.</li>
+</ul>
+<div class="note">Do not create an index on every field. Indexes can make reads fast, but they add overhead to writes and storage. Choose indexes according to the actual query patterns.</div>
+<h3>Important point on search performance</h3>
+<p>We are currently doing a case-insensitive substring search with <code>$regex</code>. On a large collection this kind of search can be slow, and a normal B-tree index does not accelerate every substring search.</p>
+<p>In a large production application:</p>
+<ul>
+<li>You can use MongoDB Atlas Search.</li>
+<li>Or you can use a suitable text-search design.</li>
+<li>Check query performance with <code>explain()</code>.</li>
+</ul>
+</section>
+
+<section class="lesson" id="p8j">
+<span class="tag">Phase 8 · Lesson 10</span>
+<h2>10. MongoDB methods revision and Promise.all</h2>
+<div class="sc"><table>
+<tr><th>Method / Operator</th><th>Use</th></tr>
+<tr><td><code>find()</code></td><td>Find multiple matching documents</td></tr>
+<tr><td><code>findOne()</code></td><td>First matching document</td></tr>
+<tr><td><code>countDocuments()</code></td><td>Count matching records</td></tr>
+<tr><td><code>skip()</code></td><td>Skip the first records</td></tr>
+<tr><td><code>limit()</code></td><td>Set the maximum records</td></tr>
+<tr><td><code>sort()</code></td><td>Order the records</td></tr>
+<tr><td><code>populate()</code></td><td>Referenced document details</td></tr>
+<tr><td><code>$or</code></td><td>Match any one condition</td></tr>
+<tr><td><code>$and</code></td><td>Match all conditions</td></tr>
+<tr><td><code>$regex</code></td><td>Pattern-based text search</td></tr>
+<tr><td><code>$options: 'i'</code></td><td>Case-insensitive regex</td></tr>
+<tr><td><code>$match</code></td><td>Filter documents in aggregation</td></tr>
+<tr><td><code>$addFields</code></td><td>Add a calculated field</td></tr>
+<tr><td><code>$switch</code></td><td>Value based on multiple conditions</td></tr>
+<tr><td><code>$project</code></td><td>Include/exclude fields</td></tr>
+</table></div>
+<h3>An important production improvement</h3>
+<p>In our example <code>countDocuments()</code> executes first, and then the ticket list is fetched. These are two independent database operations. Executing them in parallel with <code>Promise.all()</code> can improve performance.</p>
+<pre><code>const [totalRecords, tickets] = await Promise.all([
+  this.ticketModel.countDocuments(filter),
+
+  this.ticketModel
+    .find(filter)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .exec(),
+]);</code></pre>
+<p>This example has simple date sorting. In the priority aggregation case too, you can run the count and the aggregation in parallel.</p>
+<p>One more thing: on very large page numbers <code>.skip()</code> can be slow. Large-scale systems also use cursor-based pagination, which we will understand in an advanced topic.</p>
+</section>
+
+<section class="lesson" id="p8k">
+<span class="tag">Phase 8 · Lesson 11</span>
+<h2>11. Practice checklist and quiz</h2>
+<h3>Your implementation checklist</h3>
+<ul class="chk" id="chk8">
+<li><label><input type="checkbox"> Created TicketQueryDto</label></li>
+<li><label><input type="checkbox"> Implemented @Query() in the controller</label></li>
+<li><label><input type="checkbox"> Tested page and limit validation</label></li>
+<li><label><input type="checkbox"> Tested search on both title and description</label></li>
+<li><label><input type="checkbox"> Tested the status, priority and category filters</label></li>
+<li><label><input type="checkbox"> An Employee can see only their own tickets</label></li>
+<li><label><input type="checkbox"> A Technician can see only assigned tickets</label></li>
+<li><label><input type="checkbox"> An Admin can see all tickets</label></li>
+<li><label><input type="checkbox"> Tested createdAt ascending/descending sorting</label></li>
+<li><label><input type="checkbox"> Tested critical-first priority sorting</label></li>
+<li><label><input type="checkbox"> Pagination metadata comes in the response</label></li>
+<li><label><input type="checkbox"> Invalid query parameters give HTTP 400</label></li>
+</ul>
+<p id="count8">0/12 completed</p>
+<h3>Interview questions</h3>
+<p>Answer each question first, then open the answer.</p>
+<ol>
+<li>What is the skip formula in pagination?<br><code>page × limit</code> / <code>(page - 1) × limit</code> / <code>page + limit</code> / <code>limit - page</code>
+<details><summary>Answer</summary><code>(page - 1) × limit</code></details></li>
+<li>What do we use in MongoDB to count the total matching records?<br><code>find()</code> / <code>populate()</code> / <code>countDocuments()</code> / <code>skip()</code>
+<details><summary>Answer</summary><code>countDocuments()</code></details></li>
+<li>Which option is used for case-insensitive regex search?<br><code>$options: 'i'</code> / <code>$options: 'd'</code> / <code>$options: 's'</code> / <code>$options: 'n'</code>
+<details><summary>Answer</summary><code>$options: 'i'</code></details></li>
+<li>How should tickets be filtered for a Technician?<br><code>createdBy</code> / <code>assignedTo</code> / <code>isActive</code> / <code>email</code>
+<details><summary>Answer</summary><code>assignedTo</code></details></li>
+<li>What is needed to put Critical priority before High?<br>Alphabetical sorting / Random sorting / Explicit priority ranking / Only skip()
+<details><summary>Answer</summary>Explicit priority ranking</details></li>
+</ol>
+</section>
+
+<section class="lesson" id="p8l">
+<span class="tag">Phase 8 · Lesson 12</span>
+<h2>12. Next: Phase 9</h2>
+<p>After Phase 8, the foundation of pagination, search, filtering, sorting and role-based data access is ready in your Tickets API.</p>
+<p><b>Audit Logs and Activity History.</b> We will learn:</p>
+<ul>
+<li>Which user created a ticket?</li>
+<li>Who updated a ticket?</li>
+<li>Which admin assigned a technician?</li>
+<li>What were the old status and the new status of a ticket?</li>
+<li>On which date/time did the activity happen?</li>
+<li>How do we store audit history in MongoDB?</li>
+</ul>
+<div class="note"><b>Advice:</b> first implement the Phase 8 code yourself and run all the Postman tests. If you get a TypeScript error, send the error message and the relevant code. We will debug it line by line.</div>
+</section>
+
+<section class="lesson" id="p9a">
+<span class="tag">Phase 9 · Lesson 1</span>
+<h2>1. What is an Audit Log?</h2>
+<p>In this phase we build an important industry-level feature in our Internal IT Helpdesk project: Audit Logs.</p>
+<p>Right now an Employee can create a ticket, a Technician can update the ticket status and an Admin can assign a technician. But there are important questions:</p>
+<ul>
+<li>Who created the ticket?</li>
+<li>Who changed the ticket status?</li>
+<li>What was the earlier status and what is it now?</li>
+<li>Which Admin assigned the technician?</li>
+<li>When did this activity happen?</li>
+<li>If someone deleted a ticket, how do we find its record?</li>
+</ul>
+<p>Audit Logs answer all these questions.</p>
+<p>An Audit Log is a permanent history record that records the important actions happening in the application. Example: Rahul created a ticket.</p>
+<h3>Ticket activity history</h3>
+<ol>
+<li><b>Ticket created.</b> Rahul · 09:00 AM. Ticket: Laptop not working</li>
+<li><b>Technician assigned.</b> Admin · 09:15 AM. Assigned to: Amit</li>
+<li><b>Status changed.</b> Amit · 10:30 AM. Open → In Progress</li>
+<li><b>Status changed.</b> Amit · 01:00 PM. In Progress → Resolved</li>
+</ol>
+<p>We will store this history in a separate <code>auditlogs</code> collection in MongoDB.</p>
+<h3>Audit Log vs normal application data</h3>
+<div class="sc"><table>
+<tr><th>Normal Ticket</th><th>Audit Log</th></tr>
+<tr><td>Stores the current status</td><td>Stores the old and new value of the status</td></tr>
+<tr><td>Current assigned technician</td><td>Who assigned and when</td></tr>
+<tr><td>Current details of the ticket</td><td>History of the changes in the ticket</td></tr>
+<tr><td>Keeps getting updated</td><td>Normally append-only</td></tr>
+</table></div>
+<div class="note"><b>Important principle:</b> a normal user must not edit or delete an audit log. Its purpose is to maintain a trustworthy history.</div>
+<h3>Which actions will be recorded?</h3>
+<div class="sc"><table>
+<tr><th>Action</th><th>When is it recorded?</th></tr>
+<tr><td><code>TICKET_CREATED</code></td><td>A new ticket is created</td></tr>
+<tr><td><code>TICKET_UPDATED</code></td><td>Ticket details are updated</td></tr>
+<tr><td><code>STATUS_CHANGED</code></td><td>Ticket status changes</td></tr>
+<tr><td><code>TECHNICIAN_ASSIGNED</code></td><td>A technician is assigned</td></tr>
+<tr><td><code>TICKET_DELETED</code></td><td>A ticket is deleted</td></tr>
+<tr><td><code>USER_UPDATED</code></td><td>User details are updated</td></tr>
+<tr><td><code>USER_DEACTIVATED</code></td><td>A user is deactivated</td></tr>
+</table></div>
+<p>In this phase we implement the Ticket-related logs first. The User-related logs can be added later with the same pattern.</p>
+</section>
+
+<section class="lesson" id="p9b">
+<span class="tag">Phase 9 · Lesson 2</span>
+<h2>2. Database and folder structure</h2>
+<p>A new collection will be created in MongoDB:</p>
+<pre><code>internal_it_helpdesk
+│
+├── users
+├── tickets
+└── auditlogs</code></pre>
+<p>An audit log document looks like this:</p>
+<pre><code>{
+  "_id": "671a12345678901234567890",
+  "actor": "671a12345678901234567891",
+  "action": "STATUS_CHANGED",
+  "entityType": "Ticket",
+  "entityId": "671a12345678901234567892",
+  "changes": {
+    "status": {
+      "oldValue": "open",
+      "newValue": "in_progress"
+    }
+  },
+  "metadata": {
+    "ipAddress": "192.168.1.10",
+    "userAgent": "Mozilla/5.0"
+  },
+  "createdAt": "2026-10-31T09:30:00.000Z"
+}</code></pre>
+<h3>Understand the fields</h3>
+<ul>
+<li><code>actor</code>: the User ObjectId of the user who performed the action.</li>
+<li><code>action</code>: which action was performed.</li>
+<li><code>entityType</code>: on which type of record the action happened, like Ticket.</li>
+<li><code>entityId</code>: on which ticket the action happened.</li>
+<li><code>changes</code>: old value and new value.</li>
+<li><code>metadata</code>: additional information related to the request.</li>
+<li><code>createdAt</code>: when the action was performed.</li>
+</ul>
+<p><code>actor</code> and <code>entityId</code> are both references. So we can populate the user and ticket details.</p>
+<h3>Update the project folder structure</h3>
+<p>We will make an <code>audit-logs</code> module inside <code>src/modules/</code>:</p>
+<pre><code>src/
+└── modules/
+    ├── tickets/
+    │   ├── dto/
+    │   ├── schemas/
+    │   ├── tickets.controller.ts
+    │   ├── tickets.service.ts
+    │   └── tickets.module.ts
+    └── audit-logs/
+        ├── schemas/
+        │   └── audit-log.schema.ts
+        ├── enums/
+        │   └── audit-action.enum.ts
+        ├── audit-logs.service.ts
+        ├── audit-logs.controller.ts
+        └── audit-logs.module.ts</code></pre>
+<p>If the <code>audit-logs</code> folder already exists, add these files in it.</p>
+</section>
+
+<section class="lesson" id="p9c">
+<span class="tag">Phase 9 · Lesson 3</span>
+<h2>3. Audit Action Enum and Audit Log Schema</h2>
+<h3>Audit Action Enum</h3>
+<p>File: <code>src/modules/audit-logs/enums/audit-action.enum.ts</code></p>
+<pre><code>export enum AuditAction {
+  TICKET_CREATED = 'TICKET_CREATED',
+  TICKET_UPDATED = 'TICKET_UPDATED',
+  STATUS_CHANGED = 'STATUS_CHANGED',
+  TECHNICIAN_ASSIGNED = 'TECHNICIAN_ASSIGNED',
+  TICKET_DELETED = 'TICKET_DELETED',
+  USER_UPDATED = 'USER_UPDATED',
+  USER_DEACTIVATED = 'USER_DEACTIVATED',
+}</code></pre>
+<p><b>Why do we use an enum?</b> Suppose we write the action string by hand everywhere:</p>
+<pre><code>'TICKET_CREATED'
+'TICKET_CREATE'
+'TICKET_CREATEDD'</code></pre>
+<p>Spelling mistakes can bring inconsistent database values. With an enum we write <code>AuditAction.TICKET_CREATED</code>, and TypeScript can restrict to the valid values.</p>
+<h3>Audit Log Mongoose Schema</h3>
+<p>File: <code>src/modules/audit-logs/schemas/audit-log.schema.ts</code></p>
+<pre><code>import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+
+import { User } from '../../users/schemas/user.schema';
+import { Ticket } from '../../tickets/schemas/ticket.schema';
+import { AuditAction } from '../enums/audit-action.enum';
+
+export type AuditLogDocument = HydratedDocument&lt;AuditLog&gt;;
+
+@Schema({ timestamps: true, versionKey: false })
+export class AuditLog {
+  @Prop({
+    type: Types.ObjectId,
+    ref: User.name,
+    required: true,
+  })
+  actor: Types.ObjectId;
+
+  @Prop({
+    type: String,
+    enum: Object.values(AuditAction),
+    required: true,
+  })
+  action: AuditAction;
+
+  @Prop({
+    type: String,
+    required: true,
+  })
+  entityType: string;
+
+  @Prop({
+    type: Types.ObjectId,
+    ref: Ticket.name,
+    required: true,
+  })
+  entityId: Types.ObjectId;
+
+  @Prop({
+    type: Object,
+    default: {},
+  })
+  changes: Record&lt;string, any&gt;;
+
+  @Prop({
+    type: Object,
+    default: {},
+  })
+  metadata: {
+    ipAddress?: string;
+    userAgent?: string;
+  };
+}
+
+export const AuditLogSchema =
+  SchemaFactory.createForClass(AuditLog);
+
+// Indexes for query performance
+AuditLogSchema.index({ entityId: 1, createdAt: -1 });
+AuditLogSchema.index({ actor: 1, createdAt: -1 });
+AuditLogSchema.index({ action: 1, createdAt: -1 });</code></pre>
+<h3>Detailed explanation of the schema</h3>
+<ol>
+<li><b><code>timestamps: true</code></b>: Mongoose automatically adds two fields, <code>createdAt</code> and <code>updatedAt</code>. For an audit log, <code>createdAt</code> tells the time of the action. We will not update existing log records, so <code>updatedAt</code> generally will not change.</li>
+<li><b><code>versionKey: false</code></b>: Mongoose normally adds the <code>__v</code> version field to documents. We do not need it in this schema.</li>
+<li><b><code>Types.ObjectId</code> and <code>ref</code></b>: <code>actor</code> will store the ObjectId of a document in the User collection.</li>
+<li><b><code>changes</code></b>: dynamic old/new values are stored in it.
+<pre><code>{
+  "title": {
+    "oldValue": "Laptop issue",
+    "newValue": "Laptop screen issue"
+  },
+  "priority": {
+    "oldValue": "low",
+    "newValue": "high"
+  }
+}</code></pre></li>
+<li><b>Indexes</b>: <code>AuditLogSchema.index({ entityId: 1, createdAt: -1 })</code> can help the query that fetches the latest activity history of a particular ticket.</li>
+</ol>
+<h3>Important correction in the schema</h3>
+<p>For the <code>ObjectId</code> and <code>Mixed</code> field types of the Mongoose schema it is more appropriate to define them like this:</p>
+<pre><code>import mongoose, { HydratedDocument, Types } from 'mongoose';
+
+@Prop({
+  type: mongoose.Schema.Types.ObjectId,
+  ref: User.name,
+  required: true,
+})
+actor: Types.ObjectId;
+
+@Prop({
+  type: mongoose.Schema.Types.ObjectId,
+  ref: Ticket.name,
+  required: true,
+})
+entityId: Types.ObjectId;
+
+@Prop({
+  type: mongoose.Schema.Types.Mixed,
+  default: {},
+})
+changes: Record&lt;string, any&gt;;
+
+@Prop({
+  type: mongoose.Schema.Types.Mixed,
+  default: {},
+})
+metadata: {
+  ipAddress?: string;
+  userAgent?: string;
+};</code></pre>
+<p>In your Phase 9 schema, replace the earlier corresponding fields with this version.</p>
+</section>
+
+<section class="lesson" id="p9d">
+<span class="tag">Phase 9 · Lesson 4</span>
+<h2>4. AuditLogsModule and AuditLogsService</h2>
+<h3>AuditLogsModule</h3>
+<p>File: <code>src/modules/audit-logs/audit-logs.module.ts</code></p>
+<pre><code>import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { AuditLog, AuditLogSchema } from './schemas/audit-log.schema';
+import { AuditLogsService } from './audit-logs.service';
+import { AuditLogsController } from './audit-logs.controller';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: AuditLog.name,
+        schema: AuditLogSchema,
+      },
+    ]),
+  ],
+  controllers: [AuditLogsController],
+  providers: [AuditLogsService],
+  exports: [AuditLogsService],
+})
+export class AuditLogsModule {}</code></pre>
+<p><b>Why <code>exports: [AuditLogsService]</code>?</b> We want to use <code>AuditLogsService</code> inside <code>TicketsService</code>. In NestJS, to use a provider of one module in another module, you must export the provider and import that module.</p>
+<h3>AuditLogsService</h3>
+<p>File: <code>src/modules/audit-logs/audit-logs.service.ts</code>. This service will create and read audit logs.</p>
+<pre><code>import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model, Types } from 'mongoose';
+
+import {
+  AuditLog,
+  AuditLogDocument,
+} from './schemas/audit-log.schema';
+
+import { AuditAction } from './enums/audit-action.enum';
+
+interface CreateAuditLogInput {
+  actorId: string;
+  action: AuditAction;
+  entityType: string;
+  entityId: string;
+  changes?: Record&lt;string, any&gt;;
+  metadata?: {
+    ipAddress?: string;
+    userAgent?: string;
+  };
+}
+
+@Injectable()
+export class AuditLogsService {
+  constructor(
+    @InjectModel(AuditLog.name)
+    private readonly auditLogModel: Model&lt;AuditLogDocument&gt;,
+  ) {}
+
+  // Create audit log
+  async createLog(data: CreateAuditLogInput) {
+    return this.auditLogModel.create({
+      actor: new Types.ObjectId(data.actorId),
+      action: data.action,
+      entityType: data.entityType,
+      entityId: new Types.ObjectId(data.entityId),
+      changes: data.changes ?? {},
+      metadata: data.metadata ?? {},
+    });
+  }
+
+  // Get activity history for a ticket
+  async getTicketActivity(ticketId: string) {
+    return this.auditLogModel
+      .find({
+        entityId: new Types.ObjectId(ticketId),
+        entityType: 'Ticket',
+      })
+      .populate('actor', 'name email role')
+      .sort({ createdAt: -1 })
+      .exec();
+  }
+
+  // Get all audit logs (for admin)
+  async findAll(page = 1, limit = 20) {
+    const skip = (page - 1) * limit;
+
+    const [items, totalRecords] = await Promise.all([
+      this.auditLogModel
+        .find()
+        .populate('actor', 'name email role')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+
+      this.auditLogModel.countDocuments(),
+    ]);
+
+    return {
+      items,
+      pagination: {
+        totalRecords,
+        totalPages: Math.ceil(totalRecords / limit),
+        currentPage: page,
+        limit,
+      },
+    };
+  }
+}</code></pre>
+<h3>Understand the important methods</h3>
+<div class="sc"><table>
+<tr><th>Code</th><th>Purpose</th></tr>
+<tr><td><code>@InjectModel()</code></td><td>Injects the Mongoose model</td></tr>
+<tr><td><code>create()</code></td><td>Inserts a new audit record</td></tr>
+<tr><td><code>new Types.ObjectId()</code></td><td>Converts a string ID into an ObjectId</td></tr>
+<tr><td><code>find()</code></td><td>Finds matching logs</td></tr>
+<tr><td><code>populate()</code></td><td>Brings the actor’s User details</td></tr>
+<tr><td><code>sort({ createdAt: -1 })</code></td><td>Newest activity first</td></tr>
+<tr><td><code>skip()</code></td><td>Skips records for pagination</td></tr>
+<tr><td><code>limit()</code></td><td>Limits the result</td></tr>
+<tr><td><code>countDocuments()</code></td><td>Counts total logs</td></tr>
+</table></div>
+<p><code>data.changes ?? {}</code> means: if <code>changes</code> is null or undefined, use the empty object <code>{}</code>.</p>
+</section>
+
+<section class="lesson" id="p9e">
+<span class="tag">Phase 9 · Lesson 5</span>
+<h2>5. Inject AuditLogsService into TicketsService</h2>
+<h3>Import AuditLogsModule in TicketsModule</h3>
+<p>File: <code>src/modules/tickets/tickets.module.ts</code>. Add this import:</p>
+<pre><code>import { AuditLogsModule } from '../audit-logs/audit-logs.module';</code></pre>
+<p>And in the <code>imports</code> array of <code>@Module()</code>:</p>
+<pre><code>@Module({
+  imports: [
+    MongooseModule.forFeature([
+      { name: Ticket.name, schema: TicketSchema },
+    ]),
+    UsersModule,
+    AuditLogsModule,
+  ],
+  // Existing controllers and providers stay the same
+})
+export class TicketsModule {}</code></pre>
+<p>Now TicketsModule can inject <code>AuditLogsService</code>.</p>
+<h3>TicketsService</h3>
+<p>File: <code>src/modules/tickets/tickets.service.ts</code>. Imports:</p>
+<pre><code>import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { AuditAction } from '../audit-logs/enums/audit-action.enum';</code></pre>
+<p>Add to the constructor:</p>
+<pre><code>constructor(
+  @InjectModel(Ticket.name)
+  private readonly ticketModel: Model&lt;TicketDocument&gt;,
+
+  private readonly usersService: UsersService,
+
+  private readonly auditLogsService: AuditLogsService,
+) {}</code></pre>
+<p>If your constructor has more dependencies, do not remove them. Only add <code>auditLogsService</code>.</p>
+<p>Now after each important ticket operation we will create an audit log.</p>
+</section>
+
+<section class="lesson" id="p9f">
+<span class="tag">Phase 9 · Lesson 6</span>
+<h2>6. Log ticket creation and ticket updates</h2>
+<h3>6.1 Log when a ticket is created</h3>
+<p>The pattern of your existing <code>create()</code> method:</p>
+<pre><code>async create(
+  data: CreateTicketDto,
+  user: AuthenticatedUser,
+) {
+  const ticket = await this.ticketModel.create({
+    ...data,
+    createdBy: user.userId,
+  });
+
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.TICKET_CREATED,
+    entityType: 'Ticket',
+    entityId: ticket.id,
+    changes: {
+      title: {
+        newValue: ticket.title,
+      },
+      status: {
+        newValue: ticket.status,
+      },
+      priority: {
+        newValue: ticket.priority,
+      },
+    },
+  });
+
+  return ticket;
+}</code></pre>
+<p>Understand the flow:</p>
+<ol>
+<li>The employee creates a ticket.</li>
+<li>The ticket is saved in MongoDB.</li>
+<li>We get the new ticket ID from <code>ticket.id</code>.</li>
+<li>The audit log is created.</li>
+<li>The ticket response is returned.</li>
+</ol>
+<p><code>actorId</code> comes from the authenticated user. We do not take the actor ID from the request body, because a user can spoof their identity.</p>
+<h3>6.2 Record old and new values when a ticket is updated</h3>
+<p>Storing only the updated value in the audit log is not enough. We need both the old value and the new value.</p>
+<pre><code>{
+  "priority": {
+    "oldValue": "low",
+    "newValue": "critical"
+  }
+}</code></pre>
+<p>Use this pattern in your existing <code>updateOwnTicket()</code> method:</p>
+<pre><code>async updateOwnTicket(
+  ticketId: string,
+  data: UpdateTicketDto,
+  user: AuthenticatedUser,
+) {
+  const ticket = await this.findOneForUser(ticketId, user);
+
+  const changes: Record&lt;string, any&gt; = {};
+
+  // Compare old and new values
+  for (const key of Object.keys(data) as (keyof UpdateTicketDto)[]) {
+    const newValue = data[key];
+    const oldValue = ticket.get(key as string);
+
+    if (
+      newValue !== undefined &amp;&amp;
+      String(oldValue) !== String(newValue)
+    ) {
+      changes[key] = {
+        oldValue,
+        newValue,
+      };
+    }
+  }
+
+  // Update ticket
+  Object.assign(ticket, data);
+  await ticket.save();
+
+  // Create audit log only if something changed
+  if (Object.keys(changes).length &gt; 0) {
+    await this.auditLogsService.createLog({
+      actorId: user.userId,
+      action: AuditAction.TICKET_UPDATED,
+      entityType: 'Ticket',
+      entityId: ticket.id,
+      changes,
+    });
+  }
+
+  return ticket;
+}</code></pre>
+<h3>Line-by-line important concepts</h3>
+<ul>
+<li><code>const changes: Record&lt;string, any&gt; = {};</code> makes an empty object. Only the changed fields get added to it.</li>
+<li><code>Object.keys(data)</code> gives the field names sent in the DTO.</li>
+<li><code>ticket.get(key as string)</code> gives the current value of the field from the Mongoose document.</li>
+<li><code>String(oldValue) !== String(newValue)</code> compares the old and new values. In this simple implementation string conversion is used for comparison. For nested objects and arrays, production may need deep comparison.</li>
+<li><code>Object.assign(ticket, data);</code> applies the DTO fields to the ticket document.</li>
+<li><code>await ticket.save();</code> saves the updated document in MongoDB.</li>
+</ul>
+<div class="note">The authorization check of your existing <code>updateOwnTicket()</code> must be preserved. An Employee can edit only their own open ticket, and the Admin’s permissions also remain according to the earlier rules.</div>
+</section>
+
+<section class="lesson" id="p9g">
+<span class="tag">Phase 9 · Lesson 7</span>
+<h2>7. Log status change, technician assignment and deletion</h2>
+<h3>7.1 Log a status change</h3>
+<p>We keep the status change as a separate action, because it is an important business event of the Helpdesk system. Use this pattern in your existing <code>updateStatus()</code> method:</p>
+<pre><code>async updateStatus(
+  ticketId: string,
+  status: TicketStatus,
+  user: AuthenticatedUser,
+) {
+  const ticket = await this.ticketModel.findById(ticketId);
+
+  if (!ticket) {
+    throw new NotFoundException('Ticket not found');
+  }
+
+  // Keep your existing role/assignment authorization checks here.
+
+  const oldStatus = ticket.status;
+
+  if (oldStatus === status) {
+    return ticket;
+  }
+
+  ticket.status = status;
+  await ticket.save();
+
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.STATUS_CHANGED,
+    entityType: 'Ticket',
+    entityId: ticket.id,
+    changes: {
+      status: {
+        oldValue: oldStatus,
+        newValue: status,
+      },
+    },
+  });
+
+  return ticket;
+}</code></pre>
+<div class="note">The place of the comment in this snippet must have your existing Phase 6 authorization checks. A Technician may change the status of only an assigned ticket, and the Admin’s existing permissions must also be preserved. Do not remove the authorization check.</div>
+<p>Example activity:</p>
+<pre><code>{
+  "action": "STATUS_CHANGED",
+  "changes": {
+    "status": {
+      "oldValue": "open",
+      "newValue": "in_progress"
+    }
+  }
+}</code></pre>
+<h3>7.2 Log a technician assignment</h3>
+<p>In your existing <code>assignTechnician()</code> method, create the log after the assignment succeeds.</p>
+<pre><code>const oldAssignedTo = ticket.assignedTo
+  ? ticket.assignedTo.toString()
+  : null;
+
+ticket.assignedTo = technician._id;
+await ticket.save();
+
+await this.auditLogsService.createLog({
+  actorId: user.userId,
+  action: AuditAction.TECHNICIAN_ASSIGNED,
+  entityType: 'Ticket',
+  entityId: ticket.id,
+  changes: {
+    assignedTo: {
+      oldValue: oldAssignedTo,
+      newValue: technician._id.toString(),
+    },
+  },
+});</code></pre>
+<p>Use this snippet after the technician validation of the existing method has succeeded. Here <code>user</code> is the logged-in Admin, and <code>technician</code> is the validated User document being assigned.</p>
+<h3>7.3 Log a ticket deletion</h3>
+<p>An important point in the delete operation: after the ticket is deleted, we cannot retrieve its current details. So fetch the ticket before deleting and save its useful information in the log.</p>
+<pre><code>async remove(
+  ticketId: string,
+  user: AuthenticatedUser,
+) {
+  const ticket = await this.ticketModel.findById(ticketId);
+
+  if (!ticket) {
+    throw new NotFoundException('Ticket not found');
+  }
+
+  // Keep your existing admin authorization at the controller
+  // and/or service level.
+
+  await this.ticketModel.findByIdAndDelete(ticketId);
+
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.TICKET_DELETED,
+    entityType: 'Ticket',
+    entityId: ticket.id,
+    changes: {
+      title: {
+        oldValue: ticket.title,
+      },
+      status: {
+        oldValue: ticket.status,
+      },
+      priority: {
+        oldValue: ticket.priority,
+      },
+    },
+  });
+
+  return {
+    message: 'Ticket deleted successfully',
+  };
+}</code></pre>
+<p>Now even after the ticket is deleted, its deletion activity stays available in the audit collection.</p>
+<div class="note"><b>Production note:</b> in the examples above, the ticket operation and the audit log creation are two separate database writes. If the ticket is saved but the audit log save fails, the history can become incomplete. High-reliability systems use MongoDB transactions or the transactional outbox pattern. Transactions need a MongoDB replica set/sharded deployment. A transaction will not work on a standalone local MongoDB.</div>
+</section>
+
+<section class="lesson" id="p9h">
+<span class="tag">Phase 9 · Lesson 8</span>
+<h2>8. Ticket activity API and Admin audit logs API</h2>
+<h3>Ticket activity history API</h3>
+<p>We are creating the audit logs. But the frontend needs an API to show a ticket’s activity history. We make this endpoint:</p>
+<pre><code>GET /api/v1/tickets/:id/activity</code></pre>
+<p>Example: <code>GET /api/v1/tickets/671a12345678901234567892/activity</code></p>
+<p><b>Step 1: add a method in TicketsService</b></p>
+<pre><code>async getActivity(
+  ticketId: string,
+  user: AuthenticatedUser,
+) {
+  // First verify that this user can access this ticket
+  await this.findOneForUser(ticketId, user);
+
+  // Then return its activity history
+  return this.auditLogsService.getTicketActivity(ticketId);
+}</code></pre>
+<p><b>Why is this authorization check important?</b> If we call <code>getTicketActivity(ticketId)</code> directly, an employee can try to access the history of another employee’s ticket. <code>findOneForUser()</code> first checks whether the logged-in user has permission to view the ticket.</p>
+<p><b>Step 2: add the endpoint in TicketsController</b></p>
+<p>File: <code>src/modules/tickets/tickets.controller.ts</code></p>
+<pre><code>@Get(':id/activity')
+getActivity(
+  @Param('id') ticketId: string,
+  @CurrentUser() user: AuthenticatedUser,
+) {
+  return this.ticketsService.getActivity(ticketId, user);
+}</code></pre>
+<p>This must be under the protection of your existing JWT and Roles guards.</p>
+<h3>All audit logs API for the Admin</h3>
+<p>Sometimes the Admin needs to see the activity of the whole system, not just one ticket.</p>
+<pre><code>GET /api/v1/audit-logs?page=1&amp;limit=20</code></pre>
+<p>Only the Admin gets access to this endpoint. File: <code>src/modules/audit-logs/audit-logs.controller.ts</code></p>
+<pre><code>import {
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+  DefaultValuePipe,
+  ParseIntPipe,
+} from '@nestjs/common';
+
+import { AuditLogsService } from './audit-logs.service';
+
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { UserRole } from '../../common/enums/user-role.enum';
+
+@Controller('audit-logs')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
+export class AuditLogsController {
+  constructor(
+    private readonly auditLogsService: AuditLogsService,
+  ) {}
+
+  @Get()
+  findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe)
+    page: number,
+
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe)
+    limit: number,
+  ) {
+    if (page &lt; 1 || limit &lt; 1 || limit &gt; 100) {
+      throw new BadRequestException(
+        'Invalid pagination parameters',
+      );
+    }
+
+    return this.auditLogsService.findAll(page, limit);
+  }
+}</code></pre>
+<p>Also add <code>BadRequestException</code> to the imports of this file:</p>
+<pre><code>import {
+  BadRequestException,
+  Controller,
+  // other imports...
+} from '@nestjs/common';</code></pre>
+<h3>Important decorators</h3>
+<ul>
+<li><code>@Controller('audit-logs')</code>: the base path of the route.</li>
+<li><code>@UseGuards()</code>: authentication and authorization.</li>
+<li><code>@Roles(UserRole.ADMIN)</code>: only the Admin.</li>
+<li><code>@Get()</code>: the GET endpoint.</li>
+<li><code>@Query()</code>: pagination values from the URL.</li>
+<li><code>DefaultValuePipe</code>: a default value if the parameter is absent.</li>
+<li><code>ParseIntPipe</code>: converts a string into an integer.</li>
+</ul>
+<p>Example: <code>GET /api/v1/audit-logs?page=2&amp;limit=10</code>. The Admin gets 10 audit logs of the second page.</p>
+</section>
+
+<section class="lesson" id="p9i">
+<span class="tag">Phase 9 · Lesson 9</span>
+<h2>9. Keep audit logs secure + Postman testing</h2>
+<p>An audit log can be more sensitive than normal application data. So follow some important rules:</p>
+<ol>
+<li>Do not give Employee and Technician access to the general <code>/audit-logs</code> endpoint.</li>
+<li>Check ticket-level authorization before showing the activity.</li>
+<li>Give the permission to create audit logs only to backend services.</li>
+<li>Do not give normal users an API to update/delete audit logs.</li>
+<li>Never log a password, JWT token, refresh token, OTP or secret keys.</li>
+<li>Do not modify audit records through a normal ticket update.</li>
+</ol>
+<p>One more security point: <code>ipAddress</code> and <code>userAgent</code> metadata can be useful, but handle the IP address carefully behind a proxy/load balancer. Do not blindly trust untrusted forwarded headers.</p>
+<h3>Postman testing, step by step</h3>
+<pre><code>npm run start:dev</code></pre>
+<p>In Postman add the Bearer Token and perform these tests.</p>
+<div class="sc"><table>
+<tr><th>Test</th><th>Request</th><th>Expected</th></tr>
+<tr><td>1. Employee creates a ticket</td><td><code>POST /api/v1/tickets</code></td><td>The ticket is created and a <code>TICKET_CREATED</code> log is saved</td></tr>
+<tr><td>2. Admin assigns a technician</td><td><code>PATCH /api/v1/tickets/:id/assign</code></td><td>A <code>TECHNICIAN_ASSIGNED</code> log is saved with the old and new assignment</td></tr>
+<tr><td>3. Technician changes the status</td><td><code>PATCH /api/v1/tickets/:id/status</code></td><td>A <code>STATUS_CHANGED</code> log has the old and new status</td></tr>
+<tr><td>4. Employee updates own ticket</td><td><code>PATCH /api/v1/tickets/:id</code></td><td>A <code>TICKET_UPDATED</code> log has the changed fields</td></tr>
+<tr><td>5. Ticket activity history</td><td><code>GET /api/v1/tickets/:id/activity</code></td><td>Complete activity history of that ticket, newest first</td></tr>
+<tr><td>6. Admin all audit logs</td><td><code>GET /api/v1/audit-logs?page=1&amp;limit=20</code></td><td>The Admin gets paginated audit logs</td></tr>
+<tr><td>7. Employee tries all audit logs</td><td><code>GET /api/v1/audit-logs</code></td><td>HTTP 403 Forbidden</td></tr>
+<tr><td>8. Employee tries another employee’s activity</td><td><code>GET /api/v1/tickets/OTHER_EMPLOYEE_TICKET_ID/activity</code></td><td>HTTP 403 Forbidden</td></tr>
+</table></div>
+<h3>Verify in MongoDB Compass</h3>
+<p>Open MongoDB Compass with <code>mongodb://127.0.0.1:27017</code>. Database: <code>internal_it_helpdesk</code>. Collection: <code>auditlogs</code>. The logs you created should be visible here as documents.</p>
+</section>
+
+<section class="lesson" id="p9j">
+<span class="tag">Phase 9 · Lesson 10</span>
+<h2>10. Audit Log vs Activity Log, checklist and interview questions</h2>
+<p>A real industry concept: both are related, but they are not exactly the same.</p>
+<div class="sc"><table>
+<tr><th>Audit Log</th><th>Activity Log</th></tr>
+<tr><td>For security and accountability</td><td>To show the user a readable history</td></tr>
+<tr><td>Detailed old/new values</td><td>Simple human-readable description</td></tr>
+<tr><td>Who, what, when</td><td>What activity happened</td></tr>
+<tr><td>Investigation and compliance</td><td>Dashboard and timeline</td></tr>
+</table></div>
+<p>Audit Log:</p>
+<pre><code>{
+  "action": "STATUS_CHANGED",
+  "changes": {
+    "status": {
+      "oldValue": "open",
+      "newValue": "resolved"
+    }
+  }
+}</code></pre>
+<p>Activity display:</p>
+<pre><code>Amit changed ticket status from Open to Resolved.</code></pre>
+<p>In our project we are storing the audit log for now. The frontend can convert that audit log into a readable activity timeline.</p>
+<h3>Practice checklist</h3>
+<ul class="chk" id="chk9">
+<li><label><input type="checkbox"> Created the AuditAction enum</label></li>
+<li><label><input type="checkbox"> Created the AuditLog Mongoose schema</label></li>
+<li><label><input type="checkbox"> Made the AuditLogsModule and service</label></li>
+<li><label><input type="checkbox"> Imported AuditLogsModule in TicketsModule</label></li>
+<li><label><input type="checkbox"> Saved an audit log when a ticket is created</label></li>
+<li><label><input type="checkbox"> Saved old/new values on ticket update</label></li>
+<li><label><input type="checkbox"> Saved the status change history</label></li>
+<li><label><input type="checkbox"> Saved the technician assignment history</label></li>
+<li><label><input type="checkbox"> Saved the ticket deletion history</label></li>
+<li><label><input type="checkbox"> Made the ticket activity API</label></li>
+<li><label><input type="checkbox"> Made the Admin-only audit logs API</label></li>
+<li><label><input type="checkbox"> Tested unauthorized access of Employee/Technician</label></li>
+<li><label><input type="checkbox"> Verified auditlogs in MongoDB Compass</label></li>
+</ul>
+<p id="count9">0/13 completed</p>
+<h3>Interview questions</h3>
+<ol>
+<li>What is an Audit Log?</li>
+<li>Why should audit logs be immutable?</li>
+<li>What is the difference between Audit Log and Activity Log?</li>
+<li>Why do we store both old and new values?</li>
+<li>Why do we use a separate MongoDB collection for audit logs?</li>
+<li>What is the purpose of <code>actor</code>, <code>entityType</code> and <code>entityId</code>?</li>
+<li>Why should we never store passwords or JWT tokens in audit logs?</li>
+<li>What happens if a ticket update succeeds but audit log creation fails?</li>
+<li>What is a MongoDB transaction?</li>
+<li>Why do we use indexes on <code>entityId</code> and <code>createdAt</code>?</li>
+</ol>
+<p><b>Main learning of Phase 9:</b> you have now learned not only to manage the current ticket data, but also to maintain the complete change history of that ticket.</p>
+</section>
+
+<section class="lesson" id="p9k">
+<span class="tag">Phase 9 · Lesson 11</span>
+<h2>11. Next: Phase 10</h2>
+<p><b>Dashboard, MongoDB Aggregation Pipeline.</b> In this phase we build the Admin Dashboard:</p>
+<ul>
+<li>Total tickets</li>
+<li>Open, In Progress, Resolved and Closed tickets</li>
+<li>Priority-wise ticket counts</li>
+<li>Category-wise ticket counts</li>
+<li>Technician workload</li>
+<li>Monthly ticket creation statistics</li>
+<li>MongoDB Aggregation Pipeline: <code>$match</code>, <code>$group</code>, <code>$sort</code>, <code>$project</code>, <code>$lookup</code>, <code>$unwind</code> and <code>$count</code></li>
+</ul>
+<div class="note">This phase is important, because in it you will learn the MongoDB aggregation queries used in real projects.</div>
+</section>
+
+<section class="lesson" id="p11a">
+<span class="tag">Phase 11 · Lesson 1</span>
+<h2>1. Overview, database design and API design</h2>
+<p>Now we implement a real-world feature in our Internal IT Helpdesk project: the Ticket Discussion System.</p>
+<p>So far the Employee creates a ticket, the Admin assigns a Technician and the Technician updates the ticket status. But in a real IT Helpdesk, the Employee and the Technician also need to have a conversation inside the ticket.</p>
+<h3>Example: Ticket #1024, Laptop not working</h3>
+<p>Status: In Progress · Hardware · High</p>
+<ul>
+<li><b>Rahul (Employee), 09:00 AM:</b> My laptop is not starting. I tried restarting it, but the screen is still blank.</li>
+<li><b>Amit (Technician), 09:30 AM:</b> Please check whether the charging indicator is turning on.</li>
+<li><b>Rahul (Employee), 09:45 AM:</b> Yes, the charging indicator is on, but the display is blank.</li>
+</ul>
+<p>This is an illustrative discussion UI with sample data.</p>
+<h3>With this feature</h3>
+<ul>
+<li>An Employee can comment on their own ticket.</li>
+<li>The assigned Technician can reply.</li>
+<li>The Admin can see the ticket discussion.</li>
+<li>Comment edit/delete permissions are controlled.</li>
+<li>The author and timestamp of every comment are stored.</li>
+<li>Comment activities are recorded in the Audit Logs.</li>
+</ul>
+<h3>Database design</h3>
+<p>We make a separate MongoDB collection for comments.</p>
+<pre><code>internal_it_helpdesk
+│
+├── users
+├── tickets
+├── auditlogs
+└── comments</code></pre>
+<p>A comment document:</p>
+<pre><code>{
+  "_id": "671a12345678901234567890",
+  "ticket": "671a12345678901234567891",
+  "author": "671a12345678901234567892",
+  "message": "Please check your laptop charging indicator.",
+  "isDeleted": false,
+  "deletedAt": null,
+  "deletedBy": null,
+  "createdAt": "2026-10-31T09:30:00.000Z",
+  "updatedAt": "2026-10-31T09:30:00.000Z"
+}</code></pre>
+<div class="sc"><table>
+<tr><th>Field</th><th>Meaning</th></tr>
+<tr><td><code>_id</code></td><td>Unique ID of the comment</td></tr>
+<tr><td><code>ticket</code></td><td>On which ticket the comment is</td></tr>
+<tr><td><code>author</code></td><td>Which user made the comment</td></tr>
+<tr><td><code>message</code></td><td>The actual comment text</td></tr>
+<tr><td><code>isDeleted</code></td><td>Whether the comment is deleted</td></tr>
+<tr><td><code>deletedAt</code></td><td>Time of deletion</td></tr>
+<tr><td><code>deletedBy</code></td><td>Which user deleted it</td></tr>
+<tr><td><code>createdAt</code></td><td>Comment creation time</td></tr>
+<tr><td><code>updatedAt</code></td><td>Last update time</td></tr>
+</table></div>
+<p>Relationship between Ticket and Comment:</p>
+<ul>
+<li>One Ticket → Many Comments</li>
+<li>One User → Many Comments</li>
+<li>One Comment → One Ticket</li>
+<li>One Comment → One Author</li>
+</ul>
+<p>We use ObjectId references in <code>ticket</code> and <code>author</code>.</p>
+<h3>Complete API design</h3>
+<div class="sc"><table>
+<tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+<tr><td>POST</td><td><code>/tickets/:ticketId/comments</code></td><td>Create comment</td></tr>
+<tr><td>GET</td><td><code>/tickets/:ticketId/comments</code></td><td>Get ticket comments</td></tr>
+<tr><td>PATCH</td><td><code>/tickets/:ticketId/comments/:commentId</code></td><td>Edit comment</td></tr>
+<tr><td>DELETE</td><td><code>/tickets/:ticketId/comments/:commentId</code></td><td>Delete comment</td></tr>
+</table></div>
+<pre><code>POST /api/v1/tickets/671a12345678901234567891/comments</code></pre>
+<p>Request body:</p>
+<pre><code>{
+  "message": "Please check the charging indicator."
+}</code></pre>
+</section>
+
+<section class="lesson" id="p11b">
+<span class="tag">Phase 11 · Lesson 2</span>
+<h2>2. Access control and folder structure</h2>
+<p>This is the most important part. Just creating a comment is not sufficient. Unauthorized users must not get access to the discussion of other tickets.</p>
+<div class="sc"><table>
+<tr><th>User</th><th>View comments</th><th>Add comment</th><th>Edit/Delete</th></tr>
+<tr><td>Employee</td><td>Own ticket</td><td>Own ticket</td><td>Own comments</td></tr>
+<tr><td>Technician</td><td>Assigned ticket</td><td>Assigned ticket</td><td>Own comments</td></tr>
+<tr><td>Admin</td><td>All tickets</td><td>Any accessible ticket</td><td>Any comment</td></tr>
+</table></div>
+<p>In this lesson we implement these rules:</p>
+<ol>
+<li>An Employee can comment only on their own ticket.</li>
+<li>A Technician can comment only on an assigned ticket.</li>
+<li>An Admin can comment on any ticket.</li>
+<li>An Employee and a Technician can edit/delete their own comments.</li>
+<li>An Admin can edit/delete any comment.</li>
+</ol>
+<p>We will soft delete the deleted comments. That means the document is not physically deleted from the database. Its deletion record is preserved.</p>
+<h3>Create the folder structure</h3>
+<p>Create a <code>comments</code> module inside <code>src/modules/</code>.</p>
+<pre><code>src/
+└── modules/
+    ├── comments/
+    │   ├── dto/
+    │   │   ├── create-comment.dto.ts
+    │   │   ├── update-comment.dto.ts
+    │   │   └── comment-query.dto.ts
+    │   ├── schemas/
+    │   │   └── comment.schema.ts
+    │   ├── comments.controller.ts
+    │   ├── comments.service.ts
+    │   └── comments.module.ts
+    ├── tickets/
+    ├── users/
+    ├── auth/
+    ├── audit-logs/
+    └── dashboard/</code></pre>
+</section>
+
+<section class="lesson" id="p11c">
+<span class="tag">Phase 11 · Lesson 3</span>
+<h2>3. Comment Mongoose Schema</h2>
+<p>File: <code>src/modules/comments/schemas/comment.schema.ts</code></p>
+<pre><code>import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
+
+import { User } from '../../users/schemas/user.schema';
+import { Ticket } from '../../tickets/schemas/ticket.schema';
+
+export type CommentDocument = HydratedDocument&lt;Comment&gt;;
+
+@Schema({
+  timestamps: true,
+  versionKey: false,
+})
+export class Comment {
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Ticket.name,
+    required: true,
+  })
+  ticket: Types.ObjectId;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    required: true,
+  })
+  author: Types.ObjectId;
+
+  @Prop({
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 1,
+    maxlength: 5000,
+  })
+  message: string;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
+  isDeleted: boolean;
+
+  @Prop({
+    type: Date,
+    default: null,
+  })
+  deletedAt: Date | null;
+
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    default: null,
+  })
+  deletedBy: Types.ObjectId | null;
+}
+
+export const CommentSchema =
+  SchemaFactory.createForClass(Comment);
+
+// Indexes for faster ticket discussion queries
+CommentSchema.index({ ticket: 1, createdAt: 1 });
+
+CommentSchema.index({ author: 1, createdAt: -1 });</code></pre>
+<h3>Understand the code in detail</h3>
+<ol>
+<li><b><code>ticket</code> field.</b> It stores the ObjectId of the ticket. <code>ref: Ticket.name</code> says this reference points to the Ticket model.</li>
+<li><b><code>author</code> field.</b> The ID of the logged-in user is saved in it.</li>
+<li><b><code>message</code>.</b> <code>required</code>: the message is compulsory. <code>trim</code>: removes starting and ending spaces. <code>minlength</code>: minimum one character. <code>maxlength</code>: maximum 5000 characters.</li>
+<li><b>Soft delete fields.</b> <code>isDeleted</code>, <code>deletedAt</code>, <code>deletedBy</code>. When we delete a comment, we set <code>{ isDeleted: true, deletedAt: new Date(), deletedBy: user.userId }</code>. The original message stays preserved in the database, but a deleted comment is not shown in the normal comments API.</li>
+<li><b>Indexing.</b> <code>CommentSchema.index({ ticket: 1, createdAt: 1 })</code> helps the query when we fetch the comments of a ticket in oldest-first order.</li>
+</ol>
+</section>
+
+<section class="lesson" id="p11d">
+<span class="tag">Phase 11 · Lesson 4</span>
+<h2>4. DTOs: Create, Update and Query</h2>
+<h3>Create Comment DTO</h3>
+<p>The job of a DTO is to validate the incoming request. File: <code>src/modules/comments/dto/create-comment.dto.ts</code></p>
+<pre><code>import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+} from 'class-validator';
+
+export class CreateCommentDto {
+  @Transform(({ value }) =&gt;
+    typeof value === 'string' ? value.trim() : value,
+  )
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(5000)
+  message: string;
+}</code></pre>
+<div class="sc"><table>
+<tr><th>Decorator</th><th>Purpose</th></tr>
+<tr><td><code>@Transform()</code></td><td>Transforms the input</td></tr>
+<tr><td><code>@IsString()</code></td><td>The message must be a string</td></tr>
+<tr><td><code>@IsNotEmpty()</code></td><td>An empty message is not allowed</td></tr>
+<tr><td><code>@MaxLength(5000)</code></td><td>5000 characters maximum</td></tr>
+</table></div>
+<p>Valid body: <code>{ "message": "Please check your internet connection." }</code></p>
+<p>Invalid body: <code>{ "message": "" }</code>. Expected: HTTP 400 Bad Request.</p>
+<h3>Update Comment DTO</h3>
+<p>File: <code>src/modules/comments/dto/update-comment.dto.ts</code></p>
+<pre><code>import { CreateCommentDto } from './create-comment.dto';
+import { PartialType } from '@nestjs/mapped-types';
+
+export class UpdateCommentDto extends PartialType(CreateCommentDto) {}</code></pre>
+<p><code>PartialType()</code> makes all the properties of the parent DTO optional. There is only one field in our DTO, <code>message</code>, so for a meaningful edit you must send the message in the update too.</p>
+<div class="note"><b>DTO correction for update:</b> in our update endpoint the message is required, because we replace the whole comment message. So <code>PartialType()</code> is not needed. Keep <code>update-comment.dto.ts</code> in this simple version:
+<pre><code>import { CreateCommentDto } from './create-comment.dto';
+
+export class UpdateCommentDto extends CreateCommentDto {}</code></pre>
+This does not accept an empty update body, and <code>data.message</code> stays required.</div>
+<h3>Comment Query DTO: pagination</h3>
+<p>One ticket can have even 1000 comments. So we do not return all comments at once. File: <code>src/modules/comments/dto/comment-query.dto.ts</code></p>
+<pre><code>import { Type } from 'class-transformer';
+import {
+  IsInt,
+  IsOptional,
+  Max,
+  Min,
+} from 'class-validator';
+
+export class CommentQueryDto {
+  @IsOptional()
+  @Type(() =&gt; Number)
+  @IsInt()
+  @Min(1)
+  page: number = 1;
+
+  @IsOptional()
+  @Type(() =&gt; Number)
+  @IsInt()
+  @Min(1)
+  @Max(100)
+  limit: number = 20;
+}</code></pre>
+<p>Example: <code>GET /api/v1/tickets/:ticketId/comments?page=1&amp;limit=20</code>. This gives a maximum of 20 comments of the first page.</p>
+</section>
+
+<section class="lesson" id="p11e">
+<span class="tag">Phase 11 · Lesson 5</span>
+<h2>5. Module wiring and the audit action enum</h2>
+<h3>CommentsModule</h3>
+<p>File: <code>src/modules/comments/comments.module.ts</code></p>
+<pre><code>import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { Comment, CommentSchema } from './schemas/comment.schema';
+
+import { CommentsController } from './comments.controller';
+import { CommentsService } from './comments.service';
+
+import { TicketsModule } from '../tickets/tickets.module';
+import { AuditLogsModule } from '../audit-logs/audit-logs.module';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Comment.name,
+        schema: CommentSchema,
+      },
+    ]),
+
+    TicketsModule,
+    AuditLogsModule,
+  ],
+
+  controllers: [CommentsController],
+
+  providers: [CommentsService],
+
+  exports: [CommentsService],
+})
+export class CommentsModule {}</code></pre>
+<h3>Understand the architecture</h3>
+<p>We imported two modules:</p>
+<ul>
+<li><b>TicketsModule.</b> With this we access <code>TicketsService</code>. Its existing <code>findOneForUser()</code> method checks whether the logged-in user has permission to access the particular ticket.</li>
+<li><b>AuditLogsModule.</b> With this we save an audit log when a comment is created, updated and deleted.</li>
+</ul>
+<div class="note"><b>Circular dependency check:</b> <code>TicketsModule</code> must not import <code>CommentsModule</code>. In this design the dependency is <code>CommentsModule</code> → <code>TicketsModule</code>, not the reverse. So no unnecessary circular dependency is created.</div>
+<h3>Export TicketsService from TicketsModule</h3>
+<p>File: <code>src/modules/tickets/tickets.module.ts</code>. Add <code>exports</code> in the existing module:</p>
+<pre><code>@Module({
+  imports: [
+    // Existing imports
+  ],
+
+  controllers: [TicketsController],
+
+  providers: [TicketsService],
+
+  exports: [TicketsService],
+})
+export class TicketsModule {}</code></pre>
+<p><b>Why?</b> In NestJS you can inject the service of one module in another module only when the first module exports that service. If <code>TicketsService</code> is already exported, you need not change anything.</p>
+<h3>Update the Audit Action Enum</h3>
+<p>In Phase 9 we made the <code>AuditAction</code> enum. Now we add the comment-related actions. File: <code>src/modules/audit-logs/enums/audit-action.enum.ts</code></p>
+<pre><code>export enum AuditAction {
+  TICKET_CREATED = 'TICKET_CREATED',
+  TICKET_UPDATED = 'TICKET_UPDATED',
+  STATUS_CHANGED = 'STATUS_CHANGED',
+  TECHNICIAN_ASSIGNED = 'TECHNICIAN_ASSIGNED',
+  TICKET_DELETED = 'TICKET_DELETED',
+
+  COMMENT_CREATED = 'COMMENT_CREATED',
+  COMMENT_UPDATED = 'COMMENT_UPDATED',
+  COMMENT_DELETED = 'COMMENT_DELETED',
+
+  USER_UPDATED = 'USER_UPDATED',
+  USER_DEACTIVATED = 'USER_DEACTIVATED',
+}</code></pre>
+<p>If your existing enum already has additional actions, preserve them. Now we can record comment activities in the audit logs too.</p>
+<h3>Import CommentsModule in AppModule</h3>
+<p>File: <code>src/app.module.ts</code></p>
+<pre><code>import { CommentsModule } from './modules/comments/comments.module';
+
+@Module({
+  imports: [
+    // Existing modules
+    CommentsModule,
+  ],
+})
+export class AppModule {}</code></pre>
+<p>If the module is already imported, do not duplicate it.</p>
+</section>
+
+<section class="lesson" id="p11f">
+<span class="tag">Phase 11 · Lesson 6</span>
+<h2>6. CommentsService setup and the Create Comment method</h2>
+<p>This is the main business logic of our phase. File: <code>src/modules/comments/comments.service.ts</code>. Imports:</p>
+<pre><code>import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+
+import { InjectModel } from '@nestjs/mongoose';
+
+import mongoose, {
+  Model,
+  Types,
+} from 'mongoose';
+
+import {
+  Comment,
+  CommentDocument,
+} from './schemas/comment.schema';
+
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CommentQueryDto } from './dto/comment-query.dto';
+
+import { AuthenticatedUser } from '../../common/interfaces/authenticated-user.interface';
+
+import { TicketsService } from '../tickets/tickets.service';
+import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { AuditAction } from '../audit-logs/enums/audit-action.enum';
+
+import { UserRole } from '../../common/enums/user-role.enum';</code></pre>
+<p>If the path of the <code>AuthenticatedUser</code> interface in your project is different, use your existing path.</p>
+<h3>Service class and constructor</h3>
+<pre><code>@Injectable()
+export class CommentsService {
+  constructor(
+    @InjectModel(Comment.name)
+    private readonly commentModel: Model&lt;CommentDocument&gt;,
+
+    private readonly ticketsService: TicketsService,
+
+    private readonly auditLogsService: AuditLogsService,
+  ) {}
+
+  private validateObjectId(id: string) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid MongoDB ID');
+    }
+  }
+}</code></pre>
+<ul>
+<li><code>commentModel</code>: access to the MongoDB comments collection.</li>
+<li><code>ticketsService</code>: ticket ownership/assignment permission check.</li>
+<li><code>auditLogsService</code>: audit record of the comment activity.</li>
+</ul>
+<p><b>What does <code>validateObjectId()</code> do?</b> <code>Types.ObjectId.isValid(id)</code> checks whether the provided ID is in a valid MongoDB ObjectId format. If the ID is invalid, an HTTP 400 error is thrown.</p>
+<h3>Create Comment: the service method</h3>
+<p>Add this method inside the class:</p>
+<pre><code>async create(
+  ticketId: string,
+  data: CreateCommentDto,
+  user: AuthenticatedUser,
+) {
+  // 1. Validate ticket ID
+  this.validateObjectId(ticketId);
+
+  // 2. Verify user can access this ticket
+  await this.ticketsService.findOneForUser(
+    ticketId,
+    user,
+  );
+
+  // 3. Create comment
+  const comment = await this.commentModel.create({
+    ticket: new Types.ObjectId(ticketId),
+    author: new Types.ObjectId(user.userId),
+    message: data.message,
+  });
+
+  // 4. Create audit log
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.COMMENT_CREATED,
+    entityType: 'Ticket',
+    entityId: ticketId,
+    changes: {
+      commentId: {
+        newValue: comment.id,
+      },
+    },
+  });
+
+  // 5. Return populated comment
+  return this.commentModel
+    .findById(comment.id)
+    .populate('author', 'name role')
+    .exec();
+}</code></pre>
+<h3>Complete flow of this method</h3>
+<ol class="flow">
+<li><b>Employee / Technician / Admin</b>Create comment</li>
+<li><b>Validate ticket ID</b></li>
+<li><b>Check ticket permission</b></li>
+<li><b>Save comment in DB</b></li>
+<li><b>Create audit log</b></li>
+<li><b>Return comment data</b></li>
+</ol>
+<p>The most important line:</p>
+<pre><code>await this.ticketsService.findOneForUser(ticketId, user);</code></pre>
+<p>It reuses your Phase 6 authorization rules. The benefit is that we do not need to write the ownership rules of Employee, Technician and Admin again in <code>CommentsService</code>.</p>
+<div class="note"><b>Security rule:</b> never take <code>author</code> from the request body. The ID of the logged-in user must come from the JWT.</div>
+</section>
+
+<section class="lesson" id="p11g">
+<span class="tag">Phase 11 · Lesson 7</span>
+<h2>7. Get Comments API with pagination</h2>
+<p>Now we fetch the discussion history of the ticket. Method in the service:</p>
+<pre><code>async findByTicket(
+  ticketId: string,
+  query: CommentQueryDto,
+  user: AuthenticatedUser,
+) {
+  // 1. Validate ID
+  this.validateObjectId(ticketId);
+
+  // 2. Verify ticket access
+  await this.ticketsService.findOneForUser(
+    ticketId,
+    user,
+  );
+
+  const page = query.page ?? 1;
+  const limit = query.limit ?? 20;
+
+  const skip = (page - 1) * limit;
+
+  // 3. Build filter
+  const filter = {
+    ticket: new Types.ObjectId(ticketId),
+    isDeleted: false,
+  };
+
+  // 4. Fetch comments and count in parallel
+  const [items, totalRecords] = await Promise.all([
+    this.commentModel
+      .find(filter)
+      .populate('author', 'name role')
+      .sort({ createdAt: 1 })
+      .skip(skip)
+      .limit(limit)
+      .exec(),
+
+    this.commentModel.countDocuments(filter),
+  ]);
+
+  // 5. Return pagination
+  const totalPages = Math.ceil(totalRecords / limit);
+
+  return {
+    items,
+    pagination: {
+      totalRecords,
+      totalPages,
+      currentPage: page,
+      limit,
+      hasNextPage: page &lt; totalPages,
+      hasPreviousPage: page &gt; 1,
+    },
+  };
+}</code></pre>
+<h3>Important concepts</h3>
+<p><b>1. <code>isDeleted: false</code></b></p>
+<pre><code>const filter = {
+  ticket: new Types.ObjectId(ticketId),
+  isDeleted: false,
+};</code></pre>
+<p>Deleted comments are not shown in the normal conversation.</p>
+<p><b>2. <code>.populate('author', 'name role')</code></b></p>
+<p>Only the author’s ID is stored in the comment document. <code>populate()</code> gives the user’s name and role.</p>
+<pre><code>// Without populate:
+{
+  "author": "671a12345678901234567892"
+}
+
+// With populate:
+{
+  "author": {
+    "_id": "671a12345678901234567892",
+    "name": "Rahul",
+    "role": "employee"
+  }
+}</code></pre>
+<p><b>3. <code>.sort({ createdAt: 1 })</code></b> The conversation is shown oldest-first, so the discussion is in natural reading order.</p>
+<p><b>4. <code>Promise.all()</code></b> Two operations run together: fetching the comments, and counting the total comments. This is the practical use of the Phase 8 pagination concept.</p>
+</section>
+
+<section class="lesson" id="p11h">
+<span class="tag">Phase 11 · Lesson 8</span>
+<h2>8. Update Comment and Soft Delete</h2>
+<h3>Update Comment API</h3>
+<p>A user can edit their own comment. An Admin can edit any comment. Service method:</p>
+<pre><code>async update(
+  ticketId: string,
+  commentId: string,
+  data: UpdateCommentDto,
+  user: AuthenticatedUser,
+) {
+  // 1. Validate IDs
+  this.validateObjectId(ticketId);
+  this.validateObjectId(commentId);
+
+  // 2. Check ticket access
+  await this.ticketsService.findOneForUser(
+    ticketId,
+    user,
+  );
+
+  // 3. Find comment
+  const comment = await this.commentModel.findOne({
+    _id: commentId,
+    ticket: ticketId,
+    isDeleted: false,
+  });
+
+  if (!comment) {
+    throw new NotFoundException('Comment not found');
+  }
+
+  // 4. Check edit permission
+  const isAuthor =
+    comment.author.toString() === user.userId;
+
+  const isAdmin = user.role === UserRole.ADMIN;
+
+  if (!isAuthor &amp;&amp; !isAdmin) {
+    throw new ForbiddenException(
+      'You can only edit your own comments',
+    );
+  }
+
+  // 5. Save old message
+  const oldMessage = comment.message;
+
+  // 6. Update message
+  comment.message = data.message;
+  await comment.save();
+
+  // 7. Create audit log
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.COMMENT_UPDATED,
+    entityType: 'Ticket',
+    entityId: ticketId,
+    changes: {
+      commentId: {
+        oldValue: comment.id,
+        newValue: comment.id,
+      },
+      messageChanged: true,
+    },
+  });
+
+  // 8. Return updated comment
+  return this.commentModel
+    .findById(comment.id)
+    .populate('author', 'name role')
+    .exec();
+}</code></pre>
+<h3>Understand the permission logic</h3>
+<pre><code>const isAuthor =
+  comment.author.toString() === user.userId;
+
+const isAdmin = user.role === UserRole.ADMIN;</code></pre>
+<p>Two conditions: is the logged-in user the author of the comment? Is the logged-in user an Admin?</p>
+<pre><code>if (!isAuthor &amp;&amp; !isAdmin) {
+  throw new ForbiddenException();
+}</code></pre>
+<p>If both are false, permission is denied.</p>
+<div class="note">In this example the audit log does not store the comment text. We avoid unnecessarily duplicating sensitive discussion content. If you are not using the <code>oldMessage</code> variable for actual before/after content comparison or version history, you can remove it.</div>
+<h3>Delete Comment API: Soft Delete</h3>
+<p>Now we delete the comment, but we do not remove it permanently from MongoDB. Service method:</p>
+<pre><code>async remove(
+  ticketId: string,
+  commentId: string,
+  user: AuthenticatedUser,
+) {
+  // 1. Validate IDs
+  this.validateObjectId(ticketId);
+  this.validateObjectId(commentId);
+
+  // 2. Verify ticket access
+  await this.ticketsService.findOneForUser(
+    ticketId,
+    user,
+  );
+
+  // 3. Find comment
+  const comment = await this.commentModel.findOne({
+    _id: commentId,
+    ticket: ticketId,
+    isDeleted: false,
+  });
+
+  if (!comment) {
+    throw new NotFoundException('Comment not found');
+  }
+
+  // 4. Check permission
+  const isAuthor =
+    comment.author.toString() === user.userId;
+
+  const isAdmin = user.role === UserRole.ADMIN;
+
+  if (!isAuthor &amp;&amp; !isAdmin) {
+    throw new ForbiddenException(
+      'You can only delete your own comments',
+    );
+  }
+
+  // 5. Soft delete
+  comment.isDeleted = true;
+  comment.deletedAt = new Date();
+  comment.deletedBy = new Types.ObjectId(user.userId);
+
+  await comment.save();
+
+  // 6. Audit log
+  await this.auditLogsService.createLog({
+    actorId: user.userId,
+    action: AuditAction.COMMENT_DELETED,
+    entityType: 'Ticket',
+    entityId: ticketId,
+    changes: {
+      commentId: {
+        oldValue: comment.id,
+      },
+      isDeleted: {
+        newValue: true,
+      },
+    },
+  });
+
+  return {
+    message: 'Comment deleted successfully',
+  };
+}</code></pre>
+<h3>Soft delete vs hard delete</h3>
+<p><b>Hard delete (permanent removal):</b></p>
+<pre><code>await this.commentModel
+  .findByIdAndDelete(id);</code></pre>
+<p>The document is removed from the database.</p>
+<p><b>Soft delete (history preserved):</b></p>
+<pre><code>comment.isDeleted = true;
+await comment.save();</code></pre>
+<p>The document stays in the database and is hidden from normal results. In a system like a Helpdesk, soft delete is useful, because the discussion history can be important for investigation and accountability.</p>
+</section>
+
+<section class="lesson" id="p11i">
+<span class="tag">Phase 11 · Lesson 9</span>
+<h2>9. Complete CommentsController</h2>
+<p>Now we connect the service methods with the HTTP endpoints. File: <code>src/modules/comments/comments.controller.ts</code></p>
+<pre><code>import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  Query,
+  UseGuards,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+
+import { CommentsService } from './comments.service';
+
+import { CreateCommentDto } from './dto/create-comment.dto';
+import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CommentQueryDto } from './dto/comment-query.dto';
+
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+
+import { AuthenticatedUser } from '../../common/interfaces/authenticated-user.interface';
+
+@Controller('tickets/:ticketId/comments')
+@UseGuards(JwtAuthGuard)
+export class CommentsController {
+  constructor(
+    private readonly commentsService: CommentsService,
+  ) {}
+
+  // Create comment
+  @Post()
+  create(
+    @Param('ticketId') ticketId: string,
+    @Body() data: CreateCommentDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commentsService.create(
+      ticketId,
+      data,
+      user,
+    );
+  }
+
+  // Get comments with pagination
+  @Get()
+  findByTicket(
+    @Param('ticketId') ticketId: string,
+    @Query() query: CommentQueryDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commentsService.findByTicket(
+      ticketId,
+      query,
+      user,
+    );
+  }
+
+  // Update comment
+  @Patch(':commentId')
+  update(
+    @Param('ticketId') ticketId: string,
+    @Param('commentId') commentId: string,
+    @Body() data: UpdateCommentDto,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commentsService.update(
+      ticketId,
+      commentId,
+      data,
+      user,
+    );
+  }
+
+  // Delete comment
+  @Delete(':commentId')
+  @HttpCode(HttpStatus.OK)
+  remove(
+    @Param('ticketId') ticketId: string,
+    @Param('commentId') commentId: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
+    return this.commentsService.remove(
+      ticketId,
+      commentId,
+      user,
+    );
+  }
+}</code></pre>
+<h3>Controller decorators revision</h3>
+<div class="sc"><table>
+<tr><th>Decorator</th><th>Purpose</th></tr>
+<tr><td><code>@Controller()</code></td><td>Route prefix</td></tr>
+<tr><td><code>@UseGuards()</code></td><td>Authentication check</td></tr>
+<tr><td><code>@Post()</code></td><td>Create comment</td></tr>
+<tr><td><code>@Get()</code></td><td>Fetch comments</td></tr>
+<tr><td><code>@Patch()</code></td><td>Update comment</td></tr>
+<tr><td><code>@Delete()</code></td><td>Delete comment</td></tr>
+<tr><td><code>@Param()</code></td><td>URL route parameters</td></tr>
+<tr><td><code>@Body()</code></td><td>Request body</td></tr>
+<tr><td><code>@Query()</code></td><td>Query parameters</td></tr>
+<tr><td><code>@CurrentUser()</code></td><td>JWT authenticated user</td></tr>
+<tr><td><code>@HttpCode()</code></td><td>Custom HTTP status</td></tr>
+</table></div>
+<p><b>Why only <code>JwtAuthGuard</code> here?</b> We enforced authentication on the controller. The ticket-level authorization and comment ownership checks are in the service. So adding <code>RolesGuard</code> is not necessary. We want all three roles to use the comments feature, but only on authorized tickets.</p>
+</section>
+
+<section class="lesson" id="p11j">
+<span class="tag">Phase 11 · Lesson 10</span>
+<h2>10. Postman testing and Compass verification</h2>
+<pre><code>npm run start:dev</code></pre>
+<p>Base URL: <code>http://localhost:3000/api/v1</code>. In every request, select Bearer Token in Postman’s Authorization tab and add the JWT of the relevant user.</p>
+<h3>Test 1: Employee creates a comment</h3>
+<pre><code>POST /tickets/TICKET_ID/comments</code></pre>
+<p>Body → raw → JSON:</p>
+<pre><code>{
+  "message": "My laptop is still not starting."
+}</code></pre>
+<p>Expected: HTTP 201 Created.</p>
+<h3>Test 2: Technician replies</h3>
+<pre><code>POST /tickets/TICKET_ID/comments</code></pre>
+<pre><code>{
+  "message": "Please share a photo of the charging indicator."
+}</code></pre>
+<p>Expected: HTTP 201 Created, author Technician.</p>
+<h3>Test 3: Get all comments</h3>
+<pre><code>GET /tickets/TICKET_ID/comments</code></pre>
+<p>Expected: comments oldest-first with the author details.</p>
+<h3>Test 4: Pagination</h3>
+<pre><code>GET /tickets/TICKET_ID/comments?page=1&amp;limit=10</code></pre>
+<p>Expected: a maximum of 10 comments plus pagination metadata.</p>
+<h3>Test 5: Update own comment</h3>
+<pre><code>PATCH /tickets/TICKET_ID/comments/COMMENT_ID</code></pre>
+<pre><code>{
+  "message": "My laptop is still not starting after restarting."
+}</code></pre>
+<p>Expected: the updated comment and a <code>COMMENT_UPDATED</code> audit entry.</p>
+<h3>Test 6: Delete own comment</h3>
+<pre><code>DELETE /tickets/TICKET_ID/comments/COMMENT_ID</code></pre>
+<p>Expected:</p>
+<pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "message": "Request successful",
+  "data": {
+    "message": "Comment deleted successfully"
+  }
+}</code></pre>
+<p>This is an example of the response wrapped by the global interceptor of Phase 7.</p>
+<h3>Test 7: Employee accesses another employee’s ticket</h3>
+<pre><code>GET /tickets/OTHER_EMPLOYEE_TICKET_ID/comments</code></pre>
+<p>Expected: HTTP 403 Forbidden.</p>
+<h3>Test 8: Technician accesses an unassigned ticket</h3>
+<pre><code>POST /tickets/UNASSIGNED_TICKET_ID/comments</code></pre>
+<p>Expected: HTTP 403 Forbidden.</p>
+<h3>Test 9: Employee edits the Technician’s comment</h3>
+<pre><code>PATCH /tickets/TICKET_ID/comments/TECHNICIAN_COMMENT_ID</code></pre>
+<p>Expected: HTTP 403 Forbidden.</p>
+<h3>Test 10: Invalid comment</h3>
+<pre><code>POST /tickets/TICKET_ID/comments</code></pre>
+<pre><code>{
+  "message": ""
+}</code></pre>
+<p>Expected: HTTP 400 Bad Request.</p>
+<h3>Verify in MongoDB Compass</h3>
+<p>Open the database <code>internal_it_helpdesk</code> and the collection <code>comments</code>. A saved comment:</p>
+<pre><code>{
+  "_id": "671a12345678901234567890",
+  "ticket": "671a12345678901234567891",
+  "author": "671a12345678901234567892",
+  "message": "Please check your laptop charging indicator.",
+  "isDeleted": false,
+  "deletedAt": null,
+  "deletedBy": null
+}</code></pre>
+<p>After the delete request the document will not disappear from the database. It will have these changes:</p>
+<pre><code>{
+  "isDeleted": true,
+  "deletedAt": "2026-10-31T10:30:00.000Z",
+  "deletedBy": "671a12345678901234567892"
+}</code></pre>
+<p>Now the history is preserved in the <code>comments</code> collection, but the normal GET comments API does not return it. Also check these actions in the Audit Logs collection: <code>COMMENT_CREATED</code>, <code>COMMENT_UPDATED</code>, <code>COMMENT_DELETED</code>.</p>
+</section>
+
+<section class="lesson" id="p11k">
+<span class="tag">Phase 11 · Lesson 11</span>
+<h2>11. Production-level concepts</h2>
+<p>Now some important improvements that work in real industry applications.</p>
+<h3>A. Comment editing history</h3>
+<p>Right now when a comment is updated, we overwrite the original message. If we want to preserve the original message of every edit, we can make a separate <code>comment_revisions</code> collection.</p>
+<pre><code>comments
+  └── Current message
+
+comment_revisions
+  ├── Old message 1
+  ├── Old message 2
+  └── Old message 3</code></pre>
+<p>This keeps the complete editing history.</p>
+<h3>B. Replies / Threaded comments</h3>
+<p>We are building a simple flat discussion. In the advanced version we can add a <code>parentComment</code> field in the comment:</p>
+<pre><code>@Prop({
+  type: mongoose.Schema.Types.ObjectId,
+  ref: Comment.name,
+  default: null,
+})
+parentComment: Types.ObjectId | null;</code></pre>
+<ul>
+<li><code>null</code> = a main comment.</li>
+<li>A comment ID = a reply to an existing comment.</li>
+</ul>
+<p>This makes a threaded conversation.</p>
+<h3>C. File attachments</h3>
+<p>If an Employee wants to attach screenshots or documents:</p>
+<ul>
+<li>Receive the upload with Multer.</li>
+<li>Store the file on Cloudinary or object storage.</li>
+<li>Store the attachment URL and metadata in the comment document.</li>
+<li>Validate the file type, size and access permissions.</li>
+</ul>
+<p>It is better to keep file upload a separate service responsibility from the comment text.</p>
+<h3>D. Real-time comments</h3>
+<p>Right now the user must refresh the API to see a new comment. For real-time discussion:</p>
+<ul>
+<li>NestJS WebSockets.</li>
+<li>Socket.IO.</li>
+<li>Ticket-specific rooms.</li>
+<li>New comment events.</li>
+</ul>
+<pre><code>this.server
+  .to(`ticket-${ticketId}`)
+  .emit('newComment', comment);</code></pre>
+<h3>E. Transaction safety</h3>
+<p>An important production issue: after the comment is saved, the audit log save can fail. Then the comment is created but the audit history stays incomplete.</p>
+<p>High-reliability systems can use a MongoDB transaction or the transactional outbox pattern. MongoDB transactions need a replica set/sharded deployment. Before testing transaction support on a local standalone MongoDB, you must configure a replica set.</p>
+<h3>F. XSS protection</h3>
+<p>Render the comment message as plain text on the frontend. Do not render user input directly as HTML. If you allow rich text, sanitize the HTML with a trusted sanitization library.</p>
+</section>
+
+<section class="lesson" id="p11l">
+<span class="tag">Phase 11 · Lesson 12</span>
+<h2>12. Checklist, interview questions and project roadmap</h2>
+<h3>Phase 11 implementation checklist</h3>
+<ul class="chk" id="chk11">
+<li><label><input type="checkbox"> Created the Comment Mongoose schema</label></li>
+<li><label><input type="checkbox"> Made CreateCommentDto and UpdateCommentDto</label></li>
+<li><label><input type="checkbox"> Made the comment pagination DTO</label></li>
+<li><label><input type="checkbox"> Configured CommentsModule</label></li>
+<li><label><input type="checkbox"> Exported TicketsService</label></li>
+<li><label><input type="checkbox"> Added the comment actions in the AuditAction enum</label></li>
+<li><label><input type="checkbox"> Implemented the Create comment API</label></li>
+<li><label><input type="checkbox"> Implemented comment listing with pagination</label></li>
+<li><label><input type="checkbox"> Implemented the Update comment API</label></li>
+<li><label><input type="checkbox"> Implemented comment soft delete</label></li>
+<li><label><input type="checkbox"> Checked Author/Admin permission</label></li>
+<li><label><input type="checkbox"> Tested Employee ownership authorization</label></li>
+<li><label><input type="checkbox"> Tested Technician assignment authorization</label></li>
+<li><label><input type="checkbox"> Tested Audit logs integration</label></li>
+<li><label><input type="checkbox"> Verified comments in MongoDB Compass</label></li>
+</ul>
+<p id="count11">0/15 completed</p>
+<h3>Interview questions</h3>
+<ol>
+<li>What is a Comment System?</li>
+<li>Why do we create a separate Comments collection?</li>
+<li>What is the relationship between Ticket and Comment?</li>
+<li>What is the difference between hard delete and soft delete?</li>
+<li>Why do we use <code>populate()</code>?</li>
+<li>How do you restrict users from accessing other users’ comments?</li>
+<li>How do you implement comment pagination?</li>
+<li>What is <code>parentComment</code> used for?</li>
+<li>How do you maintain comment edit history?</li>
+<li>How would you implement real-time comments using WebSockets?</li>
+<li>What is the purpose of <code>createdAt</code> and <code>updatedAt</code>?</li>
+<li>Why should user-provided comments not be rendered as raw HTML?</li>
+</ol>
+<h3>Where has our project reached? Internal IT Helpdesk roadmap</h3>
+<ol>
+<li>Phase 1–2: Project setup and NestJS fundamentals. <b>Covered</b></li>
+<li>Phase 3–4: MongoDB, Mongoose and DTO validation. <b>Covered</b></li>
+<li>Phase 5–6: Authentication, JWT and RBAC. <b>Covered</b></li>
+<li>Phase 7–8: Exception handling, pagination and search. <b>Covered</b></li>
+<li>Phase 9–10: Audit logs and dashboard aggregation. <b>Covered</b></li>
+<li>Phase 11: Ticket comments and discussion. <b>Current lesson</b></li>
+<li>Phase 12: Notifications and Email System. <b>Next</b></li>
+</ol>
+</section>
+
+<section class="lesson" id="p11m">
+<span class="tag">Phase 11 · Lesson 13</span>
+<h2>13. Next: Phase 12</h2>
+<p><b>Notifications and Email System.</b> We will implement:</p>
+<ul>
+<li>A notification to the Employee when a ticket is created.</li>
+<li>A notification to the Technician when a ticket is assigned.</li>
+<li>A notification to the Employee when the status changes.</li>
+<li>A notification on a new comment.</li>
+<li>Email sending using Nodemailer.</li>
+<li>Email templates.</li>
+<li>A MongoDB Notifications collection.</li>
+<li>Unread/read notification status.</li>
+<li>Mark all as read API.</li>
+<li>Background jobs and queues using BullMQ and Redis.</li>
+<li>A retry mechanism for failed emails.</li>
+</ul>
+<div class="note"><b>Advice:</b> in Phase 11 first implement the comment create, list, update and soft-delete APIs. First verify that an Employee cannot comment on another Employee’s ticket. This is the most important security test of the feature.</div>
+</section>
+
 <!-- NEW LESSONS GO ABOVE THIS LINE -->
 </main>
 </div>
@@ -5186,6 +7731,15 @@ b6.forEach(function(b,i){b.checked=!!sv6[i];b.onchange=u6});u6();
 var b7=[].slice.call(document.querySelectorAll('#chk7 input'));var sv7=[];try{sv7=JSON.parse(g('chk7')||'[]')}catch(e){}
 function u7(){var n=b7.filter(function(b){return b.checked}).length;document.getElementById('count7').textContent=n+'/'+b7.length+' completed';s('chk7',JSON.stringify(b7.map(function(b){return b.checked})))}
 b7.forEach(function(b,i){b.checked=!!sv7[i];b.onchange=u7});u7();
+var b8=[].slice.call(document.querySelectorAll('#chk8 input'));var sv8=[];try{sv8=JSON.parse(g('chk8')||'[]')}catch(e){}
+function u8(){var n=b8.filter(function(b){return b.checked}).length;document.getElementById('count8').textContent=n+'/'+b8.length+' completed';s('chk8',JSON.stringify(b8.map(function(b){return b.checked})))}
+b8.forEach(function(b,i){b.checked=!!sv8[i];b.onchange=u8});u8();
+var b9=[].slice.call(document.querySelectorAll('#chk9 input'));var sv9=[];try{sv9=JSON.parse(g('chk9')||'[]')}catch(e){}
+function u9(){var n=b9.filter(function(b){return b.checked}).length;document.getElementById('count9').textContent=n+'/'+b9.length+' completed';s('chk9',JSON.stringify(b9.map(function(b){return b.checked})))}
+b9.forEach(function(b,i){b.checked=!!sv9[i];b.onchange=u9});u9();
+var b11=[].slice.call(document.querySelectorAll('#chk11 input'));var sv11=[];try{sv11=JSON.parse(g('chk11')||'[]')}catch(e){}
+function u11(){var n=b11.filter(function(b){return b.checked}).length;document.getElementById('count11').textContent=n+'/'+b11.length+' completed';s('chk11',JSON.stringify(b11.map(function(b){return b.checked})))}
+b11.forEach(function(b,i){b.checked=!!sv11[i];b.onchange=u11});u11();
 })();
 </script>
 </body>
