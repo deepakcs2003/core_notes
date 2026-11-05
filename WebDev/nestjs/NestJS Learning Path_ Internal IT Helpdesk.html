@@ -188,6 +188,20 @@ nav.open{transform:none}
 <a href="#p9i">9. Security + Postman tests</a>
 <a href="#p9j">10. Audit vs Activity, checklist</a>
 <a href="#p9k">11. Next lesson</a>
+<div class="grp">Phase 10: Dashboard + Aggregation</div>
+<a href="#p10a">1. What is a Dashboard?</a>
+<a href="#p10b">2. Aggregation Pipeline</a>
+<a href="#p10c">3. Operators, $group, $lookup</a>
+<a href="#p10d">4. API architecture + Module</a>
+<a href="#p10e">5. Summary API</a>
+<a href="#p10f">6. Priority + Category stats</a>
+<a href="#p10g">7. Technician workload</a>
+<a href="#p10h">8. Monthly statistics</a>
+<a href="#p10i">9. Overview + Controller</a>
+<a href="#p10j">10. Response, Postman, Compass</a>
+<a href="#p10k">11. Production improvements</a>
+<a href="#p10l">12. Revision, checklist, questions</a>
+<a href="#p10m">13. Next lesson</a>
 <div class="grp">Phase 11: Ticket Comments</div>
 <a href="#p11a">1. Overview, DB and API design</a>
 <a href="#p11b">2. Access control + structure</a>
@@ -6668,6 +6682,935 @@ export class AuditLogsController {
 <div class="note">This phase is important, because in it you will learn the MongoDB aggregation queries used in real projects.</div>
 </section>
 
+<section class="lesson" id="p10a">
+<span class="tag">Phase 10 · Lesson 1</span>
+<h2>1. What is a Dashboard?</h2>
+<p>In this phase we build the Admin Dashboard of our Internal IT Helpdesk project. So far we have learned to create, update, assign and filter tickets and to maintain the audit history.</p>
+<p>Now the Admin needs an overview of the whole system in one place:</p>
+<ul>
+<li>How many tickets are there in total?</li>
+<li>How many are Open, In Progress, Resolved and Closed?</li>
+<li>How many High and Critical priority tickets are there?</li>
+<li>How many tickets are there in Hardware, Software, Network and Access?</li>
+<li>How many tickets are assigned to each Technician?</li>
+<li>How many new tickets were created each month?</li>
+</ul>
+<p>We will calculate this data with the MongoDB Aggregation Pipeline.</p>
+<p>A dashboard is a summary screen that converts the raw records of the database into useful information. Its main purpose is to summarize raw database records and make decision-making easy.</p>
+<h3>IT Helpdesk Admin Dashboard (illustrative data for learning)</h3>
+<div class="sc"><table>
+<tr><th>Total Tickets</th><th>Open Tickets</th><th>In Progress</th><th>Resolved</th></tr>
+<tr><td>250</td><td>65</td><td>45</td><td>110</td></tr>
+</table></div>
+<p><b>Tickets by priority:</b> Critical, High, Medium, Low (a bar chart on the dashboard). <b>Tickets by category:</b> Access, Hardware, Network, Software.</p>
+<div class="note">The numbers above are sample figures to demonstrate the dashboard layout, not your database results.</div>
+</section>
+
+<section class="lesson" id="p10b">
+<span class="tag">Phase 10 · Lesson 2</span>
+<h2>2. MongoDB Aggregation Pipeline</h2>
+<p>The Aggregation Pipeline is a MongoDB feature with which we can process documents through multiple stages and get calculated results.</p>
+<p>Example: we have 1000 tickets. We want to count how many tickets are <code>open</code>.</p>
+<p><b>Normal query:</b></p>
+<pre><code>const tickets = await this.ticketModel.find({
+  status: 'open',
+});
+
+const count = tickets.length;</code></pre>
+<p>In this approach all the matching documents first come into the application, and then JavaScript counts them.</p>
+<p><b>Aggregation approach:</b></p>
+<pre><code>const result = await this.ticketModel.aggregate([
+  {
+    $match: {
+      status: 'open',
+    },
+  },
+  {
+    $count: 'total',
+  },
+]);</code></pre>
+<p>Result:</p>
+<pre><code>[
+  {
+    "total": 65
+  }
+]</code></pre>
+<p><b>Difference:</b> in aggregation, MongoDB does the filtering and calculation on the server itself. We do not need to load all the matching ticket documents into Node.js.</p>
+<h3>Basic structure of an Aggregation Pipeline</h3>
+<p>A pipeline is an array. Each stage receives the output of the previous stage and performs an operation on it.</p>
+<pre><code>const result = await this.ticketModel.aggregate([
+  { $match: { status: 'open' } },
+  { $group: { _id: '$priority', total: { $sum: 1 } } },
+  { $sort: { total: -1 } },
+]);</code></pre>
+<p>There are three stages in this example:</p>
+<ol>
+<li><code>$match</code>: select only open tickets.</li>
+<li><code>$group</code>: make groups on the basis of priority and get the count of each group.</li>
+<li><code>$sort</code>: put the group with the most tickets first.</li>
+</ol>
+<h3>Aggregation flow</h3>
+<ol class="flow">
+<li><b>Tickets Collection</b>All ticket documents</li>
+<li><b>$match</b>Filter documents</li>
+<li><b>$group</b>Calculate counts / totals</li>
+<li><b>$sort</b>Arrange the result</li>
+<li><b>Dashboard Result</b>Summary data</li>
+</ol>
+</section>
+
+<section class="lesson" id="p10c">
+<span class="tag">Phase 10 · Lesson 3</span>
+<h2>3. Aggregation operators, $group and $lookup</h2>
+<p>Understand this table well. These operators are used a lot in dashboards and reporting.</p>
+<div class="sc"><table>
+<tr><th>Operator</th><th>Purpose</th><th>Example</th></tr>
+<tr><td><code>$match</code></td><td>Filter documents</td><td><code>{ status: 'open' }</code></td></tr>
+<tr><td><code>$group</code></td><td>Group documents</td><td><code>{ _id: '$status' }</code></td></tr>
+<tr><td><code>$sum</code></td><td>Sum / count</td><td><code>{ $sum: 1 }</code></td></tr>
+<tr><td><code>$avg</code></td><td>Average</td><td><code>{ $avg: '$rating' }</code></td></tr>
+<tr><td><code>$min</code></td><td>Minimum value</td><td><code>{ $min: '$createdAt' }</code></td></tr>
+<tr><td><code>$max</code></td><td>Maximum value</td><td><code>{ $max: '$createdAt' }</code></td></tr>
+<tr><td><code>$sort</code></td><td>Sort results</td><td><code>{ total: -1 }</code></td></tr>
+<tr><td><code>$project</code></td><td>Select / calculate fields</td><td><code>{ status: 1 }</code></td></tr>
+<tr><td><code>$count</code></td><td>Count documents</td><td><code>{ $count: 'total' }</code></td></tr>
+<tr><td><code>$limit</code></td><td>Limit results</td><td><code>{ $limit: 10 }</code></td></tr>
+<tr><td><code>$skip</code></td><td>Skip results</td><td><code>{ $skip: 10 }</code></td></tr>
+<tr><td><code>$lookup</code></td><td>Join another collection</td><td>Users details</td></tr>
+<tr><td><code>$unwind</code></td><td>Expand an array into documents</td><td><code>$technician</code></td></tr>
+<tr><td><code>$addFields</code></td><td>Add calculated fields</td><td>Priority rank</td></tr>
+<tr><td><code>$cond</code></td><td>If/else expression</td><td>Open vs closed</td></tr>
+<tr><td><code>$switch</code></td><td>Multiple conditional branches</td><td>Status labels</td></tr>
+<tr><td><code>$dateToString</code></td><td>Format a date</td><td>Month grouping</td></tr>
+<tr><td><code>$facet</code></td><td>Multiple pipelines together</td><td>Dashboard sections</td></tr>
+</table></div>
+<h3>Understand $group in detail</h3>
+<p>Suppose these tickets:</p>
+<pre><code>[
+  { "title": "Laptop issue", "status": "open" },
+  { "title": "WiFi issue", "status": "open" },
+  { "title": "Login issue", "status": "resolved" }
+]</code></pre>
+<p>Aggregation:</p>
+<pre><code>const result = await this.ticketModel.aggregate([
+  {
+    $group: {
+      _id: '$status',
+      total: { $sum: 1 },
+    },
+  },
+]);</code></pre>
+<p>Output:</p>
+<pre><code>[
+  { "_id": "open", "total": 2 },
+  { "_id": "resolved", "total": 1 }
+]</code></pre>
+<ul>
+<li><code>_id: '$status'</code> means making groups on the basis of status.</li>
+<li><code>$sum: 1</code> adds 1 for every document.</li>
+<li><code>total</code> is the name of the calculated field.</li>
+</ul>
+<h3>What does $lookup do?</h3>
+<p>MongoDB does not have traditional SQL joins like relational databases, but with <code>$lookup</code> we can bring the matching data of another collection. Example: the ticket’s <code>assignedTo</code> has the ObjectId of a User. With <code>$lookup</code> we can bring the technician’s details.</p>
+<pre><code>{
+  $lookup: {
+    from: 'users',
+    localField: 'assignedTo',
+    foreignField: '_id',
+    as: 'technician',
+  },
+}</code></pre>
+<ul>
+<li><code>from</code>: from which collection to bring the data.</li>
+<li><code>localField</code>: the matching field of the current collection.</li>
+<li><code>foreignField</code>: the matching field of the other collection.</li>
+<li><code>as</code>: in which field to put the result.</li>
+</ul>
+<p>The result of <code>$lookup</code> is an array. To use one technician document like a normal object, we can <code>$unwind</code> it.</p>
+</section>
+
+<section class="lesson" id="p10d">
+<span class="tag">Phase 10 · Lesson 4</span>
+<h2>4. Dashboard API architecture and DashboardModule</h2>
+<p>Now we implement the actual project. We make these endpoints:</p>
+<div class="sc"><table>
+<tr><th>Endpoint</th><th>Data</th></tr>
+<tr><td><code>GET /api/v1/dashboard/summary</code></td><td>Total and status counts</td></tr>
+<tr><td><code>GET /api/v1/dashboard/priority</code></td><td>Priority-wise counts</td></tr>
+<tr><td><code>GET /api/v1/dashboard/categories</code></td><td>Category-wise counts</td></tr>
+<tr><td><code>GET /api/v1/dashboard/technicians</code></td><td>Technician workload</td></tr>
+<tr><td><code>GET /api/v1/dashboard/monthly</code></td><td>Month-wise ticket creation</td></tr>
+</table></div>
+<p>All these endpoints will be Admin-only. Folder structure:</p>
+<pre><code>src/
+└── modules/
+    └── dashboard/
+        ├── dashboard.controller.ts
+        ├── dashboard.service.ts
+        └── dashboard.module.ts</code></pre>
+<p>If DashboardModule already exists, update the existing files.</p>
+<h3>Configure DashboardModule</h3>
+<p>File: <code>src/modules/dashboard/dashboard.module.ts</code></p>
+<pre><code>import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { DashboardController } from './dashboard.controller';
+import { DashboardService } from './dashboard.service';
+
+import { Ticket, TicketSchema } from '../tickets/schemas/ticket.schema';
+
+@Module({
+  imports: [
+    MongooseModule.forFeature([
+      {
+        name: Ticket.name,
+        schema: TicketSchema,
+      },
+    ]),
+  ],
+  controllers: [DashboardController],
+  providers: [DashboardService],
+})
+export class DashboardModule {}</code></pre>
+<p><b>Why did we register the <code>Ticket</code> model?</b> The dashboard needs data from the ticket collection. <code>MongooseModule.forFeature()</code> makes the model available in DashboardModule, and we can inject it with <code>@InjectModel()</code>.</p>
+<p>Now confirm the DashboardModule import in <code>AppModule</code>:</p>
+<pre><code>import { DashboardModule } from './modules/dashboard/dashboard.module';
+
+@Module({
+  imports: [
+    // Existing modules...
+    DashboardModule,
+  ],
+})
+export class AppModule {}</code></pre>
+<p>If it is already imported, do not duplicate it.</p>
+</section>
+
+<section class="lesson" id="p10e">
+<span class="tag">Phase 10 · Lesson 5</span>
+<h2>5. DashboardService: Summary API</h2>
+<p>File: <code>src/modules/dashboard/dashboard.service.ts</code>. First the imports:</p>
+<pre><code>import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+
+import { Ticket, TicketDocument } from '../tickets/schemas/ticket.schema';</code></pre>
+<p>Now make the service class:</p>
+<pre><code>@Injectable()
+export class DashboardService {
+  constructor(
+    @InjectModel(Ticket.name)
+    private readonly ticketModel: Model&lt;TicketDocument&gt;,
+  ) {}
+
+  async getSummary() {
+    const [result] = await this.ticketModel.aggregate([
+      {
+        $group: {
+          _id: null,
+
+          totalTickets: {
+            $sum: 1,
+          },
+
+          openTickets: {
+            $sum: {
+              $cond: [
+                { $eq: ['$status', 'open'] },
+                1,
+                0,
+              ],
+            },
+          },
+
+          inProgressTickets: {
+            $sum: {
+              $cond: [
+                { $eq: ['$status', 'in_progress'] },
+                1,
+                0,
+              ],
+            },
+          },
+
+          resolvedTickets: {
+            $sum: {
+              $cond: [
+                { $eq: ['$status', 'resolved'] },
+                1,
+                0,
+              ],
+            },
+          },
+
+          closedTickets: {
+            $sum: {
+              $cond: [
+                { $eq: ['$status', 'closed'] },
+                1,
+                0,
+              ],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalTickets: 1,
+          openTickets: 1,
+          inProgressTickets: 1,
+          resolvedTickets: 1,
+          closedTickets: 1,
+        },
+      },
+    ]);
+
+    return result ?? {
+      totalTickets: 0,
+      openTickets: 0,
+      inProgressTickets: 0,
+      resolvedTickets: 0,
+      closedTickets: 0,
+    };
+  }
+}</code></pre>
+<h3>Understand this query deeply</h3>
+<p><b>Step A: <code>$group</code></b></p>
+<pre><code>{
+  $group: {
+    _id: null,
+    totalTickets: { $sum: 1 }
+  }
+}</code></pre>
+<p><code>_id: null</code> means combining all the matching tickets into one group. <code>$sum: 1</code> counts every ticket.</p>
+<p><b>Step B: <code>$cond</code></b></p>
+<pre><code>$cond: [
+  { $eq: ['$status', 'open'] },
+  1,
+  0,
+]</code></pre>
+<p><code>$cond</code> is like if/else:</p>
+<pre><code>If status == open:
+    return 1
+Else:
+    return 0</code></pre>
+<p>Then <code>$sum</code> adds all the 1 values.</p>
+<p><b>Step C: <code>$project</code></b></p>
+<pre><code>{
+  $project: {
+    _id: 0,
+    totalTickets: 1,
+    openTickets: 1
+  }
+}</code></pre>
+<ul>
+<li><code>1</code> = include the field.</li>
+<li><code>0</code> = exclude the field.</li>
+</ul>
+<p><b>Step D: <code>const [result]</code></b> The output of aggregation is an array. We need only one summary document here, so we destructured the first result.</p>
+<p><b>Step E: <code>result ?? { ... }</code></b> If the collection is empty, <code>$group</code> returns no result. So the fallback object returns all counts as zero.</p>
+<p>Expected result:</p>
+<pre><code>{
+  "totalTickets": 250,
+  "openTickets": 65,
+  "inProgressTickets": 45,
+  "resolvedTickets": 110,
+  "closedTickets": 30
+}</code></pre>
+<p>This is example data. Your actual result depends on your database.</p>
+</section>
+
+<section class="lesson" id="p10f">
+<span class="tag">Phase 10 · Lesson 6</span>
+<h2>6. Priority-wise and Category-wise ticket counts</h2>
+<h3>Priority-wise counts</h3>
+<p>The Admin must know how many tickets are critical, high, medium and low priority. Add the method in the service:</p>
+<pre><code>async getPriorityStats() {
+  return this.ticketModel.aggregate([
+    {
+      $group: {
+        _id: '$priority',
+        total: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        total: -1,
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        priority: '$_id',
+        total: 1,
+      },
+    },
+  ]);
+}</code></pre>
+<p>Expected output:</p>
+<pre><code>[
+  { "priority": "medium", "total": 100 },
+  { "priority": "high", "total": 55 },
+  { "priority": "low", "total": 80 },
+  { "priority": "critical", "total": 15 }
+]</code></pre>
+<p>Here <code>$sort: { total: -1 }</code> means the highest count first.</p>
+<div class="note">If there are zero tickets of some priority, <code>$group</code> will not return that priority. To show all four priorities in the dashboard chart, we will add default zero values later.</div>
+<h3>Category-wise counts</h3>
+<p>Now we count the tickets of Hardware, Software, Network and Access.</p>
+<pre><code>async getCategoryStats() {
+  return this.ticketModel.aggregate([
+    {
+      $group: {
+        _id: '$category',
+        total: {
+          $sum: 1,
+        },
+      },
+    },
+    {
+      $sort: {
+        total: -1,
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        category: '$_id',
+        total: 1,
+      },
+    },
+  ]);
+}</code></pre>
+<p>Example output:</p>
+<pre><code>[
+  { "category": "hardware", "total": 90 },
+  { "category": "software", "total": 70 },
+  { "category": "network", "total": 55 },
+  { "category": "access", "total": 35 }
+]</code></pre>
+<p>Observe: the structure of the Priority and Category queries is almost the same. Only the grouping field changed.</p>
+</section>
+
+<section class="lesson" id="p10g">
+<span class="tag">Phase 10 · Lesson 7</span>
+<h2>7. Technician workload: $lookup and $unwind</h2>
+<p>This is the most important practical example of the phase. The Admin wants to see how many tickets are assigned to each Technician, and how many of them are currently open or in progress.</p>
+<p>In the Ticket collection:</p>
+<pre><code>{
+  "title": "Laptop issue",
+  "assignedTo": "671a12345678901234567891",
+  "status": "in_progress"
+}</code></pre>
+<p>In the User collection:</p>
+<pre><code>{
+  "_id": "671a12345678901234567891",
+  "name": "Amit",
+  "role": "technician"
+}</code></pre>
+<p>We need to combine the data of both collections. Add the method in the service:</p>
+<pre><code>async getTechnicianWorkload() {
+  return this.ticketModel.aggregate([
+    // 1. Only assigned tickets
+    {
+      $match: {
+        assignedTo: { $ne: null },
+      },
+    },
+
+    // 2. Join users collection
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'assignedTo',
+        foreignField: '_id',
+        as: 'technician',
+      },
+    },
+
+    // 3. Convert technician array into object
+    {
+      $unwind: '$technician',
+    },
+
+    // 4. Only technician role users
+    {
+      $match: {
+        'technician.role': 'technician',
+      },
+    },
+
+    // 5. Group tickets by technician
+    {
+      $group: {
+        _id: '$assignedTo',
+
+        technicianName: {
+          $first: '$technician.name',
+        },
+
+        email: {
+          $first: '$technician.email',
+        },
+
+        totalAssigned: {
+          $sum: 1,
+        },
+
+        openTickets: {
+          $sum: {
+            $cond: [
+              { $eq: ['$status', 'open'] },
+              1,
+              0,
+            ],
+          },
+        },
+
+        inProgressTickets: {
+          $sum: {
+            $cond: [
+              { $eq: ['$status', 'in_progress'] },
+              1,
+              0,
+            ],
+          },
+        },
+
+        resolvedTickets: {
+          $sum: {
+            $cond: [
+              { $eq: ['$status', 'resolved'] },
+              1,
+              0,
+            ],
+          },
+        },
+      },
+    },
+
+    // 6. Sort highest workload first
+    {
+      $sort: {
+        totalAssigned: -1,
+      },
+    },
+
+    // 7. Final output
+    {
+      $project: {
+        _id: 0,
+        technicianId: '$_id',
+        technicianName: 1,
+        email: 1,
+        totalAssigned: 1,
+        openTickets: 1,
+        inProgressTickets: 1,
+        resolvedTickets: 1,
+      },
+    },
+  ]);
+}</code></pre>
+<h3>Understand the pipeline</h3>
+<p><b>Stage 1: <code>$match</code></b></p>
+<pre><code>{
+  $match: {
+    assignedTo: { $ne: null },
+  },
+}</code></pre>
+<p>Select only assigned tickets. <code>$ne</code> means not equal. Here we need <code>assignedTo</code> values different from null.</p>
+<p><b>Stage 2: <code>$lookup</code></b> Match the ticket’s <code>assignedTo</code> ObjectId with the <code>_id</code> of the User collection.</p>
+<p><b>Stage 3: <code>$unwind</code></b></p>
+<pre><code>{ $unwind: '$technician' }</code></pre>
+<p><code>$lookup</code> gives an array as the result. <code>$unwind</code> makes the element of that array an individual document field.</p>
+<p><b>Stage 4: Technician role filter</b></p>
+<pre><code>{
+  $match: {
+    'technician.role': 'technician',
+  },
+}</code></pre>
+<p>Count the assigned tickets of only the users with the Technician role.</p>
+<p><b>Stage 5: <code>$group</code></b> <code>_id: '$assignedTo'</code>: grouping happens according to each technician’s ID. <code>$first</code> selects the first matching technician name/email of the group. <code>$sum: 1</code> counts the assigned tickets.</p>
+<p><b>Stage 6: <code>$sort</code></b> The Technician with the highest assigned workload comes first.</p>
+<p><b>Stage 7: <code>$project</code></b> Returns the final response in a clean format.</p>
+<pre><code>[
+  {
+    "technicianId": "671a12345678901234567891",
+    "technicianName": "Amit",
+    "email": "amit@example.com",
+    "totalAssigned": 20,
+    "openTickets": 5,
+    "inProgressTickets": 10,
+    "resolvedTickets": 5
+  }
+]</code></pre>
+<div class="note">This query shows the technicians who have at least one ticket assigned. To include technicians with zero assigned tickets, the query must start from the Users collection and then do <code>$lookup</code>.</div>
+</section>
+
+<section class="lesson" id="p10h">
+<span class="tag">Phase 10 · Lesson 8</span>
+<h2>8. Monthly ticket statistics: date aggregation</h2>
+<p>Now the Admin wants to see how many tickets were created in each month. Example:</p>
+<pre><code>January  → 20 tickets
+February → 35 tickets
+March    → 42 tickets
+April    → 28 tickets</code></pre>
+<p>For this we use <code>$dateToString</code> and <code>$group</code>. Add the method in the service:</p>
+<pre><code>async getMonthlyStats() {
+  const startDate = new Date();
+  startDate.setUTCDate(1);
+  startDate.setUTCHours(0, 0, 0, 0);
+  startDate.setUTCMonth(startDate.getUTCMonth() - 5);
+
+  return this.ticketModel.aggregate([
+    {
+      $match: {
+        createdAt: {
+          $gte: startDate,
+        },
+      },
+    },
+
+    {
+      $group: {
+        _id: {
+          $dateToString: {
+            format: '%Y-%m',
+            date: '$createdAt',
+            timezone: 'UTC',
+          },
+        },
+
+        totalTickets: {
+          $sum: 1,
+        },
+      },
+    },
+
+    {
+      $sort: {
+        _id: 1,
+      },
+    },
+
+    {
+      $project: {
+        _id: 0,
+        month: '$_id',
+        totalTickets: 1,
+      },
+    },
+  ]);
+}</code></pre>
+<h3>Important concepts</h3>
+<p><b><code>$gte</code></b> means greater than or equal to.</p>
+<pre><code>createdAt: {
+  $gte: startDate,
+}</code></pre>
+<p>The tickets created after the start date are selected.</p>
+<p><b><code>$dateToString</code></b></p>
+<pre><code>$dateToString: {
+  format: '%Y-%m',
+  date: '$createdAt',
+  timezone: 'UTC',
+}</code></pre>
+<p>It converts the date into year-month format. Example:</p>
+<pre><code>2026-01-15 → 2026-01
+2026-02-20 → 2026-02
+2026-03-10 → 2026-03</code></pre>
+<div class="note">This query includes the current month and the 5 calendar months before it. A month in which no ticket was created will not appear in the aggregation result. To show empty months as zero in the dashboard chart, you can fill the missing months in the frontend or in the service.</div>
+</section>
+
+<section class="lesson" id="p10i">
+<span class="tag">Phase 10 · Lesson 9</span>
+<h2>9. Complete DashboardService and DashboardController</h2>
+<p>So far we have made five methods: <code>getSummary()</code>, <code>getPriorityStats()</code>, <code>getCategoryStats()</code>, <code>getTechnicianWorkload()</code> and <code>getMonthlyStats()</code>. We can return all of them from one dashboard API too. Add this method inside the service class:</p>
+<pre><code>async getOverview() {
+  const [
+    summary,
+    priorityStats,
+    categoryStats,
+    technicianWorkload,
+    monthlyStats,
+  ] = await Promise.all([
+    this.getSummary(),
+    this.getPriorityStats(),
+    this.getCategoryStats(),
+    this.getTechnicianWorkload(),
+    this.getMonthlyStats(),
+  ]);
+
+  return {
+    summary,
+    priorityStats,
+    categoryStats,
+    technicianWorkload,
+    monthlyStats,
+  };
+}</code></pre>
+<h3>What does Promise.all() do?</h3>
+<p>If we execute the operations one after another:</p>
+<pre><code>const summary = await this.getSummary();
+const priority = await this.getPriorityStats();
+const category = await this.getCategoryStats();</code></pre>
+<p>the next operation starts after each operation completes. <code>Promise.all()</code> executes independent operations concurrently:</p>
+<pre><code>const [summary, priority, category] = await Promise.all([
+  this.getSummary(),
+  this.getPriorityStats(),
+  this.getCategoryStats(),
+]);</code></pre>
+<p>All three operations start here, and we get the result when all complete.</p>
+<div class="note">If any one of the Promises rejects, <code>Promise.all()</code> also rejects. The dashboard request will return an error. So in production, logging and monitoring are necessary.</div>
+<h3>Create DashboardController</h3>
+<p>File: <code>src/modules/dashboard/dashboard.controller.ts</code></p>
+<pre><code>import { Controller, Get, UseGuards } from '@nestjs/common';
+
+import { DashboardService } from './dashboard.service';
+
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { UserRole } from '../../common/enums/user-role.enum';
+
+@Controller('dashboard')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(UserRole.ADMIN)
+export class DashboardController {
+  constructor(
+    private readonly dashboardService: DashboardService,
+  ) {}
+
+  @Get('summary')
+  getSummary() {
+    return this.dashboardService.getSummary();
+  }
+
+  @Get('priority')
+  getPriorityStats() {
+    return this.dashboardService.getPriorityStats();
+  }
+
+  @Get('categories')
+  getCategoryStats() {
+    return this.dashboardService.getCategoryStats();
+  }
+
+  @Get('technicians')
+  getTechnicianWorkload() {
+    return this.dashboardService.getTechnicianWorkload();
+  }
+
+  @Get('monthly')
+  getMonthlyStats() {
+    return this.dashboardService.getMonthlyStats();
+  }
+
+  @Get('overview')
+  getOverview() {
+    return this.dashboardService.getOverview();
+  }
+}</code></pre>
+<h3>Controller explanation</h3>
+<ul>
+<li><code>@Controller('dashboard')</code> sets the base route.</li>
+<li><code>@UseGuards(JwtAuthGuard, RolesGuard)</code>: the JWT of the requesting user is validated and the role permission is checked.</li>
+<li><code>@Roles(UserRole.ADMIN)</code>: only the Admin gets access.</li>
+</ul>
+<p>Example: <code>GET /api/v1/dashboard/overview</code>. If you request with an Employee token, <code>403 Forbidden</code> should come.</p>
+</section>
+
+<section class="lesson" id="p10j">
+<span class="tag">Phase 10 · Lesson 10</span>
+<h2>10. Final response, Postman testing and Compass</h2>
+<h3>Overview API</h3>
+<pre><code>GET /api/v1/dashboard/overview</code></pre>
+<p>Structure of the expected response:</p>
+<pre><code>{
+  "success": true,
+  "statusCode": 200,
+  "message": "Request successful",
+  "data": {
+    "summary": {
+      "totalTickets": 250,
+      "openTickets": 65,
+      "inProgressTickets": 45,
+      "resolvedTickets": 110,
+      "closedTickets": 30
+    },
+    "priorityStats": [
+      {
+        "priority": "critical",
+        "total": 15
+      },
+      {
+        "priority": "high",
+        "total": 55
+      }
+    ],
+    "categoryStats": [
+      {
+        "category": "hardware",
+        "total": 90
+      }
+    ],
+    "technicianWorkload": [
+      {
+        "technicianName": "Amit",
+        "totalAssigned": 20,
+        "openTickets": 5,
+        "inProgressTickets": 10,
+        "resolvedTickets": 5
+      }
+    ],
+    "monthlyStats": [
+      {
+        "month": "2026-06",
+        "totalTickets": 25
+      }
+    ]
+  }
+}</code></pre>
+<p>This is a sample response. In your actual response the values come according to the records of your database. The global <code>TransformInterceptor</code> of Phase 7 automatically wraps this response inside <code>data</code>.</p>
+<h3>Postman testing</h3>
+<pre><code>npm run start:dev</code></pre>
+<p>Set the Admin’s Bearer Token in Postman.</p>
+<div class="sc"><table>
+<tr><th>Test</th><th>Request</th><th>Expected</th></tr>
+<tr><td>1. Complete dashboard</td><td><code>GET /api/v1/dashboard/overview</code></td><td>All five dashboard sections</td></tr>
+<tr><td>2. Ticket summary</td><td><code>GET /api/v1/dashboard/summary</code></td><td>Total and status-wise ticket counts</td></tr>
+<tr><td>3. Priority statistics</td><td><code>GET /api/v1/dashboard/priority</code></td><td>Critical, High, Medium, Low counts</td></tr>
+<tr><td>4. Category statistics</td><td><code>GET /api/v1/dashboard/categories</code></td><td>Hardware, Software, Network, Access counts</td></tr>
+<tr><td>5. Technician workload</td><td><code>GET /api/v1/dashboard/technicians</code></td><td>Technician name, assigned tickets and status counts</td></tr>
+<tr><td>6. Monthly statistics</td><td><code>GET /api/v1/dashboard/monthly</code></td><td>Month-wise ticket creation counts</td></tr>
+<tr><td>7. Employee access</td><td><code>GET /api/v1/dashboard/overview</code></td><td>HTTP 403 Forbidden</td></tr>
+<tr><td>8. Invalid JWT</td><td><code>GET /api/v1/dashboard/overview</code></td><td>HTTP 401 Unauthorized</td></tr>
+</table></div>
+<h3>Verify in MongoDB Compass</h3>
+<p>Open the database <code>internal_it_helpdesk</code> and the collection <code>tickets</code>. Sample documents:</p>
+<pre><code>[
+  {
+    "title": "Laptop issue",
+    "status": "open",
+    "priority": "high",
+    "category": "hardware"
+  },
+  {
+    "title": "Internet issue",
+    "status": "in_progress",
+    "priority": "critical",
+    "category": "network"
+  },
+  {
+    "title": "Software installation",
+    "status": "resolved",
+    "priority": "medium",
+    "category": "software"
+  }
+]</code></pre>
+<p>You can also execute and see your pipeline stages in the Aggregations tab of Compass.</p>
+</section>
+
+<section class="lesson" id="p10k">
+<span class="tag">Phase 10 · Lesson 11</span>
+<h2>11. Production-level improvements</h2>
+<p>Some important concepts to keep in mind in real projects:</p>
+<h3>1. Indexing</h3>
+<p>Dashboard queries will run frequently, so the Ticket schema should have useful indexes:</p>
+<pre><code>TicketSchema.index({ status: 1 });
+TicketSchema.index({ priority: 1 });
+TicketSchema.index({ category: 1 });
+TicketSchema.index({ assignedTo: 1 });
+TicketSchema.index({ createdAt: -1 });</code></pre>
+<p>These are initial examples. Do not add every index blindly. Choose indexes on the basis of actual query patterns and the results of <code>explain()</code>.</p>
+<h3>2. Zero-count values</h3>
+<p>If some category is not present in the aggregation, <code>$group</code> will not return that category. If you want to show all four categories in the dashboard, add the missing categories with a zero count in the application code.</p>
+<h3>3. Date and timezone</h3>
+<p>In monthly reporting it is important to decide the timezone. We have used UTC for now. If business reporting is needed in Indian time, use the <code>Asia/Kolkata</code> timezone consistently.</p>
+<h3>4. Large dashboards</h3>
+<p>When a lot of aggregation queries run together, the database load can increase. In production:</p>
+<ul>
+<li>Monitor the query performance.</li>
+<li>Avoid unnecessary <code>$lookup</code>.</li>
+<li>Keep appropriate indexes.</li>
+<li>You can cache frequently requested dashboard summaries.</li>
+<li>You can calculate large reporting workloads in background jobs.</li>
+</ul>
+<h3>5. Aggregation security</h3>
+<p>It is necessary to filter the data through <code>$match</code> in aggregation. In the Admin dashboard all tickets are allowed. But if you make an Employee dashboard in the future, <code>$match</code> must have <code>createdBy</code> as the authenticated user’s ID. Do not accept an arbitrary MongoDB pipeline from the user.</p>
+</section>
+
+<section class="lesson" id="p10l">
+<span class="tag">Phase 10 · Lesson 12</span>
+<h2>12. Revision, practice checklist and interview questions</h2>
+<h3>Important concepts revision</h3>
+<div class="sc"><table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Aggregation Pipeline</td><td>Data processing in multiple stages</td></tr>
+<tr><td><code>$match</code></td><td>Filter</td></tr>
+<tr><td><code>$group</code></td><td>Group records</td></tr>
+<tr><td><code>$sum</code></td><td>Sum / count</td></tr>
+<tr><td><code>$cond</code></td><td>If/else condition</td></tr>
+<tr><td><code>$lookup</code></td><td>Collection join</td></tr>
+<tr><td><code>$unwind</code></td><td>Expand an array</td></tr>
+<tr><td><code>$project</code></td><td>Select output fields</td></tr>
+<tr><td><code>$sort</code></td><td>Sort the result</td></tr>
+<tr><td><code>$dateToString</code></td><td>Date format</td></tr>
+<tr><td><code>$first</code></td><td>First value of the group</td></tr>
+<tr><td><code>$gte</code></td><td>Greater than or equal</td></tr>
+<tr><td><code>Promise.all()</code></td><td>Execute independent async operations concurrently</td></tr>
+</table></div>
+<h3>Practice assignment</h3>
+<ul class="chk" id="chk10">
+<li><label><input type="checkbox"> Configured DashboardModule and DashboardService</label></li>
+<li><label><input type="checkbox"> Made the total ticket count aggregation</label></li>
+<li><label><input type="checkbox"> Made the status-wise counts</label></li>
+<li><label><input type="checkbox"> Made the priority-wise counts</label></li>
+<li><label><input type="checkbox"> Made the category-wise counts</label></li>
+<li><label><input type="checkbox"> Used $lookup for the technician workload</label></li>
+<li><label><input type="checkbox"> Understood $unwind and $group</label></li>
+<li><label><input type="checkbox"> Made the monthly statistics</label></li>
+<li><label><input type="checkbox"> Made the overview API with Promise.all()</label></li>
+<li><label><input type="checkbox"> Protected the dashboard endpoints as Admin-only</label></li>
+<li><label><input type="checkbox"> Tested all the endpoints in Postman</label></li>
+<li><label><input type="checkbox"> Verified the aggregation in MongoDB Compass</label></li>
+</ul>
+<p id="count10">0/12 completed</p>
+<h3>Interview questions</h3>
+<ol>
+<li>What is the MongoDB Aggregation Pipeline?</li>
+<li>What is the difference between <code>find()</code> and <code>aggregate()</code>?</li>
+<li>Explain <code>$match</code> and <code>$group</code>.</li>
+<li>What is the use of <code>$sum: 1</code>?</li>
+<li>What is the difference between <code>$lookup</code> and Mongoose <code>populate()</code>?</li>
+<li>Why do we use <code>$unwind</code>?</li>
+<li>What is <code>$project</code>?</li>
+<li>How does <code>$cond</code> work?</li>
+<li>How can we calculate monthly reports using MongoDB?</li>
+<li>Why is <code>Promise.all()</code> useful in dashboard APIs?</li>
+</ol>
+</section>
+
+<section class="lesson" id="p10m">
+<span class="tag">Phase 10 · Lesson 13</span>
+<h2>13. Next: Phase 11</h2>
+<p><b>Ticket Comments and Discussion System</b> (it is in the Phase 11 group below). We build a discussion feature between the Employee and the Technician inside the ticket:</p>
+<ul>
+<li>The Employee comments on the ticket.</li>
+<li>The Technician replies.</li>
+<li>The Admin can see the discussion.</li>
+<li>A separate Comments collection in MongoDB.</li>
+<li>ObjectId references with User and Ticket.</li>
+<li>Comment CRUD APIs.</li>
+<li>Role-based access.</li>
+<li>Comment history and audit logs integration.</li>
+<li>Pagination for comments.</li>
+</ul>
+<div class="note"><b>Advice:</b> in Phase 10, practice rewriting <code>$group</code>, <code>$lookup</code>, <code>$unwind</code> and <code>$cond</code> yourself. These are the most useful advanced concepts of MongoDB.</div>
+</section>
+
 <section class="lesson" id="p11a">
 <span class="tag">Phase 11 · Lesson 1</span>
 <h2>1. Overview, database design and API design</h2>
@@ -7737,6 +8680,9 @@ b8.forEach(function(b,i){b.checked=!!sv8[i];b.onchange=u8});u8();
 var b9=[].slice.call(document.querySelectorAll('#chk9 input'));var sv9=[];try{sv9=JSON.parse(g('chk9')||'[]')}catch(e){}
 function u9(){var n=b9.filter(function(b){return b.checked}).length;document.getElementById('count9').textContent=n+'/'+b9.length+' completed';s('chk9',JSON.stringify(b9.map(function(b){return b.checked})))}
 b9.forEach(function(b,i){b.checked=!!sv9[i];b.onchange=u9});u9();
+var b10=[].slice.call(document.querySelectorAll('#chk10 input'));var sv10=[];try{sv10=JSON.parse(g('chk10')||'[]')}catch(e){}
+function u10(){var n=b10.filter(function(b){return b.checked}).length;document.getElementById('count10').textContent=n+'/'+b10.length+' completed';s('chk10',JSON.stringify(b10.map(function(b){return b.checked})))}
+b10.forEach(function(b,i){b.checked=!!sv10[i];b.onchange=u10});u10();
 var b11=[].slice.call(document.querySelectorAll('#chk11 input'));var sv11=[];try{sv11=JSON.parse(g('chk11')||'[]')}catch(e){}
 function u11(){var n=b11.filter(function(b){return b.checked}).length;document.getElementById('count11').textContent=n+'/'+b11.length+' completed';s('chk11',JSON.stringify(b11.map(function(b){return b.checked})))}
 b11.forEach(function(b,i){b.checked=!!sv11[i];b.onchange=u11});u11();
