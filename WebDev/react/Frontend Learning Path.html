@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Frontend Learning Path</title>
+<style>
+:root{--bg:#f6f6fb;--sf:#fff;--tx:#1b1d2e;--mu:#5d6178;--bd:#dfe0ee;--ac:#5443d1;--ac2:#ecebfb;--cd:#12131f;--cdt:#dde1f5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1018;--sf:#171826;--tx:#e6e8f5;--mu:#9a9fb8;--bd:#292b40;--ac:#a99cff;--ac2:#25233f;--cd:#0b0c13;--cdt:#dde1f5}}
+:root[data-theme="dark"]{--bg:#0f1018;--sf:#171826;--tx:#e6e8f5;--mu:#9a9fb8;--bd:#292b40;--ac:#a99cff;--ac2:#25233f;--cd:#0b0c13;--cdt:#dde1f5}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 system-ui,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--sf);z-index:30}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--sf);border-bottom:1px solid var(--bd)}
+.top h1{font-size:1rem;margin:0;flex:1}
+button{font:inherit;cursor:pointer;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:6px 12px}
+button:hover{border-color:var(--ac)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+#menu{display:none}
+.wrap{display:flex;max-width:1200px;margin:0 auto}
+nav{width:270px;flex:none;position:sticky;top:calc(env(safe-area-inset-top,0px) + 55px);align-self:flex-start;height:calc(100vh - 60px);overflow:auto;padding:20px 12px}
+nav a{display:block;padding:7px 12px;margin:2px 0;border-radius:8px;color:var(--mu);text-decoration:none;font-size:.92rem}
+nav a:hover{background:var(--ac2)}
+nav a.on{background:var(--ac2);color:var(--ac);font-weight:600}
+.grp{margin:14px 12px 4px;font-size:.8rem;font-weight:700;color:var(--tx)}
+main{flex:1;min-width:0;padding:24px 20px 80px;max-width:820px}
+.lesson{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:24px;margin-bottom:24px}
+.lesson>h2{margin:0 0 4px;font-size:1.45rem}
+.tag{display:inline-block;font-size:.8rem;color:var(--ac);background:var(--ac2);padding:2px 10px;border-radius:99px;margin-bottom:8px}
+h3{margin:26px 0 8px;font-size:1.1rem}
+p{margin:.6em 0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--ac2);padding:1px 6px;border-radius:5px}
+pre{background:var(--cd);color:var(--cdt);padding:14px 16px;border-radius:10px;overflow-x:auto;line-height:1.5;margin:12px 0}
+pre code{background:none;padding:0;color:inherit}
+.sc{overflow-x:auto;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{border:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--ac2)}
+.note{border-left:4px solid var(--ac);background:var(--ac2);padding:10px 14px;border-radius:0 8px 8px 0;margin:14px 0}
+.flow{list-style:none;padding:0;margin:14px 0}
+.flow li{border:1px solid var(--bd);border-radius:8px;padding:8px 12px;margin:0 0 14px;position:relative}
+.flow li:not(:last-child)::after{content:"\2193";position:absolute;left:50%;bottom:-19px;color:var(--ac);font-weight:700}
+.flow b{display:block}
+.chk{list-style:none;padding:0}
+.chk label{display:flex;gap:10px;padding:6px 0;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--ac);margin-top:4px}
+details{border:1px solid var(--bd);border-radius:8px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+@media (max-width:860px){
+#menu{display:inline-block}
+nav{position:fixed;z-index:25;top:calc(env(safe-area-inset-top,0px) + 55px);left:0;bottom:0;height:auto;width:min(280px,85vw);background:var(--sf);border-right:1px solid var(--bd);transform:translateX(-100%);transition:transform .2s}
+nav.open{transform:none}
+.lesson{padding:18px 14px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+<button id="menu" aria-label="Open contents">☰</button>
+<h1>Frontend Learning Path</h1>
+<button id="theme" aria-label="Switch light or dark mode">Theme</button>
+</header>
+<div class="wrap">
+<nav id="nav" aria-label="Lessons">
+<a href="#start">Start here</a>
+<div class="grp">Course Introduction</div>
+<a href="#c1">1. What we build</a>
+<a href="#c2">2. Frontend + backend architecture</a>
+<a href="#c3">3. Course roadmap</a>
+<a href="#c4">4. Technology stack</a>
+<div class="grp">Phase 1: Setup + Web Fundamentals</div>
+<a href="#f1a">5. Node check + create project</a>
+<a href="#f1b">6. Folder structure</a>
+<a href="#f1c">7. How React renders</a>
+<a href="#f1d">8. Tailwind CSS setup</a>
+<a href="#f1e">9. Helpdesk dashboard UI</a>
+<a href="#f1f">10. .env + package.json</a>
+<a href="#f1g">11. Run both apps + errors</a>
+<div class="grp">Phase 2: React Fundamentals</div>
+<a href="#f2a">12. Roadmap + What is React?</a>
+<a href="#f2b">13. React Components</a>
+<a href="#f2c">14. JSX and TSX</a>
+<a href="#f2d">15. Functional Components</a>
+<a href="#f2e">16. First component: Navbar</a>
+<a href="#f2f">17. React rendering flow</a>
+<div class="grp">Phase 2 · Lesson 2.6: Props</div>
+<a href="#f3a">18. Props kya hote hain?</a>
+<a href="#f3b">19. Props with TypeScript</a>
+<a href="#f3c">20. Project mein StatCard</a>
+<a href="#f3d">21. Optional, Default Props, Props vs State</a>
+<div class="grp">Phase 2 · Lessons 2.7 se 2.13</div>
+<a href="#f4a">22. Component Composition</a>
+<a href="#f4b">23. Children Props</a>
+<a href="#f4c">24. Reusable Components: Button</a>
+<a href="#f4d">25. Lists aur Keys</a>
+<a href="#f4e">26. React Fragments</a>
+<a href="#f4f">27. React Rendering</a>
+<a href="#f4g">28. Component Architecture</a>
+<a href="#f4h">29. Concept revision + code patterns</a>
+<!-- NEW NAV LINKS GO ABOVE THIS LINE -->
+</nav>
+<main>
+
+<section class="lesson" id="start">
+<span class="tag">Welcome</span>
+<h2>Frontend Learning Path</h2>
+<p>This is the base page for frontend learning. Lessons will be added here one by one, with a section for each topic, code examples, tables, practice checklists and quick tests.</p>
+
+</section>
+
+<section class="lesson" id="c1">
+<span class="tag">Introduction</span>
+<h2>1. What we build</h2>
+<p>Now we treat the NestJS backend learning as complete and build the frontend of our Internal IT Helpdesk Management System. This course teaches React + TypeScript + Vite + Tailwind CSS from zero, and builds a complete, professional frontend application with the existing NestJS backend.</p>
+<h3>Teaching style (same as the NestJS tutorial)</h3>
+<ul>
+<li>First theory and concept.</li>
+<li>Then diagram and visualization.</li>
+<li>Then folder structure.</li>
+<li>Then an explanation of every line of code.</li>
+<li>Then practical implementation.</li>
+<li>Then backend integration.</li>
+<li>Then testing in the browser.</li>
+<li>Then assignments and interview questions.</li>
+</ul>
+<p>We assume your knowledge of React, TypeScript and Tailwind CSS is basic or zero. So no concept is skipped.</p>
+<h3>The stack</h3>
+<div class="sc"><table>
+<tr><th>Technology</th><th>Role</th></tr>
+<tr><td>React</td><td>UI and components</td></tr>
+<tr><td>TypeScript</td><td>Types and safety</td></tr>
+<tr><td>Vite</td><td>Development and build</td></tr>
+<tr><td>Tailwind CSS</td><td>Styling and responsive UI</td></tr>
+</table></div>
+<p>One complete practical project: a professional IT Helpdesk web application with three roles.</p>
+<h3>The three user roles</h3>
+<div class="sc"><table>
+<tr><th>Employee</th><th>Technician</th><th>Admin</th></tr>
+<tr>
+<td><ul><li>Register and login.</li><li>Create a new ticket.</li><li>See own tickets.</li><li>Update a ticket.</li><li>Comments and discussion.</li><li>See notifications.</li></ul></td>
+<td><ul><li>See assigned tickets.</li><li>Open ticket details.</li><li>Change status.</li><li>Reply to the Employee’s comments.</li><li>See own workload.</li></ul></td>
+<td><ul><li>Complete dashboard.</li><li>Manage all tickets.</li><li>Assign technicians.</li><li>Manage users.</li><li>See audit logs.</li><li>Reports and analytics.</li></ul></td>
+</tr>
+</table></div>
+</section>
+
+<section class="lesson" id="c2">
+<span class="tag">Introduction</span>
+<h2>2. Frontend and backend architecture</h2>
+<p>First understand this architecture. It is the foundation of the whole project.</p>
+<h3>Full-stack architecture</h3>
+<ol class="flow">
+<li><b>Browser: User Interface</b>Employee / Technician / Admin</li>
+<li><b>React Frontend</b>Components · Pages · State · React Router · API Services · TypeScript (React + TypeScript + Vite + Tailwind CSS)</li>
+<li><b>HTTP requests / JSON responses</b></li>
+<li><b>NestJS Backend: REST APIs</b>Auth · Users · Tickets · Comments · Dashboard · Audit Logs</li>
+<li><b>MongoDB</b>Users · Tickets · Comments · Audit Logs</li>
+</ol>
+<h3>A practical example</h3>
+<p>An Employee clicks the login button.</p>
+<ol>
+<li>React takes the email/password from the login form.</li>
+<li>The React API service sends the request <code>POST /api/v1/auth/login</code> to NestJS.</li>
+<li>NestJS verifies the credentials.</li>
+<li>The backend returns a JWT token.</li>
+<li>React manages the authenticated user and the token.</li>
+<li>The user navigates to the dashboard.</li>
+<li>In the following protected API requests, the Bearer token is sent.</li>
+</ol>
+<pre><code>Login Form
+    |
+    v
+React Login Function
+    |
+    v
+POST /api/v1/auth/login
+    |
+    v
+NestJS Auth Controller
+    |
+    v
+Auth Service + MongoDB
+    |
+    v
+JWT Token + User Details
+    |
+    v
+React Auth State
+    |
+    v
+Dashboard</code></pre>
+<div class="note"><b>Important:</b> the React frontend is not a replacement for security. The JWT, RBAC and ownership checks we built in the backend continue. The role of the frontend is to control the user experience and navigation.</div>
+</section>
+
+<section class="lesson" id="c3">
+<span class="tag">Introduction</span>
+<h2>3. Complete React course roadmap</h2>
+<p>We will not build the project by writing random code. First we learn the React concepts, then we use them in the project.</p>
+<p><b>Concept → Theory → Diagram → Code → Practice → Project implementation</b></p>
+<div class="sc"><table>
+<tr><th>Phase</th><th>Topics</th></tr>
+<tr><td>1. Frontend Setup and Web Fundamentals</td><td>React, TypeScript, Vite, Tailwind. Project setup, files, folders, <code>main.tsx</code>, <code>App.tsx</code>. Browser rendering, development server, build</td></tr>
+<tr><td>2. React Fundamentals</td><td>What is React, what is an SPA. Components, JSX, fragments. Props, component composition. Reusable components</td></tr>
+<tr><td>3. JavaScript and TypeScript for React</td><td>Variables, functions, arrow functions. Objects, arrays, destructuring. Map, filter, find, reduce. Interfaces, types, union, generics. React event and component types</td></tr>
+<tr><td>4. React State and Events</td><td><code>useState</code>. Event handling. Conditional rendering. List rendering and keys. State lifting and props flow</td></tr>
+<tr><td>5. Forms and Validation</td><td>Controlled/uncontrolled inputs. Login and register forms. Form submission. React Hook Form + Zod. Validation and error messages</td></tr>
+<tr><td>6. React Hooks</td><td><code>useEffect</code>, <code>useRef</code>, <code>useMemo</code>, <code>useCallback</code>. Custom hooks. Cleanup and dependency arrays</td></tr>
+<tr><td>7. React Router</td><td>Routing and navigation. Nested routes and layouts. Dynamic routes. Protected routes. Role-based frontend navigation</td></tr>
+<tr><td>8. API Integration</td><td>HTTP and REST API revision. Fetch and Axios. GET, POST, PATCH, DELETE. API service architecture. Loading, error and success states. CORS and environment variables</td></tr>
+<tr><td>9. Authentication and Authorization</td><td>JWT integration. Login/register. Auth Context. Token management. Logout and protected pages. Employee / Technician / Admin roles</td></tr>
+<tr><td>10. Admin Dashboard</td><td>Dashboard cards. Charts and graphs. API data integration. Technician workload. Monthly statistics</td></tr>
+<tr><td>11. Ticket Management</td><td>Ticket listing. Search, filters and sorting. Pagination. Create/edit ticket forms. Ticket details page</td></tr>
+<tr><td>12. Comments and Discussion</td><td>Comment listing and forms. Edit/delete comment. Discussion timeline. Pagination</td></tr>
+<tr><td>13. User and Technician Management</td><td>User listing. User details. Assign technicians. Status management. Role-specific interfaces</td></tr>
+<tr><td>14. Notifications</td><td>Notification dropdown. Unread count. Mark as read. Email-related UI. Real-time notifications</td></tr>
+<tr><td>15. Audit Logs</td><td>Activity timeline. Old/new values. Admin audit log table. Filters and pagination</td></tr>
+<tr><td>16. Advanced React</td><td>Context API. Redux Toolkit (concepts and implementation). TanStack Query. Performance optimization. Reusable custom hooks</td></tr>
+<tr><td>17. Professional UI and UX</td><td>Responsive layouts. Sidebar, navbar, modal. Tables, badges, dropdowns. Skeletons and empty states. Accessibility</td></tr>
+<tr><td>18. Testing and Deployment</td><td>Component testing. API testing. Production build. Environment configuration. Frontend deployment</td></tr>
+</table></div>
+<div class="note"><b>Teaching policy:</b> before using any hook or library, we understand what problem it solves. We will not install a library for everything. First we understand React itself, then we add the industry tools.</div>
+</section>
+
+<section class="lesson" id="c4">
+<span class="tag">Introduction</span>
+<h2>4. Technology stack: what does each one do?</h2>
+<ul>
+<li><b>React (UI library).</b> With React we divide the UI into small reusable components, like Navbar, Sidebar, TicketCard, LoginForm and Dashboard. Official: <a href="https://react.dev/learn">React Learn</a></li>
+<li><b>TypeScript (type safety).</b> It adds static types on top of JavaScript. It tells whether a variable is a string, a number, an object or some specific structure.</li>
+<li><b>Vite (development and build tool).</b> It starts the development server, processes the code and makes the production build. With fast refresh, changes show up quickly in the browser. Official: <a href="https://vite.dev/guide/">Vite Guide</a></li>
+<li><b>Tailwind CSS (styling).</b> We design with utility classes, like <code>flex</code>, <code>p-4</code>, <code>bg-white</code>, <code>rounded-lg</code>, <code>text-xl</code>. Official: <a href="https://tailwindcss.com/docs/installation/using-vite">Tailwind Vite Setup</a></li>
+</ul>
+<p>A small example:</p>
+<pre><code>function Welcome() {
+  return (
+    &lt;h1 className="text-2xl font-bold text-blue-600"&gt;
+      Welcome to IT Helpdesk
+    &lt;/h1&gt;
+  );
+}</code></pre>
+<ul>
+<li><code>function Welcome()</code>: a React component.</li>
+<li><code>return</code>: returns the UI.</li>
+<li><code>&lt;h1&gt;</code>: heading.</li>
+<li><code>className</code>: assigns a CSS class.</li>
+<li><code>text-2xl</code>: text size.</li>
+<li><code>font-bold</code>: bold font.</li>
+<li><code>text-blue-600</code>: text color.</li>
+</ul>
+<p>This is JSX/TSX. We will study it deeply in Phase 2.</p>
+</section>
+
+<section class="lesson" id="f1a">
+<span class="tag">Phase 1 · Lesson 1</span>
+<h2>5. Check Node.js and create the project</h2>
+<p>The goal of this phase: you run the React frontend successfully on your computer, and understand the purpose of every important file of the project.</p>
+<h3>Check Node.js and npm</h3>
+<p>You use Windows 11, so open the VS Code Terminal or PowerShell.</p>
+<pre><code>node -v
+npm -v</code></pre>
+<p>For the current Vite version, Node.js <code>20.19+</code> or <code>22.12+</code> is required. If you have an older version, update Node.js first.</p>
+<pre><code>node -v
+v22.12.0
+
+npm -v
+10.9.0</code></pre>
+<p>This is example output. The versions on your system can be different.</p>
+<h3>Create the React + TypeScript + Vite project</h3>
+<p>We will keep the backend and the frontend in separate folders. Recommended project structure:</p>
+<pre><code>Internal-IT-Helpdesk/
+│
+├── internal-it-helpdesk/           ← NestJS Backend
+│
+└── internal-it-helpdesk-frontend/  ← React Frontend</code></pre>
+<p>In the VS Code terminal go to the parent folder, then:</p>
+<pre><code>npm create vite@latest internal-it-helpdesk-frontend -- --template react-ts</code></pre>
+<p>If the Vite prompt asks to install packages, you can select <code>Yes</code> if the option is given. After that:</p>
+<pre><code>cd internal-it-helpdesk-frontend
+
+npm install</code></pre>
+<p>The <code>react-ts</code> template of Vite makes a starter project of React and TypeScript. The official React documentation also gives an example of the Vite React TypeScript template.</p>
+<h3>Understand this command</h3>
+<pre><code>npm create vite@latest</code></pre>
+<ul>
+<li><code>npm</code>: Node Package Manager.</li>
+<li><code>create</code>: project scaffolding command.</li>
+<li><code>vite</code>: the Vite project generator.</li>
+<li><code>@latest</code>: use the latest available version.</li>
+</ul>
+<pre><code>-- --template react-ts</code></pre>
+<ul>
+<li><code>--</code>: passes the arguments after npm to create-vite.</li>
+<li><code>--template</code>: chooses the starter template of the project.</li>
+<li><code>react-ts</code>: the React + TypeScript template.</li>
+</ul>
+</section>
+
+<section class="lesson" id="f1b">
+<span class="tag">Phase 1 · Lesson 2</span>
+<h2>6. Project folder structure: purpose of every file</h2>
+<p>When the React project is created, you get a structure like this:</p>
+<pre><code>internal-it-helpdesk-frontend/
+│
+├── public/                 Static files
+│
+├── src/                    Main source code
+│   ├── assets/             Images, icons
+│   ├── App.css             Component styling
+│   ├── App.tsx             Main UI component
+│   ├── index.css           Global CSS
+│   └── main.tsx            React entry point
+│
+├── index.html              Browser HTML entry
+├── package.json           Dependencies and scripts
+├── tsconfig.json           TypeScript configuration
+├── vite.config.ts          Vite configuration
+└── node_modules/           Installed packages</code></pre>
+<p>Now understand the role of every folder and file.</p>
+<ol>
+<li><b><code>public/</code></b> holds static files that are not processed like normally imported assets in the bundling process. Example: <code>public/logo.svg</code>, <code>public/favicon.ico</code>.</li>
+<li><b><code>src/</code></b> is where we write our actual React code. Almost the whole frontend is developed in this folder.</li>
+<li><b><code>assets/</code></b> is for imported images, SVGs and other assets.</li>
+<li><b><code>App.tsx</code></b> is our main application component. Initially we write the application’s UI inside it.</li>
+<li><b><code>main.tsx</code></b> is the entry point of the React application. From here React renders the application inside the browser’s HTML element.</li>
+<li><b><code>index.html</code></b> is the initial HTML page that the browser receives.</li>
+<li><b><code>package.json</code></b> stores the project dependencies, scripts and package metadata.</li>
+<li><b><code>node_modules/</code></b> holds the actual code of the installed npm packages. Do not edit this folder manually.</li>
+<li><b><code>vite.config.ts</code></b> is for the development/build configuration of Vite.</li>
+</ol>
+</section>
+
+<section class="lesson" id="f1c">
+<span class="tag">Phase 1 · Lesson 3</span>
+<h2>7. How does a React application run in the browser?</h2>
+<p>This is a very important diagram. After understanding it, the purpose of <code>main.tsx</code> becomes clear.</p>
+<h3>React rendering flow</h3>
+<ol class="flow">
+<li><b>index.html</b>HTML page and the root element: <code>&lt;div id="root"&gt;&lt;/div&gt;</code></li>
+<li><b>main.tsx</b>Starts the React application</li>
+<li><b>App.tsx</b>Main component and UI</li>
+<li><b>Child Components</b>Navbar · Sidebar · Cards · Tables</li>
+<li><b>Browser UI</b>The rendered page is shown to the user</li>
+</ol>
+<h3>Open index.html</h3>
+<p>You will find something like this:</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;Vite + React + TS&lt;/title&gt;
+  &lt;/head&gt;
+
+  &lt;body&gt;
+    &lt;div id="root"&gt;&lt;/div&gt;
+
+    &lt;script
+      type="module"
+      src="/src/main.tsx"
+    &gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul>
+<li><b><code>&lt;div id="root"&gt;&lt;/div&gt;</code></b> is an empty HTML container. React will render its complete UI inside this container.</li>
+<li><b><code>type="module"</code></b> tells the browser to load the script as a JavaScript module, in which we can use <code>import</code> and <code>export</code>.</li>
+<li><b><code>src="/src/main.tsx"</code></b> tells the browser that the starting code of the React application is <code>main.tsx</code>.</li>
+</ul>
+<h3>Open main.tsx</h3>
+<pre><code>import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+
+import './index.css';
+import App from './App.tsx';
+
+createRoot(
+  document.getElementById('root')!
+).render(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</code></pre>
+<p>Understand it:</p>
+<ul>
+<li><code>import { StrictMode } from 'react'</code> imports a development helper of React.</li>
+<li><code>import { createRoot } from 'react-dom/client'</code> gives React the entry point to render the application in the browser DOM.</li>
+<li><code>import './index.css'</code> loads the global stylesheet.</li>
+<li><code>import App from './App.tsx'</code> imports the main App component.</li>
+<li><code>document.getElementById('root')</code> finds the element with <code>id="root"</code> in the HTML page.</li>
+<li><code>!</code> is the TypeScript non-null assertion. We tell TypeScript that the root element is available here. If the root element is missing in the HTML, a runtime error can come.</li>
+<li><code>.render()</code> renders the React component in the root element.</li>
+<li><code>&lt;StrictMode&gt;</code> helps identify potential problems in development. Because of some development checks, effects can appear to run twice. This behavior is not the same in production.</li>
+</ul>
+</section>
+
+<section class="lesson" id="f1d">
+<span class="tag">Phase 1 · Lesson 4</span>
+<h2>8. Install and configure Tailwind CSS</h2>
+<p>Now we install Tailwind CSS for styling. The current Vite setup of Tailwind CSS uses the <code>@tailwindcss/vite</code> plugin. We follow the latest official Vite integration. In the terminal:</p>
+<pre><code>npm install tailwindcss @tailwindcss/vite</code></pre>
+<h3>Step 8.1: update vite.config.ts</h3>
+<p>The default React template will have code like this:</p>
+<pre><code>import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+  plugins: [react()],
+});</code></pre>
+<p>Update it:</p>
+<pre><code>import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+});</code></pre>
+<ul>
+<li><code>defineConfig()</code>: a helper to define the Vite configuration.</li>
+<li><code>react()</code>: gives Vite React support.</li>
+<li><code>tailwindcss()</code>: integrates Tailwind CSS with Vite.</li>
+<li><code>plugins</code>: to add additional functionality in Vite.</li>
+</ul>
+<h3>Step 8.2: update src/index.css</h3>
+<p>Remove the old CSS and write:</p>
+<pre><code>@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}</code></pre>
+<ul>
+<li><code>@import "tailwindcss"</code> loads the utility classes of Tailwind.</li>
+<li><code>box-sizing: border-box</code> includes padding and border in the element’s width calculation. It makes the layout easy to manage.</li>
+<li><code>margin: 0</code> removes the browser’s default body margin.</li>
+<li><code>min-height: 100vh</code> gives the body a minimum viewport height.</li>
+</ul>
+<h3>Step 8.3: Tailwind test</h3>
+<p>Open <code>src/App.tsx</code> and replace the existing code:</p>
+<pre><code>function App() {
+  return (
+    &lt;div className="min-h-screen bg-slate-100 p-8"&gt;
+      &lt;h1 className="text-3xl font-bold text-blue-700"&gt;
+        Internal IT Helpdesk
+      &lt;/h1&gt;
+
+      &lt;p className="mt-3 text-slate-600"&gt;
+        Welcome to our Helpdesk Application.
+      &lt;/p&gt;
+
+      &lt;button className="mt-6 rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"&gt;
+        Get Started
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<p>Now run:</p>
+<pre><code>npm run dev</code></pre>
+<p>In the browser open the local URL given by Vite. Usually it will be:</p>
+<pre><code>http://localhost:5173</code></pre>
+<p><b>Your first React page:</b> a heading “Internal IT Helpdesk”, the text “Welcome to our Helpdesk Application.” and a “Get Started” button. This is the expected visual output of the code.</p>
+<h3>Understand the Tailwind classes</h3>
+<div class="sc"><table>
+<tr><th>Class</th><th>Meaning</th></tr>
+<tr><td><code>min-h-screen</code></td><td>Minimum full screen height</td></tr>
+<tr><td><code>bg-slate-100</code></td><td>Light grey background</td></tr>
+<tr><td><code>p-8</code></td><td>Padding on all sides</td></tr>
+<tr><td><code>text-3xl</code></td><td>Large text</td></tr>
+<tr><td><code>font-bold</code></td><td>Bold font</td></tr>
+<tr><td><code>text-blue-700</code></td><td>Blue text</td></tr>
+<tr><td><code>mt-3</code></td><td>Top margin</td></tr>
+<tr><td><code>rounded-lg</code></td><td>Rounded corners</td></tr>
+<tr><td><code>px-5</code></td><td>Horizontal padding</td></tr>
+<tr><td><code>py-3</code></td><td>Vertical padding</td></tr>
+<tr><td><code>hover:bg-blue-700</code></td><td>Background change on hover</td></tr>
+</table></div>
+<p>An important difference. In normal CSS:</p>
+<pre><code>.button {
+  background: blue;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+}</code></pre>
+<p>In Tailwind:</p>
+<pre><code>&lt;button className="bg-blue-600 text-white px-5 py-3 rounded-lg"&gt;
+  Click me
+&lt;/button&gt;</code></pre>
+<p>We design with the utilities of Tailwind. Later we will make reusable components and avoid duplicate classes.</p>
+</section>
+
+<section class="lesson" id="f1e">
+<span class="tag">Phase 1 · Lesson 5</span>
+<h2>9. Build a small real UI: Helpdesk Dashboard prototype</h2>
+<p>So far we have tested the setup. Now in this same frontend we build a static prototype of a basic Helpdesk Dashboard. You will understand how the UI of the actual project is developed in the frontend.</p>
+<p>File: <code>src/App.tsx</code></p>
+<pre><code>function App() {
+  return (
+    &lt;div className="min-h-screen bg-slate-100"&gt;
+
+      {/* Top Navbar */}
+      &lt;header className="flex items-center justify-between bg-white px-8 py-4 shadow-sm"&gt;
+
+        &lt;h1 className="text-xl font-bold text-slate-800"&gt;
+          IT Helpdesk
+        &lt;/h1&gt;
+
+        &lt;div className="flex items-center gap-3"&gt;
+          &lt;span className="text-sm text-slate-600"&gt;
+            Welcome, Admin
+          &lt;/span&gt;
+
+          &lt;div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700"&gt;
+            A
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+      &lt;/header&gt;
+
+      {/* Main Content */}
+      &lt;main className="p-8"&gt;
+
+        &lt;div className="mb-8"&gt;
+          &lt;h2 className="text-2xl font-bold text-slate-800"&gt;
+            Dashboard
+          &lt;/h2&gt;
+
+          &lt;p className="mt-2 text-slate-500"&gt;
+            Overview of your IT Helpdesk system.
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        {/* Statistics Cards */}
+        &lt;div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"&gt;
+
+          &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+            &lt;p className="text-sm text-slate-500"&gt;
+              Total Tickets
+            &lt;/p&gt;
+
+            &lt;h3 className="mt-3 text-3xl font-bold text-slate-800"&gt;
+              250
+            &lt;/h3&gt;
+          &lt;/div&gt;
+
+          &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+            &lt;p className="text-sm text-slate-500"&gt;
+              Open Tickets
+            &lt;/p&gt;
+
+            &lt;h3 className="mt-3 text-3xl font-bold text-blue-600"&gt;
+              65
+            &lt;/h3&gt;
+          &lt;/div&gt;
+
+          &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+            &lt;p className="text-sm text-slate-500"&gt;
+              In Progress
+            &lt;/p&gt;
+
+            &lt;h3 className="mt-3 text-3xl font-bold text-orange-500"&gt;
+              45
+            &lt;/h3&gt;
+          &lt;/div&gt;
+
+          &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+            &lt;p className="text-sm text-slate-500"&gt;
+              Resolved Tickets
+            &lt;/p&gt;
+
+            &lt;h3 className="mt-3 text-3xl font-bold text-green-600"&gt;
+              110
+            &lt;/h3&gt;
+          &lt;/div&gt;
+
+        &lt;/div&gt;
+
+        {/* Recent Activity */}
+        &lt;section className="mt-8 rounded-xl bg-white p-6 shadow-sm"&gt;
+
+          &lt;h3 className="text-lg font-bold text-slate-800"&gt;
+            Recent Activity
+          &lt;/h3&gt;
+
+          &lt;p className="mt-3 text-slate-500"&gt;
+            Your recent helpdesk activities will appear here.
+          &lt;/p&gt;
+
+        &lt;/section&gt;
+
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<h3>Visualization of this code</h3>
+<p>A top bar with “IT Helpdesk” on the left and “Welcome, Admin” with an “A” avatar on the right. Below it the heading “Dashboard” (“Overview of your IT Helpdesk system.”), four cards, and a “Recent Activity” section.</p>
+<div class="sc"><table>
+<tr><th>Total Tickets</th><th>Open Tickets</th><th>In Progress</th><th>Resolved</th></tr>
+<tr><td>250</td><td>65</td><td>45</td><td>110</td></tr>
+</table></div>
+<p>This is a static prototype preview. The actual UI will render in your browser from the Tailwind code.</p>
+<h3>Important concepts of the code</h3>
+<p><b>1. Component function</b></p>
+<pre><code>function App() {
+  return (...);
+}</code></pre>
+<p>A React component is a JavaScript/TypeScript function that returns JSX. The name of a React component must start with a capital letter. Like <code>App</code>, <code>Navbar</code>, <code>TicketCard</code>.</p>
+<p><b>2. JSX</b></p>
+<pre><code>&lt;h1&gt;Dashboard&lt;/h1&gt;</code></pre>
+<p>JSX lets us write HTML-like markup syntax inside JavaScript. There are some differences in React JSX:</p>
+<ul>
+<li><code>className</code> instead of <code>class</code>.</li>
+<li>Tags must be properly closed.</li>
+<li>A component must return one parent element or a Fragment.</li>
+</ul>
+<p><b>3. Nested elements</b></p>
+<pre><code>&lt;div&gt;
+  &lt;h1&gt;Dashboard&lt;/h1&gt;
+  &lt;p&gt;Welcome&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>Putting other elements inside an element is called nesting.</p>
+<p><b>4. Responsive grid</b></p>
+<pre><code>&lt;div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"&gt;</code></pre>
+<ul>
+<li>Normal small screen: 1 column.</li>
+<li>From the <code>sm</code> breakpoint: 2 columns.</li>
+<li>From the <code>lg</code> breakpoint: 4 columns.</li>
+</ul>
+<p>This is the basic concept of responsive design.</p>
+<p><b>5. JSX comments</b></p>
+<pre><code>{/* Top Navbar */}</code></pre>
+<p>This is the syntax to write a comment inside JSX.</p>
+</section>
+
+<section class="lesson" id="f1f">
+<span class="tag">Phase 1 · Lesson 6</span>
+<h2>10. Environment variables and package.json</h2>
+<h3>Environment variables: configure the backend URL</h3>
+<p>We have not connected the frontend and the backend yet. But let us prepare the base URL for the connection. Create a <code>.env</code> file in the project root:</p>
+<pre><code>VITE_API_BASE_URL=http://localhost:3000/api/v1</code></pre>
+<p><b>Why the <code>VITE_</code> prefix?</b> By default Vite uses the <code>VITE_</code> prefix to expose environment variables in the frontend.</p>
+<pre><code>const apiUrl = import.meta.env.VITE_API_BASE_URL;
+
+console.log(apiUrl);</code></pre>
+<p>Output:</p>
+<pre><code>http://localhost:3000/api/v1</code></pre>
+<div class="note"><b>Security warning:</b> environment variables in the frontend are not private secrets. <code>VITE_</code> variables can be visible in the browser bundle. So never keep a JWT secret, a database password or private API keys here.</div>
+<p>If you create/update the <code>.env</code> file, restart the Vite dev server. For the backend we use the same base prefix we configured in NestJS: <code>/api/v1</code>.</p>
+<h3>package.json and scripts</h3>
+<p>File: <code>package.json</code>. It will have roughly this structure:</p>
+<pre><code>{
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b &amp;&amp; vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  }
+}</code></pre>
+<div class="sc"><table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>npm run dev</code></td><td>Start the development server</td></tr>
+<tr><td><code>npm run build</code></td><td>Generate the production build</td></tr>
+<tr><td><code>npm run lint</code></td><td>Code quality checks</td></tr>
+<tr><td><code>npm run preview</code></td><td>Preview the production build locally</td></tr>
+</table></div>
+<h3>Difference between development and production</h3>
+<p><b>Development mode (while coding):</b> <code>npm run dev</code></p>
+<ul>
+<li>Fast development server.</li>
+<li>The browser refreshes/updates on code changes.</li>
+<li>Debugging is easy.</li>
+</ul>
+<p><b>Production mode (when the project is ready):</b> <code>npm run build</code></p>
+<ul>
+<li>Optimized output is generated.</li>
+<li>The <code>dist/</code> folder is created.</li>
+<li>You get assets ready for deployment.</li>
+</ul>
+<p>Vite provides separate commands for the development server and the production build.</p>
+</section>
+
+<section class="lesson" id="f1g">
+<span class="tag">Phase 1 · Lesson 7</span>
+<h2>11. Run backend and frontend, common errors</h2>
+<p>We will now have two independent applications.</p>
+<h3>Terminal 1: Backend (NestJS)</h3>
+<pre><code>cd internal-it-helpdesk
+npm run start:dev</code></pre>
+<p>Backend: <code>http://localhost:3000</code></p>
+<h3>Terminal 2: Frontend (React + Vite)</h3>
+<pre><code>cd internal-it-helpdesk-frontend
+npm run dev</code></pre>
+<p>Frontend: <code>http://localhost:5173</code></p>
+<p>For now both applications will run independently. In the next phases we will do the API integration. If you get a CORS error in the browser, you will have to allow the frontend origin in the NestJS <code>main.ts</code> of the backend. We will implement it practically in the API integration phase.</p>
+<h3>Common errors and solutions</h3>
+<div class="sc"><table>
+<tr><th>Error</th><th>Possible solution</th></tr>
+<tr><td><code>node is not recognized</code></td><td>Check the Node.js install/PATH</td></tr>
+<tr><td><code>npm create vite</code> fails</td><td>Check the Node.js version</td></tr>
+<tr><td><code>Cannot find module</code></td><td>Run <code>npm install</code></td></tr>
+<tr><td>Tailwind classes do not work</td><td>Check the Vite plugin and the CSS import</td></tr>
+<tr><td>Port 5173 busy</td><td>Vite can use another available port</td></tr>
+<tr><td>Blank browser page</td><td>Check the browser console and terminal errors</td></tr>
+<tr><td><code>root</code> element null</td><td>Check <code>id="root"</code> in <code>index.html</code></td></tr>
+</table></div>
+<div class="note"><b>Important:</b> for Tailwind v4 we have used the Vite plugin method. In older Tailwind v3 tutorials you will find instructions like <code>tailwind.config.js</code>, <code>postcss.config.js</code> and <code>@tailwind base</code>. Do not mix them with the current setup.</div>
+<h3>Official learning references</h3>
+<p>Bookmark these. We will use the official documentation along with the course.</p>
+<ol>
+<li><a href="https://react.dev/learn">React: Learn React</a>: components, JSX, state and hooks.</li>
+<li><a href="https://vite.dev/guide/">Vite: Getting Started</a>: project setup and build.</li>
+<li><a href="https://tailwindcss.com/docs/installation/using-vite">Tailwind CSS: Vite Installation</a>: styling configuration.</li>
+<li><a href="https://react.dev/learn/managing-state">React: Managing State</a>: state management concepts.</li>
+</ol>
+</section>
+
+<section class="lesson" id="f2a">
+<span class="tag">Phase 2 · Lesson 2.1</span>
+<h2>12. Phase 2 roadmap and What is React?</h2>
+<p>In this phase we understand React from zero. We will not go to API integration, backend connection or advanced hooks yet. First we make the React foundation strong.</p>
+<h3>Phase 2 roadmap</h3>
+<div class="sc"><table>
+<tr><th>Lesson</th><th>Topic</th></tr>
+<tr><td>2.1</td><td>What is React and why do we use it?</td></tr>
+<tr><td>2.2</td><td>Traditional website vs React application</td></tr>
+<tr><td>2.3</td><td>SPA: Single Page Application</td></tr>
+<tr><td>2.4</td><td>React Components</td></tr>
+<tr><td>2.5</td><td>JSX and TSX</td></tr>
+<tr><td>2.6</td><td>Functional Components</td></tr>
+<tr><td>2.7</td><td>Props: parent to child data</td></tr>
+<tr><td>2.8</td><td>Component Composition</td></tr>
+<tr><td>2.9</td><td>Reusable Components</td></tr>
+<tr><td>2.10</td><td>React application rendering flow</td></tr>
+</table></div>
+<h3>Introduction to React</h3>
+<p>React is a JavaScript library used to build user interfaces (UI). In simple language: suppose we are building our Internal IT Helpdesk Management System. This application will have multiple screens:</p>
+<ul>
+<li>Login Page</li>
+<li>Register Page</li>
+<li>Admin Dashboard</li>
+<li>Employee Dashboard</li>
+<li>Ticket List</li>
+<li>Ticket Details</li>
+<li>Create Ticket Form</li>
+<li>User Management</li>
+<li>Audit Logs</li>
+</ul>
+<p>We will build the frontend of all these screens with React. The main job of React is to divide the UI into small, manageable and reusable parts.</p>
+<h3>Without React and with React</h3>
+<p>Suppose this is a normal HTML website:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Helpdesk&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;h1&gt;IT Helpdesk&lt;/h1&gt;
+
+    &lt;button&gt;Login&lt;/button&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<p>Here HTML tells the browser what to display on the page. But when the application becomes complex, updating and managing multiple UI elements can become difficult.</p>
+<p>In React we divide the UI into components. Example:</p>
+<pre><code>App
+│
+├── Navbar
+│
+├── Sidebar
+│
+├── Dashboard
+│   │
+│   ├── StatCard
+│   ├── StatCard
+│   ├── StatCard
+│   │
+│   └── RecentTickets
+│
+└── Footer</code></pre>
+<p>Every component has its own specific responsibility. For example:</p>
+<ul>
+<li><code>Navbar</code>: displays the top navigation.</li>
+<li><code>Sidebar</code>: displays the application navigation.</li>
+<li><code>StatCard</code>: displays the ticket statistics.</li>
+<li><code>RecentTickets</code>: displays the recent tickets.</li>
+</ul>
+<p>This makes the code manageable and reusable.</p>
+</section>
+
+<section class="lesson" id="f2b">
+<span class="tag">Phase 2 · Lesson 2.4</span>
+<h2>13. What is a React Component?</h2>
+<p>The component is the most important fundamental concept of React. A component is a reusable piece of UI.</p>
+<p>Example: our Helpdesk dashboard has 4 statistics cards. If we write separate HTML for every card, the code will repeat. In React we can make one component:</p>
+<pre><code>function StatCard() {
+  return (
+    &lt;div className="rounded-xl bg-white p-6 shadow"&gt;
+      &lt;p&gt;Total Tickets&lt;/p&gt;
+      &lt;h2&gt;250&lt;/h2&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default StatCard;</code></pre>
+<p>Now we can use this component multiple times:</p>
+<pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;StatCard /&gt;
+      &lt;StatCard /&gt;
+      &lt;StatCard /&gt;
+      &lt;StatCard /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<div class="note">Right now all the cards will show the same data. In the Props lesson we will learn how to pass different data to the same component.</div>
+<h3>Internal structure of a React component</h3>
+<p>Understand the 3 important parts of a typical React component:</p>
+<ol class="flow">
+<li><b>Function Declaration</b>The name of the component and the function body</li>
+<li><b>JSX Return</b>Defines the structure of the UI</li>
+<li><b>Export</b>Lets the component be used in other files</li>
+</ol>
+<pre><code>function Navbar() {
+
+  // Component logic
+
+  return (
+    &lt;nav&gt;
+      &lt;h1&gt;IT Helpdesk&lt;/h1&gt;
+    &lt;/nav&gt;
+  );
+}
+
+export default Navbar;</code></pre>
+<ol>
+<li><b><code>function Navbar()</code></b>: it is a JavaScript function. The name of the React component is <code>Navbar</code>. React component names must start with a capital letter.</li>
+<li><b><code>return (...)</code></b>: returns the UI of the component. We write JSX inside it.</li>
+<li><b><code>export default Navbar</code></b>: gives the permission to import the component in other files.</li>
+</ol>
+</section>
+
+<section class="lesson" id="f2c">
+<span class="tag">Phase 2 · Lesson 2.5</span>
+<h2>14. JSX and TSX</h2>
+<p>This is a very important concept of React.</p>
+<h3>What is JSX?</h3>
+<p>The full form of JSX is JavaScript XML. JSX is a syntax extension that lets us write an HTML-like structure inside JavaScript.</p>
+<p>Normal JavaScript:</p>
+<pre><code>const heading = "IT Helpdesk";</code></pre>
+<p>React JSX:</p>
+<pre><code>const heading = &lt;h1&gt;IT Helpdesk&lt;/h1&gt;;</code></pre>
+<p>Here <code>&lt;h1&gt;</code> looks like HTML, but it is JSX syntax.</p>
+<h3>Why do we use JSX?</h3>
+<p>Suppose we want to display a heading, a paragraph and a button. Creating the UI without JSX is comparatively difficult and verbose. With JSX:</p>
+<pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;IT Helpdesk&lt;/h1&gt;
+      &lt;p&gt;Manage your support tickets.&lt;/p&gt;
+      &lt;button&gt;Login&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<h3>Important rules of JSX</h3>
+<p><b>Rule 1: you must return one parent element.</b></p>
+<p>Incorrect:</p>
+<pre><code>function App() {
+  return (
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;Welcome&lt;/p&gt;
+  );
+}</code></pre>
+<p>Correct:</p>
+<pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello&lt;/h1&gt;
+      &lt;p&gt;Welcome&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p><b>Rule 2: in JSX we use <code>className</code> instead of <code>class</code>.</b></p>
+<pre><code>&lt;div className="bg-blue-500"&gt;
+  Helpdesk
+&lt;/div&gt;</code></pre>
+<p><b>Rule 3: self-closing tags must be closed.</b></p>
+<pre><code>&lt;img src="/logo.png" alt="Logo" /&gt;
+
+&lt;input type="text" /&gt;
+
+&lt;br /&gt;</code></pre>
+<p><b>Rule 4: we write JavaScript expressions inside <code>{}</code>.</b></p>
+<pre><code>function App() {
+
+  const username = "Admin";
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Welcome {username}&lt;/h1&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Browser output: <b>Welcome Admin</b></p>
+<h3>JavaScript expressions in JSX</h3>
+<pre><code>function App() {
+
+  const totalTickets = 250;
+
+  const username = "Admin";
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{username}&lt;/h1&gt;
+
+      &lt;p&gt;Total Tickets: {totalTickets}&lt;/p&gt;
+
+      &lt;p&gt;Next value: {totalTickets + 10}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>We can write JavaScript expressions inside the curly braces <code>{}</code>.</p>
+<h3>Difference between JSX and TSX</h3>
+<div class="sc"><table>
+<tr><th>JSX</th><th>TSX</th></tr>
+<tr><td>JavaScript + JSX</td><td>TypeScript + JSX</td></tr>
+<tr><td><code>.jsx</code> extension</td><td><code>.tsx</code> extension</td></tr>
+<tr><td>JavaScript types are not available</td><td>TypeScript types are available</td></tr>
+<tr><td>JavaScript React projects</td><td>TypeScript React projects</td></tr>
+</table></div>
+<p>Our project uses TypeScript, so we will primarily write <code>.tsx</code> files.</p>
+</section>
+
+<section class="lesson" id="f2d">
+<span class="tag">Phase 2 · Lesson 2.6</span>
+<h2>15. Functional Components and the project folder structure</h2>
+<p>Historically there have been multiple patterns to make a component in React. In modern React we use Functional Components. Example:</p>
+<pre><code>function Header() {
+  return (
+    &lt;header&gt;
+      &lt;h1&gt;Internal IT Helpdesk&lt;/h1&gt;
+    &lt;/header&gt;
+  );
+}
+
+export default Header;</code></pre>
+<p>We save this in the <code>Header.tsx</code> file. Now we import it in <code>App.tsx</code>:</p>
+<pre><code>import Header from "./components/Header";
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Header /&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<h3>Flow of import and export</h3>
+<ol class="flow">
+<li><b>Header.tsx</b><code>export default Header</code></li>
+<li><b>App.tsx</b><code>import Header from "./components/Header"</code></li>
+<li><b>Render</b>The Header is rendered by <code>&lt;Header /&gt;</code></li>
+<li><b>Browser</b>The Header UI is displayed</li>
+</ol>
+<h3>Folder structure of our project</h3>
+<p>Now we organize the components for our actual Internal IT Helpdesk project.</p>
+<pre><code>src/
+│
+├── assets/
+│
+├── components/
+│   ├── common/
+│   │   ├── Button.tsx
+│   │   ├── Input.tsx
+│   │   └── Loader.tsx
+│   │
+│   ├── layout/
+│   │   ├── Navbar.tsx
+│   │   ├── Sidebar.tsx
+│   │   └── Footer.tsx
+│   │
+│   └── dashboard/
+│       └── StatCard.tsx
+│
+├── pages/
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   └── Dashboard.tsx
+│
+├── App.tsx
+├── main.tsx
+└── index.css</code></pre>
+<p>For now we focus only on the components and App. Routing and the actual pages will be covered later.</p>
+</section>
+
+<section class="lesson" id="f2e">
+<span class="tag">Phase 2 · Lesson 2.4 (practical)</span>
+<h2>16. Build the first reusable component: Navbar</h2>
+<p>Now we build the <code>Navbar</code> component in the actual project.</p>
+<h3>Step 1: create the folders</h3>
+<p>Create a <code>components</code> folder inside <code>src</code>. Inside it create a <code>layout</code> folder.</p>
+<pre><code>src/
+└── components/
+    └── layout/
+        └── Navbar.tsx</code></pre>
+<h3>Step 2: Navbar.tsx</h3>
+<pre><code>function Navbar() {
+  return (
+    &lt;header className="flex items-center justify-between bg-white px-8 py-4 shadow-sm"&gt;
+
+      &lt;h1 className="text-xl font-bold text-slate-800"&gt;
+        IT Helpdesk
+      &lt;/h1&gt;
+
+      &lt;div className="flex items-center gap-3"&gt;
+
+        &lt;span className="text-sm text-slate-600"&gt;
+          Welcome, Admin
+        &lt;/span&gt;
+
+        &lt;div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-700"&gt;
+          A
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/header&gt;
+  );
+}
+
+export default Navbar;</code></pre>
+<h3>Understand the code</h3>
+<ul>
+<li><code>header</code>: a semantic HTML element. It represents the header section of the page.</li>
+<li><code>flex</code>: arranges the elements in a flexible row layout.</li>
+<li><code>items-center</code>: centers the vertical alignment.</li>
+<li><code>justify-between</code>: keeps the left and right content on opposite sides.</li>
+<li><code>bg-white</code>: white background.</li>
+<li><code>px-8</code>: horizontal padding.</li>
+<li><code>py-4</code>: vertical padding.</li>
+<li><code>shadow-sm</code>: light shadow.</li>
+<li><code>rounded-full</code>: makes a circular shape.</li>
+</ul>
+<h3>Step 3: use Navbar in App.tsx</h3>
+<pre><code>import Navbar from "./components/layout/Navbar";
+
+function App() {
+  return (
+    &lt;div className="min-h-screen bg-slate-100"&gt;
+
+      &lt;Navbar /&gt;
+
+      &lt;main className="p-8"&gt;
+        &lt;h2 className="text-2xl font-bold text-slate-800"&gt;
+          Dashboard
+        &lt;/h2&gt;
+
+        &lt;p className="mt-2 text-slate-500"&gt;
+          Overview of your IT Helpdesk system.
+        &lt;/p&gt;
+      &lt;/main&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<p>Now the Navbar and the Dashboard heading will be displayed in the browser.</p>
+</section>
+
+<section class="lesson" id="f2f">
+<span class="tag">Phase 2 · Lesson 2.10</span>
+<h2>17. React rendering flow</h2>
+<p>It is important to understand how React code reaches the browser.</p>
+<h3>React rendering architecture</h3>
+<ol class="flow">
+<li><b>main.tsx</b>React application entry point</li>
+<li><b>App.tsx</b>Root component</li>
+<li><b>Child Components</b>Navbar, Sidebar, Dashboard, StatCard</li>
+<li><b>React DOM</b>Updates the UI in the browser DOM</li>
+<li><b>Browser Screen</b>The user sees the final UI</li>
+</ol>
+<p>Your <code>main.tsx</code> already has this code:</p>
+<pre><code>createRoot(
+  document.getElementById('root')!
+).render(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</code></pre>
+<p>This means:</p>
+<ol>
+<li><code>document.getElementById('root')</code> finds the root element of the HTML.</li>
+<li><code>createRoot()</code> creates the React root.</li>
+<li><code>.render()</code> renders the React application in the browser.</li>
+<li><code>&lt;App /&gt;</code> is our root component.</li>
+<li><code>&lt;StrictMode&gt;</code> helps identify potential problems in development.</li>
+</ol>
+</section>
+
+<section class="lesson" id="f3a">
+<span class="tag">Phase 2 · Lesson 2.6</span>
+<h2>18. Props kya hote hain?</h2>
+<p>Aaj hum React ka ek bahut important concept seekhenge: Props (Properties). Is concept ko achhe se samajhna zaroori hai, kyunki hamare IT Helpdesk project mein same component ko different data ke saath baar-baar use karna hoga.</p>
+<p>Props ka use parent component se child component ko data pass karne ke liye hota hai.</p>
+<p>Simple example: Suppose hamare dashboard par 4 cards hain:</p>
+<div class="sc"><table>
+<tr><th>Total Tickets</th><th>Open Tickets</th><th>In Progress</th><th>Resolved</th></tr>
+<tr><td>250</td><td>65</td><td>45</td><td>110</td></tr>
+</table></div>
+<p>In sabhi cards ka design almost same hai. Sirf title, number aur color different hain. Agar hum 4 alag components banayenge, toh code repeat hoga. Instead, hum ek hi component banayenge aur usko different data pass karenge. Isi data ko Props kehte hain.</p>
+<h3>Without Props vs With Props</h3>
+<p><b>Without Props</b></p>
+<pre><code>function TotalTickets() {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Total Tickets&lt;/h3&gt;
+      &lt;p&gt;250&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+function OpenTickets() {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Open Tickets&lt;/h3&gt;
+      &lt;p&gt;65&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+function ResolvedTickets() {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;Resolved Tickets&lt;/h3&gt;
+      &lt;p&gt;110&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Problem: Har card ke liye separate component banana pad raha hai.</p>
+<p><b>With Props</b></p>
+<pre><code>function StatCard(props) {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{props.title}&lt;/h3&gt;
+      &lt;p&gt;{props.value}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Ab same component multiple times use kar sakte hain:</p>
+<pre><code>function Dashboard() {
+  return (
+    &lt;div&gt;
+      &lt;StatCard title="Total Tickets" value={250} /&gt;
+
+      &lt;StatCard title="Open Tickets" value={65} /&gt;
+
+      &lt;StatCard title="Resolved Tickets" value={110} /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Yahan:</p>
+<ul>
+<li><code>StatCard</code> child component hai.</li>
+<li><code>Dashboard</code> parent component hai.</li>
+<li><code>title</code> aur <code>value</code> props hain.</li>
+</ul>
+<h3>Parent aur Child Component ka relationship</h3>
+<p>Is relationship ko visualize karo: Parent → Child Data Flow</p>
+<ol class="flow">
+<li><b>Dashboard (Parent)</b>Data provide karta hai: <code>&lt;StatCard title="Total Tickets" value={250} /&gt;</code></li>
+<li><b>Props pass hote hain</b></li>
+<li><b>StatCard (Child)</b>Props receive karta hai: <code>props.title</code>, <code>props.value</code></li>
+<li><b>Rendered UI</b>Total Tickets: 250</li>
+</ol>
+<div class="note">Important: React mein props ka normal data flow parent se child ki taraf hota hai.</div>
+</section>
+
+<section class="lesson" id="f3b">
+<span class="tag">Phase 2 · Lesson 2.6</span>
+<h2>19. Props with TypeScript aur Destructuring</h2>
+<p>Abhi tak humne simple JavaScript-style props dekhe. Lekin hamara project TypeScript mein hai. TypeScript mein humein props ka data type define karna chahiye.</p>
+<pre><code>interface StatCardProps {
+  title: string;
+  value: number;
+}
+
+function StatCard(props: StatCardProps) {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{props.title}&lt;/h3&gt;
+      &lt;p&gt;{props.value}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default StatCard;</code></pre>
+<h3>Line-by-line explanation</h3>
+<p><b>Step 1: Interface</b></p>
+<pre><code>interface StatCardProps {
+  title: string;
+  value: number;
+}</code></pre>
+<p><code>interface</code> TypeScript ka feature hai. Ye define karta hai ki component ko kis structure ka data receive karna hai.</p>
+<ul>
+<li><code>title: string</code>: title text hona chahiye.</li>
+<li><code>value: number</code>: value number honi chahiye.</li>
+</ul>
+<p><b>Step 2: Function parameter</b></p>
+<pre><code>function StatCard(props: StatCardProps)</code></pre>
+<p>Iska meaning hai ki <code>StatCard</code> component ko <code>StatCardProps</code> ke according data milega.</p>
+<p><b>Step 3: Accessing props</b></p>
+<pre><code>&lt;h3&gt;{props.title}&lt;/h3&gt;
+&lt;p&gt;{props.value}&lt;/p&gt;</code></pre>
+<p><code>props.title</code> se title access karenge. <code>props.value</code> se number access karenge.</p>
+<h3>TypeScript ka benefit</h3>
+<p>Agar hum galat data pass karte hain:</p>
+<pre><code>&lt;StatCard title="Total Tickets" value="250" /&gt;</code></pre>
+<p>TypeScript error dega, kyunki <code>value</code> ka type number hona chahiye, string nahi. Correct:</p>
+<pre><code>&lt;StatCard title="Total Tickets" value={250} /&gt;</code></pre>
+<p>Dhyan do: JSX mein string ko quotes mein aur JavaScript values ko curly braces mein likhte hain.</p>
+<h3>Destructuring Props</h3>
+<p>React code mein tumhe ye pattern bahut baar dikhega:</p>
+<pre><code>function StatCard({ title, value }: StatCardProps) {
+  return (
+    &lt;div&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{value}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Isko Object Destructuring kehte hain.</p>
+<p>Without destructuring:</p>
+<pre><code>function StatCard(props: StatCardProps) {
+  return &lt;h3&gt;{props.title}&lt;/h3&gt;;
+}</code></pre>
+<p>With destructuring:</p>
+<pre><code>function StatCard({ title }: StatCardProps) {
+  return &lt;h3&gt;{title}&lt;/h3&gt;;
+}</code></pre>
+<p>Dono ka output same hai. Destructuring se code shorter aur readable ho jaata hai.</p>
+</section>
+
+<section class="lesson" id="f3c">
+<span class="tag">Phase 2 · Lesson 2.6</span>
+<h2>20. Actual project implementation: StatCard</h2>
+<p>Ab hum apne IT Helpdesk project mein professional StatCard component banayenge. Folder structure:</p>
+<pre><code>src/
+│
+├── components/
+│   ├── layout/
+│   │   └── Navbar.tsx
+│   │
+│   └── dashboard/
+│       └── StatCard.tsx
+│
+└── App.tsx</code></pre>
+<h3>Step 1: StatCard.tsx</h3>
+<pre><code>interface StatCardProps {
+  title: string;
+  value: number;
+  description: string;
+  color: string;
+}
+
+function StatCard({
+  title,
+  value,
+  description,
+  color,
+}: StatCardProps) {
+
+  return (
+    &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+
+      &lt;p className="text-sm font-medium text-slate-500"&gt;
+        {title}
+      &lt;/p&gt;
+
+      &lt;h2 className={`mt-3 text-3xl font-bold ${color}`}&gt;
+        {value}
+      &lt;/h2&gt;
+
+      &lt;p className="mt-2 text-sm text-slate-400"&gt;
+        {description}
+      &lt;/p&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default StatCard;</code></pre>
+<p>Is component mein 4 props hain:</p>
+<div class="sc"><table>
+<tr><th>Prop</th><th>Type</th><th>Purpose</th></tr>
+<tr><td><code>title</code></td><td>string</td><td>Card heading</td></tr>
+<tr><td><code>value</code></td><td>number</td><td>Ticket count</td></tr>
+<tr><td><code>description</code></td><td>string</td><td>Additional information</td></tr>
+<tr><td><code>color</code></td><td>string</td><td>Tailwind text color class</td></tr>
+</table></div>
+<h3>Step 2: App.tsx</h3>
+<pre><code>import Navbar from "./components/layout/Navbar";
+import StatCard from "./components/dashboard/StatCard";
+
+function App() {
+  return (
+    &lt;div className="min-h-screen bg-slate-100"&gt;
+
+      &lt;Navbar /&gt;
+
+      &lt;main className="p-8"&gt;
+
+        &lt;div className="mb-8"&gt;
+          &lt;h2 className="text-2xl font-bold text-slate-800"&gt;
+            Dashboard
+          &lt;/h2&gt;
+
+          &lt;p className="mt-2 text-slate-500"&gt;
+            Overview of your IT Helpdesk system.
+          &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"&gt;
+
+          &lt;StatCard
+            title="Total Tickets"
+            value={250}
+            description="All tickets"
+            color="text-blue-600"
+          /&gt;
+
+          &lt;StatCard
+            title="Open Tickets"
+            value={65}
+            description="Waiting for support"
+            color="text-orange-500"
+          /&gt;
+
+          &lt;StatCard
+            title="In Progress"
+            value={45}
+            description="Currently being handled"
+            color="text-purple-600"
+          /&gt;
+
+          &lt;StatCard
+            title="Resolved Tickets"
+            value={110}
+            description="Successfully resolved"
+            color="text-green-600"
+          /&gt;
+
+        &lt;/div&gt;
+
+      &lt;/main&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+<p>Abhi ye sample/static data hai. Backend API se real ticket counts hum API Integration phase mein laayenge.</p>
+</section>
+
+<section class="lesson" id="f3d">
+<span class="tag">Phase 2 · Lesson 2.6</span>
+<h2>21. Optional Props, Default Props aur Props vs State</h2>
+<h3>Optional Props</h3>
+<p>Kabhi-kabhi component ko kuch props dena optional rakhna hota hai. TypeScript mein <code>?</code> use karte hain.</p>
+<pre><code>interface UserProps {
+  name: string;
+  role?: string;
+}</code></pre>
+<p>Yahan <code>name</code> required hai aur <code>role</code> optional hai. Example:</p>
+<pre><code>function UserInfo({ name, role }: UserProps) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;{role ?? "No role assigned"}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Use:</p>
+<pre><code>&lt;UserInfo name="Rahul" role="Admin" /&gt;
+
+&lt;UserInfo name="Amit" /&gt;</code></pre>
+<p><code>??</code> ko nullish coalescing operator kehte hain. Jab <code>role</code> null ya undefined ho, tab default text show hoga.</p>
+<h3>Default Props</h3>
+<p>Agar parent component koi optional prop pass nahi karta, toh hum default value de sakte hain.</p>
+<pre><code>interface UserProps {
+  name: string;
+  role?: string;
+}
+
+function UserInfo({
+  name,
+  role = "Employee",
+}: UserProps) {
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;{name}&lt;/h2&gt;
+      &lt;p&gt;{role}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Ab <code>&lt;UserInfo name="Rahul" /&gt;</code> karne par output mein role <code>Employee</code> show hoga.</p>
+<h3>Props vs State: Basic Difference</h3>
+<p>State ko hum next lessons mein detail mein cover karenge, lekin abhi difference samajh lo.</p>
+<div class="sc"><table>
+<tr><th>Props</th><th>State</th></tr>
+<tr><td>Parent se data receive hota hai</td><td>Component ka internal data hota hai</td></tr>
+<tr><td>Parent control karta hai</td><td>Component update kar sakta hai</td></tr>
+<tr><td>Read-only hota hai</td><td>Setter ke through update hota hai</td></tr>
+<tr><td>Components ke beech data pass karta hai</td><td>UI ko interactive banata hai</td></tr>
+</table></div>
+<div class="note">Important: Child component ko received props directly modify nahi karne chahiye. React mein props read-only hote hain.</div>
+</section>
+
+<section class="lesson" id="f4a">
+<span class="tag">Phase 2 · Lesson 2.7</span>
+<h2>22. Component Composition</h2>
+<h3>Component Composition kya hai?</h3>
+<p>Component Composition ka matlab hai multiple small components ko combine karke ek larger component ya complete UI banana.</p>
+<p>Suppose hamare Helpdesk application ka dashboard hai. Is dashboard mein:</p>
+<ul>
+<li>Navbar</li>
+<li>Sidebar</li>
+<li>Dashboard Header</li>
+<li>Statistics Cards</li>
+<li>Recent Tickets Table</li>
+<li>Footer</li>
+</ul>
+<p>Ye sab independent components ho sakte hain. In sabhi ko combine karke hum ek complete Dashboard banayenge.</p>
+<h3>Component Composition ka architecture</h3>
+<pre><code>App (Root Component)
+└── DashboardLayout
+    ├── Sidebar
+    ├── Navbar
+    └── Dashboard
+        ├── StatCard
+        └── RecentTickets</code></pre>
+<p>Is approach mein har component ka apna responsibility hota hai.</p>
+<h3>Composition implement karte hain</h3>
+<p>Sabse pehle <code>Sidebar.tsx</code>:</p>
+<pre><code>function Sidebar() {
+  return (
+    &lt;aside className="w-64 min-h-screen bg-slate-900 p-5 text-white"&gt;
+
+      &lt;h2 className="mb-8 text-xl font-bold"&gt;
+        Helpdesk
+      &lt;/h2&gt;
+
+      &lt;nav className="space-y-3"&gt;
+        &lt;a className="block rounded-lg bg-blue-600 p-3"&gt;
+          Dashboard
+        &lt;/a&gt;
+
+        &lt;a className="block rounded-lg p-3 hover:bg-slate-800"&gt;
+          My Tickets
+        &lt;/a&gt;
+
+        &lt;a className="block rounded-lg p-3 hover:bg-slate-800"&gt;
+          Users
+        &lt;/a&gt;
+
+        &lt;a className="block rounded-lg p-3 hover:bg-slate-800"&gt;
+          Audit Logs
+        &lt;/a&gt;
+      &lt;/nav&gt;
+
+    &lt;/aside&gt;
+  );
+}
+
+export default Sidebar;</code></pre>
+<p>Ab <code>DashboardContent.tsx</code>:</p>
+<pre><code>import StatCard from "./StatCard";
+
+function DashboardContent() {
+  return (
+    &lt;main className="flex-1 p-8"&gt;
+
+      &lt;div className="mb-8"&gt;
+        &lt;h1 className="text-2xl font-bold text-slate-800"&gt;
+          Dashboard
+        &lt;/h1&gt;
+
+        &lt;p className="mt-2 text-slate-500"&gt;
+          Welcome to your IT Helpdesk.
+        &lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"&gt;
+
+        &lt;StatCard
+          title="Total Tickets"
+          value={250}
+          description="All tickets"
+          color="text-blue-600"
+        /&gt;
+
+        &lt;StatCard
+          title="Open Tickets"
+          value={65}
+          description="Waiting for support"
+          color="text-orange-500"
+        /&gt;
+
+        &lt;StatCard
+          title="In Progress"
+          value={45}
+          description="Currently handling"
+          color="text-purple-600"
+        /&gt;
+
+        &lt;StatCard
+          title="Resolved"
+          value={110}
+          description="Successfully resolved"
+          color="text-green-600"
+        /&gt;
+
+      &lt;/div&gt;
+
+    &lt;/main&gt;
+  );
+}
+
+export default DashboardContent;</code></pre>
+<p>Ab <code>DashboardLayout.tsx</code>:</p>
+<pre><code>import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import DashboardContent from "../dashboard/DashboardContent";
+
+function DashboardLayout() {
+  return (
+    &lt;div className="min-h-screen bg-slate-100"&gt;
+
+      &lt;div className="flex"&gt;
+
+        &lt;Sidebar /&gt;
+
+        &lt;div className="flex-1"&gt;
+
+          &lt;Navbar /&gt;
+
+          &lt;DashboardContent /&gt;
+
+        &lt;/div&gt;
+
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default DashboardLayout;</code></pre>
+<p>Finally <code>App.tsx</code>:</p>
+<pre><code>import DashboardLayout from "./components/layout/DashboardLayout";
+
+function App() {
+  return &lt;DashboardLayout /&gt;;
+}
+
+export default App;</code></pre>
+<p>Ab <code>App</code> ko sirf itna pata hai ki dashboard layout display karna hai. Baaki implementation alag components mein divided hai. Yahi Component Composition hai.</p>
+</section>
+
+<section class="lesson" id="f4b">
+<span class="tag">Phase 2 · Lesson 2.8</span>
+<h2>23. Children Props</h2>
+<p>Ab React ka ek important concept samajhte hain: <code>children</code>.</p>
+<h3>Children prop kya hai?</h3>
+<p>Jab hum kisi component ke opening aur closing tags ke beech content likhte hain, toh React us content ko automatically <code>children</code> prop ke through provide karta hai. Example:</p>
+<pre><code>&lt;Card&gt;
+  &lt;h2&gt;Total Tickets&lt;/h2&gt;
+  &lt;p&gt;250&lt;/p&gt;
+&lt;/Card&gt;</code></pre>
+<p>Yahan <code>&lt;h2&gt;</code> aur <code>&lt;p&gt;</code> ka content <code>Card</code> component ka <code>children</code> hai.</p>
+<h3>Children ka basic implementation</h3>
+<p><code>Card.tsx</code>:</p>
+<pre><code>import type { ReactNode } from "react";
+
+interface CardProps {
+  children: ReactNode;
+}
+
+function Card({ children }: CardProps) {
+  return (
+    &lt;div className="rounded-xl bg-white p-6 shadow-sm"&gt;
+      {children}
+    &lt;/div&gt;
+  );
+}
+
+export default Card;</code></pre>
+<p>Ab is component ko use karte hain:</p>
+<pre><code>import Card from "./components/common/Card";
+
+function Dashboard() {
+  return (
+    &lt;div&gt;
+      &lt;Card&gt;
+        &lt;h2 className="text-xl font-bold"&gt;
+          Total Tickets
+        &lt;/h2&gt;
+
+        &lt;p className="mt-3 text-3xl"&gt;
+          250
+        &lt;/p&gt;
+      &lt;/Card&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default Dashboard;</code></pre>
+<h3>ReactNode kya hai?</h3>
+<pre><code>import type { ReactNode } from "react";</code></pre>
+<p><code>ReactNode</code> React ka TypeScript type hai. Ye represent karta hai ki React component ke andar kis tarah ka content render ho sakta hai. For example:</p>
+<ul>
+<li>JSX elements</li>
+<li>Text</li>
+<li>Numbers</li>
+<li>Multiple elements</li>
+<li><code>null</code></li>
+<li>Other valid React renderable content</li>
+</ul>
+<p>Isliye <code>children</code> ke liye <code>ReactNode</code> ek useful type hai.</p>
+<h3>Children ka visual flow</h3>
+<ol class="flow">
+<li><b>Parent Component</b><code>&lt;Card&gt;&lt;h2&gt;Dashboard&lt;/h2&gt;&lt;p&gt;Welcome Admin&lt;/p&gt;&lt;/Card&gt;</code></li>
+<li><b>Content children prop ke through pass hota hai</b></li>
+<li><b>Card Component</b><code>function Card({ children }) { return &lt;div&gt;{children}&lt;/div&gt;; }</code></li>
+<li><b>Rendered UI</b>Dashboard / Welcome Admin</li>
+</ol>
+<h3>Children ke saath reusable UI components</h3>
+<p>Ab hum ek reusable <code>PageContainer</code> banate hain.</p>
+<pre><code>import type { ReactNode } from "react";
+
+interface PageContainerProps {
+  title: string;
+  children: ReactNode;
+}
+
+function PageContainer({
+  title,
+  children,
+}: PageContainerProps) {
+  return (
+    &lt;main className="p-8"&gt;
+
+      &lt;h1 className="mb-6 text-2xl font-bold"&gt;
+        {title}
+      &lt;/h1&gt;
+
+      &lt;div&gt;
+        {children}
+      &lt;/div&gt;
+
+    &lt;/main&gt;
+  );
+}
+
+export default PageContainer;</code></pre>
+<p>Use:</p>
+<pre><code>&lt;PageContainer title="Dashboard"&gt;
+  &lt;p&gt;Welcome to Helpdesk.&lt;/p&gt;
+  &lt;p&gt;Your tickets overview.&lt;/p&gt;
+&lt;/PageContainer&gt;</code></pre>
+<p>Same component ko doosre page par bhi use kar sakte hain:</p>
+<pre><code>&lt;PageContainer title="User Management"&gt;
+  &lt;p&gt;Manage your users here.&lt;/p&gt;
+&lt;/PageContainer&gt;</code></pre>
+<p>Is tarah hum baar-baar same page structure likhne se bach sakte hain.</p>
+</section>
+
+<section class="lesson" id="f4c">
+<span class="tag">Phase 2 · Lesson 2.9</span>
+<h2>24. Reusable Components</h2>
+<p>Component Composition ke baad reusable components ka concept samajhna important hai.</p>
+<h3>Reusable component kya hai?</h3>
+<p>Reusable component ek aisa component hai jise application mein multiple places par use kiya ja sakta hai. Example:</p>
+<ul>
+<li>Button</li>
+<li>Input</li>
+<li>Card</li>
+<li>Modal</li>
+<li>Loader</li>
+<li>Badge</li>
+<li>Navbar</li>
+</ul>
+<p>Hamare project mein ek common button ko Login, Create Ticket, Update Ticket aur Save ke liye use kar sakte hain.</p>
+<h3>Reusable Button component banate hain</h3>
+<p><code>src/components/common/Button.tsx</code></p>
+<pre><code>import type { ReactNode, ButtonHTMLAttributes } from "react";
+
+interface ButtonProps extends ButtonHTMLAttributes&lt;HTMLButtonElement&gt; {
+  children: ReactNode;
+  variant?: "primary" | "secondary" | "danger";
+}
+
+function Button({
+  children,
+  variant = "primary",
+  className = "",
+  ...props
+}: ButtonProps) {
+
+  const baseStyles =
+    "rounded-lg px-5 py-2.5 font-medium transition-colors";
+
+  const variantStyles = {
+    primary: "bg-blue-600 text-white hover:bg-blue-700",
+    secondary: "bg-slate-200 text-slate-800 hover:bg-slate-300",
+    danger: "bg-red-600 text-white hover:bg-red-700",
+  };
+
+  return (
+    &lt;button
+      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      {...props}
+    &gt;
+      {children}
+    &lt;/button&gt;
+  );
+}
+
+export default Button;</code></pre>
+<p>Ab isko detail mein samjho.</p>
+<p><b>A. ButtonHTMLAttributes</b></p>
+<pre><code>ButtonHTMLAttributes&lt;HTMLButtonElement&gt;</code></pre>
+<p>React ka built-in TypeScript type hai. Isse normal HTML button ke standard props ka support milta hai, jaise <code>onClick</code>, <code>disabled</code>, <code>type</code>, <code>id</code>, <code>title</code>. Isliye humein har button attribute separately define nahi karna padta.</p>
+<p><b>B. Interface extends</b></p>
+<pre><code>interface ButtonProps extends ButtonHTMLAttributes&lt;HTMLButtonElement&gt;</code></pre>
+<p><code>extends</code> ka matlab existing type ki properties inherit karke apni additional properties add karna. Yahan hum normal HTML button attributes ke saath <code>variant</code> bhi add kar rahe hain.</p>
+<p><b>C. Union Type</b></p>
+<pre><code>variant?: "primary" | "secondary" | "danger";</code></pre>
+<p>Iska matlab <code>variant</code> mein sirf in teen values mein se koi ek allowed hai.</p>
+<p><b>D. Default parameter</b></p>
+<pre><code>variant = "primary"</code></pre>
+<p>Agar parent <code>variant</code> pass nahi karta, toh primary button show hoga.</p>
+<p><b>E. Rest operator</b></p>
+<pre><code>...props</code></pre>
+<p>Baaki received button properties ko collect karta hai.</p>
+<p><b>F. Spread operator</b></p>
+<pre><code>{...props}</code></pre>
+<p>Collected properties ko actual HTML button element tak forward karta hai.</p>
+<h3>Button ko use kaise karenge?</h3>
+<pre><code>import Button from "./components/common/Button";
+
+function TicketActions() {
+  return (
+    &lt;div className="flex gap-3"&gt;
+
+      &lt;Button onClick={() =&gt; console.log("Ticket Created")}&gt;
+        Create Ticket
+      &lt;/Button&gt;
+
+      &lt;Button variant="secondary"&gt;
+        Cancel
+      &lt;/Button&gt;
+
+      &lt;Button variant="danger"&gt;
+        Delete Ticket
+      &lt;/Button&gt;
+
+      &lt;Button disabled&gt;
+        Processing
+      &lt;/Button&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default TicketActions;</code></pre>
+<p>Ab humne ek hi Button component se multiple types ke buttons create kar liye. Button component ka result: Create Ticket (primary), Cancel (secondary), Delete Ticket (danger).</p>
+</section>
+
+<section class="lesson" id="f4d">
+<span class="tag">Phase 2 · Lesson 2.10</span>
+<h2>25. React Lists aur Keys</h2>
+<p>Ab hum seekhenge ki multiple data items ko dynamically UI mein kaise display karte hain. Helpdesk application mein tickets ki list hoti hai. Har ticket ko manually JSX mein likhna practical nahi hoga.</p>
+<h3>1. Static approach</h3>
+<pre><code>&lt;div&gt;
+  &lt;p&gt;Ticket 1 - Laptop Issue&lt;/p&gt;
+  &lt;p&gt;Ticket 2 - Network Issue&lt;/p&gt;
+  &lt;p&gt;Ticket 3 - Software Issue&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+<p>Problem: Agar 1000 tickets hain, toh 1000 elements manually likhna possible nahi hai.</p>
+<h3>2. Dynamic approach using map()</h3>
+<p>JavaScript ka <code>map()</code> array method har item ko transform karke ek naya array return karta hai. Example:</p>
+<pre><code>const tickets = [
+  { id: 1, title: "Laptop Issue" },
+  { id: 2, title: "Network Issue" },
+  { id: 3, title: "Software Issue" },
+];</code></pre>
+<p>Ab:</p>
+<pre><code>function TicketList() {
+  return (
+    &lt;div&gt;
+      {tickets.map((ticket) =&gt; (
+        &lt;p key={ticket.id}&gt;
+          {ticket.title}
+        &lt;/p&gt;
+      ))}
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>Explanation:</p>
+<ul>
+<li><code>tickets</code>: array hai.</li>
+<li><code>.map()</code>: array ke har item par callback execute karta hai.</li>
+<li><code>ticket</code>: current array item hai.</li>
+<li><code>ticket.title</code>: current ticket ka title.</li>
+<li><code>key</code>: React ko har list item ki stable identity provide karti hai.</li>
+</ul>
+<h3>3. Key prop kya hota hai?</h3>
+<p>React ko list mein identify karna hota hai ki kaunsa item add, remove ya update hua. Iske liye hum <code>key</code> provide karte hain.</p>
+<p>Correct:</p>
+<pre><code>{tickets.map((ticket) =&gt; (
+  &lt;p key={ticket.id}&gt;
+    {ticket.title}
+  &lt;/p&gt;
+))}</code></pre>
+<p>Avoid:</p>
+<pre><code>{tickets.map((ticket, index) =&gt; (
+  &lt;p key={index}&gt;
+    {ticket.title}
+  &lt;/p&gt;
+))}</code></pre>
+<p>Jab list reorder ya items insert/delete ho sakte hain, tab index unstable identity ban sakta hai. Isliye database se milne wali unique ticket ID generally better hai.</p>
+<h3>4. Actual Helpdesk Ticket List</h3>
+<p><code>RecentTickets.tsx</code></p>
+<pre><code>interface Ticket {
+  id: number;
+  title: string;
+  category: string;
+  status: string;
+  priority: string;
+}
+
+const tickets: Ticket[] = [
+  {
+    id: 101,
+    title: "Laptop not starting",
+    category: "Hardware",
+    status: "Open",
+    priority: "High",
+  },
+  {
+    id: 102,
+    title: "Internet connection issue",
+    category: "Network",
+    status: "In Progress",
+    priority: "Medium",
+  },
+  {
+    id: 103,
+    title: "Software installation",
+    category: "Software",
+    status: "Resolved",
+    priority: "Low",
+  },
+];
+
+function RecentTickets() {
+  return (
+    &lt;div className="overflow-x-auto rounded-xl bg-white shadow-sm"&gt;
+
+      &lt;table className="w-full text-left"&gt;
+
+        &lt;thead className="bg-slate-50"&gt;
+          &lt;tr&gt;
+            &lt;th className="p-4"&gt;Ticket&lt;/th&gt;
+            &lt;th className="p-4"&gt;Category&lt;/th&gt;
+            &lt;th className="p-4"&gt;Status&lt;/th&gt;
+            &lt;th className="p-4"&gt;Priority&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+
+        &lt;tbody&gt;
+          {tickets.map((ticket) =&gt; (
+            &lt;tr key={ticket.id} className="border-t"&gt;
+
+              &lt;td className="p-4 font-medium"&gt;
+                {ticket.title}
+              &lt;/td&gt;
+
+              &lt;td className="p-4"&gt;
+                {ticket.category}
+              &lt;/td&gt;
+
+              &lt;td className="p-4"&gt;
+                {ticket.status}
+              &lt;/td&gt;
+
+              &lt;td className="p-4"&gt;
+                {ticket.priority}
+              &lt;/td&gt;
+
+            &lt;/tr&gt;
+          ))}
+        &lt;/tbody&gt;
+
+      &lt;/table&gt;
+
+    &lt;/div&gt;
+  );
+}
+
+export default RecentTickets;</code></pre>
+<h3>5. Empty list handling</h3>
+<p>Kabhi backend se empty array aa sakta hai. Us situation mein empty message show karna chahiye.</p>
+<pre><code>{tickets.length === 0 ? (
+  &lt;p&gt;No tickets found.&lt;/p&gt;
+) : (
+  tickets.map((ticket) =&gt; (
+    &lt;p key={ticket.id}&gt;{ticket.title}&lt;/p&gt;
+  ))
+)}</code></pre>
+<p>Yahan hum JavaScript ternary operator use kar rahe hain:</p>
+<pre><code>condition ? valueIfTrue : valueIfFalse</code></pre>
+<p>Ye conditional rendering ka basic example hai. Isko state aur events ke saath Phase 4 mein detail mein cover karenge.</p>
+</section>
+
+<section class="lesson" id="f4e">
+<span class="tag">Phase 2 · Lesson 2.11</span>
+<h2>26. React Fragments</h2>
+<p>Kabhi-kabhi humein multiple elements return karne hote hain, lekin extra <code>div</code> nahi chahiye. Is situation mein React Fragment use hota hai.</p>
+<p>Without Fragment:</p>
+<pre><code>function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Helpdesk&lt;/h1&gt;
+      &lt;p&gt;Welcome Admin&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+<p>With Fragment:</p>
+<pre><code>function App() {
+  return (
+    &lt;&gt;
+      &lt;h1&gt;Helpdesk&lt;/h1&gt;
+      &lt;p&gt;Welcome Admin&lt;/p&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<p><code>&lt;&gt;...&lt;/&gt;</code> short syntax hai React Fragment ka. Full syntax:</p>
+<pre><code>import { Fragment } from "react";
+
+function App() {
+  return (
+    &lt;Fragment&gt;
+      &lt;h1&gt;Helpdesk&lt;/h1&gt;
+      &lt;p&gt;Welcome Admin&lt;/p&gt;
+    &lt;/Fragment&gt;
+  );
+}</code></pre>
+<p>Benefit: Extra DOM element create nahi hota.</p>
+</section>
+
+<section class="lesson" id="f4f">
+<span class="tag">Phase 2 · Lesson 2.12</span>
+<h2>27. React Rendering: Complete Understanding</h2>
+<p>Ab tak humne React components create karna, props dena, composition, lists aur reusable components samjhe. Ab complete rendering flow samajhte hain.</p>
+<h3>1. React application ka flow</h3>
+<ol class="flow">
+<li><b>index.html</b>Contains root DOM element</li>
+<li><b>main.tsx</b>Mounts the React application</li>
+<li><b>App.tsx</b>Root component</li>
+<li><b>Component Tree</b>Navbar, Sidebar, Dashboard, StatCard, TicketList</li>
+<li><b>React DOM</b>Updates the browser DOM</li>
+</ol>
+<h3>2. Render vs Re-render</h3>
+<p><b>Render:</b> React component ko execute karke uska UI output calculate karta hai.</p>
+<p><b>Re-render:</b> Jab component ki relevant state, props ya context change hoti hai, React component ko dobara render kar sakta hai.</p>
+<p>Example:</p>
+<pre><code>function Welcome() {
+  console.log("Component rendered");
+
+  return &lt;h1&gt;Welcome to Helpdesk&lt;/h1&gt;;
+}</code></pre>
+<p>Jab React <code>Welcome</code> component render karega, console mein message show hoga. Abhi component ke andar state nahi hai, lekin future mein <code>useState</code> aur events use karne par re-render ka behavior detail mein samjhenge.</p>
+<p>Important concepts:</p>
+<ul>
+<li>Render ka matlab necessarily poora browser page reload hona nahi hai.</li>
+<li>React UI changes ko efficiently update karta hai.</li>
+<li>Props aur state changes rendering ko trigger kar sakte hain.</li>
+<li>React reconciliation process ke through previous aur next UI output ko compare karke required DOM changes commit karta hai.</li>
+</ul>
+</section>
+
+<section class="lesson" id="f4g">
+<span class="tag">Phase 2 · Lesson 2.13</span>
+<h2>28. Complete Helpdesk Component Architecture</h2>
+<p>Ab humne jo concepts seekhe hain unko ek professional folder structure mein organize karte hain.</p>
+<pre><code>src/
+│
+├── assets/
+│
+├── components/
+│   │
+│   ├── common/
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   └── PageContainer.tsx
+│   │
+│   ├── layout/
+│   │   ├── Navbar.tsx
+│   │   ├── Sidebar.tsx
+│   │   └── DashboardLayout.tsx
+│   │
+│   └── dashboard/
+│       ├── StatCard.tsx
+│       ├── DashboardContent.tsx
+│       └── RecentTickets.tsx
+│
+├── pages/
+│   ├── Login.tsx
+│   ├── Register.tsx
+│   └── Dashboard.tsx
+│
+├── App.tsx
+├── main.tsx
+└── index.css</code></pre>
+<p>Ye hamare project ka initial component organization hai. Aage routing, features aur API integration ke waqt structure aur evolve hoga.</p>
+<h3>Complete architecture ka data flow</h3>
+<pre><code>App.tsx
+└── DashboardLayout
+    ├── Sidebar
+    ├── Navbar
+    └── DashboardContent
+        ├── StatCard
+        └── RecentTickets</code></pre>
+</section>
+
+<section class="lesson" id="f4h">
+<span class="tag">Phase 2 · Revision</span>
+<h2>29. Concept revision aur important code patterns</h2>
+<h3>Phase 2: Complete Concept Revision</h3>
+<div class="sc"><table>
+<tr><th>Concept</th><th>What it does</th></tr>
+<tr><td>React</td><td>UI library</td></tr>
+<tr><td>Component</td><td>Reusable UI unit</td></tr>
+<tr><td>JSX</td><td>JavaScript + XML-like syntax</td></tr>
+<tr><td>TSX</td><td>TypeScript + JSX</td></tr>
+<tr><td>Functional Component</td><td>Function-based UI component</td></tr>
+<tr><td>Props</td><td>Parent to child data</td></tr>
+<tr><td>Interface</td><td>Defines TypeScript data structure</td></tr>
+<tr><td>Destructuring</td><td>Extracts values from objects</td></tr>
+<tr><td>Composition</td><td>Combines multiple components</td></tr>
+<tr><td>Children</td><td>Content passed between component tags</td></tr>
+<tr><td>ReactNode</td><td>Type for React-renderable content</td></tr>
+<tr><td>Reusable Component</td><td>Component used in multiple places</td></tr>
+<tr><td><code>map()</code></td><td>Transforms array items into UI</td></tr>
+<tr><td><code>key</code></td><td>Identifies list elements</td></tr>
+<tr><td>Fragment</td><td>Groups elements without extra DOM node</td></tr>
+<tr><td>Rendering</td><td>Calculates and displays UI</td></tr>
+</table></div>
+<h3>Phase 2: Important code patterns</h3>
+<p>Ye patterns hum aage poore project mein use karenge.</p>
+<p><b>1. Functional component</b></p>
+<pre><code>function Header() {
+  return &lt;h1&gt;Helpdesk&lt;/h1&gt;;
+}</code></pre>
+<p><b>2. Props</b></p>
+<pre><code>function User({ name }: { name: string }) {
+  return &lt;h1&gt;{name}&lt;/h1&gt;;
+}</code></pre>
+<p><b>3. Children</b></p>
+<pre><code>function Card({ children }: { children: React.ReactNode }) {
+  return &lt;div&gt;{children}&lt;/div&gt;;
+}</code></pre>
+<p><b>4. List rendering</b></p>
+<pre><code>{tickets.map((ticket) =&gt; (
+  &lt;p key={ticket.id}&gt;{ticket.title}&lt;/p&gt;
+))}</code></pre>
+<p><b>5. Conditional rendering</b></p>
+<pre><code>{isLoading ? &lt;p&gt;Loading...&lt;/p&gt; : &lt;p&gt;Loaded&lt;/p&gt;}</code></pre>
+<p><b>6. Component composition</b></p>
+<pre><code>function App() {
+  return (
+    &lt;DashboardLayout&gt;
+      &lt;DashboardContent /&gt;
+    &lt;/DashboardLayout&gt;
+  );
+}</code></pre>
+</section>
+
+<!-- NEW LESSONS GO ABOVE THIS LINE -->
+</main>
+</div>
+<script>
+(function(){
+var r=document.documentElement,K='fe-path-';
+function g(k){try{return localStorage.getItem(K+k)}catch(e){return null}}
+function s(k,v){try{localStorage.setItem(K+k,v)}catch(e){}}
+var t=g('theme');if(t)r.setAttribute('data-theme',t);
+document.getElementById('theme').onclick=function(){
+var dark=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme:dark)').matches);
+var n=dark?'light':'dark';r.setAttribute('data-theme',n);s('theme',n)};
+var nav=document.getElementById('nav');
+document.getElementById('menu').onclick=function(){nav.classList.toggle('open')};
+nav.addEventListener('click',function(e){if(e.target.tagName==='A')nav.classList.remove('open')});
+var links=[].slice.call(nav.querySelectorAll('a'));
+function spy(){var cur=null;links.forEach(function(a){var el=document.querySelector(a.getAttribute('href'));if(el&&el.getBoundingClientRect().top<120)cur=a});
+links.forEach(function(a){a.classList.toggle('on',a===cur)})}
+addEventListener('scroll',spy,{passive:true});spy();
+/* Every checklist: <ul class="chk" id="chkN"> plus <p data-for="chkN"></p> for the count. Saved automatically. */
+[].slice.call(document.querySelectorAll('ul.chk[id]')).forEach(function(ul){
+var id=ul.id,boxes=[].slice.call(ul.querySelectorAll('input')),cnt=document.querySelector('[data-for="'+id+'"]'),saved=[];
+try{saved=JSON.parse(g(id)||'[]')}catch(e){}
+function upd(){var n=boxes.filter(function(b){return b.checked}).length;
+if(cnt)cnt.textContent=n+'/'+boxes.length+' completed';
+s(id,JSON.stringify(boxes.map(function(b){return b.checked})))}
+boxes.forEach(function(b,i){b.checked=!!saved[i];b.onchange=upd});upd()});
+})();
+</script>
+</body>
+</html>
